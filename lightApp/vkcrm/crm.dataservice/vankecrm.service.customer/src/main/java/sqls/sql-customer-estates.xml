@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>客户相关物业信息</comment>
+	
+	<!-- 获取相关物业信息-->
+    <entry key="sql.query.customer.estates">
+        <![CDATA[
+			SELECT
+				mh.name,
+				mh.id AS id,
+				mh.status,
+				'House' AS 'Type',
+				(select count(1) from mid_organization_user where 1 = 1 and userId = #userId# and organizationId = mh.projectId AND IFNULL(isDeleted,0) = 0) hasPermission
+			FROM
+				main_customer AS mc
+					INNER JOIN
+				mid_customer_house AS mch ON mc.id = mch.customerId
+					AND mch.relationType = 1
+					and IFNULL(mch.isDeleted,0)=0
+					INNER JOIN
+				main_house AS mh ON mch.houseId = mh.id
+					AND IFNULL(mh.isdeleted, 0) = 0
+			WHERE
+				mc.id = #customerId#
+					AND IFNULL(mc.isdeleted, 0) = 0
+			UNION ALL
+			SELECT
+				mc.name,
+				mc.id,
+				5 AS 'status',
+				'Carport' AS 'Type',
+				(select count(1) from mid_organization_user where 1 = 1 and userId = #userId# and organizationId = mc.projectId AND IFNULL(isDeleted,0) = 0) hasPermission
+			FROM
+				`mid_carport_customer` AS mcc
+				INNER JOIN main_carport mc ON mcc.`carportId` = mc.`id`
+			WHERE
+				mcc.customerId = #customerId#
+					AND IFNULL(mcc.isdeleted, 0) = 0
+        ]]>
+    </entry>
+    
+  
+</properties>

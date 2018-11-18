@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>客户特殊身份信息</comment>
+    
+    <!-- 获取客户已有的特殊身份内容-->
+     <entry key="sql.query.customer.specialIdentity">
+        <![CDATA[
+			SELECT
+                id,
+                customerId,
+                identity,
+                beginDate,
+                endDate,
+                duration
+            FROM
+                dim_cust_specialidentity
+            WHERE
+                IFNULL(isDeleted, 0) = 0
+                    AND customerId = #customerId# AND endDate > now() AND beginDate < now()
+                    OR
+                IFNULL(isDeleted, 0) = 0 AND customerId = #customerId# AND endDate is NULL;
+        ]]>
+    </entry>
+
+
+
+
+
+    <!--添加特殊身份-->
+    <entry key="sql.insert.customer.specialidentity">
+        <![CDATA[
+        INSERT INTO `dim_cust_specialidentity`
+        (`id`, `customerId`, `identity`, `beginDate`, `endDate`, `duration`, `creator`, `creatorId`, `createTime`,`isDeleted`)
+        VALUES
+        (#id#, #customerId#, #identity#,
+        #beginDate#,#endDate#,#duration#,#creator#,#creatorId#,now(),0);
+        ]]>
+    </entry>
+
+
+    <!-- 删除客户特殊身份-->
+    <entry key="sql.remove.customer.Identities">
+        <![CDATA[
+		UPDATE 	dim_cust_specialidentity
+		SET 	isDeleted = 1 ,
+				deleter = #deleter# ,
+				deleterId = #deleterId# ,
+				deleteTime = NOW()
+		WHERE 	id = #id#
+        ]]>
+    </entry>
+
+</properties>

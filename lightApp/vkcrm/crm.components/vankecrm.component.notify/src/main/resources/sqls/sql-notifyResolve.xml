@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>订阅关系SQL</comment>
+
+    <!--根据角色获取用户-->
+    <entry key="sql.notify.resolve.byRole">
+        <![CDATA[
+        SELECT User_ID FROM sec_user_role WHERE role_id = #roleId#
+        ]]>
+    </entry>
+
+    <!--根据话务分组获取用户-->
+    <entry key="sql.notify.resolve.byTelGroup">
+        <![CDATA[
+        SELECT telephonistId FROM `tel_telephonist_group` WHERE groupId = #groupId#
+        ]]>
+    </entry>
+
+    <!--根据组织架构获取用户(不包含子部门)-->
+    <entry key="sql.notify.resolve.byOrg">
+        <![CDATA[
+        SELECT ID FROM sec_user WHERE `ORG_ID` = #orgId#
+        ]]>
+    </entry>
+
+</properties>

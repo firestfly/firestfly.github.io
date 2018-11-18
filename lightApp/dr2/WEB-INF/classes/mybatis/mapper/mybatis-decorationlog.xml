@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vankeservice.dao.DecorationLogDao">
+
+    <sql id="column_list">
+        id,serial_number AS serialNumber,form,mode,process_by AS processBy,process_at AS processAt
+    </sql>
+
+    <sql id="table_name">decoration_log</sql>
+
+    <select id="get" parameterType="String" resultType="com.vankeservice.model.DecorationLog" useCache="true">
+        SELECT
+        <include refid="column_list"/>
+        FROM
+        <include refid="table_name"/>
+        WHERE serial_number = '${id}'
+    </select>
+
+    <select id="page" resultType="com.vankeservice.model.DecorationLog" useCache="true">
+        SELECT
+        <include refid="column_list"/>
+        FROM
+        <include refid="table_name"/>
+        <where>
+            1 = 1
+        </where>
+        ORDER BY ${sort} ${order}
+        LIMIT ${offset},${size}
+    </select>
+
+
+    <select id="count" resultType="Integer" useCache="true">
+        SELECT count(1) FROM
+        <include refid="table_name"/>
+        <where>
+            1 = 1
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.vankeservice.model.DecorationLog" useGeneratedKeys="true" keyProperty="id"
+            keyColumn="id" flushCache="true">
+        INSERT INTO
+        <include refid="table_name"/>
+        (id,
+        serial_number,
+        form,
+        mode,
+        process_by,
+        process_at)
+        VALUES (
+        #{id,jdbcType=INTEGER},
+        (SELECT REPLACE(UUID(),'-','')),
+        #{form,jdbcType=VARCHAR},
+        #{mode,jdbcType=VARCHAR},
+        #{processBy,jdbcType=VARCHAR},
+        NOW())
+    </insert>
+
+    <update id="update" parameterType="com.vankeservice.model.DecorationLog" flushCache="true" keyColumn="id"
+            keyProperty="id">
+        UPDATE
+        <include refid="table_name"/>
+        SET
+        <if test="form != null and form.length() &gt; 0">
+            form = #{form,jdbcType=VARCHAR},
+        </if>
+        <if test="mode != null and mode.length() &gt; 0">
+            mode = #{mode,jdbcType=VARCHAR}
+        </if>
+        WHERE 1 = 1
+        AND serial_number = #{serialNumber,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="delete" parameterType="String" flushCache="true">
+        DELETE FROM
+        <include refid="table_name"/>
+        WHERE serial_number = #{id,jdbcType=VARCHAR}
+    </delete>
+</mapper>

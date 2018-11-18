@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>数据字典sql</comment>
+
+    <!-- 根据字典编码查询字典项-->
+    <entry key="sql.common.query.dictionaries">
+        <![CDATA[
+		SELECT
+            ddi.id, ddi.code, ddi.value, dd.name AS typeName, dd.code AS dictionaryCode,
+            (CASE IFNULL(dd.`isDeleted`, 0)
+             WHEN 1 THEN 1
+             ELSE IFNULL(ddi.`isDeleted`,0)
+             END) AS 'isDeleted', ddi.useIn
+        FROM
+            dim_dictionary dd,
+            dim_dictionary_items ddi
+        WHERE
+            dd.id = ddi.dictionaryId
+            {? AND dd.code in (#DictionaryCodes#)}
+        ORDER BY ddi.sortNo
+	    ]]>
+    </entry>
+
+    <!-- 根据字典编码查询字典项-->
+    <entry key="sql.common.get.dictionary">
+        <![CDATA[
+		SELECT
+            ddi.id, ddi.code, ddi.value, dd.name AS typeName,
+            (CASE IFNULL(dd.`isDeleted`, 0)
+             WHEN 1 THEN 1
+             ELSE IFNULL(ddi.`isDeleted`, 0)
+             END) AS 'isDeleted', ddi.useIn
+        FROM
+            dim_dictionary dd,
+            dim_dictionary_items ddi
+        WHERE
+            dd.id = ddi.dictionaryId
+            AND dd.code = #code#
+        ORDER BY ddi.sortNo
+	    ]]>
+    </entry>
+</properties>

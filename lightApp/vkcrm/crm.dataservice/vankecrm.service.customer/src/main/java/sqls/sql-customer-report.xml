@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>客户相关报表</comment>
+
+    <!-- 查询客户信息报表 -->
+    <entry key="sql-query-customer-report">
+        <![CDATA[
+			SELECT 
+					mc.id AS id,
+					mc.sex AS sex,
+					mc.fullName AS fullName,
+					mc.customerType AS customerType,
+					mc.mainMobile AS mainMobile,
+					mc.standbyMobile AS standbyMobile, 
+					mc.affiliation AS affiliation,
+					mc.certificateType AS certificateType,
+					mc.certificateId AS certificateId,
+					DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW()) - TO_DAYS(mcd.birthday)),'%Y') + 0 AS age,
+					mcd.birthday AS birthday,
+					mcd.urgencyContacts AS urgencyContacts,
+					mcd.urgencyPhoneNumber AS urgencyPhoneNumber,
+					mcd.urgencyMobileNumber AS urgencyMobileNumber,
+					mcd.postCode AS postCode,
+					mcd.email AS email,
+					mcd.qq AS qq,
+					mcd.weChat AS weChat,
+					mcd.blood AS boold,
+					mcd.occupation AS occupation,
+					mcd.registerAddr AS registerAddr,
+					mcd.contactAddr AS contactAddr,
+					mcd.company AS company,
+					mcd.companyAddr AS companyAddr,
+					mch.relationType AS relationType,
+					mh.`name` AS `name`
+			FROM 
+					main_customer AS mc 
+					LEFT JOIN main_customer_detail AS mcd ON mc.id = mcd.id
+					LEFT JOIN mid_customer_house AS mch ON mc.id = mch.customerId
+					LEFT JOIN main_house AS mh on mh.id = mch.houseId
+					LEFT JOIN mid_project_house AS mph ON mph.houseId = mh.id
+			WHERE
+					mc.isDeleted = 0
+			AND
+					mh.isDeleted = 0
+			AND
+					mch.isDeleted = 0
+			{?AND
+					mc.fullName LIKE CONCAT(CONCAT('%',#customerName#),'%') ESCAPE '/'}
+			{?AND
+					mc.certificateId = #certificateId#}
+			{?AND 
+					mc.certificateType = #certificateType#}
+			{?AND 
+					mc.customerType = #customerType#}
+			{?AND
+					mc.affiliation = #affiliation#}
+			{?AND
+					mc.mainMobile = #mainMobile#}
+			{?AND
+					mcd.birthday < #birthdayTo#}
+			{?AND
+					mcd.birthday >= #birthdayForm#}
+			{?AND
+					mcd.birthday = #birthday#}
+			{?AND
+					mh.isSecondhand = #isSecondhand#}
+			{?AND 
+					mh.deliverTime = #deliverTime#}
+			{?AND
+					mh.checkInTime = #checkInTime#}
+			{?AND
+					mh.`status` = #houseStatus#}
+			{?AND
+					mch.relationType = #relationType#}
+			{?AND
+					mh.`name` LIKE CONCAT(CONCAT('%',#houseName#),'%') ESCAPE '/'}
+			{?AND
+					mph.gridId = #gridId#}
+			{?AND
+					mph.buildingCode = #buildingCode#}
+			{?AND
+					mph.projectId =#projectId#}
+			{?AND
+					mph.projectId IN (SELECT t.id FROM tree_organization AS t WHERE t.levelType = 4 AND t.parentId = #organizationId#)}
+        ]]>
+    </entry>
+    
+     <!-- 查询车辆信息报表 -->
+    <entry key="sql-query-cars-report">
+        <![CDATA[
+			SELECT 
+					dcc.licenseNumber AS licenseNumber,
+					dcc.buyTime AS buyTime,
+					dcc.color AS color,
+					dcc.brand AS brand,
+					mc.fullName AS fullName,
+					mc.certificateId AS certificateId,
+					mc.certificateType AS certificateType,
+					mc.mainMobile AS mainMobile,
+					mh.`status` AS `status`,
+					mh.`name` AS houseName,
+					mph.floor AS floor,
+					mph.buildingName AS buildingName,
+					mph.unit AS unit,
+					(SELECT t.`name` FROM tree_organization t WHERE t.levelType = 4 AND t.id = mph.projectId) AS projectName,
+					(SELECT g.`name` FROM main_grid g WHERE g.id = mph.gridId) AS gridName
+			FROM 
+					dim_cust_cars AS dcc
+					INNER JOIN main_customer AS mc ON dcc.customerId = mc.id 
+					LEFT JOIN mid_customer_house AS mch ON mc.id = mch.customerId
+					LEFT JOIN main_house AS mh on mh.id = mch.houseId
+					LEFT JOIN mid_project_house AS mph ON mph.houseId = mh.id
+			WHERE
+					mc.isDeleted = 0
+			AND
+					dcc.`status` = 1
+			AND
+					mh.isDeleted = 0
+			AND
+					mch.isDeleted = 0
+			{?AND
+					mc.fullName LIKE CONCAT(CONCAT('%',#fullName#),'%') ESCAPE '/'}
+			{?AND
+					mc.certificateId = #certificateId#}
+			{?AND
+					mc.certificateType = #certificateType#}
+			{?AND
+					mc.mainMobile = #mainMobile#}
+			{?AND
+					dcc.licenseNumber LIKE CONCAT(CONCAT('%',#licenseNumber#),'%') ESCAPE '/'}
+			{?AND
+					mh.`status` = #status#}
+			{?AND
+					mh.`name` = #houseName#}
+			{?AND
+					mph.gridId = #gridId#}
+			{?AND
+					mph.buildingCode = #buildingCode#}
+			{?AND
+					mph.projectId = #projectId#}
+			{?AND
+					mph.projectId IN (SELECT t.id FROM tree_organization AS t WHERE t.levelType = 4 AND t.parentId = #organizationId#)}
+			GROUP BY dcc.licenseNumber		
+        ]]>
+    </entry>
+    
+         <!-- 查询宠物信息报表 -->
+    <entry key="sql-query-pets-report">
+        <![CDATA[
+			SELECT 
+					dcp.adoptTime AS adoptTime,
+					dcp.breed AS breed,
+					dcp.`name` AS petName,
+					dcp.`status` AS petStatus,
+					dcp.sex AS sex,
+					dcp.description AS description,
+					mc.fullName AS fullName,
+					mc.certificateId AS certificateId,
+					mc.certificateType AS certificateType,
+					mc.mainMobile AS mainMobile,
+					mh.`status` AS `status`,
+					mh.`name` AS houseName,
+					mph.floor AS floor,
+					mph.buildingName AS buildingName,
+					mph.unit AS unit,
+					(SELECT t.`name` FROM tree_organization t WHERE t.levelType = 4 AND t.id = mph.projectId) AS projectName,
+					(SELECT g.`name` FROM main_grid g WHERE g.id = mph.gridId) AS gridName
+			FROM 
+					dim_cust_pets AS dcp
+					INNER JOIN main_customer AS mc ON dcp.customerId = mc.id
+					LEFT JOIN mid_customer_house AS mch ON mc.id = mch.customerId
+					LEFT JOIN main_house AS mh on mh.id = mch.houseId
+					LEFT JOIN mid_project_house AS mph ON mph.houseId = mh.id
+			WHERE
+					mc.isDeleted = 0
+			AND
+					mch.isDeleted = 0
+			AND
+					mh.isDeleted = 0
+			{?AND
+					mc.fullName LIKE CONCAT(CONCAT('%',#customerName#),'%') ESCAPE '/'}
+			{?AND
+					mc.certificateId = #certificateId#}
+			{?AND
+					mc.certificateType = #certificateType#}
+			{?AND
+					mc.mainMobile = #mainMobile#}
+			{?AND
+					dcp.adoptTime <= #adoptBeginTime#}
+			{?AND
+					dcp.adoptTime >= #adoptEndTime#}
+			{?AND
+					mh.`status` = #houseStatus#}
+			{?AND
+					mh.`name` = #houseName#}
+			{?AND
+					mph.gridId = #gridId#}
+			{?AND
+					mph.buildingCode = #buildingCode#}
+			{?AND
+					mph.projectId = #projectId#}
+			{?AND
+					mph.projectId IN (SELECT t.id FROM tree_organization AS t WHERE t.levelType = 4 AND t.parentId = #organizationId#)}
+			GROUP BY dcp.id
+        ]]>
+    </entry>
+</properties>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vankeservice.dao.ConstructionCertificateDao">
+
+    <sql id="column_list">
+        id,version,serial_number,effect_date,decoration_unit,house_name,delay_record,decoration_content,is_print
+    </sql>
+
+    <sql id="table_name">construction_certificate</sql>
+
+    <select id="get" parameterType="String" resultType="com.vankeservice.model.ConstructionCertificate" useCache="true">
+        SELECT
+        <include refid="column_list"/>
+        FROM
+        <include refid="table_name"/>
+        WHERE serial_number = '${id}'
+    </select>
+
+    <select id="page" resultType="com.vankeservice.model.ConstructionCertificate" useCache="true">
+        SELECT
+        <include refid="column_list"/>
+        FROM
+        <include refid="table_name"/>
+        <where>
+            <if test="bean != null">
+                <if test="bean.houseName != null and bean.houseName.length() &gt; 0">
+                    AND house_name LIKE CONCAT(CONCAT('%','${bean.houseName}'),'%') ESCAPE '/'
+                </if>
+            </if>
+        </where>
+        ORDER BY ${sort} ${order}
+        LIMIT ${offset},${size}
+    </select>
+
+
+    <select id="count" resultType="Integer" useCache="true">
+        SELECT count(1) FROM
+        <include refid="table_name"/>
+        <where>
+            <if test="bean != null">
+                <if test="bean.houseName != null and bean.houseName.length() &gt; 0">
+                    AND house_name LIKE CONCAT(CONCAT('%','${bean.houseName}'),'%') ESCAPE '/'
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.vankeservice.model.ConstructionCertificate" useGeneratedKeys="true" keyProperty="id"
+            keyColumn="id" flushCache="true">
+        INSERT INTO
+        <include refid="table_name"/>
+        (id,
+        serial_number,
+        version,
+        effect_date,
+        decoration_unit,
+        house_name,
+        delay_record,
+        decoration_content,
+        is_print,
+        create_by,
+        create_date)
+        VALUES (
+        #{id,jdbcType=INTEGER},
+        (SELECT CONCAT('CC',LEFT(REPLACE(UUID(),'-',''),6))),
+        #{version,jdbcType=VARCHAR},
+        #{effectDate,jdbcType=TIMESTAMP},
+        #{decorationUnit,jdbcType=VARCHAR},
+        #{houseName,jdbcType=VARCHAR},
+        #{delayRecord,jdbcType=VARCHAR},
+        #{decorationContent,jdbcType=VARCHAR},
+        #{isPrint,jdbcType=BIT},
+        #{createBy,jdbcType=VARCHAR},
+        NOW())
+    </insert>
+
+    <update id="update" parameterType="com.vankeservice.model.ConstructionCertificate" flushCache="true" keyColumn="id"
+            keyProperty="id">
+        UPDATE
+        <include refid="table_name"/>
+        SET
+        <if test="effectDate != null">
+            effect_date = #{effectDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="houseName != null and houseName.length() &gt; 0">
+            house_name = #{houseName,jdbcType=VARCHAR},
+        </if>
+        <if test="delayRecord != null and delayRecord.length() &gt; 0">
+            delay_record = #{delayRecord,jdbcType=VARCHAR},
+        </if>
+        <if test="decorationUnit != null and decorationUnit.length() &gt; 0">
+            decoration_unit = #{decorationUnit,jdbcType=VARCHAR},
+        </if>
+        <if test="decorationContent != null and decorationContent.length() &gt; 0">
+            decoration_content = #{decorationContent,jdbcType=VARCHAR},
+        </if>
+        <if test="isPrint != null">
+            is_print = #{isPrint,jdbcType=VARCHAR}
+        </if>
+        WHERE 1 = 1
+        AND serial_number = #{serialNumber,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="delete" parameterType="String" flushCache="true">
+        DELETE FROM
+        <include refid="table_name"/>
+        WHERE serial_number = #{id,jdbcType=VARCHAR}
+    </delete>
+</mapper>

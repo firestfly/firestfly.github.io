@@ -1,0 +1,65 @@
+body { letter-spacing: 2px; overflow-x: hidden; }
+.header { height: 60px; font-size: 36px; border-bottom: 2px solid #666; background-color: #fff; text-align: right; }
+.header img { vertical-align: 0; }
+.jqiclose { display: none; }
+body .input-noborder, body .input-border-bottom { background-color: transparent; border: none; outline: 0; line-height: 28px; letter-spacing: 2px; height: 28px; }
+body .input-border-bottom { border-bottom: 1px solid #333; padding-bottom: 0; padding-top: 0; }
+body textarea.input-noborder { width: 90%; vertical-align: top; height: auto; resize: none; }
+.text-border-bottom { line-height: 28px; height: 28px; height: 29px\0; border-bottom: 1px solid #333; padding-right: 5px; display: inline-block; }
+.table-list { table-layout: fixed; }
+.table-list th:first-child, .table-list td:first-child { border-left: 1px solid #333; }
+.table-list td { border-top: none; border-bottom: 1px solid #333; }
+.table-list th, .table-list td { border-right: 1px solid #333; }
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th { border-top: 1px solid #333; }
+.w120 { width: 120px; }
+.w250 { width: 250px; }
+.w300 { width: 300px; }
+.edite { position: fixed; top: 47%; right: 150px; text-align: center; width: 60px; }
+.ms-controller, .ms-important, [ms-controller], [ms-important] { visibility: hidden; }
+input:invalid { border: 1px solid red; }
+.icon-check:before { content: "\f046"; }
+.icon-check-empty:before { width: 16px; height: 15px; }
+.decorationItem { text-align: left; }
+.decorationItem label { font-weight: normal; margin-left: 5px; }
+@media print {
+    textarea { min-height: 2cm; }
+    .edite, .input-invalidate,.print-hidden { display: none; }
+    .input-border-bottom, .text-border-bottom { border-bottom: none; margin-left: 0; }
+    @page {        /* margin: 1cm; */ }
+    /* @media print and (color) {
+        * {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    } */ }
+
+    /* * * CSS3 Tips * * A stylesheet for creating tooltips without using anything other than CSS3. * * created by c.bavota * released under GPL v2 * * November 6th, 2013 */
+    [data-tips] { position: relative; text-decoration: none; }
+    [data-tips]:after, [data-tips]:before { position: absolute; z-index: 100; opacity: 0; }
+    [data-tips]:after { content: attr(data-tips); height: 25px; line-height: 25px; padding: 0 10px; font-size: 12px; text-align: center; color: #fff; background: #222; border-radius: 5px; text-shadow: 0 0 5px #000; -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); white-space: nowrap; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+    [data-tips]:before { content: ""; width: 0; height: 0; border-width: 6px; border-style: solid; }
+    [data-tips]:hover:after, [data-tips]:hover:before { opacity: 1; }
+
+    /* Top tips */
+    [data-tips].top-tip:after, [data-tips].top-tip:before { -webkit-transition: bottom 0.25s ease-in-out, opacity 0.25s ease-in-out; -moz-transition: bottom 0.25s ease-in-out, opacity 0.25s ease-in-out; transition: bottom 0.25s ease-in-out, opacity 0.25s ease-in-out; bottom: 90%; left: -9999px; margin-bottom: 12px; }
+    [data-tips].top-tip:before { border-color: #222 transparent transparent transparent; margin-bottom: 0; }
+    [data-tips].top-tip:hover:after, [data-tips].top-tip:hover:before { bottom: 100%; left: -5px; }
+    [data-tips].top-tip:hover:before { left: 2px; }
+
+    /* Bottom tip */
+    [data-tips].bottom-tip:after, [data-tips].bottom-tip:before { -webkit-transition: top 0.25s ease-in-out, opacity 0.25s ease-in-out; -moz-transition: top 0.25s ease-in-out, opacity 0.25s ease-in-out; transition: top 0.25s ease-in-out, opacity 0.25s ease-in-out; top: 90%; left: -9999px; margin-top: 12px; }
+    [data-tips].bottom-tip:before { border-color: transparent transparent #222 transparent; margin-top: 0; }
+    [data-tips].bottom-tip:hover:after, [data-tips].bottom-tip:hover:before { top: 100%; left: 0; }
+    [data-tips].bottom-tip:hover:before { left: 15px; }
+
+    /* right tip */
+    [data-tips].right-tip:after, [data-tips].right-tip:before { -webkit-transition: left 0.25s ease-in-out, opacity 0.25s ease-in-out; -moz-transition: left 0.25s ease-in-out, opacity 0.25s ease-in-out; transition: left 0.25s ease-in-out, opacity 0.25s ease-in-out; top: -9999px; left: 96%; margin-left: 12px; }
+    [data-tips].right-tip:before { border-color: transparent #222 transparent transparent; margin-left: 0; }
+    [data-tips].right-tip:hover:after, [data-tips].right-tip:hover:before { left: 100%; top: 0; }
+    [data-tips].right-tip:hover:before { top: 7px; }
+
+    /* left tip */
+    [data-tips].left-tip:after, [data-tips].left-tip:before { -webkit-transition: right 0.25s ease-in-out, opacity 0.25s ease-in-out; -moz-transition: right 0.25s ease-in-out, opacity 0.25s ease-in-out; transition: right 0.25s ease-in-out, opacity 0.25s ease-in-out; top: -9999px; right: 96%; margin-right: 12px; }
+    [data-tips].left-tip:before { border-color: transparent transparent transparent #222; margin-right: 0; }
+    [data-tips].left-tip:hover:after, [data-tips].left-tip:hover:before { right: 100%; top: 0; }
+    [data-tips].left-tip:hover:before { top: 7px; }

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>客户宠物信息sql</comment>
+
+    <!--获取该客户的所有宠物信息-->
+    <entry key="sql.query.pets">
+        <![CDATA[
+        SELECT   id,
+                 customerId,
+                 name,
+                 breed,
+                 sex,
+                 adoptTime,
+                 description,
+                 status
+        FROM     dim_cust_pets
+        WHERE    customerId = #customerId#
+        AND
+        		 isDeleted = 0
+        ]]>
+    </entry>
+
+    <!--获取宠物信息-->
+    <entry key="sql.query.pet">
+        <![CDATA[
+        SELECT   id,
+                 customerId,
+                 name,
+                 breed,
+                 sex,
+                 adoptTime,
+                 description,
+                 status,
+                 statusText
+        FROM     dim_cust_pets
+        WHERE    id = #petId#
+        AND
+        		 isDeleted = 0
+        ]]>
+    </entry>
+
+    <!--添加宠物-->
+    <entry key="sql.insert.pet">
+        <![CDATA[
+        INSERT INTO `dim_cust_pets`
+        (`id`,`customerId`,`name`,`breed`,`sex`,`adoptTime`,`status`,`description`,`creator`,`creatorId`,`createTime`,`isDeleted`)
+        VALUES
+        (#id#, #customerId#, #name#,
+        #breed#,
+        #sex#,
+        #adoptTime#,
+        #status#,
+        #description#, #creator#, #creatorId#, now(),0);
+        ]]>
+    </entry>
+
+    <!--更新宠物信息-->
+    <entry key="sql.update.pet">
+        <![CDATA[
+        UPDATE dim_cust_pets
+        SET {? name = #name#, }
+            {? breed = #breed#, }
+            {? sex = #sex#, }
+            adoptTime = #adoptTime#,
+            {? status = #status#, }
+            {? description = #description#, }
+            modifier = #user#,
+            modifierId = #userId#,
+            modifyTime = now()
+        WHERE
+            id = #id#
+        ]]>
+    </entry>
+    
+        <!--删除宠物信息-->
+    <entry key="sql.delete.pet">
+        <![CDATA[
+			UPDATE 
+				dim_cust_pets 
+			SET 
+				isDeleted = 1 
+			WHERE 
+				id = #id#
+        ]]>
+    </entry>
+
+</properties>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>用户信息sql</comment>
+
+    <!-- 根据loginid查询组织信息-->
+    <entry key="sql.query.user.organization">
+        <![CDATA[
+
+	    ]]>
+    </entry>
+</properties>

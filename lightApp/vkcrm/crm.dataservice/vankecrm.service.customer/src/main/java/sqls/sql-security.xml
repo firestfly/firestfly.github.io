@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>客户标签sql</comment>
+
+    <!-- 根据客户id查询标签信息-->
+    <entry key="sql.security.hasPermission">
+        <![CDATA[
+			SELECT count(1)
+			  FROM SEC_Role_Permission rp, SEC_Permission sp
+			 WHERE rp.operation_id = sp.id
+			   and rp.Role_ID IN
+			       (SELECT ur.Role_ID
+			          FROM SEC_User_Role ur
+			         where ur.User_ID = ?)
+			   and sp.CODE = ?
+	    ]]>
+    </entry>
+
+
+</properties>

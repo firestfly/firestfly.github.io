@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>模态框document</title>
@@ -7,58 +8,83 @@
     <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
     <script src="js/modal.js"></script>
 </head>
+<style>
+body {
+	padding: 20px;
+}
+.button {
+    margin-bottom: 10px;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+    background-color: #007aff;
+    border: 1px solid #007aff;
+    padding: 9px 12px;
+    border-radius: 5px;
+}
+</style>
 <body>
-<a href="##" class="btn btn-group alert">alert</a>
-<a href="##" class="btn btn-group tips">tips</a>
-<a href="##" class="btn btn-group confirm">confirm</a>
-<a href="##" class="btn btn-group load">loading</a>
-<a href="##" class="btn btn-group prompt">prompt</a>
-<a href="##" class="btn btn-group login">login</a>
-<script>
-    document.body.addEventListener('touchstart', function () {
-    });
-    $(".alert").click(function () {
-        var a = UModal.alert({
+    <div class="button alert">alert</div>
+    <div class="button tips">tips</div>
+    <div class="button confirm">confirm</div>
+    <div class="button load">loading</div>
+    <div class="button prompt">prompt</div>
+    <div class="button login">login</div>
+    <script>
+    $(".alert").click(function() {
+        var a = modal("alert", {
             title: "你是谁？",
             text: "这是弹出框这是弹出框这是弹出框这是弹出框这是弹出框这是弹出框这是弹出框这是弹出框这是弹出框"
         });
     })
-    $(".confirm").click(function () {
-        var a = UModal.confirm({
-            ok: function () {
-                UModal.alert("您确定了")
+    $(".confirm").click(function() {
+        var a = modal("confirm", {
+        	title: "确认删除吗？",
+            ok: function() {
+                modal("alert", "您确定了")
             },
-            cancle: function () {
-                UModal.alert("您取消了")
+            cancle: function() {
+                modal("alert", "您取消了")
             },
-            btnText: ["ok", "取消"]
+            btnText: ["取消", "确定"]
         });
     })
-    $(".tips").click(function () {
-        var tips = UModal.tips("正在加载...", 1200, function () {
-            UModal.alert("加载完成");
+    $(".tips").click(function() {
+        modal("tips", {
+            title: "提示",
+            text: "<span class='ani-rotate'></span>正在加载...",
+            overlay: false
+        }).done(function() {
+            setTimeout(function() {
+                this.destory();
+            }.bind(this), 2000);
+        })
+    })
+    $(".load").click(function() {
+        modal("loading",{
+          overlay: false
+        }).done(function(){
+          setTimeout(function(){
+              this.destory();
+            }.bind(this), 3000)
         });
     })
-    $(".load").click(function () {
-        var loading = UModal.loading(null, 1200, function () {
-            UModal.alert("加载完成");
-        });
-    })
-    $(".prompt").click(function () {
-        UModal.prompt({
-            ok: function (data) {
-                UModal.alert("你输入的是：" + data);
+    $(".prompt").click(function() {
+        modal("prompt", {
+            ok: function(data) {
+                modal("alert", "你输入的是：" + data);
             }
         });
     })
-    $(".login").click(function () {
-        UModal.login({
-            ok: function (data) {
-                UModal.alert("你输入的是：<br>" + data[0] + "<br>" + data[1]);
+    $(".login").click(function() {
+        modal("login", {
+            ok: function(data) {
+                modal("alert", "你输入的是：<br>" + data[0] + "<br>" + data[1]);
             },
-            btnText: ["登录", "取消"]
+            btnText: ["取消", "登录"]
         });
     })
-</script>
+    </script>
 </body>
+
 </html>

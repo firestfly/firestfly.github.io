@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>黑猫一号接口sql</comment>
+    
+    <!-- 项目客房关系信息(获取查询数据量) -->
+    <entry key="sql.query.projectcustomerhouserelationcount">
+      <![CDATA[
+      	select count(1)
+		from main_project a
+		inner join mid_project_house b on a.id = b.projectId
+		inner join main_house c on b.houseId = c.id
+		inner join mid_customer_house d on c.id = d.houseId
+		inner join main_customer e on d.customerId = e.id
+		left join main_customer_detail f on e.id = f.id
+		where 1=1
+		and IFNULL(d.isDeleted,0)=0
+		{? and a.code = #projectCode# }
+		and e.createtime between #startTime# and #endTime#
+		order by c.code,e.fullName
+      	]]>
+    </entry>
+    
+	<!-- 项目客房关系信息(黑猫一号项目需要) -->
+    <entry key="sql.query.projectcustomerhouserelation">
+        <![CDATA[
+		select 
+		a.code as projectCode,e.code as customerCode,e.certificateId,e.fullName as CustomerName,e.sexText as sexText,
+		f.birthday,e.createTime,b.buildingName,b.buildingCode,c.name as houseName,c.code as houseCode,
+		case 
+		when d.relationType =1 then '主' 
+		when d.relationType =2 then '住' 
+		when d.relationType =3 then '租' 
+		when d.relationType =4 then '账' 
+		when d.relationType =5 then '润' 
+		when d.relationType =6 then '其他' 
+		end as relationType,
+		'有效' as houseStatus  
+		from main_project a
+		inner join mid_project_house b on a.id = b.projectId
+		inner join main_house c on b.houseId = c.id
+		inner join mid_customer_house d on c.id = d.houseId
+		inner join main_customer e on d.customerId = e.id
+		left join main_customer_detail f on e.id = f.id
+		where 1=1
+		and IFNULL(d.isDeleted,0)=0
+		{? and a.code = #projectCode# }
+		and e.createtime between #startTime# and #endTime#
+		order by c.code,e.fullName
+        	]]>
+    </entry>
+    
+</properties>

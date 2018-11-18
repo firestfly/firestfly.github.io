@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>数据库链接配置信息</comment>
+
+    <entry key="jdbc.driverClassName">com.mysql.jdbc.Driver</entry>
+    <entry key="jdbc.username">crmuser</entry>
+    <entry key="jdbc.password">crm2_develop</entry>
+    <entry key="jdbc.initialSize">2</entry>
+    <entry key="jdbc.maxActive">5</entry>
+    <entry key="jdbc.maxIdle">5</entry>
+    <entry key="jdbc.minIdle">1</entry>
+    <entry key="jdbc.validationQuery">select 1</entry>
+    <entry key="jdbc.timeBetweenEvictionRunsMillis">30000</entry>
+    <entry key="jdbc.minEvictableIdleTimeMillis">1800000</entry>
+
+    <!-- crm_cdcs库? -->
+    <entry key="jdbc.url">jdbc:mysql://10.0.57.182:3306/crm_cdcs?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true&amp;failOverReadOnly=false</entry>
+    <entry key="jdbc.user">crmuser</entry>
+    <entry key="jdbc.pwd">crm2_develop</entry>
+
+    <!-- Center库 -->
+    <entry key="center.jdbc.url">jdbc:mysql://10.0.57.182:3306/vankecrm_center?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true&amp;failOverReadOnly=false</entry>
+    <entry key="center.jdbc.readonly.url">jdbc:mysql://10.0.57.182:3306/vankecrm_center?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true</entry>
+    <!-- 系统库 -->
+    <entry key="sys.jdbc.url">jdbc:mysql://10.0.57.182:3306/vankecrm_organization?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true&amp;failOverReadOnly=false</entry>
+    <entry key="sys.jdbc.readonly.url">jdbc:mysql://10.0.57.182:3306/vankecrm_organization?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true</entry>
+</properties>

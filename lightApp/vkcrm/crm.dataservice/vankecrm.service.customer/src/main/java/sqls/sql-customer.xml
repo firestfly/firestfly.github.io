@@ -1,0 +1,905 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>客户信息sql</comment>
+    <!-- 多条件查询客户修改信息 -->
+    <entry key="customers.list">
+        <![CDATA[
+        SELECT mc.name,mc.lastupdatedby_user,mc.lastupdate_time from main_customer mc
+        JOIN mid_customer_room cr on mc.customer_uuid=cr.customer_uuid
+        JOIN main_room mr on mr.room_uuid=cr.room_uuid
+        JOIN main_grid mg on mg.project_code=mr.belo ngto_projectcode
+        WHERE mr.belongto_projectcode=#belongtoProjectcode#
+        {? and mg.grid_uuid=#gridUuid#}
+        {? and mc.standby_mobilenumber=#standbyphone#}
+        {? and mc.card_number=#cardNum#}
+        {? and mc.card_type=#cardType#}
+        {? and mc.main_mobilenumber=#mainphone#}
+        ]]>
+    </entry>
+
+    <!-- 根据客户id查询客户基本信息 -->
+    <entry key="sql.query.customer.basic">
+        <![CDATA[
+			SELECT
+				id,
+				code,
+				firstName,
+				lastName,
+				fullName,
+				sex,
+				customerType,
+				mainMobile,
+				standbyMobile,
+				homeTel,
+				officeTel,
+				contactAddr,
+				affiliation,
+				certificateType,
+				certificateId
+			FROM
+				main_customer
+			WHERE
+				IFNULL(isDeleted, 0) = 0 AND id = #customerId#
+			LIMIT 1
+	     ]]>
+    </entry>
+
+    <!-- 根据客户id查询客户详情信息 -->
+    <entry key="sql.query.customer.details">
+        <![CDATA[
+			SELECT
+				d.id,
+				postCode,
+				email,
+				qq,
+				weChat,
+				birthday,
+				blood,
+				occupation,
+				registerAddr,
+				d.contactAddr,
+				company,
+				companyAddr,
+				urgencyContacts,
+				urgencyPhoneNumber,
+				urgencyMobileNumber,
+				remark
+			FROM
+				main_customer_detail d
+					INNER JOIN
+				main_customer c ON d.id = c.id
+			WHERE
+				IFNULL(c.isDeleted, 0) = 0 AND d.id = #customerId#
+				LIMIT 1
+	     ]]>
+    </entry>
+
+    <!-- 根据客户姓名、手机、证件查询 -->
+    <entry key="sql.search.customer">
+        <![CDATA[
+        SELECT DISTINCT * FROM (
+        SELECT
+            mc.id AS 'customerId',
+            mc.fullName AS 'customerName',
+            mc.mainMobile,
+            mc.certificateType,
+            mc.certificateId,
+            mh. NAME AS 'houseName',
+            mch.houseId AS houseId,
+            (SELECT GROUP_CONCAT(DISTINCT mch.relationType SEPARATOR ',') FROM mid_customer_house mch WHERE mch.customerId = mc.id AND mch.houseId = mh.id) AS 'relationType',
+            '当前' AS 'type',
+            (SELECT GROUP_CONCAT(dc.licenseNumber SEPARATOR ';') FROM dim_cust_cars AS dc WHERE dc.customerId = mc.id AND dc.isDeleted = 0 ) AS licenseNumber
+        FROM
+            main_customer mc
+        LEFT JOIN mid_customer_house mch ON mc.id = mch.customerId AND IFNULL(mch.isDeleted,0) = 0
+        LEFT JOIN main_house mh ON mch.houseId = mh.id AND IFNULL(mh.isDeleted,0) = 0
+        WHERE
+        1 = 1
+        AND mc.isDeleted = 0
+        {? AND mc.fullName LIKE CONCAT(CONCAT('%',#customerName#),'%') ESCAPE '/' }
+        {? AND mc.mainMobile = #mobileNumber# }
+        {? AND mc.certificateType = #certificateType# }
+        {? AND mc.certificateId = #certificateId# }
+        {? AND mc.id IN (SELECT dcc.customerId FROM dim_cust_cars AS dcc WHERE dcc.licenseNumber LIKE CONCAT(CONCAT('%',#licenseNumber#),'%') ESCAPE '/')}
+        AND mh.projectId in (select organizationId from mid_organization_user where userId = #userId# AND IFNULL(isDeleted,0) = 0)
+        UNION ALL
+        SELECT
+            mc.id AS 'customerId',
+            mc.fullName AS 'customerName',
+            mc.mainMobile,
+            mc.certificateType,
+            mc.certificateId,
+            mh. NAME AS 'houseName',
+            mch.houseId AS houseId,
+            (SELECT GROUP_CONCAT(DISTINCT mch.relationType SEPARATOR ',') FROM mid_customer_house_history mch WHERE mch.customerId = mc.id AND mch.houseId = mh.id) AS 'relationType',
+            '历史' AS 'type',
+            (SELECT GROUP_CONCAT(dc.licenseNumber SEPARATOR ';') FROM dim_cust_cars AS dc WHERE dc.customerId = mc.id AND dc.isDeleted = 0) AS licenseNumber
+        FROM
+            main_customer mc
+        LEFT JOIN mid_customer_house_history mch ON mc.id = mch.customerId
+        LEFT JOIN main_house mh ON mch.houseId = mh.id AND IFNULL(mh.isDeleted,0) = 0
+        WHERE
+        1 = 1
+        AND mc.isDeleted = 0
+        {? AND mc.fullName LIKE CONCAT(CONCAT('%',#customerName#),'%') ESCAPE '/' }
+        {? AND mc.mainMobile = #mobileNumber# }
+        {? AND mc.certificateType = #certificateType# }
+        {? AND mc.certificateId = #certificateId# }
+        {? AND mc.id IN (SELECT dcc.customerId FROM dim_cust_cars AS dcc WHERE dcc.licenseNumber LIKE CONCAT(CONCAT('%',#licenseNumber#),'%') ESCAPE '/')}
+        AND mh.projectId in (select organizationId from mid_organization_user where userId = #userId# AND IFNULL(isDeleted,0) = 0)
+        UNION ALL
+        SELECT
+            mc.id AS 'customerId',
+            mc.fullName AS 'customerName',
+            mc.mainMobile,
+            mc.certificateType,
+            mc.certificateId,
+            mh. NAME AS 'houseName',
+            mch.carportId AS houseId,
+            (SELECT GROUP_CONCAT(DISTINCT mch.relationType SEPARATOR ',') FROM mid_carport_customer mch WHERE mch.customerId = mc.id AND mch.carportId = mh.id) AS 'relationType',
+            '当前' AS 'type',
+            (SELECT GROUP_CONCAT(dc.licenseNumber SEPARATOR ';') FROM dim_cust_cars AS dc WHERE dc.customerId = mc.id AND dc.isDeleted = 0 ) AS licenseNumber
+        FROM
+            main_customer mc
+        LEFT JOIN mid_carport_customer mch ON mc.id = mch.customerId AND IFNULL(mch.isDeleted,0) = 0
+        LEFT JOIN main_carport mh ON mch.carportId = mh.id AND IFNULL(mh.isDeleted,0) = 0
+        WHERE
+        1 = 1
+        AND mc.isDeleted = 0
+        {? AND mc.fullName LIKE CONCAT(CONCAT('%',#customerName#),'%') ESCAPE '/' }
+        {? AND mc.mainMobile = #mobileNumber# }
+        {? AND mc.certificateType = #certificateType# }
+        {? AND mc.certificateId = #certificateId# }
+        {? AND mc.id IN (SELECT dcc.customerId FROM dim_cust_cars AS dcc WHERE dcc.licenseNumber LIKE CONCAT(CONCAT('%',#licenseNumber#),'%') ESCAPE '/')}
+        AND mh.projectId in (select organizationId from mid_organization_user where userId = #userId# AND IFNULL(isDeleted,0) = 0)
+        UNION ALL
+        SELECT
+            mc.id AS 'customerId',
+            mc.fullName AS 'customerName',
+            mc.mainMobile,
+            mc.certificateType,
+            mc.certificateId,
+            mh. NAME AS 'houseName',
+            mch.carportId AS houseId,
+            (SELECT GROUP_CONCAT(DISTINCT mch.relationType SEPARATOR ',') FROM mid_carport_customer mch WHERE mch.customerId = mc.id AND mch.carportId = mh.id) AS 'relationType',
+            '历史' AS 'type',
+            (SELECT GROUP_CONCAT(dc.licenseNumber SEPARATOR ';') FROM dim_cust_cars AS dc WHERE dc.customerId = mc.id AND dc.isDeleted = 0 ) AS licenseNumber
+        FROM
+            main_customer mc
+        LEFT JOIN mid_carport_customer mch ON mc.id = mch.customerId AND IFNULL(mch.isDeleted,0) = 1
+        LEFT JOIN main_carport mh ON mch.carportId = mh.id AND IFNULL(mh.isDeleted,0) = 0
+        WHERE
+        1 = 1
+        AND mc.isDeleted = 0
+        {? AND mc.fullName LIKE CONCAT(CONCAT('%',#customerName#),'%') ESCAPE '/' }
+        {? AND mc.mainMobile = #mobileNumber# }
+        {? AND mc.certificateType = #certificateType# }
+        {? AND mc.certificateId = #certificateId# }
+        {? AND mc.id IN (SELECT dcc.customerId FROM dim_cust_cars AS dcc WHERE dcc.licenseNumber LIKE CONCAT(CONCAT('%',#licenseNumber#),'%') ESCAPE '/')}
+        AND mh.projectId in (select organizationId from mid_organization_user where userId = #userId# AND IFNULL(isDeleted,0) = 0)
+        ) T
+	    ]]>
+    </entry>
+
+    <!-- 根据客户姓名、手机、证件查询 -->
+    <entry key="sql.search.customer.all">
+        <![CDATA[
+        SELECT DISTINCT * FROM (
+        SELECT
+            mc.id AS 'customerId',
+            mc.fullName AS 'customerName',
+            mc.mainMobile,
+            mc.certificateType,
+            mc.certificateId,
+            mh. NAME AS 'houseName',
+            mch.houseId AS houseId,
+            (SELECT GROUP_CONCAT(DISTINCT mch.relationType SEPARATOR ',') FROM mid_customer_house mch WHERE mch.customerId = mc.id AND mch.houseId = mh.id) AS 'relationType',
+            '当前' AS 'type',
+            (SELECT GROUP_CONCAT(dc.licenseNumber SEPARATOR ';') FROM dim_cust_cars AS dc WHERE dc.customerId = mc.id AND dc.isDeleted = 0) AS licenseNumber
+        FROM
+            main_customer mc
+        LEFT JOIN mid_customer_house mch ON mc.id = mch.customerId AND IFNULL(mch.isDeleted,0) = 0
+        LEFT JOIN main_house mh ON mch.houseId = mh.id
+        AND IFNULL(mh.isDeleted,0) = 0
+        WHERE
+            1 = 1
+        AND mc.isDeleted = 0
+        AND mh.projectId in (select organizationId from mid_organization_user where userId = #userId#)
+            {? AND mc.id IN (SELECT dcc.customerId FROM dim_cust_cars AS dcc WHERE dcc.licenseNumber LIKE CONCAT(CONCAT('%',#licenseNumber#),'%') ESCAPE '/')}
+        UNION ALL
+        SELECT
+            mc.id AS 'customerId',
+            mc.fullName AS 'customerName',
+            mc.mainMobile,
+            mc.certificateType,
+            mc.certificateId,
+            mh. NAME AS 'houseName',
+            mch.houseId AS houseId,
+            (SELECT GROUP_CONCAT(DISTINCT mch.relationType SEPARATOR ',') FROM mid_customer_house_history mch WHERE mch.customerId = mc.id AND mch.houseId = mh.id) AS 'relationType',
+            '历史' AS 'type',
+            (SELECT GROUP_CONCAT(dc.licenseNumber SEPARATOR ';') FROM dim_cust_cars AS dc WHERE dc.customerId = mc.id AND dc.isDeleted = 0) AS licenseNumber
+        FROM
+            main_customer mc
+        LEFT JOIN mid_customer_house_history mch ON mc.id = mch.customerId
+        LEFT JOIN main_house mh ON mch.houseId = mh.id
+        AND IFNULL(mh.isDeleted,0) = 0
+        WHERE
+            1 = 1
+        AND mc.isDeleted = 0
+        AND mh.projectId in (select organizationId from mid_organization_user where userId = #userId#)
+            {? AND mc.id IN (SELECT dcc.customerId FROM dim_cust_cars AS dcc WHERE dcc.licenseNumber LIKE CONCAT(CONCAT('%',#licenseNumber#),'%') ESCAPE '/')}
+         ) T
+         LIMIT #start#,#end#
+	    ]]>
+    </entry>
+
+    <!-- 根据房屋id 获取业主/客户信息 -->
+    <entry key="sql.query.customer.by.houseid">
+        <![CDATA[
+		SELECT
+            a.houseId,
+            a.customerId,
+            a.relationType,
+            b.fullName,
+            b.mainMobile AS 'mainMobileNumber'
+        FROM
+            mid_customer_house a
+                INNER JOIN
+            main_customer b ON a.customerId = b.id
+        WHERE
+            a.houseId = #houseId#
+            and IFNULL(a.isDeleted,0)=0
+            {? AND a.relationType in ($relationTypes$) }
+	    ]]>
+    </entry>
+    <!-- 根据房屋id 获取历史业主/客户信息 -->
+    <entry key="sql.query.history.customer.by.houseid">
+        <![CDATA[
+		SELECT
+            a.houseId,
+            a.customerId,
+            a.relationType,
+            b.fullName,
+            b.mainMobile AS 'mainMobileNumber'
+        FROM
+            mid_customer_house_history a
+                INNER JOIN
+            main_customer b ON a.customerId = b.id
+        WHERE
+            a.houseId = #houseId#
+		]]>
+    </entry>
+
+    <!-- 根据业主ID，获取其他客户跟他的关系 -->
+    <entry key="sql.query.customer.to.customer.relation">
+        <![CDATA[
+        SELECT
+            a.customerId,
+            a.toCustomerId,
+            b.fullName AS 'toCustomerName',
+            a.relationType,
+            b.mainMobile AS 'mainMobileNumber'
+        FROM
+            mid_customer_relation a
+                INNER JOIN
+            main_customer b ON a.toCustomerId = b.id
+        WHERE
+            a.customerId = #ownerId#
+                AND a.toCustomerId IN ($customerIds$)
+        ]]>
+    </entry>
+
+    <!-- 添加客户与房屋的关系 -->
+    <entry key="sql.insert.houseRelation">
+        <![CDATA[
+        INSERT INTO `mid_customer_house`
+        (`houseId`, `customerId`, `relationType`, `creator`, `creatorId`, `createTime`)
+        VALUES
+        (#houseId#, #customerId#, #relationType#, #user#, #userId#, now());
+        ]]>
+    </entry>
+
+
+    <!-- 将客房关系添加到历史表中 -->
+    <entry key="sql.insert.houseRelation.history">
+        <![CDATA[
+        INSERT INTO mid_customer_house_history
+        (`houseId`, `customerId`, `relationType`, `creator`, `creatorId`, `createTime`, `deleter`, `deleterId`, `deleteTime`)
+        SELECT
+            houseId,
+            customerId,
+            relationType,
+            creator,
+            creatorId,
+            createTime,
+            #user#,
+            #userId#,
+            NOW()
+        FROM
+            mid_customer_house
+        WHERE
+            houseId = #houseId#
+                AND customerId = #customerId#
+                AND relationType = #relationType#
+                and IFNULL(isDeleted,0)=0
+        LIMIT 1
+        ]]>
+    </entry>
+
+    <!-- 删除客房关系 -->
+    <entry key="sql.delete.houseRelation">
+        <![CDATA[
+        DELETE FROM mid_customer_house
+        WHERE
+            houseId = #houseId#
+            AND customerId = #customerId#
+            and IFNULL(isDeleted,0)=0
+            AND relationType = #relationType# LIMIT 1
+        ]]>
+    </entry>
+
+    <!-- 查出常用联系人 -->
+    <entry key="sql.query.house.contactsId">
+        <![CDATA[
+        select contactsId from main_house where id=#houseId#
+        ]]>
+    </entry>
+
+
+    <!-- 更新常用联系人信息 -->
+    <entry key="sql.update.house.contact">
+        <![CDATA[
+        update main_house set
+        contactsId=#contactsId#,contactsName=#contactsName#,contactsMobile=#contactsMobile#
+        where id = #houseId#
+        ]]>
+    </entry>
+
+
+    <!-- 查询客户编码信息 -->
+    <entry key="sql.customer.queryCustCodeGem">
+        <![CDATA[
+		select * from dim_cust_code_gen t where t.value = #VALUE#
+	    ]]>
+    </entry>
+
+
+    <!-- 查询客户编码信息 -->
+    <entry key="sql.customer.checkCode">
+        <![CDATA[
+		SELECT COUNT(1) FROM main_customer c WHERE c.code = ?
+	    ]]>
+    </entry>
+
+    <!-- 查询客户是否已存在 -->
+    <entry key="sql.exists.customer">
+        <![CDATA[
+		SELECT
+            COUNT(1)
+        FROM
+            main_customer mc
+        WHERE
+            mc.certificateType = #certificateType#
+            AND mc.certificateId = #certificateId#
+            AND mc.isDeleted = 0
+            {? AND mc.id != #code#}
+	]]>
+    </entry>
+
+    <!--添加客户基本信息-->
+    <entry key="sql.insert.customer.basic">
+        <![CDATA[
+        INSERT INTO `main_customer`
+        (`id`, `code`, `firstName`, `lastName`, `fullName`, `sex`, `customerType`, `mainMobile`, `standbyMobile`,
+         `homeTel`, `officeTel`, `contactAddr`, `affiliation`, `certificateType`, `certificateId`, `creator`,
+         `creatorId`, `createTime`, `modifier`, `modifierId`, `modifyTime`)
+        VALUES
+        (#id#, #code#, #firstName#, #lastName#, #fullName#, #sex#, #customerType#, #mainMobile#, #standbyMobile#,
+         #homeTel#, #officeTel#, #contactAddr#, #affiliation#, #certificateType#, #certificateId#, #creator#,
+         #creatorId#, now(), #modifier#, #modifierId#, now());
+        ]]>
+    </entry>
+
+    <!--添加客户详细信息-->
+    <entry key="sql.insert.customer.detail">
+        <![CDATA[
+        INSERT INTO `main_customer_detail`
+        (`id`, `postCode`, `email`, `qq`, `weChat`, `birthday`, `blood`, `occupation`, `registerAddr`,
+         `contactAddr`, `company`, `companyAddr`, `urgencyContacts`, `urgencyPhoneNumber`, `urgencyMobileNumber`, `remark`)
+        VALUES
+        (#id#, #postCode#, #email#, #qq#, #weChat#, #birthday#, #blood#, #occupation#, #registerAddr#,
+         #contactAddr#, #company#, #companyAddr#, #urgencyContacts#, #urgencyPhoneNumber#, #urgencyMobileNumber#, #remark#);
+        ]]>
+    </entry>
+
+    <!--通过电话号码，姓名，证件号码查询客户信息-->
+    <!--
+    and mc.id not in (select customerId from mid_customer_house  where  houseid = #houseId# and relationType = '1')
+    因为 not in 无法使用到索引,所以就暂时先去掉该条件,在页面进行判断
+    -->
+    <entry key="service.query.customerInfo4Search">
+        <![CDATA[
+		SELECT mc.id,
+		mc.fullName,
+		mc.certificateId,
+		mc.mainMobile,
+		mch.relationType,
+		mch.houseId
+		FROM main_customer mc
+		LEFT JOIN mid_customer_house mch on mc.id = mch.customerId and IFNULL(mch.isDeleted,0)=0
+		WHERE IFNULL(mc.isDeleted,0) = 0
+        {? and mc.fullName like CONCAT('%',#name#,'%')}
+		{? and mc.mainMobile = #phone#}
+		{? and mc.certificateId = #cardNum#}
+	    GROUP BY mc.id
+	    ]]>
+    </entry>
+
+    <!--通过电话号码，姓名，证件号码查询客户信息(用户车位搜索)-->
+    <!--
+    and mc.id not in (select customerId from mid_carport_customer  where  carportId=#carportId#)
+    因为 not in 无法使用到索引,所以就暂时先去掉该条件,在页面进行判断
+    -->
+    <entry key="service.query.carport.customerInfo4Search">
+        <![CDATA[
+	   SELECT mc.id,
+       mc.fullName,
+       mc.certificateId,
+       mc.mainMobile
+       FROM main_customer mc
+       WHERE 1=1
+       and mc.id not in (select customerId from mid_carport_customer where carportId = #carportId# and IFNULL(isDeleted,0) = 0)
+       {? and mc.fullName like CONCAT('%',#name#,'%')}
+	   {? and mc.mainMobile = #phone#}
+	   {? and mc.certificateId = #cardNum#}
+       and mc.isDeleted = 0
+       GROUP BY mc.id
+	]]>
+    </entry>
+
+    <!--查询一个车位下的客户（根据状态查询，现有或历史客户）-->
+    <entry key="service.query.carport.customer">
+        <![CDATA[
+		SELECT mc.id,
+		mc.fullName,
+		mc.certificateId,
+		mc.mainMobile,
+        mch.carportId
+		FROM mid_carport_customer mch
+		LEFT JOIN main_customer mc on mc.id = mch.customerId
+        where mch.carportId=#carportId#
+        and mch.isDeleted=#isDeleted#
+	]]>
+    </entry>
+
+    <!--添加客户与客户的关系信息-->
+    <entry key="sql.insert.customer.customerRelation">
+        <![CDATA[
+        insert into mid_customer_relation(customerId,toCustomerId,relationType,creator,creatorId,createTime,isDeleted)
+        VALUES
+        (#customerId#, #toCustomerId#, #relationType#, #creator#, #creatorId#, now(), 0);
+        ]]>
+    </entry>
+
+    <!--更新客户基本信息-->
+    <entry key="sql.update.customer.basic">
+        <![CDATA[
+        UPDATE main_customer SET
+        {? fullName = #fullName#,}
+        {? sex = #sex#,}
+        {? customerType = #customerType#,}
+        {? mainMobile = #mainMobile#,}
+        {? standbyMobile = #standbyMobile#,}
+        {? homeTel = #homeTel#,}
+        {? officeTel = #officeTel#,}
+        {? affiliation = #affiliation#,}
+        {? certificateType = #certificateType#,}
+        {? certificateId = #certificateId#,}
+        modifier = #modifier#,
+        modifierId = #modifierId#,
+        modifyTime = now()
+        WHERE id = #id#
+        ]]>
+    </entry>
+
+
+    <!--更新客户基本信息 没有敏感数据编辑权限-->
+    <entry key="sql.update.customer.basic1">
+        <![CDATA[
+        UPDATE main_customer SET
+         {? sex = #sex#,}
+         {? mainMobile = #mainMobile#,}
+         {? standbyMobile = #standbyMobile#,}
+         {? homeTel = #homeTel#,}
+         {? officeTel = #officeTel#,}
+         {? affiliation = #affiliation#,}
+         {? certificateType = #certificateType#,}
+         {? certificateId = #certificateId#,}
+         {? modifier = #modifier#,}
+        modifierId = #modifierId#,
+        modifyTime = now()
+        WHERE id = #id#
+        ]]>
+    </entry>
+
+    <!--更新客户详细信息-->
+    <entry key="sql.update.customer.detail">
+        <![CDATA[
+        UPDATE main_customer_detail SET
+        {? postCode = #postCode#,}
+        {? email = #email#,}
+        {? qq = #qq#,}
+        {? weChat = #weChat#,}
+        {? birthday = #birthday#,}
+        {? blood = #blood#,}
+        {? occupation = #occupation#,}
+        {? registerAddr = #registerAddr#,}
+        {? contactAddr = #contactAddr#,}
+        {? company = #company#,}
+        {? companyAddr = #companyAddr#,}
+        {? urgencyContacts = #urgencyContacts#,}
+        {? urgencyPhoneNumber = #urgencyPhoneNumber#,}
+        {? urgencyMobileNumber = #urgencyMobileNumber#,}
+        {? remark = #remark#,}
+        modifier = #modifier#,
+        modifierId = #modifierId#,
+        modifyTime = now()
+        WHERE id = #id#
+        ]]>
+    </entry>
+
+
+    <!-- 判断一条客户房屋关系记录是否存在 -->
+    <entry key="service.query.customer.hasCustomerHouseRelation">
+        <![CDATA[
+		select count(1) from mid_customer_house mch
+		where mch.customerid = #customerId#
+		and mch.houseid = #houseId#
+		and mch.relationtype = #relationType#
+		and IFNULL(mch.isDeleted,0)=0
+    ]]>
+    </entry>
+
+    <!-- 判断一条客户的有无详细信息 -->
+    <entry key="service.query.customer.hasCustomerDetails">
+        <![CDATA[
+		SELECT COUNT(1) FROM main_customer_detail WHERE id = #id#
+    ]]>
+    </entry>
+
+    <!-- 查询客户信息(过户车位) -->
+    <entry key="service.query.customer.queryCustomer4CarportTransfer">
+        <![CDATA[
+		SELECT mc.id, mc.fullName, mc.certificateId, mc.mainMobile
+        FROM main_customer mc
+        INNER JOIN mid_customer_house mch ON mc.id = mch.customerId and IFNULL(mch.isDeleted,0)=0
+        INNER JOIN main_house mh
+        WHERE mc.id = mch.customerId
+        AND mch.houseId = mh.id
+        AND mh.projectId = #projectId#
+        AND mc.fullName LIKE CONCAT(CONCAT('%',#name#),'%') ESCAPE '/'
+        GROUP BY mc.id
+    ]]>
+    </entry>
+
+    <!-- 查询客户信息(指挥中心) -->
+    <entry key="service.query.customer.queryCustomer4Command">
+        <![CDATA[
+		SELECT
+        mc.id,
+        mc.mainMobile,
+        mc.fullName,
+        mc.certificateType,
+        mc.certificateId,
+        mh.NAME AS houseName,
+        mh.code as houseCode,
+        mh.projectId,
+		mp.`name` as projectName,
+		mp.code as projectCode,
+		mph.buildingName,
+		mph.buildingCode,
+        (SELECT GROUP_CONCAT(licenseNumber) FROM dim_cust_cars where customerId = mc.id) as 'licenseNumber',
+        (SELECT GROUP_CONCAT(relationtype) FROM mid_customer_house a where a.customerId = mc.id and a.houseId=mch.houseId and IFNULL(a.isDeleted,0)=0 GROUP BY customerId) as relationType
+        FROM
+        main_customer mc
+        INNER JOIN mid_customer_house mch ON mch.customerId = mc.id and IFNULL(mch.isDeleted,0)=0
+        INNER JOIN main_house mh ON mh.id = mch.houseId
+		INNER JOIN mid_project_house mph on mph.houseId=mh.id
+        LEFT JOIN dim_cust_cars dcc on dcc.customerId=mc.id
+		INNER JOIN main_project mp on mh.projectId=mp.id
+        WHERE 1=1
+        {? AND mh.projectId IN ($projectId$)}
+        {? and mc.fullName like CONCAT(CONCAT('%',#fullName#),'%') ESCAPE '/'}
+        {? and mc.mainMobile=#mainMobile#}
+        {? and dcc.licenseNumber like CONCAT(CONCAT('%',#licenseNumber#),'%') ESCAPE '/'}
+        {? and mh.id=#houseId#}
+        {? and mh.buildingCode =#buildingCode#}
+        {? and mc.id = #customerId#}
+        GROUP BY
+        mh.id,mc.id
+        ORDER BY mc.fullName
+    ]]>
+    </entry>
+
+
+    <!-- 查询客房关系 -->
+    <entry key="service.query.customer.houseRelation">
+        <![CDATA[
+		select a.houseId,
+		a.customerId,
+		a.relationType,
+        b.name as houseName,
+        b.projectId,
+        (select count(1) from mid_organization_user where 1 = 1 and userId = #userId# and organizationId = b.projectId) hasPermission
+        from mid_customer_house a
+        LEFT JOIN main_house b on b.id=a.houseId
+        where 1=1
+        and IFNULL(a.isDeleted,0)=0
+        {? and a.customerId=#customerId#}
+        {? and a.houseId=#houseId#}
+    ]]>
+    </entry>
+
+    <!-- 插入客房关系 -->
+    <entry key="service.insert.customer.houseRelation">
+        <![CDATA[
+		insert into mid_customer_house(`id`,`houseId`,`customerId`,`relationType`,`creator`,`creatorId`,`createTime`,`isDeleted`)
+        VALUES(#id#,#houseId#,#customerId#,#relationType#,#creator#,#creatorId#,now(),'0',)
+    ]]>
+    </entry>
+
+    <!-- 移除客房关系 -->
+    <entry key="sql.remove.customer.houseRelation">
+        <![CDATA[
+	    update mid_customer_house set isDeleted='1'
+        deleter = #deleter# ,
+        deleterId = #deleterId# ,
+        deleteTime = NOW()
+        where customerId=#customerId#
+        and houseId=#houseId#
+        and relationType=#relationType#
+
+    ]]>
+    </entry>
+
+
+
+    <!-- 根据客户姓名、手机、证件、房屋名称查询客户列表 -->
+    <entry key="sql.search.customer.forApp">
+        <![CDATA[
+            SELECT
+                mc.id AS 'customerId',
+                mc.fullName AS 'customerName',
+                mc.mainMobile,
+                mc.certificateId,
+                mh. NAME AS 'houseName',
+                mch.houseId AS houseId,
+                mch.relationType
+            FROM
+                main_customer mc
+            LEFT JOIN mid_customer_house mch ON mc.id = mch.customerId and IFNULL(mch.isDeleted,0)=0
+            LEFT JOIN main_house mh ON mch.houseId = mh.id
+            AND IFNULL(mh.isDeleted,0) = 0
+            WHERE
+                IFNULL(mc.isDeleted,0) = 0
+            {? AND mh.Name LIKE CONCAT(CONCAT('%',#houseName#),'%') ESCAPE '/'}
+            {? AND mc.fullName LIKE CONCAT(CONCAT('%',#customerName#),'%') ESCAPE '/' }
+            {? AND mc.mainMobile = #mobileNumber# }
+            {? AND mc.certificateType = #certificateType# }
+            {? AND mc.certificateId = #certificateId# }
+	    ]]>
+    </entry>
+
+    <!-- 改变一条客房关系记录 -->
+    <entry key="sql.update.customer.unbindByType">
+        <![CDATA[
+           update mid_customer_house set
+           isDeleted=#isDeleted#,
+           deleter=#deleter#,
+           deleterId=#deleterId#,
+           deleteTime=#deleteTime#
+           where customerId=#customerId# and houseId=#houseId# and relationType=#relationType#
+	    ]]>
+    </entry>
+
+    <!-- 查询一条客房关系是否存在(因为要用到isDeleted字段，所以不用count(1)查询) -->
+    <entry key="sql.query.customer.houseRelation">
+        <![CDATA[
+           select isDeleted from mid_customer_house
+           where customerId=#customerId# and houseId=#houseId# and relationType=#relationType#
+	    ]]>
+    </entry>
+
+    <!-- 插入一条客房关系-->
+    <entry key="sql.insert.customer.houseRelation">
+        <![CDATA[
+          insert into mid_customer_house(`id`,`houseId`,`customerId`,`relationType`,`relationTypeText`,`creator`,`creatorId`,`createTime`,`isDeleted`)
+          VALUES(null,#houseId#,#customerId#,#relationType#,
+          (select value  from dim_dictionary_items where dictionaryId=(select id from dim_dictionary where code='HouseCustomerRelationType' LIMIT 1)
+          and CODE=#relationType#),#creator#,#creatorId#,#createTime#,0);
+	    ]]>
+    </entry>
+    <!-- 通过客户ID与车位ID逻辑删除一个车位和主人的关系记录-->
+    <entry key="sql.remove.carportCustomer.relationByCustomerId">
+        <![CDATA[
+		update mid_carport_customer set isDeleted=1,
+		deletor=#deletor#,
+		deletorId=#deletorId#,
+		deleteTime=now()
+        where carportId=#carportId# and customerId=#customerId#
+	    ]]>
+    </entry>
+
+    <!-- add by liaochao 2016/01/14 begin-->
+
+    <!-- 根据业主ID，获取业主亲戚和相关业主 -->
+    <entry key="sql.query.customer.relations">
+        <![CDATA[
+        SELECT
+            mid_cr.customerId,
+            mid_cr.toCustomerId,
+            mc.fullName AS 'toCustomerName',
+            mid_cr.relationType,
+            mc.mainMobile AS 'mainMobileNumber'
+        FROM
+            main_customer mc
+        INNER JOIN mid_customer_relation mid_cr ON mc.id = mid_cr.toCustomerId
+        WHERE
+            mid_cr.customerId = #ownerId#
+        UNION
+        SELECT
+            mid_cr.customerId AS 'toCustomerId',
+            mid_cr.toCustomerId AS 'customerId',
+            mc.fullName AS 'toCustomerName',
+            mid_cr.relationType,
+            mc.mainMobile AS 'mainMobileNumber'
+        FROM
+            main_customer mc
+        INNER JOIN mid_customer_relation mid_cr ON mc.id = mid_cr.customerId
+        WHERE
+            mid_cr.toCustomerId = #ownerId#
+        ]]>
+    </entry>
+    <!-- add by liaochao 2016/01/14 end-->
+
+
+    <!-- 查询一个客户跟一个房屋现有的关系-->
+    <entry key="sql.query.houseRelation">
+        <![CDATA[
+		select relationType from mid_customer_house
+		where
+		1=1
+		and houseId =#houseId#
+		and customerId=#customerId#
+	    ]]>
+    </entry>
+
+    <!-- 查询客户信息，根据客户编码、车位编码、房屋编码(营帐)-->
+    <entry key="sql.query.Customer">
+        SELECT
+        mc.id,
+        mc.code,
+        mc.firstName,
+        mc.lastName,
+        mc.fullName,
+        mc.sex,
+        mc.customerType,
+        mc.mainMobile,
+        mc.standbyMobile,
+        mc.homeTel,
+        mc.officeTel,
+        mc.affiliation,
+        mc.certificateType,
+        mc.certificateId,
+        mc.isDeleted,
+        mcd.postCode,
+        mcd.email,
+        mcd.qq,
+        mcd.weChat,
+        mcd.birthday,
+        mcd.blood,
+        mcd.occupation,
+        mcd.registerAddr,
+        mcd.contactAddr,
+        mcd.company,
+        mcd.companyAddr,
+        mcd.urgencyContacts,
+        mcd.urgencyPhoneNumber,
+        mcd.urgencyMobileNumber,
+        mcd.remark
+        FROM
+        main_customer mc
+        LEFT JOIN main_customer_detail mcd ON mc.id = mcd.id
+        {?
+        INNER JOIN mid_carport_customer cc ON mc.id = cc.customerId
+        INNER JOIN main_carport c ON cc.carportId = c.id 
+        AND c.code in ($carportCodes$)
+        }
+        {?
+        INNER JOIN mid_customer_house ch ON mc.id = ch.customerId
+        INNER JOIN main_house h ON ch.houseId = h.id 
+        AND h.code in ($houseCodes$)
+        }
+        WHERE 1=1
+        <![CDATA[
+		{? AND mc.code = #customerCode# }
+		{? AND mc.modifyTime >=  #modifyTime# }
+	    {? AND mc.modifyTime <=  #timestamp# }
+		]]>
+    </entry>
+
+    <!-- 查询客房关系 -->
+    <entry key="sql.query.customer.house.relation">
+        <![CDATA[
+			SELECT 
+			  ch.houseId,
+			  h.code AS houseCode,
+			  ch.customerId,
+			  c.code AS customerCode,
+			  ch.relationType,
+			  ch.isDeleted,
+			  h.name AS houseName,
+			  h.status
+			FROM
+			  mid_customer_house ch
+			  LEFT JOIN main_house h ON ch.houseId = h.id
+			  LEFT JOIN main_customer c ON ch.customerId = c.id
+			  {?
+			  	INNER main_project p ON h.projectId = p.id
+  				AND p.code=#projectCode#
+			  }
+			WHERE 1=1 
+			AND (BIT_LENGTH(h.code)>0)
+	        {? AND ch.customerId=#customerId#}
+	        {? AND c.code=#customerCode#}
+	        {? AND ch.houseId=#houseId#}
+	        {? AND h.code=#houseCode#}
+	        {? AND h.modifyTime >=  #modifyTime# }
+	        {? AND h.modifyTime <=  #timestamp# }
+	    ]]>
+    </entry>
+
+    <!-- 查询客车关系 -->
+    <entry key="sql.query.customer.carport.relation">
+        <![CDATA[
+			SELECT 
+			  cc.carportId,
+			  mc.code AS carportCode,
+			  cc.customerId,
+			  c.code AS customerCode,
+			  cc.relationType,
+			  cc.isDeleted,
+			  mc.name AS houseName,
+			  mc.status,
+			  mc.carparkId,
+  			  mc.lotcode
+			FROM
+			  mid_carport_customer cc 
+			  LEFT JOIN main_carport mc ON cc.carportId = mc.id 
+			  LEFT JOIN main_customer c ON cc.customerId = c.id 
+			  {?
+			  INNER JOIN main_project p ON mc.projectId = p.id 
+  			  AND p.code=#projectCode#
+			  }
+			WHERE 1=1
+	        {? AND cc.customerId=#customerId#}
+	        {? AND c.code=#customerCode#}
+	        {? AND cc.carportId=#carportId#}
+	        {? AND mc.code=#carportCode#}
+	        {? AND mc.modifyTime >=  #modifyTime# }
+	        {? AND mc.modifyTime <=  #timestamp# }
+	    ]]>
+    </entry>
+
+    <!-- 插入过户日志信息 -->
+    <entry key="sql.insert.transfer.log">
+        <![CDATA[
+            INSERT INTO `log_ownership_transfer`
+            (id,`houseId`, `exOwnerId`, `curOwnerid`,`creator`, `creatorId`, `createTime`)
+            VALUES (null,#houseId#,
+            #exOwnerId#,#curOwnerid#,#creator#, #creatorId#, now())
+        ]]>
+
+    </entry>
+</properties>

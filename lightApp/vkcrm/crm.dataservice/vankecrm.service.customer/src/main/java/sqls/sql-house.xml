@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>房屋车位信息sql</comment>
+    <entry key="customer.commom.getHouseIdByCode">
+    <![CDATA[
+    	-- 通过房屋CODE查询房屋ID
+		select h.id from main_house h where h.code = #houseCode# and h.isDeleted = 0
+    ]]>
+    </entry>
+    <entry key="customer.commom.getCarportIdByCode">
+    <![CDATA[
+    	-- 通过车位CODE查询车位ID
+		select h.id from main_carport h where h.code = #carportCode# and h.isDeleted = 0
+    ]]>
+    </entry>
+    <entry key="customer.commom.getProjectIdByCode">
+    <![CDATA[
+    	-- 通过项目CODE查询项目ID
+		select h.id from main_project h where h.code = #projectCode# and h.isDeleted = 0
+    ]]>
+    </entry>
+</properties>

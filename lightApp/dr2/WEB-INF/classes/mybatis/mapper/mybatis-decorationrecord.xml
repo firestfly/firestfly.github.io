@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vankeservice.dao.DecorationRecordDao">
+
+    <sql id="column_list">
+        id,remarks,version,serial_number AS serialNumber,effect_date AS effectDate,customer_name AS customerName,house_name AS houseName,autograph_date AS autographDate,mobile_phone AS mobilePhone,decoration_name AS decorationName,decoration_unit AS decorationUnit,decoration_phone AS decorationPhone,begin_date AS beginDate,end_date AS endDate,delay_record AS delayRecord,service_center AS serviceCenter,construction_unit AS constructionUnit,decoration_content AS decorationContent,is_print AS isPrint,referrals
+    </sql>
+
+    <sql id="table_name">decoration_record</sql>
+
+    <select id="get" parameterType="String" resultType="com.vankeservice.model.DecorationRecord" useCache="true">
+        SELECT
+        <include refid="column_list"/>
+        FROM
+        <include refid="table_name"/>
+        WHERE serial_number = '${id}'
+    </select>
+
+    <select id="page" resultType="com.vankeservice.model.DecorationRecord" useCache="true">
+        SELECT
+        <include refid="column_list"/>
+        FROM
+        <include refid="table_name"/>
+        <where>
+            <if test="bean != null">
+                <if test="bean.customerName != null and bean.customerName.length() &gt; 0">
+                    AND customer_name LIKE CONCAT(CONCAT('%','${bean.customerName}'),'%') ESCAPE '/'
+                </if>
+            </if>
+            <if test="bean != null">
+                <if test="bean.houseName != null and bean.houseName.length() &gt; 0">
+                    AND house_name LIKE CONCAT(CONCAT('%','${bean.houseName}'),'%') ESCAPE '/'
+                </if>
+            </if>
+            <if test="bean != null">
+                <if test="bean.mobilePhone != null and bean.mobilePhone.length() &gt; 0">
+                    AND mobile_phone LIKE CONCAT(CONCAT('%','${bean.mobilePhone}'),'%') ESCAPE '/'
+                </if>
+            </if>
+            <if test="bean != null">
+                <if test="bean.serialNumber != null and bean.serialNumber.length() &gt; 0">
+                    AND id LIKE CONCAT(CONCAT('%','${bean.serialNumber}'),'%') ESCAPE '/'
+                </if>
+            </if>
+            <if test="bean != null">
+                <if test="bean.createBy != null and bean.createBy.length() &gt; 0">
+                    AND create_by = '${bean.createBy}'
+                </if>
+            </if>
+        </where>
+        ORDER BY ${sort} ${order}
+        LIMIT ${offset},${size}
+    </select>
+
+
+    <select id="count" resultType="Integer" useCache="true">
+        SELECT count(1) FROM
+        <include refid="table_name"/>
+        <where>
+            <if test="bean != null">
+                <if test="bean.customerName != null and bean.customerName.length() &gt; 0">
+                    AND customer_name LIKE CONCAT(CONCAT('%','${bean.customerName}'),'%') ESCAPE '/'
+                </if>
+            </if>
+            <if test="bean != null">
+                <if test="bean.houseName != null and bean.houseName.length() &gt; 0">
+                    AND house_name LIKE CONCAT(CONCAT('%','${bean.houseName}'),'%') ESCAPE '/'
+                </if>
+            </if>
+            <if test="bean != null">
+                <if test="bean.mobilePhone != null and bean.mobilePhone.length() &gt; 0">
+                    AND mobile_phone LIKE CONCAT(CONCAT('%','${bean.mobilePhone}'),'%') ESCAPE '/'
+                </if>
+            </if>
+            <if test="bean != null">
+                <if test="bean.serialNumber != null and bean.serialNumber.length() &gt; 0">
+                    AND id LIKE CONCAT(CONCAT('%','${bean.serialNumber}'),'%') ESCAPE '/'
+                </if>
+            </if>
+            <if test="bean != null">
+                <if test="bean.createBy != null and bean.createBy.length() &gt; 0">
+                    AND create_by = '${bean.createBy}'
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.vankeservice.model.DecorationRecord" useGeneratedKeys="true" keyProperty="id"
+            keyColumn="id" flushCache="true">
+        INSERT INTO
+        <include refid="table_name"/>
+        (id,
+        serial_number,
+        version,
+        effect_date,
+        customer_name,
+        house_name,
+        autograph_date,
+        mobile_phone,
+        decoration_name,
+        decoration_unit,
+        decoration_phone,
+        begin_date,
+        end_date,
+        delay_record,
+        service_center,
+        construction_unit,
+        decoration_content,
+        is_print,
+        referrals,
+        create_by,
+        create_date,
+        description,
+        remarks)
+        VALUES (
+        #{id,jdbcType=INTEGER},
+        (SELECT CONCAT('DR',LEFT(REPLACE(UUID(),'-',''),6))),
+        #{version,jdbcType=VARCHAR},
+        #{effectDate,jdbcType=TIMESTAMP},
+        #{customerName,jdbcType=VARCHAR},
+        #{houseName,jdbcType=VARCHAR},
+        #{autographDate,jdbcType=TIMESTAMP},
+        #{mobilePhone,jdbcType=VARCHAR},
+        #{decorationName,jdbcType=VARCHAR},
+        #{decorationUnit,jdbcType=VARCHAR},
+        #{decorationPhone,jdbcType=VARCHAR},
+        #{beginDate,jdbcType=TIMESTAMP},
+        #{endDate,jdbcType=TIMESTAMP},
+        #{delayRecord,jdbcType=VARCHAR},
+        #{serviceCenter,jdbcType=VARCHAR},
+        #{constructionUnit,jdbcType=VARCHAR},
+        #{decorationContent,jdbcType=VARCHAR},
+        #{isPrint,jdbcType=BIT},
+        #{referrals,jdbcType=VARCHAR},
+        #{createBy,jdbcType=VARCHAR},
+        NOW(),
+        #{description,jdbcType=VARCHAR},
+        #{remarks,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="com.vankeservice.model.DecorationRecord" flushCache="true" keyColumn="id"
+            keyProperty="id">
+        UPDATE
+        <include refid="table_name"/>
+        SET
+        <if test="effectDate != null">
+            effect_date = #{effectDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="houseName != null and houseName.length() &gt; 0">
+            house_name = #{houseName,jdbcType=VARCHAR},
+        </if>
+        <if test="customerName != null and customerName.length() &gt; 0">
+            customer_name = #{customerName,jdbcType=VARCHAR},
+        </if>
+        <if test="autographDate != null">
+            autograph_date = #{autographDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="mobilePhone != null and mobilePhone.length() &gt; 0">
+            mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+        </if>
+        <if test="decorationName != null and decorationName.length() &gt; 0">
+            decoration_name = #{decorationName,jdbcType=VARCHAR},
+        </if>
+        <if test="decorationPhone != null and decorationPhone.length() &gt; 0">
+            decoration_phone = #{decorationPhone,jdbcType=VARCHAR},
+        </if>
+        <if test="beginDate != null">
+            begin_date = #{beginDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="endDate != null">
+            end_date = #{endDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="delayRecord != null and delayRecord.length() &gt; 0">
+            delay_record = #{delayRecord,jdbcType=VARCHAR},
+        </if>
+        <if test="serviceCenter != null and serviceCenter.length() &gt; 0">
+            service_center = #{serviceCenter,jdbcType=VARCHAR},
+        </if>
+        <if test="constructionUnit != null and constructionUnit.length() &gt; 0">
+            construction_unit = #{constructionUnit,jdbcType=VARCHAR},
+        </if>
+        <if test="decorationContent != null and decorationContent.length() &gt; 0">
+            decoration_content = #{decorationContent,jdbcType=VARCHAR},
+        </if>
+        <if test="isPrint != null">
+            is_print = #{isPrint,jdbcType=VARCHAR},
+        </if>
+        <if test="referrals != null and referrals.length() &gt; 0">
+            referrals = #{referrals,jdbcType=VARCHAR},
+        </if>
+        <if test="remarks != null and remarks.length() &gt; 0">
+            remarks = #{remarks,jdbcType=VARCHAR},
+        </if>
+        update_by = #{updateBy,jdbcType=VARCHAR},
+        update_date = NOW()
+        WHERE 1 = 1
+        AND serial_number = #{serialNumber,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="delete" parameterType="String" flushCache="true">
+        DELETE FROM
+        <include refid="table_name"/>
+        WHERE serial_number = #{id,jdbcType=VARCHAR}
+    </delete>
+</mapper>
