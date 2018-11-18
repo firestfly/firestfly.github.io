@@ -1,0 +1,167 @@
+<div class="form-horizontal" ms-controller="taskinput">
+	<div class="task-draft-content task-form">
+		<fieldset>
+			<form id="taskinput_taskform" autocomplete="off">
+				<table class="table table-info task-table">
+					<tr>
+						<th>任务来源</th>
+						<td>
+							<select class="span2" ms-duplex="form.source" data-validator="required" id="taskinput_source">
+								<option ms-repeat="taskSourceOptions" ms-attr-value="el.code" ms-text="el.value"></option>
+							</select>
+							<em class="icf-import errortip"></em>
+						</td>
+						<th>任务优先级</th>
+						<td>
+							<select class="span2" ms-duplex="form.levelType" data-validator="required">
+								<option ms-repeat="taskLevelOptions" ms-attr-value="el.code" ms-text="el.value"></option>
+							</select>
+							<em class="icf-import errortip"></em>
+						</td>
+						<th>上门时间</th>
+						<td>
+							<input type="text" class="span2" readonly="readonly" ms-duplex="form.appointmentStartTime" onfocus="WdatePicker({minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+							<em class="icf-import errortip"></em>
+						</td>
+					</tr>
+					<tr>
+						<th>任务类型</th>
+						<td colspan="5">
+							<input type="text" class="span4" ms-duplex="form.businessTypeFullText" ms-widget="businessType,taskinputBusinessWidget" data-businesstype-onlychild readonly="readonly" data-validator="required{请选择一个匹配的业务类型}">
+							<em class="icf-import errortip"></em>
+						</td>
+					</tr>
+					<tr>
+						<th>描述</th>
+						<td colspan="5">
+							<textarea class="span8" rows="6" ms-duplex-content="form.content" data-validator="required{请详细记录客户的反馈}|length[0~1000]{您输入的字数过多，请将内容精简到1000字以内}"></textarea>
+							<em class="icf-import errortip"></em>
+							<div class="input-tip">温馨提示： <span>描述须在1000字以内的，且只能包含<strong>%+-@：:、，。？！“”（）；《》</strong>及<strong>中英文</strong>字符</span></div>
+						</td>
+					</tr>
+					<tr>
+						<th>项目</th>
+						<td>
+							<input type="text" class="span2" data-target="project" ms-keyup="autoinput" ms-attr-value="form.projectName" autocomplete="off">
+							<input type="hidden" ms-attr-value="form.projectCode" data-validator="required{请正确输入客户所属项目名}">
+							<i class="icf-check co-green" ms-visible="!!form.projectCode"></i>
+							<a class="icf-search" ms-click="eventQueryAuto('project')"></a>
+							<em class="icf-import errortip"></em>
+							<div class="autocomplete" target="project">
+								<div class="autocomplete-box" ms-visible="project_auto.visible">
+									<div class="autocomplete-tip" ms-visible="project_auto.loading">查询中...</div>
+									<div class="autocomplete-tip" ms-visible="!project_auto.loading && project_auto.list.size()==0">查询无数据</div>
+									<ul ms-visible="!project_auto.loading" id="project_auto_list">
+										<li ms-repeat="project_auto.list" ms-data-id="el.id" ms-data-code="el.code" ms-data-text="el.name" ms-text="el.name"></li>
+									</ul>
+								</div>
+							</div>
+						</td>
+						<th>楼栋</th>
+						<td>
+							<input type="text" class="span2" data-target="building" ms-keyup="autoinput" ms-attr-value="form.buildingName" ms-attr-disabled="!form.projectId" autocomplete="off" data-validator="func[vali_buildinginput]">
+							<input type="hidden" ms-attr-value="form.buildingId">
+							<i class="icf-check co-green" ms-visible="form.buildingId||form.buildingCode"></i>
+							<a class="icf-search" ms-visible="!!form.projectId" ms-click="eventQueryAuto('building')"></a>
+							<em class="icf-import errortip"></em>
+							<div class="autocomplete" target="building">
+								<div class="autocomplete-box" ms-visible="building_auto.visible">
+									<div class="autocomplete-tip" ms-visible="building_auto.loading">查询中...</div>
+									<div class="autocomplete-tip" ms-visible="!building_auto.loading && building_auto.list.size()==0">查询无数据</div>
+									<ul ms-visible="!building_auto.loading" id="building_auto_list">
+										<li ms-repeat="building_auto.list" ms-data-id="el.id" ms-data-code="el.code" ms-data-text="el.name" ms-text="el.name"></li>
+									</ul>
+								</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>房屋</th>
+						<td>
+							<input type="text" class="span2" data-target="house" ms-keyup="autoinput" ms-attr-value="form.houseName" ms-attr-disabled="!form.buildingId" autocomplete="off" data-validator="func[vali_houseinput]">
+							<input type="hidden" ms-attr-value="form.houseCode">
+							<i class="icf-check co-green" ms-visible="form.houseId||form.houseCode"></i>
+							<a class="icf-search" ms-visible="!!form.buildingId" ms-click="eventQueryAuto('house')"></a>
+							<span class="label label-info" ms-visible="isout" title="外盘">外盘</span>
+							<em class="icf-import errortip"></em>
+							<div class="autocomplete" target="house">
+								<div class="autocomplete-box" ms-visible="house_auto.visible">
+									<div class="autocomplete-tip" ms-visible="house_auto.loading">查询中...</div>
+									<div class="autocomplete-tip" ms-visible="!house_auto.loading && house_auto.list.size()==0">查询无数据</div>
+									<ul ms-visible="!house_auto.loading" id="house_auto_list">
+										<li ms-repeat="house_auto.list" ms-data-id="el.houseId" ms-data-code="el.houseCode" ms-data-text="el.houseName" ms-data-isout="el.outer" ms-text="el.houseName"></li>
+									</ul>
+								</div>
+							</div>
+						</td>
+						<th></th>
+						<td></td>
+						<th></th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>公告</th>
+						<td colspan="5">
+							<table class="table table-list noticelist" id="index_noticelist">
+								<tr>
+									<th>发布时间</th>
+									<th>公告内容</th>
+									<th>生效时间</th>
+									<th>发布人</th>
+								</tr>
+								<tr ms-repeat="notice.data">
+									<td>
+										<span ms-text="el.publishTime"></span>
+									</td>
+									<td>
+										<a class="n-content ellipsis" ms-data-id="el.id">
+											<span ms-text="el.content"></span>
+										</a>
+									</td>
+									<td><span ms-text="el.takeEffectTime"></span></td>
+									<td><span ms-text="el.projectName"></span> - <span ms-text="el.publisher"></span></td>
+								</tr>
+								<tr ms-if="!notice.isLoading && notice.data.size()==0">
+									<td class="align-center" colspan="4">暂无公告</td>
+								</tr>
+								<tr ms-if="notice.isLoading">
+									<td class="align-center" colspan="4">正在加载...</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							<hr/>
+						</td>
+					</tr>
+					<tr>
+						<th>客户名称</th>
+						<td>
+							<input type="text" class="span2" ms-duplex-name="form.contactsName" data-validator="required{请输入客户名称}">
+							<em class="icf-import errortip"></em>
+						</td>
+						<th>联系电话</th>
+						<td>
+							<input type="text" class="span2" ms-duplex-mobile="form.contactsMobile" data-validator="required|phone{请正确输入客户的联系电话，联系号码为座机时，请添加区号}">
+							<em class="icf-import errortip"></em>
+						</td>
+						<th></th>
+						<td></td>
+					</tr>
+				</table>
+			</form>
+		</fieldset>
+	</div>
+	<div class="cover" ms-class="on:waiting">
+		<span>正在保存...</span>
+	</div>
+	<div class="task-draft-btns">
+		<label class="inline" ms-repeat="taskdealOptions">
+			<input name="index_taskdeal" ms-duplex-string="form.taskdeal" ms-attr-value="el.code" type="radio">
+			<span ms-text="el.value"></span>
+		</label>
+		<a class="btn btn-success" ms-click="submitTask"><span>提交任务</span></a>
+		<a class="btn" ms-click="resetTask">重置</a>
+	</div>
+</div>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>Excel异步导入相关的sql</comment>
+	
+	<entry key="sql-sati-extractionHouse-insert">
+	<![CDATA[ -- 抽取需要调查的房屋
+		insert into sati_extraction_house
+		  (questionnaire_id, project_id, grid_id, house_id)
+		  select #questionnaireId# as questionnaire_id,
+		         p.project_id      as project_id,
+		         ph.gridId         as grid_id,
+		         h.id              as house_id
+		    from sati_extraction_project p, mid_project_house ph, main_house h
+		   where p.questionnaire_id = #questionnaireId#
+		     and p.project_id = ph.projectId
+		     and ph.houseId = h.id
+		     and timestampdiff(month, h.deliverTime, NOW()) >= #deliverTimeLess#
+		     and timestampdiff(year,  h.deliverTime, NOW()) <  #deliverTimeLager#
+		     and h.deliverTime is not NULL
+		     and ifnull(h.isDeleted,0) = 0
+		     and ifnull(h.isVirtual,0) = 0
+	]]>
+	</entry>
+	
+	<entry key="sql-sati-extractionHouse-setContacts">
+	<![CDATA[ -- 抽取房屋常用联系人
+	    UPDATE sati_extraction_house h
+	inner join main_house ch ON h.house_id = ch.id
+	inner join main_customer c on c.id = ch.contactsId
+	 left join main_customer_detail cd ON cd.id = c.id
+	       and (cd.birthday is null -- 客户生日为空，年龄18到65，或生日=1900-01-01；年龄上限65可选
+	            or (timestampdiff(year, cd.birthday, NOW()) >= #customerAgeLess# {?and timestampdiff(year, cd.birthday, NOW()) < #customerAgeLager#} )
+	            or cd.birthday = date_format('1900-01-01', '%Y-%m-%d'))
+	       SET h.contacts_id = c.id
+	     WHERE h.contacts_Id IS NULL
+	       AND h.questionnaire_id = #questionnaireId#
+	]]>
+	</entry>
+	
+	<entry key="sql-sati-extractionHouse-setOwner">
+	<![CDATA[ -- 没有常用联系人随机抽取一个业主
+	    UPDATE sati_extraction_house h
+	INNER JOIN mid_customer_house ch ON h.house_id = ch.houseId
+	       AND ifnull(ch.isDeleted, 0) = 0
+	       AND ch.relationType = 1
+	inner join main_customer c on c.id = ch.customerId
+	 left join main_customer_detail cd ON cd.id = c.id
+	       and (cd.birthday is null -- 客户生日为空，年龄18到65，或生日=1900-01-01；年龄上限65可选
+	            or (timestampdiff(year, cd.birthday, NOW()) >= #customerAgeLess# {?and timestampdiff(year, cd.birthday, NOW()) < #customerAgeLager#} )
+	            or cd.birthday = date_format('1900-01-01', '%Y-%m-%d'))
+	       SET h.contacts_id = ch.customerId
+	     WHERE h.contacts_id IS NULL
+	       AND h.questionnaire_id = #questionnaireId#
+	]]>
+	</entry>
+</properties>

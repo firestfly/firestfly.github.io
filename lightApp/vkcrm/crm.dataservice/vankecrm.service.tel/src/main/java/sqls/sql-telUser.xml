@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>话务人员信息查询</comment>
+
+
+    <!-- 根据话务员编号查询话务员电信工号 -->
+    <entry key="service.telUser.get">
+        <![CDATA[
+			SELECT 	tt.number,
+					(SELECT dts.name FROM dim_telecom_skills dts WHERE dts.id = tt.skillid) AS name,
+					tt.telephonistId 
+			FROM 	tel_telecomno AS tt 
+			WHERE 	tt.telephonistId = #telephonistId#		
+        ]]>
+    </entry>
+
+    <!-- 查询所有电信工号 -->
+    <entry key="service.agents.get">
+        <![CDATA[
+			SELECT 	tt.number,
+					(SELECT dts.name FROM dim_telecom_skills dts WHERE dts.id = tt.skillid) AS name,
+					tt.telephonistId
+			FROM 	tel_telecomno AS tt
+        ]]>
+    </entry>
+
+    <!-- 查询电信工号 -->
+    <entry key="service.agent.get">
+        <![CDATA[
+			SELECT dts.name AS agentName,
+				   dts.id AS agentId
+			 FROM dim_telecom_skills dts
+			 WHERE dts.id = #AgentId#
+        ]]>
+    </entry>
+
+    <!-- 查询话务员相关信息 -->
+    <entry key="service.agent.get.info">
+        <![CDATA[
+			SELECT
+            tt.id,
+            tt.name ,
+            ttc.number ,
+            tg.name AS groupName,
+            ttg.groupId,
+            tg.groupMaster,
+            (SELECT name FROM `tel_telephonist` where id =  tg.groupMaster) AS masterName
+            FROM `tel_telephonist` tt
+            INNER JOIN `tel_telecomno` ttc ON ttc.`telephonistId` = tt.`id`
+            LEFT JOIN `tel_telephonist_group` ttg ON ttg.`telephonistId` = tt.`id`
+            LEFT JOIN `tel_group` tg ON tg.`id` = ttg.`groupId`
+            WHERE 1 = 1
+            AND tg.name IS NOT NULL
+            AND IFNULL(tg.`isDeleted`,0) = 0
+            AND IFNULL(ttg.`isDeleted`,0) = 0
+            AND tg.isConsult = 1
+        ]]>
+    </entry>
+
+    <entry key="service.agent.get.group">
+        <![CDATA[
+			SELECT
+			tg.id ,
+			tg.name ,
+			tg.groupMaster
+			FROM tel_group tg
+			WHERE 1 = 1
+			AND tg.`isConsult` = 1
+			AND IFNULL(tg.`isDeleted`,0) = 0
+        ]]>
+    </entry>
+</properties>

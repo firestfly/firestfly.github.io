@@ -1,0 +1,365 @@
+<div id="tab-taskquery" ms-controller="taskquery" class="height">
+    <div class="cover" style="left:15px;"></div>
+    <div class="w-toolbar" ms-if="processType=='2'">
+        <label class="title">值班经理</label>
+        <ul>
+            <li ms-repeat-el="managers">
+                <i class="icf-service" ms-class-1="online: el.is_working" ms-class-2="offline: !el.is_working"></i>
+                <span class="fixed-width">{{el.fullname}}</span>
+                <a href="#" ms-click="process.call" ms-data-number="el.mobile" ms-data-name="el.fullname"><i class="icf-call"></i>{{el.mobile}}</a>&nbsp;&nbsp;<a href="#" ms-click="message.show" ms-data-number="el.mobile"><i class="icf-msg"></i></a>
+            </li>
+        </ul>
+    </div>
+    <div class="form-horizontal taskquery-content task-form" ms-class="w-toolbar-wrapper : processType=='2'">
+        <fieldset>
+            <table class="table table-info task-table">
+                <tr>
+                    <th>任务编号</th>
+                    <td>
+                        <span ms-text="form.taskNo"></span>
+                    </td>
+                    <th>任务状态</th>
+                    <td colspan="3">
+                        <span ms-text="form.statusText | appTaskStatus"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>任务来源</th>
+                    <td>
+                        <!--<span ms-text="form.sourceText|taskSource"></span>-->
+                        <span ms-text="form.sourceText"></span>
+                    </td>
+                    <th>任务优先级</th>
+                    <td>
+                        <span ms-text="form.levelTypeText|taskLevelType"></span>
+                    </td>
+                    <th>上门时间</th>
+                    <td>
+                        <span ms-text="form.appointmentStartTime"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>任务类型</th>
+                    <td colspan="5">
+                        <span ms-text="form.businessTypeText"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>描述</th>
+                    <td colspan="5">
+                        <textarea class="textarea-describe" cols="60" rows="3" ms-css-height="form.content.length < 200 ? 60 : 120" ms-text="form.content" readonly></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>评价</th>
+                    <td colspan="5">
+                        <span ms-text="form.evaluationText"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>项目名称</th>
+                    <td colspan="5">
+                        <span ms-text="form.projectName"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>联系地址</th>
+                    <td colspan="5">
+                        <span ms-text="form.address"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <hr>
+                    </td>
+                </tr>
+                <tr>
+                    <th>来电号码</th>
+                    <td>
+                        <input type="text" class="span2" ms-attr-value="form.reportUserMobile" readonly>
+                        <a class="icf-call" ms-click="callout" ms-visible="!simpleModel" ms-data-number="form.reportUserMobile" ms-visible="form.reportUserMobile"></a>
+                        <a class="icf-msg" ms-click="message.show" ms-visible="!simpleModel" ms-data-number="form.reportUserMobile" ms-visible="form.reportUserMobile"></a>
+                    </td>
+                    <th>客户名称</th>
+                    <td>
+                        <span ms-text="form.contactsName"></span>
+                    </td>
+                    <th>联系电话</th>
+                    <td>
+                        <input type="text" class="span2" ms-attr-value="form.contactsMobile" readonly>
+                        <a class="icf-call" ms-click="callout" ms-visible="!simpleModel" ms-data-number="form.contactsMobile" ms-visible="form.contactsMobile"></a>
+                        <a class="icf-msg" ms-click="message.show" ms-visible="!simpleModel" ms-data-number="form.contactsMobile" ms-visible="form.contactsMobile"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <hr>
+                    </td>
+                </tr>
+                <tr>
+                    <th>定责详细</th>
+                    <td>
+                        <span ms-text="form.dutytext"></span>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        <fieldset>
+            <legend>图片列表</legend>
+            <ul class="task-imglist">
+                <li ms-repeat="form.imglist">
+                    <img ms-attr-src="el">
+                </li>
+            </ul>
+            <div class="align-center" ms-if="form.imglist.size()==0">
+                暂无图片
+            </div>
+        </fieldset>
+        <fieldset style="margin-bottom: 120px;">
+            <legend>处理流程</legend>
+            <table class="table table-list">
+                <thead>
+                    <tr>
+                        <th style="width:140px;">时间</th>
+                        <th style="width:120px;">创建人</th>
+                        <th style="width:180px;">状态</th>
+                        <th>信息</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ms-repeat="localTimeLine.list">
+                        <td>
+                            <span ms-text="el.logTime"></span>
+                        </td>
+                        <td>
+                            <span ms-text="el.name == 'null' ? '' : el.name"></span>
+                        </td>
+                        <td>
+                            <span ms-text="el.status|appTaskStatus"></span>
+                        </td>
+                        <td>
+                            <span ms-text="el.content == 'null' ? '' : el.content"></span>
+                        </td>
+                    </tr>
+                    <tr ms-visible="localTimeLine.loading">
+                        <td colspan="4" class="align-center">正在加载...</td>
+                    </tr>
+                    <tr ms-visible="localTimeLine.list.size()==0">
+                        <td colspan="4" class="align-center">暂无数据</td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+        <div class="taskquery-btns">
+            <div class="btn-group">
+                <a class="btn" ms-click="refresh">刷新</a>
+                <a class="btn btn-success" ms-visible="!simpleModel" ms-if="supplement.visible" ms-click="supplement.dialog">追加</a>
+                <a class="btn btn-success" ms-visible="simpleModel" ms-if="supplement.visible" id="supplement_dialog">追加</a>
+                <a class="btn btn-success" ms-visible="!simpleModel" ms-if="responsible.visible" ms-click="responsible.dialog">定责</a>
+                <a class="btn btn-success" ms-visible="!simpleModel" ms-if="evaluation.visible" ms-click="evaluation.dialog">评价</a>
+                <a class="btn btn-success" ms-visible="!simpleModel" ms-if="close.visible" ms-click="close.dialog">取消/结束</a>
+                <a class="btn btn-success" ms-visible="!simpleModel" ms-if="cancel.visible" ms-click="cancel.click">取消</a>
+                <a class="btn btn-success" ms-visible="!simpleModel" ms-if="process.visible" ms-click="process.dialog">处理</a>
+            </div>
+        </div>
+        <div ms-visible="isLoading" class="cover">
+            <div class="loading">正在加载任务信息...</div>
+        </div>
+        <div id="taskquery_remarkdialog" class="modal hide" style="top: 30%;">
+            <div class="modal-header">
+                <h5>追加任务</h5>
+            </div>
+            <div class="modal-body form">
+                <form id="taskquery_remarkform">
+                    <div class="control-group">
+                        <label class="control-label">备注：</label>
+
+                        <div class="controls">
+                            <div>
+                                <textarea ms-duplex-content="supplement.remark" data-validator="required{请详细记录客户的反馈}|length[0~500]{您输入的字数过多，请将内容精简到500字以内}" size="500" rows="6"></textarea>
+                            </div>
+                            <em class="icf-import errortip"></em>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ms-visible="simpleModel" id="supplement_submit">提交</button>
+                <button class="btn btn-primary" ms-visible="!simpleModel" ms-click="supplement.submit">提交</button>
+                <button class="btn" ms-click="supplement.close">取消</button>
+            </div>
+        </div>
+        <div id="taskquery_evaluationdialog" class="modal hide" style="top: 30%;">
+            <div class="modal-header">
+                <h5>任务评价</h5>
+            </div>
+            <div class="modal-body form">
+                <table class="table table-info">
+                    <tr>
+                        <th>来电号码:</th>
+                        <td>
+                            <a class="icf-call" ms-click="evaluation.call" ms-data-phone="form.reportUserMobile">
+                                <span ms-text="form.reportUserMobile"></span>
+                            </a>
+                        </td>
+                        <th>联系号码:</th>
+                        <td>
+                            <a class="icf-call" ms-click="evaluation.call" ms-data-phone="form.contactsMobile">
+                                <span ms-text="form.contactsMobile"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>满意度:</th>
+                        <td colspan="3">
+                            <select ms-duplex="evaluation.val0">
+                                <option value="">==请选择==</option>
+                                <option ms-repeat="evaluation.options" ms-attr-value="el.code" ms-attr-title="el.content" ms-text="el.content"></option>
+                            </select>
+                            <select ms-duplex="evaluation.val1">
+                                <option value="">==请选择==</option>
+                                <option ms-repeat="evaluation.suboptions" ms-attr-value="el.code" ms-attr-title="el.content" ms-text="el.content"></option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ms-click="evaluation.submit">提交</button>
+                <button class="btn" ms-click="evaluation.close">取消</button>
+            </div>
+        </div>
+        <div id="taskquery_responsibledialog" class="modal hide" style="top: 30%;">
+            <div class="modal-header">
+                <h5>投诉定责</h5>
+            </div>
+            <div class="modal-body form">
+                <form class="form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label">责任方：</label>
+
+                        <div class="controls">
+                            <select ms-duplex="responsible.value">
+                                <option ms-repeat="responsible.options" ms-text="el.value" ms-attr-value="el.value"></option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ms-click="responsible.submit">提交</button>
+                <button class="btn" ms-click="responsible.close">取消</button>
+            </div>
+        </div>
+        <div id="taskquery_closedialog" class="modal hide" style="top: 30%;">
+            <div class="modal-header">
+                <h5>取消/结束任务</h5>
+            </div>
+            <div class="modal-body form">
+                <form class="form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label">取消/结束原因：</label>
+
+                        <div class="controls">
+                            <select ms-duplex="close.value">
+                                <option value="">==请选择==</option>
+                                <option ms-repeat="close.options" ms-text="el.value" ms-attr-value="el.value"></option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ms-click="close.submit">提交</button>
+                <button class="btn" ms-click="close.close">取消</button>
+            </div>
+        </div>
+        <div id="taskquery_businessdialog" class="modal hide" style="top: 30%;">
+            <div class="modal-header">
+                <h5>处理 - 任务类型</h5>
+            </div>
+            <div class="modal-body form">
+                <form class="form-horizontal">
+                    <div class="control-group" style="height: 200px;">
+                        <label class="control-label">任务类型：</label>
+
+                        <div class="controls">
+                            <input type="text" class="span4" ms-duplex="process.businesstype" ms-widget="businessType,taskqueryBusinessWidget" data-businesstype-onlychild readonly="readonly">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ms-click="process.businessSubmit">提交</button>
+                <button class="btn" ms-click="process.close">取消</button>
+            </div>
+        </div>
+        <div id="taskquery_calldialog" class="modal hide" style="top: 30%;">
+            <div class="modal-header">
+                <h5>处理 - 指派</h5>
+            </div>
+            <div class="modal-body form">
+                <form id="taskquery_callform" class="form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label">备注：</label>
+                        <div class="controls">
+                            <div>
+                                <textarea ms-duplex-content="process.remark" data-validator="required{请详细记录客户的反馈}|length[0~1000]{您输入的字数过多，请将内容精简到1000字以内}" size="1000" rows="6"></textarea>
+                            </div>
+                            <em class="icf-import errortip"></em>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ms-click="process.remarkSubmit">提交</button>
+                <button class="btn" ms-click="process.close">取消</button>
+            </div>
+        </div>
+        <div id="taskquery_msgdialog" class="modal hide" style="top: 30%;">
+            <div class="modal-header">
+                <h5>发送短信</h5>
+            </div>
+            <div class="modal-body form" style="min-height:220px;">
+                <form id="taskquery_msgform">
+                    <table class="table table-info">
+                        <tr>
+                            <th>电话号码</th>
+                            <td>
+                                <span ms-text="message.number"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>短息模板</th>
+                            <td>
+                                <input id="taskquery_msginput" type="text" ms-attr-value="message.name" autocomplete="off" ms-keyup="message.search">
+                                <a class="icf-search" ms-click="message.searchClick"></a>
+                                <div class="autocomplete">
+                                    <div class="autocomplete-box" style="width:218px;" ms-visible="message.visible">
+                                        <div class="autocomplete-tip" ms-visible="message.loading">查询中...</div>
+                                        <div class="autocomplete-tip" ms-visible="!message.loading && message.list.size()==0">查询无数据
+                                        </div>
+                                        <ul ms-visible="!message.loading" id="taskquery_msgtemplist">
+                                            <li ms-repeat="message.list" ms-data-id="el.id" ms-text="el.name"></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>短信内容</th>
+                            <td>
+                                <div id="taskquery_msgtemplate"></div>
+                                <em class="icf-import errortip"></em>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ms-click="message.send">发送</button>
+                <button class="btn" ms-click="message.close">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

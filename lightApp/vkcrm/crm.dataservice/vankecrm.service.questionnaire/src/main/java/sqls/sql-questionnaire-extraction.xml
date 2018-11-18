@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>客户抽取 sql文件</comment>
+    
+	<!--<entry key="sql.questionnaire.extraction.getAppointment">-->
+	<!--<![CDATA[-->
+		<!--&#45;&#45; 查询预约客户-->
+		<!--SELECT *-->
+		  <!--FROM sati_result_subscribe qz-->
+		 <!--WHERE qz.appointment_time IS NOT NULL-->
+		   <!--AND NOW() > qz.appointment_time-->
+		   <!--AND qz.status = 0-->
+		   <!--AND qz.telephonist_id IS NULL-->
+		   <!--AND qz.questionnaire_id = ? LIMIT 1-->
+	<!--]]>-->
+	<!--</entry>-->
+	<!---->
+	<!---->
+	<!--<entry key="sql.questionnaire.extraction.compulsion.getCustomer">-->
+	<!--<![CDATA[-->
+		<!--&#45;&#45; 查询强制抽取客户-->
+		<!--SELECT *-->
+		  <!--FROM sati_result_subscribe qz-->
+		 <!--WHERE qz.appointment_time IS NULL-->
+		   <!--AND qz.status = 0-->
+		   <!--AND qz.telephonist_id IS NULL-->
+		   <!--AND qz.questionnaire_id = ? LIMIT 1-->
+	<!--]]>-->
+	<!--</entry>-->
+	<!---->
+	<!--<entry key="sql.questionnaire.extraction.updateCustomerStatus">-->
+	<!--<![CDATA[-->
+		<!--&#45;&#45; 修改预约或强制抽取客户状态，修改不成功则可能被其它话务员抽取了-->
+		<!--UPDATE sati_result_subscribe qz-->
+		<!--SET qz.status = 1-->
+		   <!--,qz.telephonist_id = ?-->
+		   <!--,qz.updated_at = NOW()-->
+		<!--WHERE qz.id = ?-->
+		<!--1 = 1-->
+		<!--AND qz.status = 0-->
+	<!--]]>-->
+	<!--</entry>-->
+
+	<!-- 插入预约客户 -->
+	<entry key="sql.questionnaire.extraction.appointment.customer.insert">
+		<![CDATA[
+		INSERT INTO sati_result_subscribe(
+		questionnaire_id,
+		project_id,
+		grid_id,
+		house_id,
+		customer_id,
+		appointment_time,
+		status,
+		telephonist_id,
+		updated_at
+		) VALUES(
+		#questionnaireId#,
+		#projectId#,
+		(SELECT gridId from mid_project_house WHERE 1 = 1 AND houseId = #houseId# LIMIT 1),
+		#houseId#,
+		#customerId#,
+		#appointmentTime#,
+		#status#,
+		#telephonistId#,
+		NOW()
+		);
+		]]>
+	</entry>
+
+	<!-- 更新预约客户 -->
+	<entry key="sql.questionnaire.extraction.appointment.customer.update">
+		<![CDATA[
+		UPDATE sati_result_subscribe qz
+		SET qz.status = 1
+		   ,qz.telephonist_id = #userId#
+		   ,qz.updated_at = DATE_FORMAT(#formatDate#, '%Y-%m-%d %T')
+		WHERE
+		1 = 1
+		AND qz.status = 0
+		AND DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') = DATE_FORMAT(qz.appointment_time, '%Y-%m-%d %H:%i')
+		LIMIT 1
+		]]>
+	</entry>
+
+	<!-- 抽取预约客户 -->
+	<entry key="sql.questionnaire.extraction.appointment.customer.get">
+		<![CDATA[
+		 SELECT *
+		  FROM sati_result_subscribe qz
+		 WHERE
+		 1 = 1
+		   AND DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') = DATE_FORMAT(qz.appointment_time, '%Y-%m-%d %H:%i')
+		   AND qz.status = 1
+		   AND qz.telephonist_id = #userId#
+		   AND DATE_FORMAT(qz.updated_at, '%Y-%m-%d %T') = #formatDate#
+		   AND qz.questionnaire_id = #questionnaireId#
+		]]>
+	</entry>
+
+	<!-- 更新强制抽取客户 -->
+	<entry key="sql.questionnaire.extraction.compulsion.customer.update">
+		<![CDATA[
+		UPDATE sati_result_subscribe qz
+		SET qz.status = 1
+		   ,qz.telephonist_id = #userId#
+		   ,qz.updated_at = DATE_FORMAT(#formatDate#, '%Y-%m-%d %T')
+		WHERE
+		1 = 1
+		AND qz.status = 0
+		AND qz.appointment_time IS NULL
+		LIMIT 1
+		]]>
+	</entry>
+
+	<!-- 抽取强制抽取客户 -->
+	<entry key="sql.questionnaire.extraction.compulsion.customer.get">
+		<![CDATA[
+		SELECT *
+		  FROM sati_result_subscribe qz
+		 WHERE
+		 1 = 1
+		   AND qz.appointment_time IS NULL
+		   AND qz.status = 1
+		   AND qz.telephonist_id = #userId#
+		   AND DATE_FORMAT(qz.updated_at, '%Y-%m-%d %T') = #formatDate#
+		   AND qz.questionnaire_id = #questionnaireId#
+		]]>
+	</entry>
+	
+	
+	<entry key="sql.questionnaire.extraction.lowComplete.getProject">
+	<![CDATA[
+		-- 获取今天完成率最低的项目
+		SELECT
+			*
+		FROM
+			(
+				SELECT
+					p.*
+				FROM
+					sati_result_project p
+				INNER JOIN sati_result_customer c ON p.project_id = c.project_id
+				AND p.grid_id = c.grid_id
+				AND c.STATUS = 0
+				AND p.questionnaire_id = c.questionnaire_id
+			    AND p.record_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+				WHERE
+					p.questionnaire_id = ?
+				AND p.grid_id IS NOT NULL
+				AND p.target_today > p.complete_today
+			) t
+		ORDER BY t.complete_today / t.target_today
+		LIMIT 1
+	]]>
+	</entry>
+		
+	<entry key="sql.questionnaire.extraction.project.get">
+	<![CDATA[
+		-- 查询项目信息
+		SELECT
+		  qz.id,
+		  qz.record_date,
+		  qz.questionnaire_id,
+		  qz.project_id,
+		  qz.grid_id,
+		  qz.total,
+		  qz.target_total,
+		  qz.complete_total,
+		  qz.target_today,
+		  qz.target_today_original,
+		  qz.complete_today,
+		  (SELECT (ifnull(y.target_today,0) - ifnull(y.complete_today,0))
+		  FROM sati_result_project y
+		  WHERE 1 = 1
+		  AND y.questionnaire_id = qz.questionnaire_id
+		  AND y.project_id = qz.project_id
+		  AND y.grid_id = qz.grid_id
+		  AND y.record_date = DATE_SUB(qz.record_date,interval 1 day)) as yesterday_total
+		  FROM sati_result_project qz
+		 WHERE 1 = 1
+		   AND qz.questionnaire_id = ?
+		   AND qz.project_id = ?
+		   AND qz.grid_id = ?
+		   AND qz.record_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+	]]>
+	</entry>
+	
+	
+	<entry key="sql.questionnaire.extraction.project.updateComplete">
+	<![CDATA[
+		-- 预扣项目调查额度
+		 UPDATE sati_result_project p
+		   SET p.complete_today = p.complete_today + 1
+		 WHERE p.complete_today < p.target_today
+		   AND p.id = ?
+		   AND p.project_id = ?
+		   AND p.grid_id = ?
+		   AND p.questionnaire_id = ?
+	]]>
+	</entry>
+	
+	<entry key="sql.questionnaire.extraction.project.count">
+	<![CDATA[
+		-- 查询客户样本数量
+		SELECT count(*) AS count
+		  FROM sati_result_customer t
+		 WHERE t.status = 0
+		   AND t.project_id = ?
+		   AND t.questionnaire_id = ?
+	]]>
+	</entry>
+	
+	<entry key="sql.questionnaire.extraction.stochastic.customer.get">
+	<![CDATA[
+		-- 随机抽取客户
+		 SELECT *
+	     FROM sati_result_customer t
+		 WHERE
+     	 1 = 1
+     	 AND t.status = 1
+		 AND t.project_id = #projectId#
+		 AND t.grid_id = #gridId#
+		 AND t.questionnaire_id = #questionnaireId#
+		 AND t.telephonist_id = #userId#
+		 AND DATE_FORMAT(t.updated_at, '%Y-%m-%d %T') = #formatDate#
+		 LIMIT 1
+	]]>
+	</entry>
+	
+	<entry key="sql.questionnaire.extraction.stochastic.customer.update">
+	<![CDATA[
+		-- 预扣客户额度
+		UPDATE sati_result_customer t
+		SET t.status = 1
+		   ,t.telephonist_id = #userId#
+		   ,t.updated_at = DATE_FORMAT(#formatDate#, '%Y-%m-%d %T')
+		WHERE 1 = 1
+		AND t.project_id = #projectId#
+		AND t.grid_id = #gridId#
+		AND t.questionnaire_id = #questionnaireId#
+		AND t.status = 0
+		LIMIT 1
+	]]>
+	</entry>
+	
+	<entry key="sql.questionnaire.extraction.customer.getCustomer">
+	<![CDATA[
+		-- 获取客户信息
+		SELECT p.id            AS projectId,
+		       p.name          AS projectName,
+		       p.code          AS projectCode,
+		       h.id            AS houseId,
+		       h.name          AS houseName,
+		       h.code          AS houseCode,
+		       c.id            AS customerId,
+		       c.fullName      AS customerName,
+		       c.mainMobile,
+		       c.standbyMobile,
+		       c.homeTel,
+		       c.officeTel,
+		       c.sex
+		  FROM main_project p,main_house h,main_customer c
+		 WHERE p.id = ?
+		   AND h.id = ?
+		   AND c.id = ?
+	]]>
+	</entry>
+
+
+	<entry key="sql.questionnaire.extraction.customer.getSubscribeCustomerCount">
+	<![CDATA[ -- 获取项目往后5天预约量
+		SELECT timestampdiff(day,
+		                     DATE_ADD(NOW(), INTERVAL - 1 DAY),
+		                     DATE_FORMAT(b.subscribe_time, '%Y-%m-%d')) AS subscribe_time,
+		       count(1) AS count
+		  FROM biz_subscribe_customer b
+		 WHERE b.questionnaire_id = ?
+		   AND b.project_id = ?
+		   AND b.subscribe_time >
+		       DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 1 DAY), '%Y-%m-%d')
+		   AND b.subscribe_time <
+		       DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 6 DAY), '%Y-%m-%d')
+		 GROUP BY DATE_FORMAT(b.subscribe_time, '%Y-%m-%d')
+		 ORDER BY DATE_FORMAT(b.subscribe_time, '%Y-%m-%d')
+	]]>
+	</entry>
+
+
+	<entry key="sql.questionnaire.extraction.customer.getAnomalousTags">
+	<![CDATA[ -- 查询号码异常信息
+		SELECT *
+		  FROM dim_anomalous_tags t
+		 WHERE t.customer_id = ?
+		   AND t.tag_category = 1
+		   AND t.deleted = 0
+		 ORDER BY t.ctime desc
+	]]>
+	</entry>
+
+
+	<entry key="sql.questionnaire.extraction.deductionTodayCompleteCount">
+	<![CDATA[ -- 扣减今天完成数：满意度调查不成功时需要扣减今天的完成数
+		UPDATE sati_result_project p
+		   SET p.complete_today = p.complete_today - 1
+		WHERE p.project_id IN (SELECT s.project_id
+		                          FROM sati_result_subscribe s
+		                         WHERE s.customer_id = #customerId#
+		                        UNION ALL
+		                        SELECT c.project_id
+		                          FROM sati_result_customer c
+		                         WHERE c.customer_id = #customerId#)
+	]]>
+	</entry>
+
+	<entry key="sql.questionnaire.extraction.deductionTodayCompleteProject">
+		<![CDATA[ -- 扣减今天完成数：满意度调查不成功时需要扣减今天的完成数
+		UPDATE sati_result_project p
+		   SET p.complete_today = IF(p.complete_today = 0, 0, p.complete_today - 1)
+		WHERE
+		1 = 1
+		AND p.project_id = #projectId#
+		AND p.questionnaire_id = #questionnaireId#
+		AND p.grid_id IN (select gridId from mid_project_house where projectId = #projectId# and houseId = #houseId#)
+	]]>
+	</entry>
+
+	<entry key="sql.questionnaire.extraction.projects">
+		<![CDATA[ -- 查询强制抽取,客户池相关项目信息
+		SELECT s.project_id
+		FROM sati_result_subscribe s
+		WHERE s.customer_id = #customerId#
+		UNION ALL
+		SELECT c.project_id
+		FROM sati_result_customer c
+		WHERE c.customer_id = #customerId#
+		]]>
+	</entry>
+
+</properties>

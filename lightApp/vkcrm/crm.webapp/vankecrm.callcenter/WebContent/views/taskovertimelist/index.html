@@ -1,0 +1,75 @@
+<div class="task_layout" ms-controller="taskovertimelist">
+	<!-- search area -->
+	<div class="form_layout">
+		<form action="javascript:void(0)">
+			<fieldset>
+				<table id="task" class="table task-table">
+				<tbody>
+					<tr>
+						<th class="alignMiddle"><label>任务编号:</label></th>
+						<td><input type="text" class="span2" placeholder="请输入任务编号" ms-duplex="form.taskNo" data-duplex-event="change"></td>
+						<th class="alignMiddle"><label>超时类型:</label></th>
+						<td><select ms-duplex="form.type" class="span2">
+							<option value="">全部</option>
+							<option value="1">无类型</option>
+							<option value="2">超时未处理</option>
+						</select></td>
+						<th class="alignMiddle"><label>跟进情况:</label></th>
+						<td><select ms-duplex="form.completed" class="span2">
+							<option value="">全部</option>
+							<option value="0">待跟进</option>
+							<option value="1">已跟进</option>
+						</select></td>
+					</tr>
+					<tr>
+						<th><label>处理人:</label></th>
+						<td><input type="text" class="span2" ms-duplex="form.followName" data-duplex-event="change"></td>
+						<td colspan="4">
+							<div class="notice-forms-btns">
+								<a ms-click="search" class="btn btn-primary btn-small"><span
+										class="icon-search icon-white" ms-click="search"></span><span> 查 询</span></a>
+								<a ms-click="reset" class="btn btn-small"><span
+										class="icon-refresh"></span><span> 重 置</span></a>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+			</fieldset>
+		</form>
+	</div>
+	<div class="operation_btns"></div>
+	<!-- table list area -->
+	<div class="notice-list" id="taskovertimelist">
+		<table class="table table-hover table-bordered align-center">
+			<thead>
+			<tr>
+				<th>获取时间</th>
+				<th>任务编号</th>
+				<th>超时类型</th>
+				<th>处理人</th>
+				<th>跟进情况</th>
+				<th>跟进完成时间</th>
+			</tr>
+			</thead>
+			<tbody>
+				<tr ms-visible="!listloading" ms-repeat="list" ms-visible="!listloading">
+					<td><span ms-text="el.followup_time"></span></td>
+					<td><a ms-data-abtype="el.abnormal_type" ms-data-cmp="el.completed" ms-data-taskno="el.taskNo"><span ms-text="el.taskNo"></span></a></td>
+					<td><span ms-text="el.abnormal_type|taskAbnormalStatus"></span></td>
+					<td><span ms-text="el.followupName"></span></td>
+					<td><span ms-text="el.completed|taskCompleteStatus"></span></td>
+					<td><span ms-text="el.completed_time"></span></td>
+				</tr>
+				<tr>
+					<td colspan="6" ms-visible="listloading">加载中...</td>
+				</tr>
+				<tr>
+					<td colspan="6" ms-visible="!listloading && list.size()==0">暂无数据</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- table list page area -->
+	<div class="pagination" id="taskovertimelist_pager"></div>
+</div>

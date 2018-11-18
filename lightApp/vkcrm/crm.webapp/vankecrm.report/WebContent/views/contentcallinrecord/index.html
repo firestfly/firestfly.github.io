@@ -1,0 +1,100 @@
+<!-- 修改记录报表 - 客户修改记录报表 -->
+<div class="task_layout" ms-controller="callinrecord">
+
+    <!-- navigation area -->
+    <div class="navigation">
+        <ul class="breadcrumb">
+            <li><a>呼叫中心报表</a> <span class="divider">/</span></li>
+            <li class="active">话务清单报表</li>
+        </ul>
+    </div>
+
+    <!-- search area -->
+    <div class="form_layout">
+        <form>
+            <fieldset>
+                <table class="table task-table task">
+                    <tr>
+                        <th>
+                            <label>开始时间:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="Wdate input2" id="callinrecord_starttime" ms-duplex="form.fromTime" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'callinrecord_endtime\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                        </td>
+                        <th>
+                            <label>结束时间:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="Wdate input2" id="callinrecord_endtime" ms-duplex="form.toTime" onclick="WdatePicker({minDate:'#F{$dp.$D(\'callinrecord_starttime\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- function btns area -->
+    <div class="operation_btns">
+        <a class="btn btn-primary" ms-click="search_event"><span class="icon-search icon-white"></span> 查 询 </a>
+        <a class="btn" ms-click="reset_event"><span class="icon-refresh"></span> 重 置 </a>
+        <a class="btn btn-success" ms-click="export_event" href="javascript:void(0)"><span class="icon-download icon-white"></span> 导 出 </a>
+        <iframe id="callinrecord_export" src="" class="hide export-link"></iframe>
+    </div>
+
+    <!-- table list area -->
+    <div id="custable" class="notice-list form-list" style="top:134px">
+        <table style="width: 180%" class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <td>主叫号码</td>
+                    <td>振铃开始时间</td>
+                    <td>通话开始时间</td>
+                    <td>通话类型</td>
+                    <td>挂机时间</td>
+                    <td>挂机方</td>
+                    <td>受理人</td>
+                    <td>采集原因</td>
+                    <td>任务编号</td>
+                    <td>任务创建时间</td>
+                    <td>质检情况</td>
+                    <td>项目</td>
+                    <td>房屋</td>
+                    <td>网格</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ms-repeat="data.list">
+                    <td ms-text="el.callNumber"></td>
+                    <td ms-text="el.callTime"></td>
+                    <td ms-text="el.beginTime"></td>
+                    <td ms-text="el.typeText"></td>
+                    <td ms-text="el.endTime"></td>
+                    <td ms-text="el.hangUp"></td>
+                    <td ms-text="el.telephonist"></td>
+                    <td ms-text="el.reasons"></td>
+                    <td ms-text="el.tasks"></td>
+                    <td ms-text="el.taskCreateTime"></td>
+                    <td ms-text="el.hasCheck"></td>
+                    <td ms-text="el.projectName"></td>
+                    <td ms-text="el.houseName"></td>
+                    <td ms-text="el.grid"></td>
+                </tr>
+                <tr ms-if="!data.loading && data.list.size()==0">
+                    <td colspan="17">暂无数据</td>
+                </tr>
+                <tr ms-if="data.loading">
+                    <td colspan="17">正在加载...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- total area -->
+    <div class="total" style="position: absolute; margin:6px 10px; right: 0; bottom: 0;" ms-if="totalSize>0">
+        共 <b ms-text="totalSize"></b> 条记录
+    </div>
+
+    <!-- table list page area -->
+    <div class="pagination" id="callinrecord_pager" ms-if="data.list.size()>0"></div>
+
+</div>

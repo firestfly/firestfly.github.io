@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	
+	<!-- 查询客户导入信息 -->
+    <entry key="sql.customer.query.notPayCustomer.importLog">
+    <![CDATA[
+		SELECT *
+		  from excel_import_log t
+		 where 1 = 1
+		   {?and t.pid = #PID#} 
+		   {?and t.created_by like CONCAT(CONCAT('%',#CREATED_BY#),'%') ESCAPE '/'} 
+		   {?and t.upload_time > date_format(#TIME_BEGIN#,'%Y-%m-%d')}
+		   {?and t.upload_time < DATE_ADD(date_format(#TIME_END#,'%Y-%m-%d'),Interval 1 day)}
+		   {?and t.import_login_id = #LOGIN_ID#}
+		   {?and t.business_type = #IMPORT_TYPE#}
+		  order by t.upload_time desc
+    ]]>
+    </entry>
+</properties>

@@ -1,0 +1,358 @@
+@charset "UTF-8";
+$headerHeight: 55px;
+$callHeight: 55px;
+$headerLeftWidth: 340px;
+$headerRightWidth: 230px;
+$footerHeight: 0;
+
+.wrap {
+  height: 100%;
+}
+
+.pipe {
+  $pipeHeight: 30px;
+  float: left;
+  margin-top: ($headerHeight - $pipeHeight)/2;
+  border-left: 1px solid #000;
+  display: inline-block;
+  height: $pipeHeight;
+  vertical-align: middle;
+}
+
+.header {
+  // height: $headerHeight;
+  background-color: $coBlue;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+
+  .header-left {
+    position: relative;
+    float: left;
+    width: $headerLeftWidth;
+    height: $headerHeight;
+    border-right: 1px solid $coBlueGray;
+  }
+  .header-right {
+    float: right;
+    text-align: right;
+    position: relative;
+    width: $headerRightWidth;
+    border-left: 1px solid $coBlueGray;
+    line-height: $headerHeight;
+    height: $headerHeight;
+    background-color: $coDeepBlue;
+  }
+  .header-center {
+    position: relative;
+    margin-left: $headerLeftWidth+1;
+    margin-right: $headerRightWidth+1;
+    height: $headerHeight;
+    line-height: $headerHeight;
+  }
+  .pipe {
+    border-color: $coBlueGray;
+  }
+}
+
+.logo {
+  color: #FFF;
+  height: $headerHeight;
+  line-height: $headerHeight - 5;
+  text-align: center;
+  background-color: $coDeepBlue;
+  $imgHeight: 36px;
+
+  img {
+    vertical-align: middle;
+  }
+  em {
+    display: inline-block;
+    height: $imgHeight;
+    border-left: 1px solid $coBlueGray;
+    vertical-align: middle;
+    margin: 0 20px;
+  }
+  h1 {
+    display: inline-block;
+    font-size: 20px;
+    vertical-align: middle;
+    height: $imgHeight;
+    line-height: $imgHeight;
+    margin: 0;
+  }
+}
+
+.header-box {
+  display: none;
+  position: absolute;
+  width: 160px;
+  background-color: #494949;
+  text-align: left;
+  right: 48px;
+  top: $headerHeight;
+  z-index: 2;
+
+  &.on {
+    display: block;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    &:first-child {
+      span {
+        border-top: none;
+      }
+    }
+    &:last-child {
+      span {
+        border-bottom: none;
+      }
+    }
+  }
+  span {
+    padding-left: 18px;
+    display: block;
+    line-height: 40px;
+    border-bottom: 1px solid #313131;
+    border-top: 1px solid #606060;
+    color: #b7b7a9;
+  }
+}
+
+.header-btns {
+  padding-left: 10px;
+  padding-right: 5px;
+  font-size: $fontSize;
+
+  .btn {
+    position: relative;
+    background-color: transparent;
+    border: none;
+    color: #FFF;
+
+    &.on {
+      background-color: $coDeepBlue;
+    }
+    em {
+      position: absolute;
+      top: -8px;
+      right: -18px;
+      z-index: 1;
+    }
+  }
+  .badge-num {
+    background-color: #E64236;
+  }
+  .h-btn {
+    color: #FFF;
+    float: left;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0 8px;
+    height: $headerHeight;
+
+    &:hover {
+      color: #FFF;
+    }
+    i {
+      font-size: 22px;
+    }
+  }
+  .header-user {
+    padding-left: 20px;
+    width: 98px;
+    text-align: left;
+
+    i {
+      display: inline-block;
+      vertical-align: top;
+      width: 20px;
+      margin-left: -20px;
+    }
+    span {
+      display: inline-block;
+      width: 98px;
+      text-align: center;
+      @include ellipsis;
+    }
+  }
+}
+
+.callctrl {
+  height: $callHeight;
+  width: 100%;
+  position: fixed;
+  background-color: $coGray;
+  border-bottom: 1px solid $coDeepGray;
+  $callCtrlWidth: 340px;
+  $stateWidth: 66px;
+  $phoneWidth: 140px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  .pipe {
+    border-color: $coDeepGray;
+  }
+  .callctrl-info {
+    float: left;
+    width: $callCtrlWidth;
+  }
+  .callctrl-state {
+    font-size: 40px;
+    width: $stateWidth;
+    line-height: $callHeight;
+    float: left;
+    text-align: right;
+  }
+  .callctrl-phone {
+    float: left;
+    width: $phoneWidth;
+    padding-top: 10px;
+    text-align: center;
+
+    span {
+      display: block;
+    }
+    .callctrl-number {
+      font-size: 16px;
+    }
+    .callctrl-address {
+      font-size: 14px;
+    }
+  }
+  .callctrl-time {
+    margin-left: $stateWidth + $phoneWidth;
+    line-height: $callHeight;
+    text-align: center;
+    font-size: 16px;
+  }
+  .callctrl-btns {
+    font-size: 16px;
+    line-height: $callHeight;
+    text-align: right;
+    padding-right: 20px;
+
+    input {
+      margin-bottom: 0;
+    }
+    & > .btn {
+      position: relative;
+      color: $fontColorLight;
+      padding: 0;
+
+      & > span {
+        display: inline-block;
+        padding: 4px 7px;
+      }
+    }
+    margin-left: $callCtrlWidth;
+  }
+  .active {
+    .callctrl-state {
+      color: $coGreen;
+    }
+    .callctrl-number {
+      color: $coGreen;
+    }
+    .callctrl-time {
+      span {
+        color: $coPinkRed;
+      }
+    }
+  }
+}
+
+.c-tipbox {
+  display: none;
+  position: absolute;
+  $spanWidth: 56px;
+  $arrowWidth: 10px;
+  top: 40px;
+  text-align: left;
+  background-color: $coBlue;
+  color: #FFF;
+  z-index: 200;
+
+  &:before {
+    content: "";
+    display: block;
+    width: 0;
+    margin-top: -2*$arrowWidth;
+    margin-left: auto;
+    margin-right: auto;
+    border: $arrowWidth solid transparent;
+    border-bottom-color: $coBlue;
+  }
+  .c-tipbox-content {
+    cursor: auto;
+    padding: 10px;
+  }
+  &.cbtns-list {
+    $width: 120px;
+    width: $width;
+    left: -($width - $spanWidth)/2;
+
+    ul {
+      list-style: none;
+      color: #FFF;
+      margin: 0;
+      padding: 0;
+    }
+    li {
+      line-height: 36px;
+    }
+  }
+  &.cbtns-phonenumber {
+    $width: 220px;
+    width: $width;
+    // left: -($width - $spanWidth)/2;
+    right: 0;
+
+    &:before {
+      margin-right: 25px;
+    }
+  }
+  &.cbtns-login {
+    $width: 210px;
+    width: $width;
+    left: -($width - $spanWidth)/2;
+  }
+  a {
+    color: #FFF;
+    padding: 0 10px;
+    display: block;
+
+    i {
+      color: #FFF;
+    }
+    &:hover {
+      background-color: #56A7F3;
+    }
+  }
+  em {
+    margin-right: 4px;
+  }
+}
+
+.content {
+  height: 100%;
+  padding-top: $headerHeight + $callHeight;
+  box-sizing: border-box;
+  padding-bottom: $footerHeight;
+  position: relative;
+}
+
+.content2 {
+  height: 100%;
+  padding-top: $headerHeight;
+  box-sizing: border-box;
+  padding-bottom: $footerHeight;
+  position: relative;
+}

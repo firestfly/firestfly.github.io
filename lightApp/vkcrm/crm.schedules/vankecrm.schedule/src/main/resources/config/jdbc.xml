@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>数据库链接配置信息</comment>
+
+	<!-- Common -->
+    <entry key="jdbc.driverClassName">com.mysql.jdbc.Driver</entry>
+    <entry key="jdbc.options">?characterEncoding=utf-8&amp;tinyInt1isBit=false</entry>
+
+    <!--DEV
+    <entry key="jdbc.baseUrl">jdbc:mysql://114.67.22.212/</entry>
+    <entry key="jdbc.readOnly.baseUrl">jdbc:mysql://114.67.22.212/</entry>
+    <entry key="jdbc.username">bingo</entry>
+    <entry key="jdbc.password">bingo!@#</entry>-->
+
+    <!--&lt;!&ndash;SIT&ndash;&gt;-->
+    <!--<entry key="jdbc.baseUrl">jdbc:mysql://rds20yhny0684z65hz5s.mysql.rds.aliyuncs.com/</entry>-->
+    <!--<entry key="jdbc.readOnly.baseUrl">jdbc:mysql://rds6y5c59v83yc81soek.mysql.rds.aliyuncs.com/</entry>-->
+    <!--<entry key="jdbc.username">crmuser</entry>-->
+    <!--<entry key="jdbc.password">crm2_develop</entry>-->
+
+    <!--UAT-->
+    <entry key="jdbc.baseUrl">jdbc:mysql://rds7r9t99rncci4z0rk9.mysql.rds.aliyuncs.com/</entry>
+    <entry key="jdbc.readOnly.baseUrl">jdbc:mysql://rds7r9t99rncci4z0rk9.mysql.rds.aliyuncs.com/</entry>
+    <entry key="jdbc.username">crmuser_uat</entry>
+    <entry key="jdbc.password">crm2_develop</entry>
+
+    <!--PRD-->
+    <!--<entry key="jdbc.baseUrl">jdbc:mysql://rdsd1999y5w13776q563.mysql.rds.aliyuncs.com/</entry>-->
+    <!--<entry key="jdbc.readOnly.baseUrl">jdbc:mysql://rds71u4osn05x92ez6j4.mysql.rds.aliyuncs.com/</entry>-->
+    <!--<entry key="jdbc.username">crmuser_prd</entry>-->
+    <!--<entry key="jdbc.password">V7yb2RRjk</entry>-->
+
+    <entry key="jdbc.initialSize">2</entry>
+    <entry key="jdbc.maxActive">5</entry>
+    <entry key="jdbc.maxIdle">5</entry>
+    <entry key="jdbc.minIdle">1</entry>
+    <entry key="jdbc.validationQuery">select 1</entry>
+
+	<entry key="jdbc.timeBetweenEvictionRunsMillis">30000</entry>
+	<entry key="jdbc.minEvictableIdleTimeMillis">1800000</entry>
+
+	<!-- 本地连接 -->
+    <entry key="center.jdbc.dbName">vankecrm_center</entry>
+    <entry key="sys.jdbc.dbName">vankecrm_organization</entry>
+    <entry key="biz.jdbc.dbName">vankecrm_business</entry>
+
+</properties>

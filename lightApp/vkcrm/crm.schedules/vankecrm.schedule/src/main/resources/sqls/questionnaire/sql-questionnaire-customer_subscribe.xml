@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>问卷客户抽取处理特殊身份客户信息</comment>	
+	<entry key="sql-sati-extractionCustomerQiangz-select-bizSubscribe">
+	<![CDATA[
+		-- 查询预约客户，强制抽取客户
+		select t.project_id, -- 查询预约客户
+		       t.house_id,
+		       t.customer_id,
+		       t.subscribe_time as appointment_time
+		  from biz_subscribe_customer t
+		 where t.questionnaire_id = ?
+		   and t.subscribe_time > now()
+		-- union -- 断线客户不强制抽取了，返回普通用户池
+		-- select t.project_id, -- 查询断线客户
+		--        t.house_id,
+		--        t.customer_id,
+		--        '' as appointment_time
+		--   from biz_answer t
+		--  where t.completed = 0
+		--    and t.abnormal_code = 3
+		--    and t.questionnaire_id = ?
+		union
+		select a.project_id, -- 查询关机，无法接听客户
+		       a.house_id,
+		       t.customer_id,
+		       '' as appointment_time
+		  from dim_anomalous_tags t, biz_answer a
+		 where t.answer_id = a.answer_id
+		   and a.questionnaire_id = ?
+		   and t.tag_category = 1
+		   and t.error_category in (1, 3)
+		   and t.ctime > DATE_ADD(NOW(), INTERVAL -3 day)
+		 group by a.house_id, t.customer_id
+		having count(*) < 3
+		union
+		select a.project_id, -- 查询错号修改客户
+		       a.house_id,
+		       t.customer_id,
+		       '' as appointment_time
+		  from dim_anomalous_tags t, biz_answer a
+		 where t.answer_id = a.answer_id
+		   and a.questionnaire_id = ?
+		   and t.tag_category = 1
+		   and t.error_category in (2, 4, 5, 6, 7)
+		   and t.deleted = 1
+		   and t.dtime > DATE_ADD(NOW(), INTERVAL -3 day)
+		
+	]]>
+	</entry>
+	
+	<entry key="sql-sati-extractionCustomerQiangz-update-bizSubscribe-setGridId">
+	<![CDATA[
+		-- 更新强制抽取客户的网格ID
+		UPDATE sati_extraction_subscribe s4
+		JOIN mid_project_house ph ON ph.houseId = s4.house_id
+		SET s4.grid_id = ph.gridId
+	]]>
+	</entry>
+</properties>

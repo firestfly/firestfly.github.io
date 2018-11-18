@@ -1,0 +1,170 @@
+<div id="tab-tasklist" class="tab-content" ms-controller="tasklist">
+
+    <!-- search area -->
+    <div class="frm-search">
+        <form>
+            <fieldset>
+                <table id="task" class="table table-search">
+                    <tr>
+                        <th>
+                            <label for="start_time_list">开始时间:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="Wdate input2" id="start_time_list" ms-duplex="form.start_time_list" onclick="var endTime=$dp.$('end_time_list');WdatePicker({onpicked:function(){endTime.click();},maxDate:'#F{$dp.$D(\'end_time_list\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                        </td>
+                        <th>
+                            <label for="end_time_list">结束时间:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="Wdate input2" id="end_time_list" ms-duplex="form.end_time_list" onclick="WdatePicker({minDate:'#F{$dp.$D(\'start_time_list\')}',maxDate:'#F{$dp.$D(\'start_time_list\',{d:7,H:1})}',dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                        </td>
+                        <th>
+                            <label for="taskNo">任务编号:</label>
+                        </th>
+                        <td>
+                            <input type="text" id="taskNo" placeholder="请输入任务编号" ms-duplex="form.taskNo">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="projectName">项目名称:</label>
+                        </th>
+                        <td>
+                            <select id="projectName" class="select2" ms-duplex="form.projectId">
+                                <option ms-repeat="projectOptions.list" ms-data-code="el.code" ms-attr-value="el.id">{{el.name}}</option>
+                            </select>
+                            <!--
+							<input type="hidden" ms-duplex="form.projectCode" />
+							<input type="text" id="projectName" ms-attr-value="form.projectName" class="input2" ms-keyup="autoinput('project')">
+
+							<div class="autocomplete-min" target="project">
+								<div class="autocomplete-min-box" ms-visible="project_auto.visible">
+									<div class="autocomplete-min-tip" ms-visible="project_auto.loading">查询中...</div>
+									<div class="autocomplete-min-tip"
+										 ms-visible="!project_auto.loading && project_auto.list.size()==0">查询无数据
+									</div>
+									<ul ms-visible="!project_auto.loading">
+										<li ms-repeat="project_auto.list" ms-data-id="el.id" ms-data-code="el.code" ms-data-text="el.name" ms-text="el.name"></li>
+									</ul>
+								</div>
+							</div>
+							-->
+                        </td>
+                        <th>
+                            <label for="buildingName">楼栋:</label>
+                        </th>
+                        <td>
+                            <input type="hidden" ms-duplex="form.buildingCode" />
+                            <input type="text" class="input2" id="buildingName" ms-keyup="autoinput('building')" ms-attr-value="form.buildingName" ms-attr-disabled="!form.projectId">
+
+                            <div class="autocomplete-min" target="building">
+                                <div class="autocomplete-min-box" ms-visible="building_auto.visible">
+                                    <div class="autocomplete-min-tip" ms-visible="building_auto.loading">查询中...</div>
+                                    <div class="autocomplete-min-tip" ms-visible="!building_auto.loading && building_auto.list.size()==0">查询无数据
+                                    </div>
+                                    <ul ms-visible="!building_auto.loading">
+                                        <li ms-repeat="building_auto.list" ms-data-id="el.id" ms-data-code="el.code" ms-data-text="el.name" ms-text="el.name"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <th>
+                            <label for="houseName">房屋:</label>
+                        </th>
+                        <td>
+                            <input type="hidden" ms-duplex="form.houseCode" />
+                            <input type="text" class="input2" id="houseName" ms-keyup="autoinput('house')" ms-attr-value="form.houseName" ms-attr-disabled="!form.buildingId">
+
+                            <div class="autocomplete-min" target="house">
+                                <div class="autocomplete-min-box" ms-visible="house_auto.visible">
+                                    <div class="autocomplete-min-tip" ms-visible="house_auto.loading">查询中...</div>
+                                    <div class="autocomplete-min-tip" ms-visible="!house_auto.loading && house_auto.list.size()==0">查询无数据
+                                    </div>
+                                    <ul ms-visible="!house_auto.loading">
+                                        <li ms-repeat="house_auto.list" ms-data-id="el.houseId" ms-data-code="el.houseCode" ms-data-text="el.houseName" ms-text="el.houseName"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>任务类型:</label>
+                        </th>
+                        <td>
+                            <input type="text" readonly class="input2" ms-duplex="form.businessTypeFullText" ms-widget="businessType,tasklistBusinessWidget" data-validator="required{请选择一个匹配的业务类型}">
+                        </td>
+                        <th>
+                            <label for="mobile">联系电话:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="input2" placeholder="请输入关联号码" ms-duplex="form.mobile" id="mobile" />
+                        </td>
+                        <th>
+                            <label>任务状态:</label>
+                        </th>
+                        <td>
+                            <select ms-duplex="form.status" class="select2">
+                                <option>==请选择==</option>
+                                <option ms-repeat="statusOptions" ms-attr-value="el.code" ms-text="el.value"></option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- function btns area -->
+    <div class="operation_btns right">
+        <a class="btn btn-primary btn-small" ms-click="searchclick"><span class="icon-search icon-white"></span> 查 询</a>
+        <a class="btn btn-small" ms-click="resetclick"><span class="icon-refresh"></span> 重 置</a>
+    </div>
+
+    <!-- table list area -->
+    <div id="tasklist" class="list list-max">
+        <table class="table table-hover table-bordered list-md-width">
+            <thead>
+                <tr>
+                    <th style="width:130px;">任务编号</th>
+                    <th style="width:130px;">创建时间</th>
+                    <th style="width:180px;">任务类型</th>
+                    <th class="column-4">任务内容</th>
+                    <th style="width:170px;">任务状态</th>
+                    <th style="width:100px;">联系电话</th>
+                    <th>项目名称</th>
+                    <th>房屋名称</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_tasklist">
+                <tr ms-visible="!tasklists.isLoading" ms-repeat="tasklists.data">
+                    <td><a ms-data-id="el.task_no"><span ms-text="el.task_no"></span></a></td>
+                    <td><span ms-text="el.created"></span></td>
+                    <td><span ms-text="el.business_name"></span></td>
+                    <td class="column-4"><span class="content-desc column-4" ms-attr-title='el.content' ms-html="el.content"></span></td>
+                    <td><span ms-text="el.status|appTaskStatus"></span></td>
+                    <td><span ms-text="el.mobile"></span></td>
+                    <td><span ms-text="el.project_name"></span></td>
+                    <td><span ms-text="el.house_name"></span></td>
+                </tr>
+                <tr ms-visible="tasklists.isLoading">
+                    <td class="align-center" colspan="8">正在加载...</td>
+                </tr>
+                <tr ms-visible="!tasklists.isLoading && tasklists.data.size()==0">
+                    <td class="align-center" colspan="8">暂无数据</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="list-footer">
+        <!-- total area -->
+        <div class="total">
+            共 <b ms-text="totalSize"></b> 条记录
+        </div>
+
+        <!-- table list page area -->
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+</div>

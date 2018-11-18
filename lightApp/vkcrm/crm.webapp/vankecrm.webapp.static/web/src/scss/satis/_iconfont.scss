@@ -1,0 +1,18 @@
+@charset "UTF-8";
+@import "../../font/satis/iconfont.css";
+
+/* iconfont */
+[class^="icf-"], [class*="icf-"] {
+  &:before {
+    @include iconfont;
+    font-size: 1em;
+  }
+}
+
+i[class^="icf-"], i[class*="icf-"] {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: top;
+}
+

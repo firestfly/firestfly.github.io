@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>通用配置信息</comment>
+
+    <!--系统登录模式，local：本地登录-->
+    <entry key="Profile.Security.Login_Mode">local</entry>
+
+    <!--Jso处理资源的模式，true：调试模式，false：生产模式-->
+    <entry key="Profile.Jso.Debug_Mode">true</entry>
+
+    <!--DhtmlxGrid导出Excel文件的临时目录-->
+    <entry key="Profile.DhtmlxGrid.Export_Excel_Path">c:\</entry>
+
+    <!--SSO单点登录的地址-->
+    <entry key="Profile.SSO.Server_Url">http://localhost:8080/sso/openid</entry>
+
+    <!--默认主题样式-->
+    <entry key="Profile.theme">mobile</entry>
+
+    <!--存放与Redis中的key-->
+    <entry key="log.datachangelog.key">dataChangeLog.key</entry>
+    <entry key="log.accesslog.key">accessLog.key</entry>
+    <entry key="log.exceptionlog.key">exceptionLog.key</entry>
+
+    <!--定时任务配置-->
+    <entry key="task.datachangelog.cron">0/10 * * * * ?</entry>
+    <entry key="task.restaccesslog.cron">0/10 * * * * ?</entry>
+    <entry key="task.interfaceaccesslog.cron">0/10 * * * * ?</entry>
+    <entry key="task.exceptionlog.cron">0/10 * * * * ?</entry>
+    <entry key="task.relationchangelog.cron">0/10 * * * * ?</entry>
+    <!--<entry key="task.syncproject.cron">0/30 * * * * ?</entry>-->
+    <entry key="task.syncproject.cron">0 49 * * * ?</entry>
+    <!--<entry key="task.syncbuilding.cron">0/30 * * * * ?</entry>-->
+    <entry key="task.syncbuilding.cron">0 0 * * * ?</entry>
+    <entry key="task.synccarport.cron">0 18 * * * ?</entry>
+    <entry key="task.createTask.cron">0 21 * * * ?</entry>
+    <entry key="task.syncTaskTask.cron">0 7 * * * ?</entry>
+    <entry key="task.syncBusinessType.cron">41 55 10 * * ?</entry>
+    <entry key="task.taskRecord.cron">30 2 18 * * ?</entry>
+    <!--报表相关-->
+    <entry key="task.telpro.cron">0 0 0 * * ?</entry>
+    <!--读取数据条数-->
+    <entry key="log.read.count">500</entry>
+    <!--战图接口相关数据 -->
+    <entry key="bmap.hostAndPort">http://bmap.vanke.com/WebService/Interface.ashx</entry>
+    <entry key="bmap.sysid">vkcrm</entry>
+    <entry key="bmap.wymap">wkmap</entry>
+    <entry key="bmap.synctime">2015-1-21</entry>
+    <!--如果在log_bmap_syn表中有对应的synccode记录，则取该条记录的上次同步时间，否则取这个时间用来同步-->
+    <entry key="bmap.lastProjectCode">33020001</entry>
+    <entry key="bmap.resume">1</entry>
+    <!--是否需要续传，如需要，填入需要续传的项目code，resume：0代表无需续传，1代表需要续传 -->
+    <entry key="bmap.pagesize">200</entry>
+
+    <!--同步录音-->
+    <!--生产环境配置-->
+    <entry key="task.syncRecord.cron">0 0 2 * * ?</entry>
+    <entry key="record.sync.mode">增量</entry>
+    <!--yyyy-MM-dd HH:mm:ss-->
+    <entry key="record.sync.starttime">2015-11-11 00:00:00</entry>
+    <entry key="record.sync.endtime">2015-11-15 23:59:59</entry>
+
+    <!--app任务接口相关配置-->
+    <entry key="app.hostAndPort">http://stage.4009515151.com</entry>
+    <entry key="app.AccessKey">a837326f79ac382f3c2275e0168b0df1</entry>
+    <entry key="app.SecretKey">db1ccbfca0971932ecda02ddd051c0a6</entry>
+
+    <!-- 问卷调查抽取任务 -->
+    <entry key="task.survey.cron">0 0 10 * * ?</entry>
+
+</properties>

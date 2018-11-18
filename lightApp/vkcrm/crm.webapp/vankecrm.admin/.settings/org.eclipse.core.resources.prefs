@@ -1,0 +1,13 @@
+eclipse.preferences.version=1
+encoding//WebRoot/common/control/xtree/dyntree-head.jsp=UTF-8
+encoding//WebRoot/common/error/report500.jsp=UTF-8
+encoding//WebRoot/common/login/logout.jsp=UTF-8
+encoding//WebRoot/common/meta.jsp=UTF-8
+encoding//WebRoot/modules/organization/list_sec_organization.jsp=UTF-8
+encoding//WebRoot/modules/organization/script/usf_organization_list.js=UTF-8
+encoding//WebRoot/modules/user/script/list_sec_user.js=UTF-8
+encoding//WebRoot/modules/user/script/list_sec_user_main.js=UTF-8
+encoding//src/main/java=UTF-8
+encoding//src/main/resources=UTF-8
+encoding/<project>=UTF-8
+instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true

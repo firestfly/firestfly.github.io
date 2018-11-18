@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>问卷调查答案存储</comment>
+
+    <!-- 添加题目答案 -->
+    <entry key="sql-insert-answerItem">
+        <![CDATA[
+			INSERT INTO 
+				biz_answer_items(answer_id,topic_id,content) 
+			VALUES 
+				(#answerId#,#topicId#,#content#);
+        ]]>
+    </entry>
+
+    <!-- 更新答卷 -->
+    <entry key="sql-update-answer">
+        <![CDATA[
+			UPDATE 
+				biz_answer 
+			SET 
+				abnormal_code = #abnormalCode#,
+				{? abnormal_content = #abnormalContent#,}
+				{? completed_time=#completedTime# ,}
+				completed=#completed#
+			WHERE 
+				answer_id = #answerId#
+        ]]>
+    </entry>
+
+
+    <!-- 插入答卷 -->
+    <entry key="sql-insert-answer">
+        <![CDATA[
+			INSERT into biz_answer(`answer_id`,`questionnaire_id`,`customer_id`,`house_id`,`project_id`,`project_name`,`house_addr`,`abnormal_code`,`abnormal_content`,`completed`,`completed_time`)
+            VALUES(#answerId#,#questionnaireId#,#customerId#,#houseId#,#projectId#,
+            (select name from vankecrm_center.main_project where id =#projectId#),
+            (select name from vankecrm_center.main_house where id =#houseId#),
+            #abnormalCode#,#abnormalContent#,#completed#,#completedTime#)
+        ]]>
+    </entry>
+
+
+    <!-- 获取答卷 -->
+    <entry key="sql-query-answer">
+        <![CDATA[
+			SELECT 
+				answer_id AS answerId ,
+				questionnaire_id AS questionnaireId ,
+				customer_id AS customerId , 
+				house_id AS houseId , 
+				project_name AS projectName , 
+				house_addr AS hosueAddr , 
+				abnormal_code AS abnormalCode ,
+				abnormal_content AS abnormalContent , 
+				completed AS completed , 
+				completed_time AS completedTime 
+			FROM 
+				biz_answer 
+			WHERE
+				1 = 1
+			AND questionnaire_id = #questionnaireId#
+			AND customer_id = #customerId#
+			LIMIT 1
+        ]]>
+    </entry>
+
+    <!-- 获取答卷题目 -->
+    <entry key="sql-query-answerItem">
+        <![CDATA[
+			SELECT
+				answer_id AS answerId, 
+				topic_id AS topicId, 
+				content AS content 
+			FROM 
+				biz_answer_items 
+			WHERE 
+				1 = 1
+			AND answer_id = #answerId#
+        ]]>
+    </entry>
+
+    <!-- 查询主题默认不接受调查时长 -->
+    <entry key="sql-query-anomalousMonths">
+        <![CDATA[
+			SELECT 
+				anomalous_months 
+			FROM 
+				biz_subject 
+			WHERE 
+				subject_id = #subjectId# 
+			LIMIT 1; 
+        ]]>
+    </entry>
+
+    <!-- 获取答卷 -->
+    <entry key="sql-query-answer-by-id">
+        <!--<![CDATA[-->
+        <!--SELECT-->
+        <!--answer_id AS answerId ,-->
+        <!--questionnaire_id AS questionnaireId ,-->
+        <!--customer_id AS customerId ,-->
+        <!--house_id AS houseId ,-->
+        <!--project_name AS projectName ,-->
+        <!--house_addr AS hosueAddr ,-->
+        <!--abnormal_code AS abnormalCode ,-->
+        <!--abnormal_content AS abnormalContent ,-->
+        <!--completed AS completed ,-->
+        <!--completed_time AS completedTime-->
+        <!--FROM-->
+        <!--biz_answer-->
+        <!--WHERE-->
+        <!--answer_id = #answerId#-->
+        <!--]]>-->
+        <![CDATA[
+        SELECT
+        ba.answer_id AS answerId,
+        ba.questionnaire_id AS questionnaireId,
+        ba.customer_id AS customerId,
+        ba.house_id AS houseId,
+        ba.project_name AS projectName,
+        ba.house_addr AS hosueAddr,
+        ba.abnormal_code AS abnormalCode,
+        ba.abnormal_content AS abnormalContent,
+        ba.completed AS completed,
+        ba.completed_time AS completedTime,
+        mc.fullName AS customerName
+        FROM
+        biz_answer ba
+        LEFT JOIN vankecrm_center.main_customer mc ON ba.customer_id = mc.id
+        WHERE
+        ba.answer_id = #answerId#
+         ]]>
+    </entry>
+</properties>
+

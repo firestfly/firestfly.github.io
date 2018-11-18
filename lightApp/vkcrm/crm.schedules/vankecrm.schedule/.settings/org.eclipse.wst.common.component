@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+<wb-module deploy-name="vankecrm.schedule">
+<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/demo/java"/>
+<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/demo/resources"/>
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+<wb-resource deploy-path="/" source-path="/WebRoot" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
+<property name="java-output-path" value="/bingo-framework-project/WebRoot/WEB-INF/classes"/>
+        <property name="component.exclusion.patterns" value="**/.svn/"/>
+        <property name="context-root" value="vankecrm.schedule"/>
+</wb-module>
+</project-modules>

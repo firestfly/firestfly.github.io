@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <!-- 获取到所有有效的系统参数 -->
+    <entry key="profile.getValidParams">
+    <![CDATA[
+        SELECT '' GLOBAL,
+		       '' NAME,
+		       '' VALUE
+		FROM   dual
+    ]]>
+    </entry>
+</properties>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>数据库链接配置信息</comment>
+
+	<!-- Common -->
+	<entry key="jdbc.driverClassName">com.mysql.jdbc.Driver</entry>
+	<entry key="jdbc.username">crmuser_prd</entry>
+	<entry key="jdbc.password">V7yb2RRjk</entry>
+	<entry key="jdbc.initialSize">10</entry>
+	<entry key="jdbc.maxActive">100</entry>
+	<entry key="jdbc.maxIdle">100</entry>
+	<entry key="jdbc.minIdle">10</entry>
+	<entry key="jdbc.validationQuery">select 1</entry>
+	<entry key="jdbc.timeBetweenEvictionRunsMillis">30000</entry>
+	<entry key="jdbc.minEvictableIdleTimeMillis">1800000</entry>
+
+	<!-- Center库 -->
+	<entry key="center.jdbc.url">jdbc:mysql://rdsd1999y5w13776q563.mysql.rds.aliyuncs.com/vankecrm_center?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true&amp;failOverReadOnly=false</entry>
+	<entry key="center.jdbc.readonly.url">jdbc:mysql://rds71u4osn05x92ez6j4.mysql.rds.aliyuncs.com/vankecrm_center?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true</entry>
+
+	<!-- 业务库 -->
+	<entry key="business.jdbc.url">jdbc:mysql://rdsd1999y5w13776q563.mysql.rds.aliyuncs.com/vankecrm_business?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true&amp;failOverReadOnly=false</entry>
+	<entry key="business.jdbc.readonly.url">jdbc:mysql://rds71u4osn05x92ez6j4.mysql.rds.aliyuncs.com/vankecrm_business?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true</entry>
+	
+	<!-- 系统库 -->
+	<entry key="sys.jdbc.url">jdbc:mysql://rdsd1999y5w13776q563.mysql.rds.aliyuncs.com/vankecrm_organization?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true&amp;failOverReadOnly=false</entry>
+	<entry key="sys.jdbc.readonly.url">jdbc:mysql://rds71u4osn05x92ez6j4.mysql.rds.aliyuncs.com/vankecrm_organization?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true</entry>
+
+	<!-- 日志库 -->
+	<entry key="log.jdbc.url">jdbc:mysql://rdsd1999y5w13776q563.mysql.rds.aliyuncs.com/vankecrm_log?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true&amp;failOverReadOnly=false</entry>
+	<entry key="log.jdbc.readonly.url">jdbc:mysql://rds71u4osn05x92ez6j4.mysql.rds.aliyuncs.com/vankecrm_log?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true</entry>
+
+	<!-- 报表库 -->
+	<entry key="report.jdbc.url">jdbc:mysql://rdsd1999y5w13776q563.mysql.rds.aliyuncs.com/vankecrm_report?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true&amp;failOverReadOnly=false</entry>
+	<entry key="report.jdbc.readonly.url">jdbc:mysql://rds71u4osn05x92ez6j4.mysql.rds.aliyuncs.com/vankecrm_report?characterEncoding=utf-8&amp;tinyInt1isBit=false&amp;autoReconnect=true</entry>
+</properties>

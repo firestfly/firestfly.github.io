@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>房屋拆分合并信息sql</comment>
+
+    <entry key="sql.house.merge.queryHasMergeHouse">
+        <![CDATA[ -- 查询已经有过合并的房屋
+		SELECT h.*
+		  FROM mid_house_merge m, main_house h
+		 WHERE m.houseId = h.id
+		   AND m.houseId IN ($houseIdsCon$)
+		   AND m.isDeleted = 0
+        ]]>
+    </entry>
+    
+    <entry key="sql.house.merge.queryHasSubHouse">
+        <![CDATA[ -- 查询要合并的房屋信息
+			select * from main_house h where h.id IN ($houseIdsCon$) 
+			and EXISTS (select 1 from main_house shh where shh.parentId = h.id and shh.isDeleted = 0 )
+        ]]>
+    </entry>
+    <entry key="sql.house.merge.queryHouses">
+        <![CDATA[ -- 查询要合并的房屋信息
+		select * from main_house h where h.id IN ($houseIdsCon$) order by h.name
+        ]]>
+    </entry>
+    <entry key="sql.house.merge.queryHouseDetails">
+        <![CDATA[ -- 查询要合并的房屋信息
+		select * from main_house_detail h where h.id IN ($houseIdsCon$)
+        ]]>
+    </entry>    
+    
+    <entry key="sql.house.merge.mergeCustomer">
+        <![CDATA[ -- 合并房屋客户信息
+		insert into mid_customer_house
+		  (houseId,
+		   customerId,
+		   relationType,
+		   relationTypeText,
+		   creator,
+		   creatorId,
+		   createTime)
+		  select #houseMegerId#, customerId, relationType, relationTypeText, #userName#,#userId#, now()
+		    from mid_customer_house m
+		   where m.houseId in ($houseIdsCon$) and IFNULL(m.isDeleted,0)=0
+		   group by customerId, relationType, relationTypeText
+        ]]>
+    </entry>
+    
+    <entry key="sql.house.split.querySubHouse">
+        <![CDATA[ -- 查询子房屋扩展信息
+		select hd.*
+		  from main_house h, main_house_detail hd
+		 where h.id = hd.id
+		   and h.parentId = ?
+		   and h.isDeleted = 0
+        ]]>
+    </entry>
+    
+    <entry key="sql.house.split.insertProjectRelation">
+        <![CDATA[ -- 插入房屋跟项目对应关系
+		INSERT INTO mid_project_house (
+			houseId,
+			projectId,
+			buildingId,
+			buildingCode,
+			buildingName,
+			unitId,
+			unit,
+			floor,
+			number,
+			gridId
+		) SELECT
+			?, ph.projectId,
+			ph.buildingId,
+			ph.buildingCode,
+			ph.buildingName,
+			ph.unitId,
+			ph.unit,
+			ph.floor,
+			ph.number,
+			?
+		FROM
+			mid_project_house ph
+		WHERE
+			ph.houseId = ?
+        ]]>
+    </entry>
+    
+    
+    <entry key="sql.house.split.hasMeger">
+        <![CDATA[
+        	 -- 查看房屋是否已经合并
+			select count(*) from mid_house_merge m where m.houseId = ? and m.isDeleted = 0 
+        ]]>
+    </entry>
+    
+    <entry key="sql.house.getHouseByCode">
+        <![CDATA[
+        	 -- 通过房屋编码查询房屋code
+			select * from main_house h where h.code in($houseCodes$) and h.isDeleted = 0
+        ]]>
+    </entry>
+    
+    
+    <entry key="sql.house.mergeHouseRestore.deleteHouse">
+        <![CDATA[
+        	 -- 合并房复原删除子房屋和本身
+			update main_house h set h.isDeleted = 1,h.deleterId = ? ,h.deleteTime = NOW() where (h.id = ? or h.parentId = ?) and h.isDeleted = 0
+        ]]>
+    </entry>
+    <entry key="sql.house.mergeHouseRestore.deleteRelation">
+        <![CDATA[
+        	 -- 合并房复原删除合并关系
+			update mid_house_merge mhm set mhm.isDeleted = 1 ,mhm.deleterId=? ,mhm.deleteTime = NOW() where mhm.mergeToHouseId = ? and isDeleted = 0
+        ]]>
+    </entry>
+    <entry key="sql.house.mergeHouse.getMerger">
+        <![CDATA[
+        	 -- 查询合并房屋的源房屋
+		select h.id            as houseId,
+		       h.name          as houseName,
+		       h.code          as houseCode,
+		       h.roomNumber    AS roomNumber,
+		       h.checkInTime,
+		       h.contactsName,
+		       h.status,
+		       h.statusText,
+		       hd.propertyArea
+		  from mid_house_merge hm, main_house h
+		  left join main_house_detail hd on hd.id = h.id
+		 where hm.houseId = h.id
+		   -- and hm.isDeleted = 0
+		   and h.isDeleted = 0
+		   and hm.mergeToHouseId = ?
+
+        ]]>
+    </entry>
+
+    <!-- 根据房屋编号查询gridId -->
+    <entry key="sql.mid.project.house.byHouseId">
+        <![CDATA[
+            select gridId from mid_project_house where houseId = #houseIds#
+        ]]>
+    </entry>
+    
+    
+
+
+</properties>

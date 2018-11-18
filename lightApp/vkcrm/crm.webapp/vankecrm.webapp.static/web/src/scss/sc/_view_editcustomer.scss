@@ -1,0 +1,136 @@
+@charset "UTF-8";
+
+/* 业务模块表单 */
+.form_info {
+  margin: 6px 0;
+
+  /* 表单title */
+  .title {
+    h1, h2, h3, h4, h5 {
+      text-align: left;
+    }
+    padding: 4px;
+    border-bottom: 1px dotted #ddd;
+  }
+
+  input, select {
+    font-size: 13px;
+  }
+
+  /* 显示表单 */
+  table {
+    margin: 10px 0px;
+    tr {
+      th {
+        padding: 4px;
+        min-width: 0px;
+        width: 12%;
+        color: #999;
+        label {
+          margin: 0px;
+          font-size: 12px;
+          line-height: 24px;
+        }
+      }
+      td {
+        padding: 4px;
+        width: 21%;
+        vertical-align: middle;
+        input {
+          margin: 0px;
+          width: 176px;
+        }
+        input[type="radio"] {
+          margin: 2px 4px;
+          width: auto;
+          vertical-align: middle;
+        }
+        select {
+          width: 189px;
+        }
+        label {
+          padding: 4px 0;
+        }
+      }
+    }
+  }
+
+  /* 表单操作按钮 */
+  .edit-btn {
+    padding: 2px 10px;
+    border-top: 1px solid #eee;
+  }
+
+  /* 个人兴趣标签 */
+  .tags {
+    padding: 20px;
+  }
+
+  .view-block {
+  }
+  .edit-block {
+    display: none;
+  }
+  .table-newuser {
+    table-layout: fixed;
+  }
+  .c_hide.on {
+    display: none !important;
+  }
+  .c_d_hide.on {
+    display: none !important;
+  }
+  .c_tags_hide.on {
+    display: none !important;
+  }
+  ._basic_view.on {
+    display: none !important;
+  }
+  ._details_view.on {
+    display: none !important;
+  }
+  .tags {
+    ._tags_view.on {
+      display: none !important;
+    }
+  }
+}
+
+/* 新增影像资料 按钮 */
+.function-btn {
+  margin: 4px 0;
+  text-align: right;
+}
+
+.none {
+  display: none;
+}
+
+.btnright {
+  cursor: pointer;
+  float: right;
+  margin-right: 4px;
+}
+
+//新增DTN--CSS
+.clear {
+  clear: both;
+}
+
+/****************图标文字对齐样式****************/
+.panel-title {
+  display: inline-block;
+  height: 40px;
+  line-height: 50px;
+
+}
+
+.panel-title span {
+  display: inline-block;
+  height: 20px;
+  line-height: 20px;
+  font-size: 1em;
+  vertical-align: text-top;
+}
+
+/****************返回按钮****************/

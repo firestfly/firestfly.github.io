@@ -1,0 +1,207 @@
+<!-- 呼叫中心报表 - 任务清单报表 -->
+<div class="task_layout" ms-controller="callintask">
+
+    <!-- navigation area -->
+    <div class="navigation">
+        <ul class="breadcrumb">
+            <li style="display:inline"><a>呼叫中心报表</a> <span class="divider">/</span></li>
+            <li style="display:inline" class="active">任务清单报表</li>
+        </ul>
+    </div>
+
+    <!-- search area -->
+    <div class="form_layout">
+        <form>
+            <fieldset>
+                <table class="table task-table task">
+                    <tr>
+                        <th>
+                            <label for="st_time">开始时间:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="Wdate input2" id="st_time" ms-duplex="form.st_time" onclick="var endTime=$dp.$('ed_time');WdatePicker({onpicked:function(){endTime.click();},maxDate:'#F{$dp.$D(\'ed_time\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                        </td>
+                        <th>
+                            <label for="ed_time">结束时间:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="Wdate input2" id="ed_time" onclick="WdatePicker({minDate:'#F{$dp.$D(\'st_time\',{d:0})}',maxDate:'#F{$dp.$D(\'st_time\',{d:31,H:1})}',dateFmt:'yyyy-MM-dd HH:mm:ss'})" ms-duplex="form.ed_time">
+                        </td>
+                        <th>
+                            <label for="ed_time">任务内容:</label>
+                        </th>
+                        <td>
+                          <input type="text" id="content" name="content" class="input2" ms-duplex="form.content" />
+                        </td>
+                    </tr>
+                    <tr class="hide" style="background-color: #eee">
+                        <th><label>任务来源:</label></th>
+                        <td>
+                            <select ms-click='close' class="select2" ms-duplex="options.source.id">
+                                <option value="" ms-text="options.source.text"></option>
+                                <option ms-repeat="options.source.list" ms-attr-value="el.id">{{el.name}}</option>
+                            </select>
+                            <i ms-visible="options.source.id!=''" target="source"
+                               ms-click="cleanCurOptions" class="icon-remove"></i>
+                        </td>
+                        <!--<th><label>城市:</label></th>
+                        <td>
+                            <input type="text" id="city" name="city" class="input2 pointer" readonly="true" target="city" ms-click="choosePlaneControl" ms-attr-value="options.city.text" /> <i ms-visible="options.city.id!=''" target="city" ms-click="cleanCurOptions"
+                                class="icon-remove"></i>
+                        </td>-->
+                        <th></th>
+                        <td></td>
+                        <th></th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th><label>管理中心:</label></th>
+                        <td>
+                            <input type="text" id="organization" name="cct_organization" class="input2 pointer" readonly="true" target="cct_organization" ms-click="choosePlaneControl" ms-attr-value="options.cct_organization.text" /> <i ms-visible="options.cct_organization.id!=''"
+                                                                                                                                                                                                                                target="cct_organization" ms-click="cleanCurOptions" class="icon-remove"></i>
+                        </td>
+                        <th><label>项目:</label></th>
+                        <td>
+                            <input type="text" id="cct_project" name="cct_project" class="input2 pointer" readonly="true" target="cct_project" ms-click="choosePlaneControl" ms-attr-value="options.cct_project.text" /> <i ms-visible="options.cct_project.id!=''" target="cct_project"
+                                                                                                                                                                                                            ms-click="cleanCurOptions" class="icon-remove"></i>
+                        </td>
+                        <th><label>楼栋:</label></th>
+                        <td>
+                            <input type="text" id="cct_building" name="cct_building" class="input2 pointer" readonly="true" target="cct_building" ms-click="choosePlaneControl" ms-attr-value="options.cct_building.text" /> <i ms-visible="options.cct_building.id!=''" target="cct_building"
+                                                                                                                                                                                                                ms-click="cleanCurOptions" class="icon-remove"></i>
+                        </td>
+                        <th class="hide">
+                            <label for="gridId">网格:</label>
+                        </th>
+                        <td class="hide">
+                            <select ms-click='close' class="select2" ms-duplex="options.grid.id">
+                                <option value="" ms-text="options.grid.text"></option>
+                                <option ms-repeat="options.grid.list" ms-attr-value="el.id">{{el.name}}</option>
+                            </select>
+                            <i ms-visible="options.grid.id!=''" target="grid"
+                               ms-click="cleanCurOptions" class="icon-remove"></i>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <th><label>房屋:</label></th>
+                        <td>
+                            <input type="text" id="cct_house" name="cct_house" class="input2 pointer" readonly="true" target="cct_house" ms-click="choosePlaneControl" ms-attr-value="options.cct_house.text" /> <i ms-visible="options.cct_house.id!=''" target="cct_house" ms-click="cleanCurOptions"
+                                                                                                                                                                                                    class="icon-remove"></i>
+                        </td>
+                        <th></th>
+                        <td></td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- function btns area -->
+    <div class="operation_btns">
+        <a class="btn btn-primary" ms-click="search_event"><span class="icon-search icon-white"></span> 查 询 </a>
+        <a class="btn" ms-click="reset_event"><span class="icon-refresh"></span> 重 置 </a>
+        <a class="btn btn-success" ms-click="export_event" href="javascript:void(0)"><span class="icon-download icon-white"></span> 导 出 </a>
+        <iframe id="prjdetail_export" src="" class="hide export-link" ></iframe>
+        <!--<div id="exportLink" class="hide export-link"></div>-->
+    </div>
+
+    <!-- table list area -->
+    <div id="custable" class="notice-list form-list" style="top:205px">
+        <table style="width: 220%" class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <td>创建时间</td>
+                <td>任务编号</td>
+                <td>客户姓名</td>
+                <td>任务来源</td>
+                <td>任务类型</td>
+                <td>任务状态</td>
+                <td>任务创建人</td>
+                <td>来电号码</td>
+                <td>联系电话</td>
+                <td>处理方式</td>
+                <td>是否预约</td>
+                <td>任务内容</td>
+                <td>城市</td>
+                <td>管理中心</td>
+                <td>项目</td>
+                <td>网格</td>
+                <td>楼栋</td>
+                <td>房屋</td>
+                <td>是否超时</td>
+                <td>处理人</td>
+                <td>系统回访评价</td>
+                <td>人工回访评价</td>
+                <td>是否取消</td>
+                <td>投诉定责</td>
+            </tr>
+            </thead>
+            <tbody ms-if="hasBeenSubmitted">
+            <tr ms-repeat="data.list" ms-visible="!data.isLoading">
+                <td>{{el.created}}</td>
+                <td>{{el.taskNo}}</td>
+                <td>{{el.contact}}</td>
+                <td>{{el.source}}</td>
+                <td>{{el.businessType}}</td>
+                <td>{{el.status}}</td>
+                <td>{{el.creator}}</td>
+                <td>{{el.reportUserMobile}}</td>
+                <td>{{el.mobile}}</td>
+                <td>{{el.process}}</td>
+                <td>{{el.isOrder}}</td>
+                <td>{{el.content}}</td>
+                <td>{{el.city}}</td>
+                <td>{{el.mcname}}</td>
+                <td>{{el.projectName}}</td>
+                <td>{{el.gridName}}</td>
+                <td>{{el.buildName}}</td>
+                <td>{{el.houseName}}</td>
+                <td>{{el.isTimeout}}</td>
+                <td>{{el.staff}}</td>
+                <td>{{el.score}}</td>
+                <td>{{el.crmEvaluation}}</td>
+                <td>{{el.isCancel}}</td>
+                <td>{{el.crmDuty}}</td>
+            </tr>
+            <tr ms-if="!data.isLoading && !data.isError && data.list.size()==0">
+                <td colspan="23">暂无数据</td>
+            </tr>
+            <tr ms-if="data.isLoading">
+                <td colspan="23">正在加载...</td>
+            </tr>
+            <tr ms-if="data.isError">
+                <td colspan="23">数据获取失败</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- total area -->
+    <div class="total" style="position: absolute; margin:6px 10px; right: 0; bottom: 0;" ms-if="totalSize>0">
+        共 <b ms-text="totalSize"></b> 条记录
+    </div>
+
+    <!-- table list page area -->
+    <div class="pagination" id="ccl_pagination" ms-if="data.list.size()>0">
+    </div>
+
+    <!-- 选择面板 -->
+    <div class="choose" id="cc_choosePlane" ms-visible='choosePlane_vis'>
+        <div class="item-list">
+            <ul>
+                <li ms-repeat="curPlaneList" ms-data-id="el.id" ms-data-text="el.name">
+                    <label ms-text='el.name' ms-attr-title='el.name'></label>
+                </li>
+            </ul>
+            <ul ms-visible="curPlaneList.size() == 0">
+                <li>暂无数据</li>
+            </ul>
+        </div>
+        <div class="foot">
+            <button class="btn btn-small" type="buton" ms-click='close'>关 闭</button>
+            <button class="btn btn-small btn-warning" ms-attr-target="curTarget" type="button" ms-click='cleanCurOptions'>清 除</button>
+        </div>
+    </div>
+
+</div>

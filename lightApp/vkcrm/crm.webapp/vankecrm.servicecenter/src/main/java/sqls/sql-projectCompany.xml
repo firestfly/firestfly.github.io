@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>获取项目以及所属物业公司sql</comment>
+	
+	<!-- 获取项目以及所属物业公司 -->
+    <entry key="sql.query.house.project.company">
+    <![CDATA[
+		select b.code,b.name,b.companyCode,b.companyName from mid_project_house a
+		inner join main_project b on a.projectId = b.id
+		where a.houseId = #houseId#
+     ]]>
+    </entry>
+
+	<!-- 获取项目以及所属物业公司 -->
+	<entry key="sql.query.carport.project.company">
+		<![CDATA[
+		select mp.companyCode,mp.companyName,mp.code,mc.name as projectName from main_carport mc
+		INNER JOIN main_project mp on mc.projectId=mp.id
+		where mc.id=#carportId#
+     ]]>
+	</entry>
+
+</properties>

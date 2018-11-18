@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>查询待交付的房屋车位的sql</comment>
+	
+	<!-- 获取到所有有效的系统参数 -->
+    <entry key="roomsExport.list">
+    <![CDATA[
+		select c.projectCode, c.projectName, c.buildingName,c.unit, c.name, c.code, c.type
+		  from (select b.code as projectCode,
+		               b.name as projectName,
+		               a.buildingName,
+		               a.unit,
+		               a.name,
+		               a.code,
+		               '房屋' as type
+		          from main_house a   -- 1031685
+		           inner join main_project b on a.projectId = b.id -- 900
+						   inner JOIN (select organizationId from mid_organization_user
+						   				   where userId = #userId#
+		                     and ifnull(isDeleted, 0) = 0
+		                     and status = 1)t on a.projectId=t.organizationId
+						   left Join (Select  houseid from mid_customer_house where IFNULL(isDeleted, 0) = 0) m on a.id=m.houseid
+		         where 1 = 1  and ifnull(a.isVirtual,0) = 0  and m.houseid is NULL
+		        union ALL
+		        select b.code as projectCode,
+		               b.name as projectName,
+		               '' as buildingName,
+		               '' as unit,
+		               a.name,
+		               a.code,
+		               '车位' as type
+		          from main_carport a   -- 51W
+		         inner join main_project b   on a.projectId = b.id
+						 inner JOIN (select  DISTINCT organizationId  from mid_organization_user t
+												 where   t.userId = #userId#
+																and ifnull(t.isDeleted, 0) = 0
+																and t.status = 1 LIMIT 100
+												)t on a.projectId=t.organizationId
+				     left join (select carportId   from mid_carport_customer c  where   ifnull(c.isDeleted, 0) = 0) m on a.id=m.carportId
+		         where 1 = 1  and m.carportId is NULL
+        ) c LIMIT 10000
+
+
+    ]]>
+    </entry>
+</properties>

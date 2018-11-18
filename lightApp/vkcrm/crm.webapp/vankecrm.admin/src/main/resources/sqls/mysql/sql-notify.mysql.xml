@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>通知订阅配置相关sql</comment>
+
+    <!--获取字典值信息-->
+    <entry key="notify.get.dictionary">
+        <![CDATA[
+        SELECT CODE AS ID,
+        VALUE AS TEXT
+        FROM dim_dictionary_items
+        WHERE dictionaryId IN (SELECT id FROM dim_dictionary WHERE CODE = #code#)
+		]]>
+    </entry>
+
+    <!--获取通知配置-->
+    <entry key="notify.get.list">
+        <![CDATA[
+        SELECT BNS.ID,
+               BNS.TYPE AS TYPE_ID,
+               INITIALTOR_MODE,
+               RECIPIENT_MODE,
+               (SELECT VALUE FROM VANKECRM_CENTER.dim_dictionary_items WHERE 1 = 1 AND code = TYPE AND dictionaryId = (SELECT id FROM VANKECRM_CENTER.dim_dictionary WHERE CODE = 'SubscribeType') )AS TYPE,
+               (SELECT VALUE FROM VANKECRM_CENTER.dim_dictionary_items WHERE 1 = 1 AND code = INITIALTOR_MODE AND dictionaryId = (SELECT id FROM VANKECRM_CENTER.dim_dictionary WHERE CODE = 'InitialtorMode') )AS INITIALTOR_MODE_TEXT,
+               (SELECT VALUE FROM VANKECRM_CENTER.dim_dictionary_items WHERE 1 = 1 AND code = RECIPIENT_MODE AND dictionaryId = (SELECT id FROM VANKECRM_CENTER.dim_dictionary WHERE CODE = 'RecipientMode') )AS RECIPIENT_MODE_TEXT,
+               BNS.TITLE,
+               BNS.CREATED_AT AS CREATE_DATE,
+               BNS.UPDATED_AT AS UPDATE_DATE
+        FROM BIZ_NOTIFY_SUBSCRIBE BNS
+        WHERE 1 = 1
+        AND IFNULL(BNS.deleted,'0') = '0'
+        ORDER BY BNS.CREATED_AT DESC,BNS.UPDATED_AT DESC
+		]]>
+    </entry>
+
+    <!--删除通知配置-->
+    <entry key="notify.delete">
+        <![CDATA[
+        UPDATE biz_notify_subscribe
+        SET
+        deleted = '1',
+        {? deleted_by = #userId#,}
+        deleted_at = NOW()
+        WHERE 1 = 1
+        AND id = #notifyId#
+        ]]>
+    </entry>
+
+    <!--删除订阅或者发布配置信息-->
+    <entry key="notify.delete.byBasis">
+        <![CDATA[
+            DELETE FROM biz_notify_subscribe_rules WHERE 1 = 1
+            AND subscribe_id = #notifyId#
+            AND basis = #type#
+		]]>
+    </entry>
+
+    <!--获取订阅或者发布用户信息-->
+    <entry key="notify.get.user">
+        <![CDATA[
+            SELECT SU.ID,
+			       SU.NAME,
+			       SO.NAME        AS DEP,
+			       SU.MOBILE_PHONE AS MOBILE,
+			       SU.LOGIN_ID
+			FROM   SEC_USER         SU,
+			       SEC_ORGANIZATION SO
+			WHERE  SU.ORG_ID = SO.ID
+			AND    SU.ID NOT IN (SELECT BNS.VALUE
+			                     FROM   biz_notify_subscribe_rules BNS
+			                     WHERE  BNS.subscribe_id = #notifyId#
+			                     AND BNS.basis = #type#)
+			{? AND SO.PATH LIKE CONCAT(CONCAT('%',#ORG_ID#),'%') ESCAPE '/'}
+			{? AND SU.NAME LIKE CONCAT(CONCAT('%',#NAME#),'%') ESCAPE '/'}
+			{? AND SU.LOGIN_ID LIKE CONCAT(CONCAT('%',#LOGIN_ID#),'%') ESCAPE '/'}
+			{? AND SO.NAME LIKE CONCAT(CONCAT('%',#DEP#),'%') ESCAPE '/'}
+		]]>
+    </entry>
+
+    <!--获取订阅或者发布用户信息列表-->
+    <entry key="notify.get.user.list">
+        <![CDATA[
+            SELECT SU.ID AS USER_ID,
+			       SU.NAME AS USER_NAME,
+			       SO.NAME        AS ORG_NAME,
+			       SU.MOBILE_PHONE AS MOBILE,
+			       SU.LOGIN_ID
+			FROM   SEC_USER         SU,
+			       SEC_ORGANIZATION SO
+			WHERE  SU.ORG_ID = SO.ID
+			AND    SU.ID IN (SELECT BNS.VALUE
+			                     FROM   biz_notify_subscribe_rules BNS
+			                     WHERE  BNS.subscribe_id = #notifyId#
+			                     AND BNS.basis = #type#)
+			{? AND SU.NAME LIKE CONCAT(CONCAT('%',#NAME#),'%') ESCAPE '/'}
+			{? AND SU.LOGIN_ID LIKE CONCAT(CONCAT('%',#LOGIN_ID#),'%') ESCAPE '/'}
+		]]>
+    </entry>
+
+    <!--删除订阅或者发布用户信息-->
+    <entry key="notify.delete.user">
+        <![CDATA[
+            DELETE FROM biz_notify_subscribe_rules WHERE 1 = 1
+            AND subscribe_id = #notifyId#
+            AND basis = #type#
+            {? AND value = #userId#}
+		]]>
+    </entry>
+
+    <!--获取订阅或者发布角色信息-->
+    <entry key="notify.get.role">
+        <![CDATA[
+        SELECT SR.NAME,
+			   SR.DESCRIPTION AS ROLE_DESCRIPTION,
+			   SR.ID
+		FROM   SEC_ROLE     SR
+		WHERE  SR.ID NOT IN (SELECT BNS.VALUE
+			                     FROM   biz_notify_subscribe_rules BNS
+			                     WHERE  BNS.subscribe_id = #notifyId#
+			                     AND BNS.basis = #type#)
+	    {? AND SR.NAME LIKE CONCAT(CONCAT('%',#NAME#),'%') ESCAPE '/'}
+	    {? AND SR.DESCRIPTION LIKE CONCAT(CONCAT('%',#ROLE_DESCRIPTION#),'%') ESCAPE '/'}
+		]]>
+    </entry>
+
+    <!--获取订阅或者发布角色信息-->
+    <entry key="notify.get.role.list">
+        <![CDATA[
+        SELECT SR.NAME        AS ROLE_NAME,
+			   SR.DESCRIPTION AS ROLE_DESCRIPTION,
+			   SR.ID          AS ROLE_ID
+		FROM   SEC_ROLE     SR
+		WHERE  SR.ID IN (SELECT BNS.VALUE
+			                     FROM   biz_notify_subscribe_rules BNS
+			                     WHERE  BNS.subscribe_id = #notifyId#
+			                     AND BNS.basis = #type#)
+	    {? AND SR.NAME LIKE CONCAT(CONCAT('%',#NAME#),'%') ESCAPE '/'}
+		]]>
+    </entry>
+
+    <!--删除订阅或者发布用户信息-->
+    <entry key="notify.delete.role">
+        <![CDATA[
+            DELETE FROM biz_notify_subscribe_rules WHERE 1 = 1
+            AND subscribe_id = #notifyId#
+            AND basis = #type#
+            {? AND value = #roleId#}
+		]]>
+    </entry>
+
+    <!--获取订阅或者发布组织信息-->
+    <entry key="notify.get.organization">
+        <![CDATA[
+        SELECT SO.ID,
+			   SO.NAME,
+			   SO.PARENT
+		FROM   SEC_ORGANIZATION SO
+		WHERE 1=1
+		AND SO.STATUS != 'disabled'
+		{? AND SO.NAME LIKE CONCAT(CONCAT('%',#NAME#),'%') ESCAPE '/' }
+		AND SO.ID NOT IN (SELECT BNS.VALUE
+			                     FROM   biz_notify_subscribe_rules BNS
+			                     WHERE  BNS.subscribe_id = #notifyId#
+			                     AND BNS.basis = #type#)
+		]]>
+    </entry>
+
+    <!--获取订阅或者发布组织信息-->
+    <entry key="notify.get.organization.list">
+        <![CDATA[
+        SELECT SO.ID,
+			   SO.NAME,
+			   SO.PARENT
+		FROM   SEC_ORGANIZATION SO
+		WHERE 1=1
+		AND SO.STATUS != 'disabled'
+		{? AND    SO.NAME LIKE CONCAT(CONCAT('%',#NAME#),'%') ESCAPE '/' }
+		AND SO.ID IN (SELECT BNS.VALUE
+			                     FROM   biz_notify_subscribe_rules BNS
+			                     WHERE  BNS.subscribe_id = #notifyId#
+			                     AND BNS.basis = #type#)
+		]]>
+    </entry>
+
+    <!--删除订阅或者发布组织信息-->
+    <entry key="notify.delete.organization">
+        <![CDATA[
+            DELETE FROM biz_notify_subscribe_rules WHERE 1 = 1
+            AND subscribe_id = #notifyId#
+            AND basis = #type#
+            {? AND value = #organizationId#}
+		]]>
+    </entry>
+
+    <!--获取订阅或者发布话务分组信息-->
+    <entry key="notify.get.telephonistGroup">
+        <![CDATA[
+        SELECT TG.ID,
+			   TG.NAME,
+			   TG.PARENTID
+		FROM   VANKECRM_BUSINESS.TEL_GROUP TG
+		WHERE 1=1
+		AND IFNULL(TG.isDeleted,'0') = '0'
+		{? AND TG.NAME LIKE CONCAT(CONCAT('%',#NAME#),'%') ESCAPE '/' }
+		AND TG.ID NOT IN (SELECT BNS.VALUE
+			                     FROM   biz_notify_subscribe_rules BNS
+			                     WHERE  BNS.subscribe_id = #notifyId#
+			                     AND BNS.basis = #type#)
+		]]>
+    </entry>
+
+    <!--获取订阅或者发布话务分组信息-->
+    <entry key="notify.get.telephonistGroup.list">
+        <![CDATA[
+        SELECT TG.ID,
+			   TG.NAME,
+			   TG.PARENTID
+		FROM   VANKECRM_BUSINESS.TEL_GROUP TG
+		WHERE 1=1
+		AND IFNULL(TG.isDeleted,'0') = '0'
+		{? AND TG.NAME LIKE CONCAT(CONCAT('%',#NAME#),'%') ESCAPE '/' }
+		AND TG.ID IN (SELECT BNS.VALUE
+			                     FROM   biz_notify_subscribe_rules BNS
+			                     WHERE  BNS.subscribe_id = #notifyId#
+			                     AND BNS.basis = #type#)
+		]]>
+    </entry>
+
+    <!--删除订阅或者发布组织信息-->
+    <entry key="notify.delete.telephonistGroup">
+        <![CDATA[
+            DELETE FROM biz_notify_subscribe_rules WHERE 1 = 1
+            AND subscribe_id = #notifyId#
+            AND basis = #type#
+            {? AND value = #telephonistGroupId#}
+		]]>
+    </entry>
+
+</properties>
+
+

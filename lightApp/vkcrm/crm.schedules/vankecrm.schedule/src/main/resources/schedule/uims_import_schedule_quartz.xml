@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>   
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "spring-beans.dtd" >
+<beans>   
+
+	<!--**************** excel导入功能数据处理定时任务 *******************-->
+    <!--要调度的对象（营业厅系数，岗位系数，人员信息  审批）-->   
+    <bean id="excelImportSchedule" class="bingo.uims.business.task.schedule.ExcelImportSchedule" />   
+  
+    <!--定义定时执行dbQuarz 这个bean中的schedule()方法-->   
+    <bean id="excelImportScheduleTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
+        <property name="targetObject">   
+            <ref bean="excelImportSchedule" />   
+        </property>   
+        <property name="targetMethod">   
+            <value>schedule</value>   
+        </property>
+        <property name="concurrent" value="true" /> 
+    </bean>   
+  
+    <!--触发器的bean的设置，在这里我们设置了我们要触发的jobDetail是哪个。这里我们定义了要触发的jobDetail是dbscheduleTask，即触发器去触发哪个bean..并且我们还定义了触发的时间:每天pm-->   
+    <bean id="excelImportTrigger"  
+        class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">   
+            <ref bean="excelImportScheduleTask" />   
+        </property>   
+        <property name="cronExpression">   
+            <!-- 关键在配置此表达式  秒 分 时 日 月 周 年  -->   
+            <!--  配置：每30秒执行一次 -->
+            <!-- <value>0/10 * * * * ?</value> -->
+            <!-- <value>0 0/2 16 * * ?</value> -->
+            <value>0/10 * * * * ?</value>
+        </property>
+    </bean>
+    
+    <!-- 更新项目权限状态定时器 -->   
+    <bean id="projectRoleScheduleTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
+        <property name="targetObject">   
+            <ref bean="projectRoleSchedule" />   
+        </property>   
+        <property name="targetMethod">   
+            <value>scheduleStrat</value>   
+        </property>
+        <property name="concurrent" value="true" /> 
+    </bean>
+    <bean id="projectRoleTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">   
+            <ref bean="projectRoleScheduleTask" />   
+        </property>   
+        <property name="cronExpression">
+            <value>1 20 3 * * ?</value>
+        </property>
+    </bean>
+    
+    <!-- 满意度抽取定时任务 -->   
+    <bean id="satiScheduleTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
+        <property name="targetObject">   
+            <ref bean="satiSchedule" />   
+        </property>   
+        <property name="targetMethod">   
+            <value>scheduleStrat</value>   
+        </property>
+        <property name="concurrent" value="true" />
+    </bean>
+    <bean id="satiTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">   
+            <ref bean="satiScheduleTask" />   
+        </property>   
+        <property name="cronExpression">
+            <value>1 20 2 * * ?</value>
+        </property>
+    </bean>
+     
+    <!-- 管理触发器的总设置,管理我们的触发器列表,可以在bean的list中放置多个触发器 -->   
+    <bean autowire="no" 
+        class="org.springframework.scheduling.quartz.SchedulerFactoryBean" >
+        <property name="triggers">   
+            <list>
+                <ref local="excelImportTrigger"/>
+                <ref local="projectRoleTrigger"/>
+                <ref local="satiTrigger"/>
+            </list>   
+        </property>
+    </bean>   
+</beans>  

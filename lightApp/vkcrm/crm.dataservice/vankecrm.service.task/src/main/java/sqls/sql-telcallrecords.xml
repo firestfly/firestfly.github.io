@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>话务信息查询</comment>
+	
+	<!-- 多条件查询话务信息 -->
+    <entry key="service.telcallrecords">
+        <![CDATA[
+				SELECT	tcr.id AS id,
+						tcr.code AS code,
+						tcr.callTime AS callTime,
+						tcr.beginTime AS beginTime,
+						tcr.endTime AS endTime,
+						tcr.duration AS duration,
+						tcr.isConnect AS isConnect,
+						tcr.telephonist AS telephonist,
+						tcr.telephonistId AS telephonistId,
+						tcr.hasCheck AS hasCheck,
+						tcr.checker AS checker,
+						tcr.checkerId AS checkerId
+				
+				FROM	tel_call_records AS tcr
+				
+				WHERE	tcr.id = #id#
+				AND		tcr.code = #code#
+				AND		tcr.callTime = #callTime#
+				AND		tcr.beginTime = #beginTime#
+				AND		tcr.endTime = #endTime#
+				AND		tcr.duration = #duration#
+				AND		tcr.isConnect = #isConnect#
+				AND		tcr.telephonist = #telephonist#
+				AND		tcr.telephonistId = #telephonistId#
+				AND		tcr.hasCheck = #hasCheck#
+				AND		tcr.checker = #checker#
+				AND		tcr.checkerId = #checkerId#
+						
+        ]]>
+    </entry>
+    
+  
+</properties>

@@ -1,0 +1,318 @@
+@charset "UTF-8";
+/* 遮罩 */
+.backdrop {
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 1000;
+    overflow: hidden;
+    display: none;
+}
+/* 公告\话务\任务列表 查询 */
+.task_layout {
+    width: 98%;
+    left: 1%;
+    margin: 0 0 0 8px;
+    padding: 4px 0;
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    /* 查询条件区域 */
+    .form_layout {
+        border: 1px solid #F4F4F4;
+        padding: 4px 0;
+        background-color: #F9F9F9;
+        #task,
+        .task {
+            margin: 0;
+            hr {
+                border: 0;
+                border-top: 1px dotted #ddd;
+            }
+            th {
+                width: 8%;
+                border: 0;
+                text-align: right;
+                line-height: 0;
+                min-height: 0;
+                label {
+                    text-overflow: clip;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    font-size: $fontSize;
+                    margin: 0;
+                    color: #A0A0A0;
+                }
+            }
+            td {
+                width: 25%;
+                padding: 3px;
+                border: 0;
+                line-height: 0;
+                min-height: 0;
+                vertical-align: middle;
+                .businesstype-select {
+                    width: auto;
+                }
+            }
+            .alignBottom {
+                vertical-align: bottom;
+            }
+            .alignTop {
+                vertical-align: top;
+            }
+            .alignMiddle {
+                vertical-align: middle;
+            }
+        }
+        input,
+        select {
+            padding: 3px 5px;
+            margin: 0;
+            font-size: $fontSize;
+            border: 1px solid #ddd;
+            outline: none;
+        }
+        .input1 {
+            width: 86px;
+        }
+        .input2 {
+            width: 206px;
+        }
+        .select2 {
+            width: 220px;
+        }
+        .notice-forms-btns {
+            text-align: right;
+        }
+        .autocomplete-min {
+            width: 220px;
+            position: relative;
+            .autocomplete-min-box {
+                position: absolute;
+                background-color: #FFF;
+                left: 0;
+                right: 0;
+                border: 1px solid $coLightBlue;
+                max-height: 160px;
+                overflow-y: auto;
+            }
+            .autocomplete-min-tip {
+                line-height: 26px;
+                text-align: center;
+            }
+            ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+            li {
+                list-style: none;
+                line-height: 26px;
+                text-indent: 1em;
+                cursor: pointer;
+                &:hover {
+                    background-color: #FBFBFB;
+                }
+            }
+        }
+    }
+    /* 功能操作按钮区域 */
+    .operation_btns {
+        padding: 6px 0;
+        overflow: hidden;
+        a {
+            margin: 0 0 0 4px;
+        }
+        ul {
+            list-style: none;
+            margin: 0 0 0 -2px;
+            li {
+                float: left;
+                padding: 6px 16px;
+                text-align: center;
+                color: white;
+                cursor: pointer;
+                background-color: #488fd1;
+                border-left: 2px solid white;
+                border-bottom: 2px solid white;
+            }
+            li:hover {
+                background-color: #4180bc;
+            }
+        }
+    }
+    .right {
+        text-align: right;
+    }
+    .none {
+        display: none;
+    }
+    /* 列表展示区 */
+    .notice-list {
+        overflow: auto;
+        .content-desc {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        table {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            thead {
+                tr {
+                    background-color: #eee;
+                }
+            }
+            tbody {
+                a {
+                    margin: 4px;
+                }
+                tr:hover {
+                    background-color: #ddd;
+                }
+                .column-3 {
+                    width: 300px;
+                }
+                .column-4 {
+                    width: 400px;
+                }
+            }
+        }
+        .list-md-width {
+            width: 1600px;
+        }
+        .list-max-width {
+            width: 2200px;
+        }
+    }
+    /* 分页 */
+    .pagination {
+        margin: 8px 0;
+        height: 30px;
+    }
+    /* 统计信息 */
+    .total {
+        padding: 6px;
+        margin: 10px;
+        float: right;
+        b {
+            color: cadetblue;
+            margin: 0 5px;
+        }
+    }
+}
+/* 编辑\新增 公告窗口 */
+.modal {
+    width: 800px;
+    margin-left: -400px;
+    .control-label {
+        width: 100px;
+    }
+    .controls {
+        margin-left: 100px;
+    }
+    textarea {
+        width: 600px;
+    }
+    .control-label {
+        i {
+            color: red;
+        }
+    }
+    .control-group {
+        margin: 10px 0;
+    }
+    #notice_body {
+        overflow: hidden;
+        .select2 {
+            width: 220px;
+        }
+        .input2 {
+            width: 210px;
+        }
+    }
+    /* 遮罩 */
+    .modal_check_bg {
+        background-color: #000;
+        width: 800px;
+        height: 380px;
+        position: absolute;
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+        top: 0;
+        left: 0;
+        display: none;
+    }
+    /* 公告审核 */
+    .back {
+        height: 22px;
+        width: 24px;
+        text-align: center;
+        margin: 0 auto;
+        cursor: pointer;
+    }
+    .modal_check {
+        height: 280px;
+        width: 100%;
+        z-index: 2;
+        display: none;
+        bottom: 0;
+        position: absolute;
+        left: 0;
+        background: #FFF;
+        .header-info {
+            padding: 6px;
+            text-align: center;
+            border-bottom: 1px solid #F7F3F3;
+        }
+        /* 公告日志 */
+        .record-content {
+            padding: 10px 20px;
+            height: 187px;
+            overflow: auto;
+        }
+        /* 审批内容 */
+        .check-content {
+            padding: 10px 20px;
+            /* 文本提示 */
+            .control-span {
+                float: left;
+                margin: 50px 0;
+                i {
+                    color: red;
+                }
+            }
+        }
+        /* 审批按钮 */
+        .btns-group {
+            text-align: center;
+        }
+    }
+}
+.record-content {
+    .popover {
+        position: relative;
+        max-width: none;
+    }
+    .popover.bottom {
+        .arrow {
+            left: 20px;
+        }
+    }
+}
+#taskinput_relationdialog {
+    .modal-body {
+        max-height: 300px;
+    }
+}

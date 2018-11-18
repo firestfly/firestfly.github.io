@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>查询手机号码</comment>
+
+	<!-- 查询房屋下所有客户的主用手机 -->
+	<entry key="sql.house.mainMobile">
+		<![CDATA[
+		SELECT 
+			c.mainMobile AS mobile
+		FROM 
+			main_customer c 
+		WHERE 
+			c.id 
+		IN (
+			SELECT 
+				mch.customerId 
+			FROM 
+				mid_customer_house mch 
+			WHERE 
+				mch.houseId = #houseId#
+				and IFNULL(mch.isDeleted,0)=0
+			)
+        ]]>
+	</entry>
+	<!-- 查询房屋辅助编码和所属项目code -->
+	<entry key="sql.house.assistCode">
+			<![CDATA[
+				SELECT
+					mh.assistCode AS assistCode,
+					mp.`code` AS projectCode
+				FROM
+					main_house AS mh,
+					main_project AS mp,
+					mid_project_house AS mph
+				WHERE
+					mh.id = #houseId#
+				AND mh.id = mph.houseId
+				AND mp.id = mph.projectId
+				limit 1
+	        ]]>
+		</entry>
+
+</properties>

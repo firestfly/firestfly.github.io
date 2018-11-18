@@ -1,0 +1,159 @@
+<!-- 修改记录报表 - 客户修改记录报表 -->
+
+<div class="task_layout" ms-controller="car">
+    <!-- navigation area --> 
+    <div class="navigation">
+        <ul class="breadcrumb">
+          <li><a>查询信息报表</a> <span class="divider">/</span></li>
+          <li class="active">车辆信息查询</li> 
+        </ul>
+    </div> 
+
+    <!-- search area -->
+    <div class="form_layout">
+        <form> 
+            <fieldset>
+                <table class="table task-table task">
+                    <tr>
+                        <th><label>管理中心:</label></th>
+                         <td> <input type="text" id="organization" name="organization" class="input2 pointer" readonly="true" target="organization" ms-click="choosePlaneControl" ms-attr-value="options.organization.text"/> <i ms-visible="options.organization.id!=''" target="organization" ms-click="cleanCurOptions" class="icon-remove"></i> </td> 
+                        <th><label>项目:</label></th>
+                       <td> <input type="text" id="project" name="project" class="input2 pointer" readonly="true" target="project" ms-click="choosePlaneControl" ms-attr-value="options.project.text" /> <i ms-visible="options.project.id!=''" target="project" ms-click="cleanCurOptions" class="icon-remove"></i> </td> 
+                   
+                          <th><label>网格:</label></th> 
+         <td> <select ms-click="close" class="select2" ms-duplex="options.grid.id"> <option value="" ms-text="options.grid.text"></option> <option ms-repeat="options.grid.list" ms-attr-value="el.id">{{el.name}}</option> </select> <i ms-visible="options.grid.id!=''" target="grid" ms-click="cleanCurOptions" class="icon-remove"></i> </td> 
+                    </tr>
+                    <tr>
+                        <th><label>楼栋:</label></th>
+                        <td> <input type="text" id="building" name="building" class="input2 pointer" readonly="true" target="building" ms-click="choosePlaneControl" ms-attr-value="options.building.text" /> <i ms-visible="options.building.id!=''" target="building" ms-click="cleanCurOptions" class="icon-remove"></i> </td> 
+                        <th><label>房屋:</label></th>
+                         <td> <input type="text" id="house" name="house" class="input2 pointer" readonly="true" target="house" ms-click="choosePlaneControl" ms-attr-value="options.house.text" /> <i ms-visible="options.house.id!=''" target="house" ms-click="cleanCurOptions" class="icon-remove"></i> </td>
+                        <th><label>房屋状态:</label></th> 
+                        <!-- <td><select>
+                            <option>全部</option>
+                            <option>常住</option>
+                            <option>空置</option>
+                            <option>出租</option>
+                            <option>度假</option>
+                        </select></td> -->
+                     <td> <select ms-click="close" class="select2" ms-duplex="options.status.id"> <option value="" ms-text="options.status.text"></option> <option ms-repeat="options.status.list" ms-attr-value="el.id">{{el.name}}</option> </select> <i ms-visible="options.status.id!=''" target="status" ms-click="cleanCurOptions" class="icon-remove"></i> </td>
+                    </tr> 
+                    <tr>
+                        <th><label>客户姓名:</label></th>
+                         <td><input type="text" id="fullName" name="fullName" style="width:182px;">
+                         </td>
+                        <th><label>主用手机:</label></th>
+                         <td><input type="text" id="mainMobile" name="mainMobile" style="width:182px;"></td> 
+                        <th><label>车牌号:</label></th>
+                         <td><input type="text" id="licenseNumber" name="licenseNumber" style="width:182px;"></td>
+                    </tr>
+                    <tr>
+                        <th><label>证件类型:</label></th>
+                        <td> <select ms-click="close" class="select2" ms-duplex="options.certificateType.id"> <option value="" ms-text="options.certificateType.text"></option> <option ms-repeat="options.certificateType.list" ms-attr-value="el.id">{{el.name}}</option> </select> <i ms-visible="options.certificateType.id!=''" target="certificateType" ms-click="cleanCurOptions" class="icon-remove"></i> </td>
+                        <th><label>证件号码:</label></th>
+                        <td><input type="text" id="certificateId" name="certificateId" style="width:182px;"></td>
+                        <th>
+                            <label for="registerTimeStar">登记开始时间:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="Wdate input2" id="registerTimeStar" ms-duplex="form.registerTimeStar" onclick="var endTime=$dp.$('registerTimeEnd');WdatePicker({onpicked:function(){endTime.click();},maxDate:'#F{$dp.$D(\'registerTimeEnd\')}',dateFmt:'yyyy-MM-dd'})">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="registerTimeEnd">登记结束时间:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="Wdate input2" id="registerTimeEnd" onclick="WdatePicker({minDate:'#F{$dp.$D(\'registerTimeStar\',{d:0})}',dateFmt:'yyyy-MM-dd'})" ms-duplex="form.registerTimeEnd">
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form>
+    </div>
+
+   <div class="operation_btns">
+        <a class="btn btn-primary" ms-click="search_event"><span class="icon-search icon-white"></span> 查 询 </a>
+        <a class="btn" ms-click="reset_event"><span class="icon-refresh"></span> 重 置 </a>
+        <a class="btn btn-success" ms-click="export_event" href="javascript:void(0)"><span class="icon-download icon-white"></span> 导 出 </a>
+        <iframe src="" class="hide export-link" ></iframe>
+        <!--<div id="exportLink" class="hide export-link"></div>-->
+    </div>
+
+    <!-- table list area -->
+    <div id="custable" class="notice-list form-list" style="top:278px">
+        <table style="width: 220%" class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>车牌号</th> 
+                    <th>购置时间</th>
+                    <th>车辆品牌</th>
+                    <th>车辆颜色</th>
+                    <th>管理中心</th>
+                    <th>项目</th>
+                    <th>网格</th>
+                    <th>楼栋</th>
+                    <th>房屋</th>
+                    <th>单元</th>
+                    <th>房屋状态</th>
+                    <th>客户姓名</th>
+                    <th>主用手机</th>
+                    <th>证件类型</th>
+                    <th>证件号码</th>
+                </tr>
+            </thead>
+             <tbody ms-if="hasBeenSubmitted"> 
+      <tr ms-repeat="data.list" ms-visible="!data.isLoading"> 
+       <td>{{el.licenseNumber}}</td> 
+       <td>{{el.buyTime}}</td> 
+       <td>{{el.branText}}</td> 
+       <td>{{el.colorText}}</td> 
+       <td>{{el.mcName}}</td> 
+       <td>{{el.projectText}}</td> 
+       <td>{{el.gridName}}</td> 
+        <td>{{el.buildingName}}</td> 
+         <td>{{el.huoseName}}</td> 
+           <td>{{el.unit}}</td> 
+               <td>{{el.statusText}}</td> 
+                <td>{{el.fullName}}</td> 
+                <td>{{el.mainMobile}}</td> 
+                   <td>{{el.certificateText}}</td> 
+                    <td>{{el.certificateId}}</td> 
+      </tr>  
+      <tr ms-if="!data.isLoading &amp;&amp; !data.isError &amp;&amp; data.list.size()==0"> 
+       <td colspan="23">暂无数据</td> 
+      </tr> 
+      <tr ms-if="data.isLoading"> 
+       <td colspan="23">正在加载...</td> 
+      </tr> 
+      <tr ms-if="data.isError"> 
+       <td colspan="23">数据获取失败</td> 
+      </tr> 
+     </tbody> 
+        </table>
+    </div>
+ 
+   <!-- table list page area --> 
+   <div class="total" style="position: absolute; margin:6px 10px; right: 0; bottom: 0;" ms-if="totalSize&gt;0">
+     共 
+    <b ms-text="totalSize"></b> 条记录 
+   </div> 
+   <!-- table list page area --> 
+   <div class="pagination" id="pagination" ms-if="data.list.size()&gt;0"> 
+   </div> 
+   <!-- 选择面板 --> 
+   <div class="choose" id="choosePlane" ms-visible="choosePlane_vis"> 
+    <div class="item-list"> 
+     <ul>  
+      <li ms-repeat="curPlaneList" ms-data-id="el.id" ms-data-text="el.name"> <label ms-text="el.name" ms-attr-title="el.name"></label> </li> 
+     </ul> 
+     <ul ms-visible="curPlaneList.size() == 0"> 
+      <li>暂无数据</li> 
+     </ul> 
+    </div> 
+    <div class="foot"> 
+     <button class="btn btn-small" type="buton" ms-click="close">关 闭</button> 
+     <button class="btn btn-small btn-warning" ms-attr-target="curTarget" type="button" ms-click="cleanCurOptions">清 除</button> 
+    </div> 
+   </div> 
+  </div> 

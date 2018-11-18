@@ -1,0 +1,63 @@
+<div class="form-horizontal task-form" ms-controller="taskovertime">
+	<fieldset ms-visible="!isLoading">
+		<table class="table table-info task-table">
+			<tr>
+				<th>任务标题</th>
+				<td colspan="5">
+					<span ms-text="form.title"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>来电号码</th>
+				<td colspan="5"><span class="span2 mobilenumber" ms-text="form.reportUserMobile"></span>
+					<a class="icf-call" ms-click="callout" ms-data-number="form.reportUserMobile" ms-visible="form.reportUserMobile"></a>
+				</td>
+			</tr>
+			<tr>
+				<th>任务编号</th>
+				<td>
+					<span ms-text="form.taskNo"></span>
+				</td>
+				<th>任务状态</th>
+				<td colspan="3">
+					<span ms-text="form.statusText"></span>
+					<a ms-visible="addTaskVisible" ms-click="addTask">追加</a>
+				</td>
+			</tr>
+			<tr>
+				<th>当前处理人</th>
+				<td>
+					<span></span>
+				</td>
+				<th>创建人</th>
+				<td>
+					<span ms-text="form.creator"></span>
+				</td>
+				<th>创建时间</th>
+				<td>
+					<span ms-text-date="form.createTime"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>任务来源</th>
+				<td>
+					<span ms-text="form.sourceText"></span>
+				</td>
+				<th>任务类型</th>
+				<td>
+					<span ms-text="form.businessType"></span>
+				</td>
+				<th>任务优先级</th>
+				<td>
+					<span ms-text="form.levelTypeText"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>上门时间</th>
+				<td colspan="5">
+					<span ms-text="form.appointmentStartTime"></span>
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+</div>

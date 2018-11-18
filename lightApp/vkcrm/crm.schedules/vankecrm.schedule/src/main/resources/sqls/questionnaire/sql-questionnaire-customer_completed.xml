@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>更新已完成客户列表</comment>	
+	
+	<entry key="sql-sati-extractionCustomer-select-completed">
+	<![CDATA[
+		-- 查询已完成客户
+		select a.project_id, a.house_id, a.customer_id
+		  from biz_answer a
+		 where a.completed = 1
+		   and a.questionnaire_id = ?
+	]]>
+	</entry>
+	<entry key="sql-sati-extractionCustomer-update-completed-setGridId">
+	<![CDATA[
+		-- 更新已完成客户的网格ID
+		UPDATE sati_extraction_completed c7
+		JOIN mid_project_house ph ON ph.houseId = c7.house_id
+		SET c7.grid_id = ph.gridId
+	]]>
+	</entry>	
+</properties>

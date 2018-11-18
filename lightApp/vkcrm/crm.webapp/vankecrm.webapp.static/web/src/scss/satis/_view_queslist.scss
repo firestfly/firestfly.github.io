@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+.queslist {
+  .queslist-list {
+    list-style: none;
+    margin: 0;
+    border: 1px solid $coLightGray;
+    padding: 10px 20px 20px 20px;
+  }
+  .queslist-legend {
+    color: $fontBlue;
+    margin: 30px 20px 0 20px;
+    font-weight: normal;
+  }
+  li {
+    border-bottom: 1px dotted $coLightGray;
+    margin-top: 10px;
+  }
+}
+
+.qb {
+  $leftWidth: 40px;
+  $rightWidth: 340px;
+  padding: 0 10px;
+
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  .qb-left {
+    float: left;
+    width: $leftWidth;
+
+    span {
+      font-size: 30px;
+      color: $coGreen;
+      margin-top: 10px;
+      display: inline-block;
+    }
+  }
+  .qb-right {
+    float: right;
+    width: $rightWidth;
+    text-align: right;
+
+    em {
+      display: inline-block;
+      width: 3em;
+      text-align: left;
+    }
+  }
+  .qb-center {
+    margin-left: $leftWidth;
+    margin-right: $rightWidth;
+  }
+  .qb-btn-group, .qb-summary {
+    margin: 8px 0;
+  }
+  .qb-summary {
+    @include ellipsis;
+    color: $fontLight;
+  }
+  .qb-btn {
+    border: 1px solid $coGreen;
+    color: $coGreen;
+    padding: 2px 4px;
+    display: inline-block;
+    text-align: center;
+    &.disabled{
+      border-color: $fontLight;
+      color: $fontLight;
+    }
+  }
+}

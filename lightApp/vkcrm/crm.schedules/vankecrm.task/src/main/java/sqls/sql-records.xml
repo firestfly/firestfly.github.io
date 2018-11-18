@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+    <!-- 获取一段时间内的录音数据 -->
+    <entry key="sql.query.records.between">
+        <![CDATA[
+        SELECT * FROM
+        (
+            SELECT CALLID AS 'call_id', CPID AS 'record_id', START_TIME AS 'starttime', END_TIME AS 'endtime', [FILE_NAME] AS 'filepath'
+            FROM crm_recorder_log WITH(NOLOCK) WHERE CPID in
+            (
+                SELECT CPID FROM crm_recorder_log WITH(NOLOCK)
+                WHERE START_TIME BETWEEN #startTime# AND #endTime#
+                GROUP BY CPID
+                HAVING COUNT(1) > 1
+            ) AND CALLDIRECTION = 1
+            UNION ALL
+            SELECT CALLID AS 'call_id', CPID AS 'record_id', START_TIME AS 'starttime', END_TIME AS 'endtime', [FILE_NAME] AS 'filepath'
+            FROM crm_recorder_log with(nolock) WHERE CPID IN
+            (
+                SELECT CPID FROM crm_recorder_log WITH(NOLOCK)
+                WHERE START_TIME BETWEEN #startTime# AND #endTime#
+                GROUP BY CPID
+                HAVING COUNT(1) = 1
+            )
+        ) t ORDER BY t.starttime ASC
+        ]]>
+    </entry>
+
+    <!-- 清空之前同步的数据 -->
+    <entry key="sql.clean.records.between">
+        <![CDATA[
+        DELETE FROM `sync_call_tapes` WHERE starttime BETWEEN #startTime# AND #endTime#
+        ]]>
+    </entry>
+
+</properties>

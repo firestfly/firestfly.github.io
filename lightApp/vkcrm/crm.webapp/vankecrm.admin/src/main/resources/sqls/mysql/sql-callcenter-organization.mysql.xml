@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>组织相关sql</comment>
+
+    <!--组织机构查询列表-->
+    <entry key="callcenter.organization.organization_list">
+        <![CDATA[
+	    SELECT SO.ID, SO.NAME, ifnull(SOO.NAME,'万科物业') PARENT_NAME, SO.PARENTID as PARENT
+	      FROM tel_group SO
+	      LEFT OUTER JOIN tel_group SOO
+	        ON SO.PARENTID = SOO.ID
+			WHERE ifnull(SO.isDeleted, 0) = 0
+			{? AND SO.NAME LIKE CONCAT(CONCAT('%',#org_name#),'%') ESCAPE '/' }
+			{? AND SO.ID IN (SELECT O2.ID
+								 FROM   tel_group O1, tel_group O2
+								 WHERE O1.ID = O2.PARENTID
+								 AND (O1.ID = #parent# OR O1.PARENTID = #parent#)) }
+	]]>
+    </entry>
+
+    <!--获取第一层组织机构-->
+    <entry key="callcenter.organization.edit.tree">
+        <![CDATA[
+		SELECT SO.ID,
+		       IFNULL(SO.NAME, '万科物业') AS TEXT,
+		       IFNULL(SO.PARENTID, 'root') AS PARENT_ID,
+		       CASE (SELECT COUNT(*) FROM tel_group WHERE PARENTID = SO.ID) WHEN 0 THEN '0' ELSE '1' END AS LEAF,
+		       ifnull((select NAME from tel_group WHERE ID = SO.PARENTID),'万科物业') as PARENT_NAME,
+		       '1' as STATUS
+		  FROM tel_group SO
+		 WHERE ifnull(SO.isDeleted, 0) = 0
+		 ORDER BY SO. name
+	]]>
+    </entry>
+
+    <!--获取子节点组织机构-->
+    <entry key="callcenter.organization.edit.tree.children">
+        <![CDATA[
+		SELECT SO.ID AS ID, 
+		       SO.NAME AS TEXT, 
+		       SO.parentId AS PARENT_ID,
+		       (CASE WHEN (SELECT COUNT(*) FROM tel_group WHERE parentId = SO.ID) = 0 THEN '0' ELSE '1' END) AS LEAF,
+		       SOP.NAME PARENT_NAME
+		FROM tel_group SO
+	        LEFT OUTER JOIN tel_group SOP
+		ON   SO.parentId = SOP.ID
+		WHERE ifnull(SO.isDeleted, 0) = 0
+		ORDER BY SO.name
+	              {? AND SO.PARENT = #parentId#}
+		ORDER BY SO.name
+	]]>
+    </entry>
+
+    <!--获取第一层组织机构-->
+    <entry key="callcenter.organization.tree">
+        <![CDATA[
+		SELECT SO.id,
+		       IFNULL(SO.NAME, '万科物业') AS TEXT,
+		       IFNULL(SO.parentId, 'root') AS PARENT_ID,
+		       CASE (SELECT COUNT(*) FROM tel_group WHERE PARENTID = SO.ID)
+		         WHEN 0 THEN '0' ELSE '1' END AS LEAF
+		  FROM tel_group SO
+		 WHERE IFNULL(SO.isDeleted, 0) = 0
+		 ORDER BY SO.NAME
+	]]>
+    </entry>
+
+    <!--获取子节点组织机构-->
+    <entry key="callcenter.organization.tree.children">
+        <![CDATA[
+		SELECT SO.id,
+		       IFNULL(SO.NAME, '万科物业') AS TEXT,
+		       IFNULL(SO.parentId, 'root') AS PARENT_ID,
+		       CASE (SELECT COUNT(*) FROM tel_group WHERE PARENTID = SO.ID)
+		         WHEN 0 THEN '0' ELSE '1' END AS LEAF
+		  FROM tel_group SO
+		 WHERE IFNULL(SO.isDeleted, 0) = 0
+			  {? AND SO.PARENTID = #parentId#}
+		ORDER BY SO.NAME
+	]]>
+    </entry>
+
+
+    <!--软删除分组及子分组-->
+    <entry key="callcenter.organization.selectDeleteGroups">
+        <![CDATA[
+		select *
+		  from tel_group t
+		 where t.id = ?
+		    or t.id in
+		       (select c.id
+		          from tel_group c
+		         where c.parentId = ?)
+		    or t.id in
+		       (select c1.id
+		          from tel_group c1
+		         where c1.parentId in
+		               (select c2.id
+		                  from tel_group c2
+		                 where c2.parentId = ?))
+		   and ifnull(t.isDeleted, 0) = 0
+	]]>
+    </entry>
+
+    <!--获取职务为组长的话务员信息-->
+    <entry key="callcenter.user.get.dutyid2">
+        <![CDATA[
+		SELECT id AS ID,NAME AS TEXT FROM tel_telephonist TT WHERE TT.dutyId = '2'
+		]]>
+    </entry>
+
+    <!--获取职务为组长的话务员信息-->
+    <entry key="callcenter.user.get.isConsult">
+        <![CDATA[
+        SELECT CODE AS ID, VALUE AS TEXT FROM dim_dictionary_items WHERE dictionaryId IN (SELECT id FROM dim_dictionary WHERE CODE = 'ConsultType')
+		]]>
+    </entry>
+</properties>

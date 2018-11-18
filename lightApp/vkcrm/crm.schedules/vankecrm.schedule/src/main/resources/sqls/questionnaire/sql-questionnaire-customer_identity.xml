@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>问卷客户抽取处理特殊身份客户信息，包括法律纠纷户和不接受调查客户</comment>	
+	<entry key="sql-sati-extractionJiufen-insert1">
+	<![CDATA[
+		-- 更新法律纠纷客户 
+		insert into sati_extraction_identity
+		  (customer_id)
+		  (select s.customerId
+		     from dim_cust_specialidentity s
+		    where s.identity = 8
+		      and now() BETWEEN s.beginDate and s.endDate)
+	]]>
+	</entry>
+	
+	<entry key="sql-sati-extractionJiufen-selectAnomalous">
+	<![CDATA[
+	-- 查询接受调查客户（biz库）
+	SELECT t.customer_id
+	  FROM biz_anomalous_customer t
+	 WHERE DATE_ADD(t.start_time, INTERVAL ? MONTH) > now()
+	   AND t.anomalous_type = 1
+	]]>
+	</entry>
+</properties>

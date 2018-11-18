@@ -1,0 +1,445 @@
+<div class="form-horizontal" ms-controller="taskinput">
+    <div class="tasktab-lead" ms-click="showSidebar" ms-visible="!simpleModel && draftList.size()==0">
+        暂无任务，点击查看一下任务草稿吧
+    </div>
+    <div ms-if="!simpleModel" class="task-draft-list" id="draftBarList">
+        <a class="task-tag task-tag-add" ms-class="hidden:newTaskHidden" ms-class-1="hidden:model.callTime==''" ms-click="eventNewTask">
+            <span>新增任务</span>
+        </a>
+        <a ms-repeat="draftList" class="task-tag" ms-class="on:draftId==el.id" ms-class-1="in:el.isDraft" ms-data-id="el.id">
+            <i class="icf-delete"></i>
+            <span ms-text="el.date|date('MM月dd日 HH:mm:ss')"></span>
+        </a>
+    </div>
+    <div class="task-draft-content task-form" ms-visible="draftList.size()>0">
+        <fieldset>
+            <form id="taskinput_taskform" autocomplete="off">
+                <table class="table table-info task-table">
+                    <tr>
+                        <th class="alignBottom">任务来源</th>
+                        <td colspan="3">
+                            <select class="taskio" ms-duplex="form.source" data-validator="required" id="taskinput_source">
+                                <option ms-repeat="taskSourceOptions" ms-attr-value="el.code" ms-text="el.value"></option>
+                            </select>
+                            <em class="icf-import errortip"></em>
+
+                        </td>
+                        <th class="alignBottom">任务优先级</th>
+                        <td colspan="3">
+                            <select class="taskio" ms-duplex="form.levelType" data-validator="required">
+                                <option ms-repeat="taskLevelOptions" ms-attr-value="el.code" ms-text="el.value"></option>
+                            </select>
+                            <em class="icf-import errortip"></em>
+                        </td>
+                        <th class="alignBottom">上门时间</th>
+                        <td colspan="3">
+                            <input type="text" class="taskio" readonly="readonly" ms-duplex="form.appointmentStartTime" onfocus="WdatePicker({minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                            <em class="icf-import errortip"></em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="alignBottom">任务类型</th>
+                        <td colspan="11">
+                            <input type="text" class="span4" ms-duplex="form.businessTypeFullText" ms-widget="businessType,taskinputBusinessWidget" data-businesstype-onlychild readonly="readonly" data-validator="required{请选择一个匹配的业务类型}">
+                            <em class="icf-import errortip"></em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="alignTop">描述</th>
+                        <td colspan="11">
+                            <textarea class="span9" rows="6" ms-duplex-content="form.content" data-validator="required{请详细记录客户的反馈}|length[0~500]{您输入的字数过多，请将内容精简到500字以内}"></textarea>
+                            <em class="icf-import errortip"></em>
+
+                            <div class="input-tip">温馨提示：
+                                <span>描述须在500字以内的，且只能包含<strong>%+-@：:、，。？！“”（）；《》</strong>及<strong>中英文</strong>字符</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="alignBottom">项目</th>
+                        <td colspan="5">
+                            <input type="text" class="span3" data-target="project" ms-keyup="autoinput" ms-attr-value="form.projectName" autocomplete="off">
+                            <input type="hidden" ms-attr-value="form.projectCode" data-validator="required{请正确输入客户所属项目名}">
+                            <i class="icf-check co-green" ms-if="!!form.projectCode"></i>
+                            <em class="icf-import errortip"></em>
+
+                            <div class="autocomplete" target="project">
+                                <div class="autocomplete-box" ms-visible="project_auto.visible">
+                                    <div class="autocomplete-tip" ms-visible="project_auto.loading">查询中...</div>
+                                    <div class="autocomplete-tip" ms-visible="!project_auto.loading && project_auto.list.size()==0">查询无数据
+                                    </div>
+                                    <ul ms-visible="!project_auto.loading" id="project_auto_list">
+                                        <li ms-repeat="project_auto.list" ms-data-id="el.id" ms-data-code="el.code" ms-data-text="el.name" ms-text="el.name"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <th class="alignBottom">楼栋</th>
+                        <td colspan="5">
+                            <input type="text" class="span3" data-target="building" ms-keyup="autoinput" ms-attr-value="form.buildingName" ms-attr-disabled="!form.projectId" autocomplete="off" data-validator="func[vali_buildinginput]">
+                            <input type="hidden" ms-attr-value="form.buildingId">
+                            <i class="icf-check co-green" ms-if="form.buildingId||form.buildingCode"></i>
+                            <a class="icf-search" ms-visible="!!form.projectId" ms-click="eventQueryAuto('building')"></a>
+                            <em class="icf-import errortip"></em>
+
+                            <div class="autocomplete" target="building">
+                                <div class="autocomplete-box" ms-visible="building_auto.visible">
+                                    <div class="autocomplete-tip" ms-visible="building_auto.loading">查询中...</div>
+                                    <div class="autocomplete-tip" ms-visible="!building_auto.loading && building_auto.list.size()==0">查询无数据
+                                    </div>
+                                    <ul ms-visible="!building_auto.loading" id="building_auto_list">
+                                        <li ms-repeat="building_auto.list" ms-data-id="el.id" ms-data-code="el.code" ms-data-text="el.name" ms-text="el.name"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="alignBottom">房屋</th>
+                        <td colspan="11">
+                            <input type="text" class="span3" data-target="house" ms-keyup="autoinput" ms-attr-value="form.houseName" ms-attr-disabled="!form.buildingId" autocomplete="off" data-validator="func[vali_houseinput]">
+                            <input type="hidden" ms-attr-value="form.houseCode" ms-data-validator="houseValidator">
+                            <i class="icf-check co-green" ms-if="form.houseId||form.houseCode"></i>
+                            <a class="icf-bookopened" title="订阅关系" ms-visible="form.houseCode" ms-click="eventShowRelation"></a>
+                            <a class="icf-search" ms-visible="!!form.buildingId" ms-click="eventQueryAuto('house')"></a>
+                            <span class="label label-info" ms-visible="isout" title="外盘">外盘</span>
+                            <em class="icf-import errortip"></em>
+
+                            <div class="autocomplete" target="house">
+                                <div class="autocomplete-box" ms-visible="house_auto.visible">
+                                    <div class="autocomplete-tip" ms-visible="house_auto.loading">查询中...</div>
+                                    <div class="autocomplete-tip" ms-visible="!house_auto.loading && house_auto.list.size()==0">查询无数据
+                                    </div>
+                                    <ul ms-visible="!house_auto.loading" id="house_auto_list">
+                                        <li ms-repeat="house_auto.list" ms-data-id="el.houseId" ms-data-code="el.houseCode" ms-data-text="el.houseName" ms-data-isout="el.outer" ms-text="el.houseName"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="alignTop">公告</th>
+                        <td colspan="11">
+                            <table class="table table-condensed table-list noticelist" id="index_noticelist">
+                                <tr>
+                                    <th>发布时间</th>
+                                    <th>公告内容</th>
+                                    <th>生效时间</th>
+                                    <th>发布人</th>
+                                </tr>
+                                <tr ms-repeat="notice.data">
+                                    <td>
+                                        <span ms-text="el.publishTime"></span>
+                                    </td>
+                                    <td style="overflow: hidden;">
+                                        <a class="n-content ellipsis" ms-data-id="el.id" style="width: 100%;margin-right: -200px;">
+                                            <span ms-html="el.summary"></span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span ms-text="el.takeEffectTime"></span>
+                                    </td>
+                                    <td>
+                                        <span ms-text="el.noticeSource==1?'呼叫中心':el.projectName"></span>
+                                        <span>-</span>
+                                        <span ms-text="el.publisher"></span>
+                                    </td>
+                                </tr>
+                                <tr ms-if="!notice.isLoading && notice.data.size()==0">
+                                    <td class="align-center" colspan="4">暂无公告</td>
+                                </tr>
+                                <tr ms-if="notice.isLoading">
+                                    <td class="align-center" colspan="4">正在加载...</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="alignBottom">房屋管家</th>
+                        <td colspan="3">
+                            <span ms-text="managerName"></span>
+                            <th class="alignBottom">管家电话</th>
+                            <td colspan="3">
+                                <span ms-text="managerPhone"></span>
+                                <a class="icf-call" ms-visible="!simpleModel && !!managerPhone" ms-click="callout(managerPhone)"></a>
+                            </td>
+                            <th class="alignBottom">交付时间</th>
+                            <td colspan="3">
+                                <span ms-text="deliverTime"></span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td colspan="12">
+                            <hr/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="alignTop">呼入采集</th>
+                        <td colspan="11">
+                            <div class="togglebox">
+                                <label class="inline" ms-repeat="reasonList">
+                                    <input name="callReason" ms-attr-value="el.id" type="checkbox" ms-duplex="form.reasons">
+                                    <span ms-text="el.content"></span>
+                                </label>
+                                <em class="icf-import errortip"></em>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="alignBottom">来电号码</th>
+                        <td class="alignBottom" colspan="3">
+                            <span class="taskio mobilenumber" ms-text="form.reportUserMobile"></span>
+                            <a class="icf-call" ms-click="callout(form.reportUserMobile)" ms-if="!simpleModel"></a>
+                        </td>
+                        <th class="alignBottom">客户名称</th>
+                        <td colspan="3">
+                            <input type="text" class="taskio" ms-duplex-name="form.contactsName" data-validator="required{请输入客户名称}">
+                            <a class="icf-person" ms-visible="!!form.contactsUserId" ms-click="eventShowCustomer" title="关联信息"></a>
+                            <a class="icf-edit" ms-click="custShow" title="编辑信息"></a>
+                            <em class="icf-import errortip"></em>
+                        </td>
+                        <th class="alignBottom">联系电话</th>
+                        <td colspan="3">
+                            <input type="text" class="taskio" ms-duplex-mobile="form.contactsMobile" data-validator="required|phone{请正确输入客户的联系电话，联系号码为座机时，请添加区号}">
+                            <a class="icf-call" ms-click="callout(form.contactsMobile)" ms-if="!simpleModel"></a>
+                            <em class="icf-import errortip"></em>
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <td colspan="2">
+                            <a class="btn btn-link">编辑信息</a>
+                        </td>
+                    </tr> -->
+                </table>
+                <br/>
+            </form>
+        </fieldset>
+        <fieldset ms-visible="custVisible">
+            <form id="taskinput_customerform">
+                <table class="table table-info task-table">
+                    <tr>
+                        <th>性别</th>
+                        <td>
+                            <select class="taskio" ms-duplex="cust.sex">
+                                <option value="">==请选择==</option>
+                                <option ms-repeat="sexOptions" ms-attr-value="el.code">{{el.value}}</option>
+                            </select>
+                        </td>
+                        <th>与业主关系</th>
+                        <td>
+                            <select class="taskio" ms-duplex="cust.relationType">
+                                <option value="">==请选择==</option>
+                                <option ms-repeat="relationTypeOptions" ms-attr-value="el.code">{{el.value}}</option>
+                            </select>
+                        </td>
+                        <th>与房屋关系</th>
+                        <td>
+                            <select class="taskio" ms-duplex="cust.houseCustomerRelationType">
+                                <option value="">==请选择==</option>
+                                <option ms-repeat="houseCustomerRelationTypeOptions" ms-attr-value="el.code">{{el.value}}
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>特殊身份</th>
+                        <td colspan="5">
+                            <label ms-repeat="identityOptions" class="inline t-radio">
+                                <input ms-duplex="cust.identity" type="checkbox" ms-attr-value="el.code">{{el.value}}</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>客户标签</th>
+                        <td colspan="5">
+                            <label ms-repeat="hobbyOptions" class="inline t-radio">
+                                <input ms-duplex="cust.hobbies" type="checkbox" ms-attr-value="el.code" />{{el.value}}</label>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </fieldset>
+        <div id="taskinput_userdialog" class="modal hide">
+            <div class="modal-header">
+                <h3>客户信息</h3>
+            </div>
+            <div class="modal-body form">
+                <table class="table table-info user-info">
+                    <tbody>
+                        <tr>
+                            <th>姓名</th>
+                            <td>
+                                <span ms-text="custinfo.fullName"></span>
+                            </td>
+                            <th>证件类型</th>
+                            <td>
+                                <span ms-text="custinfo.certificateTypeText"></span>
+                            </td>
+                            <th>证件号码</th>
+                            <td>
+                                <span ms-text="custinfo.certificateId"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>性别</th>
+                            <td>
+                                <span ms-text="custinfo.sexText"></span>
+                            </td>
+                            <th>生日</th>
+                            <td>
+                                <span ms-text="custinfo.birthday"></span>
+                            </td>
+                            <th>主用手机</th>
+                            <td>
+                                <span ms-text="custinfo.mainMobile"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>住宅电话</th>
+                            <td>
+                                <span ms-text="custinfo.homeTel"></span>
+                            </td>
+                            <th>备用手机</th>
+                            <td>
+                                <span ms-text="custinfo.standbyMobile"></span>
+                            </td>
+                            <th>客户类型</th>
+                            <td>
+                                <span ms-text="custinfo.customerTypeText"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+    <div class="cover" ms-class="on:waiting">
+        <span>正在保存...</span>
+    </div>
+    <div class="task-draft-btns" ms-visible="draftList.size()>0">
+
+        <label class="inline" ms-repeat="taskdealOptions">
+            <input name="index_taskdeal" ms-duplex-string="form.taskdeal" ms-attr-value="el.code" type="radio">
+            <span ms-text="el.value"></span>
+        </label>
+        <a class="btn btn-success" id="saveDraft">
+            <span>保存草稿</span>
+        </a>
+        <a class="btn btn-success" id="submitTask">
+            <span>提交任务</span>
+        </a>
+    </div>
+</div>
+
+<div id="taskinput_relationdialog" class="modal hide" ms-controller="taskinput_relation">
+    <div class="modal-header">
+        <h3>订阅关系</h3>
+    </div>
+    <div class="modal-body form">
+        <div class="relation-btns">
+            <span class="btn" ms-class="active:type=='propertyFee'" ms-click="change('propertyFee')">
+          <i class="icf-wuyefei"></i>
+          物业费</span>
+            <span class="btn hide" ms-class="active:type=='card'" ms-click="change('card')">
+          <i class="icf-card"></i>
+          一卡通</span>
+            <span class="btn" ms-class="active:type=='parcel'" ms-click="change('parcel')">
+          <i class="icf-package"></i>
+          邮包</span>
+        </div>
+        <table class="table table-list" ms-if="type=='card'">
+            <thead>
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ms-repeat="card">
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-list" ms-if="type=='propertyFee'">
+            <thead>
+                <tr>
+                    <th>月份</th>
+                    <th>应付金额</th>
+                    <th>实付金额</th>
+                    <th>条目名称</th>
+                    <th>欠缴情况</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ms-if="loading">
+                    <td colspan="5" class="align-center">正在加载...</td>
+                </tr>
+                <tr ms-if="!loading && propertyFee.size()==0">
+                    <td colspan="5" class="align-center">暂无数据</td>
+                </tr>
+                <tr ms-repeat="propertyFee">
+                    <td>
+                        <span ms-text="el.mth"></span>
+                    </td>
+                    <td>
+                        <span ms-text="el.expenses"></span>
+                    </td>
+                    <td>
+                        <span ms-text="el.paid"></span>
+                    </td>
+                    <td>
+                        <span ms-text="el.expenseName"></span>
+                    </td>
+                    <td>
+                        <span ms-text="el.status"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-list" ms-if="type=='parcel'">
+            <thead>
+                <tr>
+                    <th>客户名称</th>
+                    <th>客户电话</th>
+                    <th>快递公司</th>
+                    <th>邮包单号</th>
+                    <th>状态</th>
+                    <th>日期</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ms-if="loading">
+                    <td colspan="6" class="align-center">正在加载...</td>
+                </tr>
+                <tr ms-if="!loading && parcel.size()==0">
+                    <td colspan="6" class="align-center">暂无数据</td>
+                </tr>
+                <tr ms-repeat="parcel">
+                    <td>
+                        <span ms-text="el.custName"></span>
+                    </td>
+                    <td>
+                        <span ms-text="el.custMobile"></span>
+                    </td>
+                    <td>
+                        <span ms-text="el.expCompany"></span>
+                    </td>
+                    <td>
+                        <span ms-text="el.billNo"></span>
+                    </td>
+                    <td>
+                        <span>{{el.status | pasestatus}}</span>
+                    </td>
+                    <td>
+                        <span ms-text="el.time"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="pagination" id="taskinput_relation_pager" ms-visible="type=='parcel'"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal">关闭</button>
+    </div>
+</div>

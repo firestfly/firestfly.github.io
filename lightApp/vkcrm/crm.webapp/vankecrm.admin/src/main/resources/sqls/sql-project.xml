@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>使用KISS 框架的简单示例</comment>
+	
+	<!--列出特定角色的功能操作-->
+	<entry key="project.function.treeList">
+	<![CDATA[
+		SELECT P.ID AS ID,
+		       P.NAME AS TEXT,
+		       P.parentId PARENT_ID,
+		       (CASE
+		         WHEN P.levelType = '1' THEN '~/statics/images/icon_module.gif'
+		         WHEN P.levelType = '2' THEN '~/statics/images/icon_page.gif'
+		         WHEN P.levelType = '3' THEN '~/statics/images/icon_element.gif'
+		         WHEN P.levelType = '8' THEN '~/statics/images/icon_page.gif'
+		       END) AS ICON,
+		       (CASE
+		         WHEN P.levelType = '1' THEN '~/statics/images/icon_module.gif'
+		         WHEN P.levelType = '2' THEN '~/statics/images/icon_page.gif'
+		         WHEN P.levelType = '3' THEN '~/statics/images/icon_element.gif'
+		         WHEN P.levelType = '8' THEN '~/statics/images/icon_page.gif'
+		       END) AS REF_ICON,
+		       P.levelTypeText AS TYPE,
+		       'true' AS SHOW_CHECK,
+		       'true' AS IS_EXPAND,
+		       '0' AS CHECKSTATE
+		  FROM tree_organization P
+		 where p.levelType not in ('4', '5', '6')
+		   and ifnull(p.isdeleted,0) = 0
+	]]>
+	</entry>	
+		
+	<!-- 查询项目 -->
+	<entry key="project.function.queryProject">
+	<![CDATA[
+		SELECT p.ID, p.NAME
+		  from main_project p
+		 where ifnull(p.isdeleted,0) = 0
+		 {?and p.name LIKE CONCAT(CONCAT('%', #PROJECT_NAME#), '%') ESCAPE '/'}		 
+		 limit 0,50
+	]]>
+	</entry>	
+			
+	<!-- 获取已选项目列表 -->
+	<entry key="project.function.querySelectedProject">
+	<![CDATA[
+		select p.ID          as projectId,
+		       p.NAME        as projectName,
+		       ifnull(DATE_FORMAT(mou.startTime, '%Y-%m-%d'),'') as startTime,
+		       ifnull(DATE_FORMAT(mou.endTime, '%Y-%m-%d'),'')   as endTime
+		  from mid_organization_user mou, main_project p
+		 WHERE mou.organizationId = p.id
+		   and ifnull(mou.isdeleted, 0) = 0
+		   and ifnull(p.isdeleted, 0) = 0
+		   and mou.userId = ?
+	]]>
+	</entry>
+			
+	<!-- 获取已选项目列表 -->
+	<entry key="project.function.querySelectedOrganization">
+	<![CDATA[
+		select *
+		  from mid_organization_user mou
+		 WHERE mou.userId = ? and mou.isdeleted = 0
+	]]>
+	</entry>
+				
+	<!-- 通过选择组织和项目确认最终项目列表 -->
+	<entry key="project.function.queryProjectResust">
+	<![CDATA[
+		select p.ID, p.NAME
+		  from tree_organization p
+		 where p.parentId in (select o.id
+		                        from tree_organization o
+		                       where o.parentId in ($ORGANIZATION_IDS$)
+		                          or o.id in ($ORGANIZATION_IDS$))
+		   and p.levelTypeText = 'PRJ'
+		   and ifnull(p.isdeleted, 0) = 0
+		union
+		select p.ID, p.NAME
+		  from tree_organization p
+		 where p.parentId in
+		       (select p.ID
+		          from tree_organization p
+		         where p.parentId in
+		               (select o.id
+		                  from tree_organization o
+		                 where o.parentId in ($ORGANIZATION_IDS$)
+		                    or o.id in ($ORGANIZATION_IDS$)))
+		   and p.levelTypeText = 'PRJ'
+		   and ifnull(p.isdeleted, 0) = 0
+	]]>
+	</entry>
+					
+	<!-- 查询客户的组织树权限 -->
+	<entry key="project.function.queryProjectParents">
+	<![CDATA[
+		SELECT t.parentId AS PARENT_ID /** 项目上一层 */
+		  FROM tree_organization t, mid_organization_user o
+		 WHERE t.id = o.organizationId
+		   AND t.levelType = '4'
+		   AND o.isdeleted = 0
+		   AND o. STATUS = 1
+		   and o.userId = ?
+		union
+		SELECT t.parentId /** 项目上两层 */
+		  from tree_organization t
+		 where t.id in (SELECT t.parentId AS PARENT_ID /** 项目上一层 */
+		                  FROM tree_organization t, mid_organization_user o
+		                 WHERE t.id = o.organizationId
+		                   AND t.levelType = '4'
+		                   AND o.isdeleted = 0
+		                   AND o. STATUS = 1
+		                   and o.userId = ?)
+		union
+		SELECT t.parentId /** 项目上三层 */
+		  from tree_organization t
+		 where t.id in
+		       (SELECT t.parentId /** 项目上两层 */
+		          from tree_organization t
+		         where t.id in (SELECT t.parentId AS PARENT_ID /** 项目上一层 */
+		                          FROM tree_organization t, mid_organization_user o
+		                         WHERE t.id = o.organizationId
+		                           AND t.levelType = '4'
+		                           AND o.isdeleted = 0
+		                           AND o. STATUS = 1
+		                           and o.userId = ?))
+		union
+		SELECT t.parentId /** 项目上四层 */
+		  from tree_organization t
+		 where t.id in
+		       (SELECT t.parentId /** 项目上三层 */
+		          from tree_organization t
+		         where t.id in (SELECT t.parentId /** 项目上两层 */
+		                          from tree_organization t
+		                         where t.id in (SELECT t.parentId AS PARENT_ID /** 项目上一层 */
+		                                          FROM tree_organization     t,
+		                                               mid_organization_user o
+		                                         WHERE t.id = o.organizationId
+		                                           AND t.levelType = '4'
+		                                           AND o.isdeleted = 0
+		                                           AND o. STATUS = 1
+		                                           and o.userId = ?)))
+
+	]]>
+	</entry>
+	
+	
+</properties>

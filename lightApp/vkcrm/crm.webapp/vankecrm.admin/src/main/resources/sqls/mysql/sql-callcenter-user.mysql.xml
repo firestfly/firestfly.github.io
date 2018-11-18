@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>用户相关sql</comment>
+	
+	<!-- 用户信息列表  -->
+	<entry key="callcenter.user.user_list">
+	<![CDATA[
+		select t.id,
+		       t.name,
+		       t.mobilenumber,
+		       t.dutyid,
+		       t.dutytext,
+		       (select group_concat(gg.name) from tel_telephonist_group g, tel_group gg where g.groupid = gg.id and 
+		       		g.telephonistid = t.id and ifnull(g.isdeleted,0)=0 and ifnull(gg.isdeleted,0)=0) as groupnames,
+		       (select group_concat(gg.id)   from tel_telephonist_group g, tel_group gg where g.groupid = gg.id and 
+		       		g.telephonistid = t.id and ifnull(g.isdeleted,0)=0 and ifnull(gg.isdeleted,0)=0) as groupids,
+		       (select group_concat(concat(cc.number, concat(':', k.name)))
+							from tel_telecomno cc, dim_telecom_skills k
+						 where cc.skillid = k.id
+							 and cc.telephonistid = t.id) as numbers
+		  from tel_telephonist t
+		 where 1 = 1
+		 {?and t.id = #ACCOUNT#}
+		 {?and t.dutyId = #dutyId#}
+		 {?and t.name LIKE CONCAT(CONCAT('%',#USER_NAME#),'%') ESCAPE '/'}
+		 {?and t.mobileNumber = #MOBILE#}
+		 {?and EXISTS (select 1 from tel_telecomno c         where c.telephonistId = t.id and c.number = #NUMBER#)}
+		 {?and EXISTS (select 1 from tel_telephonist_group c,tel_group tg where c.telephonistId = t.id 
+		 and ifnull(c.isdeleted,0) = 0 and ifnull(tg.isdeleted,0) = 0
+		 and c.groupId = tg.id and (tg.id = #GROUP_ID# or tg.parentid = #GROUP_ID#))}		           
+		 group by t.id,t.name,t.mobileNumber,t.dutyId,t.dutyText	       
+	     order by t.name
+	]]>
+	</entry>
+	
+	<!-- 判断统一信息用户是否存在  -->
+	<entry key="callcenter.isSecUserExists">
+	<![CDATA[
+		select count(*)
+		  from sec_user t
+		 where t.STATUS = 'enabled'
+		   and t.LOGIN_ID = #loginId# 
+		{? and t.ID != #id#}
+	]]>
+	</entry>
+	
+	
+	<!-- 获取用户当前所属分组列表  -->
+	<entry key="callcenter.getGroups">
+	<![CDATA[
+		select * from tel_telephonist_group t where t.telephonistId = ? and ifnull(t.isDeleted,0) = 0
+	]]>
+	</entry>
+	
+	<!-- 清除用户电信工号  -->
+	<entry key="callcenter.deleteTelTelecomno">
+	<![CDATA[
+		DELETE from tel_telecomno where telephonistId = ?
+	]]>
+	</entry>
+	
+	<!-- 清除用户电信工号  -->
+	<entry key="callcenter.deleteTelTelephonist">
+	<![CDATA[
+		DELETE from tel_telephonist where id = ?
+	]]>
+	</entry>
+	
+	<entry key="callcenter.selectSkill">
+	<![CDATA[ -- 查询所有技能名称
+		select t.id,t.name from dim_telecom_skills t where t.deleted = 0
+	]]>
+	</entry>
+	
+	<entry key="callcenter.selectTelecomno">
+	<![CDATA[ -- 查询话务员电信工号
+		select t.number,t.skillid from tel_telecomno t where t.telephonistId = ?
+	]]>
+	</entry>
+	<entry key="callcenter.selectDoubleTelecomno">
+	<![CDATA[ -- 查询话务员电信工号
+		select * from tel_telecomno t where   t.number in($numbers$) {?and t.telephonistId != #telephonistId#}
+	]]>
+	</entry>
+	
+	
+	
+	
+</properties>

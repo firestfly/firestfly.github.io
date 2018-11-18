@@ -1,0 +1,85 @@
+@charset "UTF-8";
+
+// vk-tree 
+.vk-tree {
+  $arrowBg: #9cb6c3;
+  $refreshWidth: 20px;
+  color: $fontColorLight;
+  display: inline-block;
+  min-width: 100%;
+  font-size: 12px;
+
+  ul {
+	display: none;
+  }
+  & > ul {
+	display: block;
+  }
+  i.refresh {
+	float: right;
+	width: $refreshWidth;
+	height: 20px;
+	margin-right: -$refreshWidth - 10;
+	display: none;
+	cursor: pointer;
+	position: absolute;
+	right: 30px;
+	top: 50%;
+	margin-top: -10px;
+
+	&:after {
+	  @include iconfont;
+	  content: "\e600";
+	}
+  }
+  .vk-tree-brank {
+	position: relative;
+	span {
+	  // margin-left: -16px;
+	  cursor: pointer;
+	  padding: 6px 0px;
+
+	  &:before {
+		@include iconfont;
+		color: $arrowBg;
+		content: "\e601";
+		padding-right: 4px;
+		margin-left: -16px;
+	  }
+	}
+	&:hover .refresh {
+	  display: block;
+	}
+  }
+  .vkt-active > ul {
+	display: block;
+  }
+  .vkt-active > .vk-tree-brank {
+	span {
+	  &:before {
+		content: "\e602";
+	  }
+	}
+  }
+  .vkt-loading {
+	cursor: pointer;
+
+	&:after {
+	  display: none;
+	  content: "Loading...";
+	  text-align: center;
+	  line-height: 40px;
+	  height: 40px;
+	  //border-bottom: 1px solid $coGray;
+	}
+	&.vkt-active:after {
+	  display: block;
+	}
+  }
+}
+.vk-breadcrumb {
+  color: $fontColorLight;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

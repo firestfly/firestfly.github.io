@@ -1,0 +1,236 @@
+<?xml version="1.0" ?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://webservice.manage.bioslink.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="ImsImgInfoServiceImplService" targetNamespace="http://webservice.manage.bioslink.net/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://webservice.manage.bioslink.net/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://webservice.manage.bioslink.net/">
+  <xs:complexType name="imsImgInfoVO">
+    <xs:complexContent>
+      <xs:extension base="tns:valueObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="archDate" type="xs:string"></xs:element>
+          <xs:element minOccurs="0" name="docSubType" type="xs:string"></xs:element>
+          <xs:element minOccurs="0" name="docType" type="xs:string"></xs:element>
+          <xs:element minOccurs="0" name="pageNo" type="xs:int"></xs:element>
+          <xs:element minOccurs="0" name="path" type="xs:string"></xs:element>
+          <xs:element minOccurs="0" name="project" type="xs:string"></xs:element>
+          <xs:element minOccurs="0" name="title" type="xs:string"></xs:element>
+          <xs:element minOccurs="0" name="unit" type="xs:string"></xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="valueObject">
+    <xs:sequence></xs:sequence>
+  </xs:complexType>
+  <xs:element name="queryCardImgInfo" type="tns:queryCardImgInfo"></xs:element>
+  <xs:complexType name="queryCardImgInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="unit" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="project" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="docType" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="docSubType" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="cardNo" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="custName" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="custPaperNo" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="archDate" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="queryCardImgInfoResponse" type="tns:queryCardImgInfoResponse"></xs:element>
+  <xs:complexType name="queryCardImgInfoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="cardImgInfoResult" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="queryImgInfoByPage" type="tns:queryImgInfoByPage"></xs:element>
+  <xs:complexType name="queryImgInfoByPage">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="unit" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="project" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="code" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="docType" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="docSubType" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="archDate" type="xs:string"></xs:element>
+      <xs:element name="pageNo" type="xs:int"></xs:element>
+      <xs:element name="pageSize" type="xs:int"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="queryImgInfoByPageResponse" type="tns:queryImgInfoByPageResponse"></xs:element>
+  <xs:complexType name="queryImgInfoByPageResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="imgInfoPageResult" type="tns:imsImgInfoVO"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="writeBackCustCode" type="tns:writeBackCustCode"></xs:element>
+  <xs:complexType name="writeBackCustCode">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="fileCode" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="custCode" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="writeBackCustCodeResponse" type="tns:writeBackCustCodeResponse"></xs:element>
+  <xs:complexType name="writeBackCustCodeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="writeResult" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="getFileCode" type="tns:getFileCode"></xs:element>
+  <xs:complexType name="getFileCode">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="unit" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="project" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="docType" type="xs:string"></xs:element>
+      <xs:element name="year" type="xs:int"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="getFileCodeResponse" type="tns:getFileCodeResponse"></xs:element>
+  <xs:complexType name="getFileCodeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="result" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="queryImgInfo" type="tns:queryImgInfo"></xs:element>
+  <xs:complexType name="queryImgInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="unit" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="project" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="custCode" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="houseCode" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="code" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="docType" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="docSubType" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="archDate" type="xs:string"></xs:element>
+      <xs:element name="count" type="xs:int"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="queryImgInfoResponse" type="tns:queryImgInfoResponse"></xs:element>
+  <xs:complexType name="queryImgInfoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="imgInfoResult" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="writeBackCustCode">
+    <wsdl:part element="tns:writeBackCustCode" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="queryCardImgInfoResponse">
+    <wsdl:part element="tns:queryCardImgInfoResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getFileCodeResponse">
+    <wsdl:part element="tns:getFileCodeResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="writeBackCustCodeResponse">
+    <wsdl:part element="tns:writeBackCustCodeResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getFileCode">
+    <wsdl:part element="tns:getFileCode" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="queryImgInfo">
+    <wsdl:part element="tns:queryImgInfo" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="queryImgInfoByPageResponse">
+    <wsdl:part element="tns:queryImgInfoByPageResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="queryCardImgInfo">
+    <wsdl:part element="tns:queryCardImgInfo" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="queryImgInfoResponse">
+    <wsdl:part element="tns:queryImgInfoResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="queryImgInfoByPage">
+    <wsdl:part element="tns:queryImgInfoByPage" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ImsImgInfoService">
+    <wsdl:operation name="queryCardImgInfo">
+      <wsdl:input message="tns:queryCardImgInfo" name="queryCardImgInfo">
+    </wsdl:input>
+      <wsdl:output message="tns:queryCardImgInfoResponse" name="queryCardImgInfoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryImgInfoByPage">
+      <wsdl:input message="tns:queryImgInfoByPage" name="queryImgInfoByPage">
+    </wsdl:input>
+      <wsdl:output message="tns:queryImgInfoByPageResponse" name="queryImgInfoByPageResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="writeBackCustCode">
+      <wsdl:input message="tns:writeBackCustCode" name="writeBackCustCode">
+    </wsdl:input>
+      <wsdl:output message="tns:writeBackCustCodeResponse" name="writeBackCustCodeResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getFileCode">
+      <wsdl:input message="tns:getFileCode" name="getFileCode">
+    </wsdl:input>
+      <wsdl:output message="tns:getFileCodeResponse" name="getFileCodeResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryImgInfo">
+      <wsdl:input message="tns:queryImgInfo" name="queryImgInfo">
+    </wsdl:input>
+      <wsdl:output message="tns:queryImgInfoResponse" name="queryImgInfoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ImsImgInfoServiceImplServiceSoapBinding" type="tns:ImsImgInfoService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
+    <wsdl:operation name="queryCardImgInfo">
+      <soap:operation soapAction="" style="document"></soap:operation>
+      <wsdl:input name="queryCardImgInfo">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="queryCardImgInfoResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryImgInfoByPage">
+      <soap:operation soapAction="" style="document"></soap:operation>
+      <wsdl:input name="queryImgInfoByPage">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="queryImgInfoByPageResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="writeBackCustCode">
+      <soap:operation soapAction="" style="document"></soap:operation>
+      <wsdl:input name="writeBackCustCode">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="writeBackCustCodeResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getFileCode">
+      <soap:operation soapAction="" style="document"></soap:operation>
+      <wsdl:input name="getFileCode">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="getFileCodeResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryImgInfo">
+      <soap:operation soapAction="" style="document"></soap:operation>
+      <wsdl:input name="queryImgInfo">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="queryImgInfoResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ImsImgInfoServiceImplService">
+    <wsdl:port binding="tns:ImsImgInfoServiceImplServiceSoapBinding" name="ImsImgInfoServiceImplPort">
+      <soap:address location="http://bakend/manage/service/ImgInfoService"></soap:address>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

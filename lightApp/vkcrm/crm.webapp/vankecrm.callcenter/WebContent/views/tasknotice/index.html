@@ -1,0 +1,363 @@
+<!-- 整体页面布局 -->
+<div class="task_layout" ms-controller="tasknotice">
+    <!-- search area -->
+    <div class="form_layout">
+        <form>
+            <fieldset>
+                <table id="task" class="table task-table">
+                    <tr>
+                        <th class="alignMiddle">
+                            <label for="start_time_notice">生效开始时间:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="Wdate input2" id="start_time_notice" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'end_time_notice\')}',
+                                   startDate:'%y-%M-%d 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss'})" ms-duplex="form.start_time_notice" />
+                        </td>
+                        <th class="alignMiddle">
+                            <label for="end_time_notice">生效结束时间:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="Wdate input2" id="end_time_notice" onclick="WdatePicker({minDate:'#F{$dp.$D(\'start_time_notice\')}',
+                                   startDate:'%y-%M-%d 23:59:59',dateFmt:'yyyy-MM-dd HH:mm:ss'})" ms-duplex="form.end_time_notice" />
+                        </td>
+                        <th class="alignMiddle">
+                            <label for="publisher">创建人:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="input2" placeholder="请输入创建人姓名" ms-duplex="form.publisher" id="publisher" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="alignMiddle">
+                            <label for="tasknoticeProjectName">项目名称:</label>
+                        </th>
+                        <td>
+                            <!-- <input type="text" id="projectName" ms-duplex="form.projectName" class="input2" />
+                            -->
+                            <input type="text" id="tasknoticeProjectName" ms-keyup="autoinput('project')" ms-attr-value="form.projectName" placeholder="请输入项目名称" />
+                            <div class="autocomplete" target="project" id="tasknoticeProjectNameAutoComplete">
+                                <div class="autocomplete-box" ms-visible="project_auto.visible">
+                                    <div class="autocomplete-tip" ms-visible="project_auto.loading">查询中...</div>
+                                    <div class="autocomplete-tip" ms-visible="!project_auto.loading && project_auto.list.size()==0">查询无数据</div>
+                                    <ul ms-visible="!project_auto.loading">
+                                        <li ms-repeat="project_auto.list" ms-data-id="el.id" ms-data-code="el.code" ms-data-text="el.name" ms-text="el.name"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <th class="alignMiddle">
+                            <label for="flevel">公告级别:</label>
+                        </th>
+                        <td>
+                            <select class="select2" id="flevel" ms-duplex="form.level">
+                                <option value="">==请选择==</option>
+                                <option ms-repeat="level.data" ms-attr-value="el.code">{{el.value}}</option>
+                            </select>
+                        </td>
+                        <th class="alignMiddle">
+                            <label for="content">公告内容:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="input2" placeholder="请输入公告内容" ms-duplex="form.content" id="content" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="alignMiddle">
+                            <label for="approveStatus">审批状态:</label>
+                        </th>
+                        <td>
+                            <select class="select2" id="approveStatus" ms-duplex="form.approveStatus">
+                                <option value="">==请选择==</option>
+                                <option ms-repeat="approve.data" ms-attr-value="el.code">{{el.value}}</option>
+                            </select>
+                        </td>
+                        <th class="alignMiddle">
+                            <label for="noticeStatus" ms-visible="nstauts_vis">状态:</label>
+                        </th>
+                        <td colspan="3">
+                            <select class="select2" id="noticeStatus" ms-visible="nstauts_vis" ms-duplex="form.noticeStatus">
+                                <option value="">==请选择==</option>
+                                <option ms-repeat="notice.data" ms-attr-value="el.code">{{el.value}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- function btns area -->
+    <div class="operation_btns right">
+        <a class="btn btn-info btn-small" ms-if="canCreate" ms-click="create">
+            <span class="icon-plus icon-white"></span> 创 建
+        </a>
+        <a class="btn btn-primary btn-small" ms-click="searchclick">
+            <span class="icon-search icon-white"></span> 查 询
+        </a>
+        <a class="btn btn-small" ms-click="resetclick">
+            <span class="icon-refresh"></span> 重 置
+        </a>
+    </div>
+
+    <!-- table list area -->
+    <div id="tasknotice" class="notice-list">
+        <table class="table table-hover table-bordered list-max-width">
+            <thead>
+                <tr>
+                    <th>操作</th>
+                    <th>项目名称</th>
+                    <th>公告级别</th>
+                    <th>生效时间</th>
+                    <th>失效时间</th>
+                    <th>公告内容</th>
+                    <th>创建人</th>
+                    <th>联系电话</th>
+                    <th>状态</th>
+                    <th>发布时间</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_tasknotice">
+                <tr ms-visible="!noticelist.isLoading" ms-repeat="noticelist.data">
+                    <td>
+                        <a data-type='show' ms-data-id="el.id">查看</a>
+                        <a ms-visible="canApprove && el.approveStatus == 1" data-type="check" ms-data-id="el.id">审批</a>
+                        <!--modified by liaochao 20160126 begin-->
+                        <a ms-visible="canEdit && el.self && el.approveStatus != 5 && !el.isClosed" data-type="edit" ms-data-id="el.id">编辑</a>
+                        <!--modified by liaochao 20160126 end-->
+                        <a ms-visible="canClose && el.self && el.approveStatus == 4 && !el.isClosed" data-type="close" ms-data-id="el.id">关闭</a>
+                    </td>
+                    <td>
+                        <a data-type='show' ms-data-id="el.id">
+                            <span ms-text="el.projectName"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <span ms-text="el.levelText"></span>
+                    </td>
+                    <td>
+                        <span ms-text="el.takeEffectTime"></span>
+                    </td>
+                    <td>
+                        <span ms-text="el.lostEffectTime"></span>
+                    </td>
+                    <td class="column-3">
+                        <span class="content-desc column-3" ms-attr-title='el.content' ms-html="el.content"></span>
+                    </td>
+                    <td>
+                        <span ms-text="el.noticeSource==1?'呼叫中心':el.projectName"></span>
+                        <span>-</span>
+                        <span ms-text="el.publisher"></span>
+                    </td>
+                    <td>
+                        <span ms-text="el.contactMobile"></span>
+                    </td>
+                    <td>
+                        <span ms-text="el.status"></span>
+                    </td>
+                    <td>
+                        <span ms-text="el.publishTime"></span>
+                    </td>
+                </tr>
+                <tr ms-visible="!noticelist.isLoading && noticelist.data.size()==0">
+                    <td colspan="10" class="align-center">暂无公告</td>
+                </tr>
+                <tr ms-visible="noticelist.isLoading">
+                    <td colspan="10" class="align-center">正在加载...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- table list page area -->
+    <div class="pagination" id="tasknotice_pagination"></div>
+</div>
+
+<!-- 修改|新增|查看|审批公告 -->
+<div id="notice_edit" ms-controller="noticedetail" data-backdrop="static" class="modal hide fade in">
+    <div class="modal-header">
+        <a id="m_close" class="close" ms-click='hide' data-dismiss="modal">×</a>
+        <h4 id="notice_title" ms-text="form.text"></h4>
+        <input type="hidden" id="hid" ms-duplex="form.id" />
+    </div>
+    <div id='notice_body' class="modal-body">
+        <form class="form-horizontal">
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="control-group" id="div_projectName">
+                        <label class="control-label" for="noticeProjectName"> <i>*</i> 项目名称：
+                        </label>
+                        <div class="controls">
+                            <input type="text" class="input2" ms-attr-disabled="inputs_dis" id="noticeProjectName" ms-keyup="autoinput('project')" ms-attr-value="form.projectName" placeholder="请输入项目名称" />
+                            <div class="autocomplete" target="project">
+                                <div class="autocomplete-box" ms-visible="project_auto.visible">
+                                    <div class="autocomplete-tip" ms-visible="project_auto.loading">查询中...</div>
+                                    <div class="autocomplete-tip" ms-visible="!project_auto.loading && project_auto.list.size()==0">查询无数据</div>
+                                    <ul ms-visible="!project_auto.loading">
+                                        <li ms-repeat="project_auto.list" ms-data-id="el.id" ms-data-code="el.code" ms-data-text="el.name" ms-text="el.name"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group" id="div_projectCode">
+                        <label class="control-label" for="projectCode"> <i>*</i> 项目编码：
+                        </label>
+                        <div class="controls">
+                            <input type="text" class="input2" readonly="true" ms-attr-disabled="inputs_dis" id="projectCode" ms-duplex="form.projectCode" placeholder="请输入项目编码">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="control-group" id="div_takeEffectTime">
+                        <label class="control-label" for="takeEffectTime">
+                            <i>*</i> 生效时间：
+                        </label>
+                        <div class="controls">
+                            <input type="text" ms-attr-disabled="inputs_dis" ms-duplex="form.takeEffectTime" class="Wdate input2" id="takeEffectTime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group" id="div_lostEffectTime">
+                        <label class="control-label" for="lostEffectTime">
+                            <i>*</i> 失效时间：
+                        </label>
+                        <div class="controls">
+                            <input ms-attr-disabled="inputs_dis" type="text" class="Wdate input2" id="lostEffectTime" ms-duplex="form.lostEffectTime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="control-group" id="div_level">
+                        <label class="control-label" for="level">
+                            <i>*</i> 公告级别：
+                        </label>
+                        <div class="controls">
+                            <select class="select2" ms-attr-disabled="inputs_dis" id="level" ms-duplex="form.level">
+                                <option value="">==请选择==</option>
+                                <option ms-repeat="level.data" ms-attr-value="el.code">{{el.value}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group" id="div_fPublisher">
+                        <label class="control-label" for="fPublisher">创建人：</label>
+                        <div class="controls">
+                            <input type="hidden" id="hidPublisherId" ms-duplex="form.publisherId" />
+                            <input type="text" class="input2" ms-attr-disabled="inputs_dis" readonly="true" id="fPublisher" ms-duplex="form.publisher" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="control-group" id="div_contactMobile">
+                        <label class="control-label" for="contactMobile">联系电话：</label>
+                        <div class="controls">
+                            <input type="text" class="input2" ms-attr-disabled="inputs_dis" readonly="true" id="contactMobile" ms-duplex="form.contactMobile" />
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group" id="div_publishTime">
+                        <label class="control-label" for="publishTime">发布时间：</label>
+                        <div class="controls">
+                            <input type="text" class="input2" ms-attr-disabled="inputs_dis" readonly="true" class="Wdate" id="publishTime" ms-duplex="form.publishTime" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="control-group" id="div_content">
+                        <label class="control-label" for="noticeContent">
+                            <i>*</i> 公告内容：
+                        </label>
+                        <div class="controls">
+                            <textarea ms-attr-readonly="inputs_dis" id="noticeContent" rows="6" cols="10" ms-duplex="form.content"></textarea>
+                            <div class="error-tip">字节数不得超过1000个（全角字符为2字节数）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- 审核 -->
+        <div class="modal_check_bg"></div>
+        <div class="modal_check j_approve">
+            <div class="header-info">
+                <h3>审批信息</h3>
+            </div>
+            <div class="check-content">
+                <span class="control-span">审批意见：</span>
+                <div class="controls">
+                    <textarea rows="6" cols="10" id="check_content"></textarea>
+                </div>
+            </div>
+            <div class="btns-group">
+                <div class="btn-group">
+                    <button class="btn btn-success" type="button" ms-click="check(event,'2','通过')">
+                        <i class="icon-ok icon-white"></i> 通过
+                    </button>
+                    <button class="btn btn-warning" type="button" ms-click="check(event,'3','不通过')">
+                        <i class="icon-stop icon-white"></i> 不通过
+                    </button>
+                    <button class="btn btn-danger" type="button" ms-click="check(event,'4','退回')">
+                        <i class="icon-repeat icon-white"></i> 退回
+                    </button>
+                    <button class="btn" type="button" ms-click="down">取消</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal_check j_record hide" id="taknotice_record_body">
+            <div class="header-info">
+                <h3>公告日志</h3>
+            </div>
+            <div class="record-content">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width:130px;">操作时间</th>
+                            <th>内容</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ms-if="record.loading">
+                            <td class="alignCenter" colspan="2">正在加载...</td>
+                        </tr>
+                        <tr ms-if="record.list.size()==0 && !record.loading">
+                            <td class="alignCenter" colspan="2">暂无日志</td>
+                        </tr>
+                        <tr ms-if="!record.loading" ms-repeat="record.list">
+                            <td><span ms-text="el.logtime"></span></td>
+                            <td><span ms-text="el.content"></span>
+                                <span ms-if-loop="el.noticeDetail">查看公告内容请点击<a class="record-details" ms-data-index="$index">详情</a>。</span>
+                                <div ms-if-loop="el.noticeDetail" class="popover fade bottom in">
+                                    <div class="arrow"></div>
+                                    <div class="popover-content" ms-text="el.noticeDetail"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a data-dismiss="modal" class="btn" id="btn_close" ms-click='hide'>关 闭</a>
+        <a class="btn" ms-click="toggleRecord" ms-visible="btnLog_vis">日 志</a>
+        <a ms-visible="btnCheck_vis" ms-click="up" class="btn btn-primary">审 批</a>
+        <a ms-visible="btnAdd_vis" id="btnAdd" ms-click="add" class="btn btn-primary">
+            <span class="icon-ok icon-white"></span> 发布
+        </a>
+        <a ms-visible="btnUpdate_vis" id="btnUpdate" ms-click="update" class="btn btn-primary">
+            <span class="icon-hdd icon-white"></span> 提交
+        </a>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>选项sql</comment>
+
+    <!-- 查询选项列表 -->
+    <entry key="sql.select.options">
+        SELECT
+        bo.option_id,
+        bo.topic_id,
+        bo.sequence,
+        bo.category,
+        bo.score,
+        CASE bo.score WHEN 0 THEN bo.content ELSE CONCAT('(',CAST(bo.score AS signed),'分) ',bo.content) END AS content,
+        bo.content AS basicContent,
+        bo.sequence,
+        bo.process_mode,
+        bo.goto_topic,
+        bo.dtime
+        FROM biz_options bo
+        WHERE 1 =1
+        AND IFNULL(bo.deleted, 0) = 0
+        AND bo.topic_id = #TopicId#
+        ORDER BY bo.sequence
+    </entry>
+
+    <!-- 查询选项列表 -->
+    <entry key="sql.select.options4Edit">
+        SELECT
+        bo.option_id,
+        bo.topic_id,
+        bo.sequence,
+        bo.category,
+        bo.score,
+        bo.content,
+        bo.sequence,
+        bo.process_mode,
+        bo.goto_topic,
+        bo.dtime
+        FROM biz_options bo
+        WHERE 1 =1
+        AND IFNULL(bo.deleted, 0) = 0
+        AND bo.topic_id = #TopicId#
+        ORDER BY bo.sequence
+    </entry>
+
+    <entry key="sql.update.option.deleted">
+        UPDATE biz_options
+        SET    deleted = 1
+        WHERE 1 = 1
+        AND option_id = #OptionId#
+    </entry>
+</properties>

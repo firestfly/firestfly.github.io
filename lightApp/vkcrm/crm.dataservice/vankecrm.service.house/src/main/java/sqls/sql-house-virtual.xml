@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>车位信息查询</comment>
+
+	<!-- 获取虚拟房屋 -->
+	<entry key="sql.query.virtualHouse">
+		<![CDATA[
+			SELECT
+				h.`code` AS `code`,
+				h.`name` AS `name`,
+				h.assistCode AS assistCode,
+				h.buildingCode AS buildingCode,
+				h.buildingName AS buildingName,
+				h.unit AS unit,
+				h.floor AS floor,
+				h.roomNumber AS roomNumber,
+				h.`status` AS `status`,
+				h.equityType AS equityType,
+				h.broadband AS broadband,
+				h.checkInTime AS checkInTime,
+				h.deliverTime AS deliverTime,
+				h.hasSubroom AS hasSubroom,
+				h.isSubroom AS isSubroom,
+				h.isCombine AS isCombine,
+				h.isSecondhand AS isSecondhand,
+				h.modifyTime AS modifyTime,
+				h.deleteTime AS deleteTime,
+				m.propertyArea AS propertyArea,
+				c.`code` AS customerCode,
+				(
+					SELECT
+						p.`code`
+					FROM
+						main_project AS p
+					WHERE
+						p.id = (
+							SELECT
+								m.projectId
+							FROM
+								mid_project_house AS m
+							WHERE
+								m.houseId = h.id
+							LIMIT 1
+						)
+					LIMIT 1
+				) AS projectCode,
+			CASE h.isCombine
+			WHEN 1 THEN
+				(
+					SELECT
+						group_concat(b.`code`)
+					FROM
+						main_house b
+					WHERE
+						b.id IN (
+							SELECT
+								a.mergeToHouseId
+							FROM
+								mid_house_merge a
+							WHERE
+								a.houseId = h.id
+						)
+					GROUP BY
+						b.id
+				)
+			WHEN 0 THEN
+				''
+			ELSE
+				''
+			END AS mergeToHouseIds
+			FROM
+				main_house h
+			LEFT JOIN main_house_detail AS m ON m.id = h.id
+			LEFT JOIN main_customer AS c ON h.contactsId = c.id
+			WHERE
+				h.isVirtual = 1
+			AND ifnull(h.deleteTime, h.modifyTime) > #beginTime#
+        ]]>
+	</entry>
+
+
+</properties>

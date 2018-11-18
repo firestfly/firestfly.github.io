@@ -1,0 +1,272 @@
+<!-- 整体页面布局 -->
+<div class="task_layout" ms-controller="tasknotice">
+    <!-- search area -->
+    <div class="form_layout">
+        <form>
+            <fieldset>
+                <table id="task" class="table task-table">
+                    <tr>
+                        <th>
+                            <label for="startTime">开始时间:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="Wdate input2" id="start_time_notice"
+                                   onclick="WdatePicker({maxDate:'#F{$dp.$D(\'end_time_notice\')}',dateFmt:'yyyy年MM月dd日 HH:mm:ss',vel:'hid_start_time_notice'})" />
+                            <input type="hidden" id="hid_start_time_notice" ms-duplex="form.start_time_notice"/>
+                        </td>
+                        <th>
+                            <label for="endTime">结束时间:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="Wdate input2" id="end_time_notice"
+                                   onclick="WdatePicker({minDate:'#F{$dp.$D(\'start_time_notice\')}',dateFmt:'yyyy年MM月dd日 HH:mm:ss',vel:'hid_end_time_notice'})" />
+                            <input type="hidden" id="hid_end_time_notice" ms-duplex="form.end_time_notice" />
+                        </td>
+                        <th>
+                            <label for="publisher">创建人:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="input2" placeholder="请输入创建人姓名" ms-duplex="form.publisher" id="publisher" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="projectName">项目名称:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="input2" placeholder="请输入项目名称" ms-duplex="form.projectName" id="projectName" />
+                        </td>
+                        <th>
+                            <label for="flevel">公告级别:</label>
+                        </th>
+                        <td>
+                            <select id="flevel" ms-duplex="form.level">
+                                <option value="">==请选择==</option>
+                                <option ms-repeat="level.data" ms-attr-value="el.code">{{el.value}}</option>
+                            </select>
+                        </td>
+                        <th>
+                            <label for="content">公告内容:</label>
+                        </th>
+                        <td>
+                            <input type="text" class="input2" placeholder="请输入公告内容" ms-duplex="form.content" id="content"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="noticeStatus">公告状态:</label>
+                        </th>
+                        <td>
+                            <select class="select2" id="noticeStatus" ms-duplex="form.noticeStatus">
+                                <option value="">==请选择==</option>
+                                <option ms-repeat="notice.data" ms-attr-value="el.code">{{el.value}}</option>
+                            </select>
+                        </td>
+                        
+                        <td colspan="4">
+                            <div class="notice-forms-btns">
+                                <a class="btn btn-primary" ms-click="searchclick"><span class="icon-search icon-white"></span><span>查询</span></a>
+                                <a class="btn" ms-click="resetclick"><span class="icon-refresh"></span><span>重置</span></a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- function btns area -->
+    <div class="operation_btns">
+        <div class="btn-group">
+            <a class="btn btn-primary" ms-click="create"><span class="icon-plus icon-white"></span><span> 创建</span></a>
+            <a class="btn btn-warning" ms-click="edit"><span class="icon-pencil icon-white"></span><span> 修改</span></a>
+            <a class="btn btn-danger" ms-click="ddelete"><span class="icon-remove icon-white"></span><span> 删除</span></a>
+        </div>
+        <ul class="none">
+            <li ms-click="create"><span class="icon-plus icon-white"></span> 创建</li>
+            <li class="none"><span class="icon-ok icon-white"></span> 审批</li>
+            <li ms-click="edit"><span class="icon-pencil icon-white"></span> 修改</li>
+            <li ms-click="ddelete"><span class="icon-remove icon-white"></span> 删除</li>
+        </ul>
+    </div>
+
+    <!-- table list area -->
+    <div class="notice-list">
+        <table style="width: 140%;" class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>项目名称</th>
+                    <th>公告级别</th>
+                    <th>生效时间</th>
+                    <th>失效时间</th>
+                    <th>公告内容</th>
+                    <th>创建人</th>
+                    <th>联系电话</th>
+                    <th>公告状态</th>
+                    <th>发布时间</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_tasknotice">
+                <tr ms-if="!notice.isLoading" ms-repeat="notice.data">
+                    <td><input type="radio" name="notice" ms-duplex="el.id"/></td>
+                    <td><span ms-text="el.projectName"></span></td>
+                    <td><span ms-text="el.level"></span></td>
+                    <td><span ms-text="el.takeEffectTime"></span></td>
+                    <td><span ms-text="el.lostEffectTime"></span></td>
+                    <td><span ms-text="el.content"></span></td>
+                    <td><span ms-text="el.publisher"></span></td>
+                    <td><span ms-text="el.contactMobile"></span></td>
+                    <td><span ms-text="el.noticeStatus"></span></td>
+                    <td><span ms-text="el.publishTime"></span></td>
+                </tr>
+                <tr ms-if="notice.isLoading">
+                    <td class="align-center" colspan="10">正在加载...</td>
+                </tr>
+                <tr ms-if="!notice.isLoading && notice.data.size()==0">
+                    <td class="align-center" colspan="10">暂无公告</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- table list page area -->
+    <div class="pagination" id="tasknotice_pagination"></div>
+</div>
+ 
+<!-- 修改／ 新增 / 查看公告 dialog -->
+<div id="notice_edit" ms-controller="noticedetail" data-backdrop="static" class="modal hide fade in">
+    <div class="modal-header">
+        <a id="m_close" class="close" data-dismiss="modal">×</a>
+        <h4 id="notice_title" ms-text="form.text"></h4>
+        <input type="hidden" id="hid" ms-duplex="form.id"/>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal">
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="control-group" id="div_projectName">
+                        <label class="control-label" for="noticeProjectName"><i>*</i>项目名称：</label>
+                        <div class="controls">
+                            <input type="text" ms-attr-disabled="inputs_dis" id="noticeProjectName" ms-keyup="autoinput('project')" ms-attr-value="form.projectName" ms-blur="autoblur('project')" placeholder="请输入项目名称" />
+                            <div class="autocomplete" target="project">
+                                <div class="autocomplete-box" ms-visible="project_auto.visible">
+                                    <div class="autocomplete-tip" ms-visible="project_auto.loading">查询中...</div>
+                                    <div class="autocomplete-tip" ms-visible="!project_auto.loading && project_auto.list.size()==0">查询无数据</div>
+                                    <ul ms-visible="!project_auto.loading">
+                                        <li ms-repeat="project_auto.list" ms-data-id="el.id" ms-data-code="el.code" ms-data-text="el.name" ms-text="el.name"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                  <div class="control-group" id="div_projectCode">
+                    <label class="control-label" for="projectCode"><i>*</i>项目编码：</label>
+                    <div class="controls">
+                        <input type="text" readonly="true" ms-attr-disabled="inputs_dis" id="projectCode" ms-duplex="form.projectCode" placeholder="请输入项目编码">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="control-group" id="div_takeEffectTime">
+                        <label class="control-label" for="takeEffectTime"><i>*</i>生效时间：</label>
+                        <div class="controls">
+                            <input type="text" ms-attr-disabled="inputs_dis" class="Wdate" id="takeEffectTime" ms-duplex="form.takeEffectTime"
+                                   onclick="var lostEffectTime=$dp.$('lostEffectTime');WdatePicker({onpicked:function(){lostEffectTime.click();},maxDate:'#F{$dp.$D(\'lostEffectTime\')}',dateFmt:'yyyy-MM-dd HH:mm:ss',vel:'hid_takeEffectTime'})"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group" id="div_lostEffectTime">
+                        <label class="control-label" for="lostEffectTime"><i>*</i>失效时间：</label>
+                        <div class="controls">
+                            <input ms-attr-disabled="inputs_dis" type="text" class="Wdate" id="lostEffectTime" ms-duplex="form.lostEffectTime"
+                                   onclick="WdatePicker({minDate:'#F{$dp.$D(\'takeEffectTime\')}',dateFmt:'yyyy-MM-dd HH:mm:ss',vel:'hid_lostEffectTime'})"/>
+                        </div>
+                      </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="control-group" id="div_level">
+                        <label class="control-label" for="level"><i>*</i>公告级别：</label>
+                        <div class="controls">
+                            <select ms-attr-disabled="inputs_dis" id="level" ms-duplex="form.level">
+                                <option value="">==请选择==</option>
+                                <option ms-repeat="level.data" ms-attr-value="el.code">{{el.value}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group" id="div_fPublisher">
+                        <label class="control-label" for="fPublisher">创建人：</label>
+                        <div class="controls">
+                            <input type="hidden" ms-duplex="form.publisherId" />
+                            <input type="text" ms-attr-disabled="inputs_dis" readonly="true" id="fPublisher" ms-duplex="form.publisher" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="control-group" id="div_contactMobile">
+                        <label class="control-label" for="contactMobile">联系电话：</label>
+                        <div class="controls">
+                           <input type="text" ms-attr-disabled="inputs_dis" readonly="true" id="contactMobile" ms-duplex="form.contactMobile" />
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group" id="div_publishTime">
+                        <label class="control-label" for="publishTime">发布时间：</label>
+                        <div class="controls">
+                            <input type="text" ms-attr-disabled="inputs_dis" readonly="true" class="Wdate" id="publishTime" ms-duplex="form.publishTime"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="control-group" id="div_content">
+                        <label class="control-label" for="noticeContent"><i>*</i>公告内容：</label>
+                        <div class="controls">
+                            <textarea ms-attr-disabled="inputs_dis" id="noticeContent" rows="6" cols="10" ms-duplex="form.content">
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="#" data-dismiss="modal" class="btn" id="btn_close">关 闭</a>
+        <a href="#" ms-visible="btnAdd_vis" id="btnAdd" ms-click="add" class="btn btn-primary"><span class="icon-ok icon-white"></span> 发布</a>
+        <a href="#" ms-visible="btnUpdate_vis" id="btnUpdate" ms-click="update" class="btn btn-primary"><span class="icon-hdd icon-white"></span> 保存</a>
+    </div> 
+</div>
+
+<!-- 公告列表模版 -->
+<script type="text/html" id="tasknoticelist">
+    {{each list as value index}}
+    <tr>
+        <td><input type="radio" name="notice" value="{{value.id}}"/></td>
+        <td><a href="#" data-id="{{value.id}}">{{value.projectName}}</a></td>
+        <td>{{value.levelText}}</td>
+        <td>{{value.takeEffectTime}}</td>
+        <td>{{value.lostEffectTime}}</td>
+        <td title="{{value.content}}">{{value.contentText}}</td>
+        <td>{{value.publisher}}</td>
+        <td>{{value.contactMobile}}</td>
+        <td>
+            {{if value.noticeStatus == "2"}}<span class="btn-link" title="点击置为失效" data-id="{{value.id}}">{{value.noticeStatusText}}</span>{{else}}{{value.noticeStatusText}}
+            {{/if}}
+        </td>
+        <td>{{value.publishTime}}</td>
+    </tr>
+    {{/each}}
+</script>

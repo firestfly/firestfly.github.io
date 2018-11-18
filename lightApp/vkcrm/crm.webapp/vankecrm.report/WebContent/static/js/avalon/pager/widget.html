@@ -1,0 +1,9 @@
+<ul>
+<li data-index="-1" ms-class="disabled:hasPrev"><a>上一页</a></li>
+<li ms-repeat="left" ms-data-index="el.index"><a ms-text="el.index"></a></li>
+<li ms-if="hasLeft" ms-data-index="hasLeft"><a>...</a></li>
+<li ms-repeat="center" ms-data-index="el.index" class="active:el.isCurrent"><a ms-text="el.text"></a></li>
+<li ms-if="hasRight" ms-data-index="hasRight"><a href="javascript">...</a></li>
+<li ms-repeat="right" ms-data-index="el.index"><a ms-text="el.index"></a></li>
+<li data-index="+1" ms-class="disabled:hasNext"><a>下一页</a></li>
+</ul>

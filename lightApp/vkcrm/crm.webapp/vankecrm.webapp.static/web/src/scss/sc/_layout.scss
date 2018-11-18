@@ -1,0 +1,135 @@
+@charset "UTF-8";
+$headerHeight: 55px;
+$headerLeftWidth: 340px;
+$headerRightWidth: 230px;
+$footerHeight: 40px;
+$lyLeftWidth: 180px;
+$lyRightWidth: 230px;
+
+.wrap {
+  height: 100%;
+}
+
+.header {
+  // height: $headerHeight;
+  background-color: $coBlue;
+  position: fixed;
+  top: 0;
+  width: 100%;
+
+  .header-left {
+    position: relative;
+    float: left;
+    width: $headerLeftWidth;
+    height: $headerHeight;
+    border-right: 1px solid $coBlueGray;
+  }
+  .header-right {
+    float: right;
+    position: relative;
+    width: $headerRightWidth;
+    border-left: 1px solid $coBlueGray;
+    line-height: $headerHeight;
+    height: $headerHeight;
+    background-color: $coDeepBlue;
+  }
+  .header-center {
+    position: relative;
+    margin-left: $headerLeftWidth+1;
+    margin-right: $headerRightWidth+1;
+    height: $headerHeight;
+    line-height: $headerHeight;
+  }
+}
+
+.content {
+  // position: absolute;
+  // top: $headerHeight;
+  // bottom: $footerHeight;
+  // left: 0;
+  // right: 0;
+  height: 100%;
+  margin-top: 55px;
+  box-sizing: border-box;
+  margin-bottom: 40px;
+}
+
+.footer {
+  height: $footerHeight;
+  background-color: $coLightGray2;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  border-top: 1px solid $coGray;
+}
+
+.ly-left {
+  width: $lyLeftWidth;
+  background-color: $coLightGray;
+  position: relative;
+  height: 100%;
+  overflow: auto;
+  float: left;
+  border-right: 1px solid $coGray;
+}
+
+.ly-center {
+  position: relative;
+  margin-left: $lyLeftWidth+1;
+  height: 100%;
+}
+
+.ly-right {
+  width: $lyRightWidth;
+  background-color: $coLightGray;
+  position: relative;
+  height: 100%;
+  overflow: auto;
+  float: right;
+  border-left: 1px solid $coGray;
+}
+
+.ly-center2 {
+  position: relative;
+  margin-right: $lyRightWidth+1;
+  height: 100%;
+}
+
+.panel {
+  padding: 10px;
+
+  .panel-header {
+    line-height: 30px;
+    @include clearBoth;
+  }
+  .panel-body {
+    padding-top: 10px;
+  }
+  .panel-title {
+    float: left;
+    width: 6em;
+    font-size: 18px;
+    color: $coCyan;
+  }
+  .panel-header-right {
+    font-size: 14px;
+    margin-left: 6em;
+    text-align: right;
+
+    .btn {
+      padding: 2px 6px;
+
+      i {
+        color: $coCyan;
+      }
+    }
+  }
+  .panel-footer {
+    text-align: right;
+
+    .dropdown-menu {
+      left: auto;
+      right: 0;
+    }
+  }
+}

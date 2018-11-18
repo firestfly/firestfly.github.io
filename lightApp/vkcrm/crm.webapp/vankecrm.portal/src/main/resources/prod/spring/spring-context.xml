@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+	<context:annotation-config />
+	
+	<context:component-scan base-package="bingo.*" />
+
+	<aop:aspectj-autoproxy proxy-target-class="true" expose-proxy="true"/>
+
+	<!-- 属性文件读入 -->
+	<bean id="propertyConfigurer" class="bingo.integration.spring.PropertyPlaceholderConfigurer">
+		<property name="dao" value="sysDao"></property>
+		<property name="dataSource" value="sysDataSource"></property>
+		<property name="propertiesPersister">
+			<bean class="bingo.common.core.spring.SpringPropertiesPersister"></bean>
+		</property>
+		<property name="locations">
+			<list>
+				<value>classpath*:config/**/*.xml</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

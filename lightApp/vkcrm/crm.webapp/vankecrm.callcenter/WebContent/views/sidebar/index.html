@@ -1,0 +1,221 @@
+<!-- add by liaochao 20160201 begin-->
+<style>
+    .table-td {
+        text-align: center;
+        font-weight: normal;
+    }
+
+    .table-th {
+        text-align: center;
+        background: #eff2f6;
+        color: #5abbef;
+    }
+</style>
+<!-- add by liaochao 20160201 end-->
+<div ms-controller="sidebar" class="sidebar-panel">
+    <div class="panel sb-relation-list" id="sidebar_relationList">
+        <div class="panel-header">
+            <span class="icf-service"> 客户信息</span>
+            <em class="icf-listmenu" ms-click="moreCust"></em>
+            <!-- <em class="icf-add"></em> -->
+        </div>
+        <div class="panel-body">
+            <ul class="ul-list" ms-include="sidebar_customer_temp">
+            </ul>
+        </div>
+    </div>
+    <div class="panel sb-building-list ss-building-list" id="sidebar_buildingList">
+        <div class="panel-header">
+            <span class="icf-building"> 关联房屋</span>
+            <em class="icf-listmenu" ms-click="moreBuilding"></em>
+        </div>
+        <div class="panel-body">
+            <ul class="ul-list" ms-include="'sidebar_house_temp'">
+            </ul>
+        </div>
+    </div>
+    <div class="panel sb-call-list">
+        <div class="panel-header">
+            <span class="icf-call"> 历史通话记录</span>
+            <em class="icf-listmenu" id="sidebar_callList_more" ms-if="!simpleModel"></em>
+        </div>
+        <div class="panel-body">
+            <ul class="ul-list" id="sidebar_callList">
+                <li class="align-center" ms-visible="!callListLoading && callList.size()==0">暂无通话记录</li>
+                <li class="align-center" ms-visible="callListLoading">加载中...</li>
+                <li ms-repeat="callList" ms-data-id="el.callId">
+                    <i class="listicon" ms-class="icf-{{el.type=='1'?'callin':'callout'}}"></i>
+                    <em class="icf-question isloading" ms-if-loop="el.callId">
+                        <div class="popover left">
+                            <div class="arrow"></div>
+                            <div class="popover-title">采集原因</div>
+                            <div class="popover-content">
+                                加载中...
+                            </div>
+                        </div>
+                    </em>
+                    <a class="listlink" ms-data-callid="el.callId" ms-data-callnumber="el.callNumber"><span
+                            ms-text="el.callTime"></span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel sb-draft-list" id="sidebar_draftList" style="margin-bottom: 60px;" ms-if="!simpleModel">
+        <div class="panel-header">
+            <span class="icf-task"> 任务草稿</span>
+            <em class="icf-listmenu" ms-click="moreDraft"></em>
+        </div>
+        <div class="panel-body">
+            <ul class="ul-list" ms-include="'sidebar_draft_temp'">
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="sidebar_customerdialog" ms-controller="sidebar_customer" class="modal hide" style="width:1024px;margin-left: -512px;top:20px;">
+    <div class="modal-header">
+        <h3>客户信息</h3>
+    </div>
+    <div class="modal-body form">
+        <div class="list-body" style="overflow: auto;">
+            <!--<ul class="ul-list sb-relation-list" ms-include="'sidebar_customer_temp'">-->
+            <!--</ul>-->
+
+            <!--add by liaochao 20160201 begin-->
+            <div class="align-center" ms-visible="!relationListLoading && relationList.size()==0">暂无关联客户</div>
+            <div class="align-center" ms-visible="relationListLoading">加载中...</div>
+            <table class="table table-bordered" style="width: 1500px;" ms-visible="!relationListLoading">
+                <thead>
+                    <tr>
+                        <th class="table-th" style="width: 150px;">姓名</th>
+                        <th class="table-th" style="width: 60px;">性别</th>
+                        <th class="table-th" style="width: 240px;">相关物业</th>
+                        <th class="table-th" style="width: 80px;">与房屋关系</th>
+                        <th class="table-th">客户标签</th>
+                        <th class="table-th">特殊身份</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ms-repeat="relationList" ms-on-dblclick="clickRow($index)">
+                        <td class="table-td">
+                            {{el.fullName}}<i class="label label-warning" ms-if-loop="el.hasApprove=='1'">V</i>
+                        </td>
+                        <td ms-text="el.sexText" class="table-td"></td>
+                        <td ms-text="el.name" class="table-td"></td>
+                        <td ms-text="el.relationTypeText" class="table-td"></td>
+                        <td ms-text="el.contentText" class="table-td"></td>
+                        <td ms-text="el.identityText" class="table-td"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--add by liaochao 20160201 end-->
+        </div>
+        <div class="pagination" id="sidebar_custpager"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal">关闭</button>
+    </div>
+</div>
+<div id="sidebar_housedialog" ms-controller="sidebar_house" class="modal hide">
+    <div class="modal-header">
+        <h3>房屋信息</h3>
+    </div>
+    <div class="modal-body form md-height">
+        <div>
+            <ul class="ul-list sb-building-list" ms-include="'sidebar_house_temp'"></ul>
+        </div>
+        <div class="pagination" id="sidebar_housepager"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal">关闭</button>
+    </div>
+</div>
+<div id="sidebar_draftdialog" ms-controller="sidebar_draft" class="modal hide">
+    <div class="modal-header">
+        <h3>草稿</h3>
+    </div>
+    <div class="modal-body form">
+        <div>
+            <ul class="ul-list sb-draft-list" ms-include="'sidebar_draft_temp'"></ul>
+        </div>
+        <div class="pagination" id="sidebar_draftpager"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal">关闭</button>
+    </div>
+</div>
+<script type="avalon" id="sidebar_customer_temp">
+    <li class="align-center" ms-visible="!relationListLoading && relationList.size()==0">暂无关联客户</li>
+    <li class="align-center" ms-visible="relationListLoading">加载中...</li>
+    <li ms-repeat="relationList" ms-data-id="el.customerId" ms-data-name="el.name">
+        <em class="icf-question isloading">
+			<div class="popover left">
+				<div class="arrow"></div>
+				<div class="popover-content">
+					<dl>
+						<dd>特殊身份：<span class="s">加载中...</span></dd>
+						<dd>客户标签：<span class="c">加载中...</span></dd>
+					</dl>
+				</div>
+			</div>
+		</em>
+        <a class="listlink">
+            <span class="rela-name" ms-text="el.name"></span>
+            <span class="rela-v" ms-if-loop="el.hasApprove=='1'"><i class="label label-warning">V</i></span>
+            <span class="rela-sex" ms-text="el.sexText">男</span>
+        </a>
+    </li>
+
+
+
+
+
+
+
+</script>
+<!-- 关联房屋 模板 -->
+<script type="avalon" id="sidebar_house_temp">
+    <li class="align-center" ms-visible="!buildingListLoading && buildingList.size()==0">暂无关联房屋</li>
+    <li class="align-center" ms-visible="buildingListLoading">加载中...</li>
+    <li class="isloading" ms-repeat="buildingList">
+        <i class="li-arrow listicon isloading" ms-data-projectcode="el.projectCode" ms-data-housecode="el.houseCode"></i>
+        <em class="icf-sound isloading" ms-if-loop="el.isHasNotice" ms-data-projectcode="el.projectCode">
+			<div class="popover left">
+				<div class="arrow"></div>
+				<div class="popover-content">加载中...</div>
+			</div>
+		</em>
+        <a class="listlink address" ms-data-houseid="el.houseId" ms-data-housecode="el.houseCode" ms-data-housename="el.houseName" ms-data-projectcode="el.projectCode" ms-data-projectid="el.projectId" ms-data-projectname="el.projectName">
+            <span ms-text="(el.houseName || el.houseName!=null)?el.houseName:el.projectName"></span>
+        </a>
+        <ul class="sublist">
+            <li>加载中...</li>
+        </ul>
+    </li>
+
+
+
+
+
+
+
+</script>
+<script type="avalon" id="sidebar_draft_temp">
+    <li class="align-center" ms-visible="!draftListLoading && draftList.size()==0">暂无任务草稿</li>
+    <li class="align-center" ms-visible="draftListLoading">加载中...</li>
+    <li ms-visible="!draftListLoading" ms-repeat="draftList">
+        <i class="icf-ring listicon"></i>
+        <em class="icf-delete j_delete" ms-data-id="el.id"></em>
+        <a class="listlink" ms-data-id="el.id">
+            <span class="phonenumber" ms-text="el.reportUserMobile"></span>
+            <span class="time" ms-text="el.createTime"></span>
+        </a>
+    </li>
+
+
+
+
+
+
+
+</script>

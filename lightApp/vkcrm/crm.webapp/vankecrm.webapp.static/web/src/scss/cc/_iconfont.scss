@@ -1,0 +1,21 @@
+@charset "UTF-8";
+@import "../../font/cc/iconfont.css";
+/* iconfont */
+[class^="icf-"], [class*="icf-"] {
+	&:before {
+		@include iconfont;
+		font-size: 1em;
+	}
+}
+i[class^="icf-"], i[class*="icf-"] {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	vertical-align: top;
+}
+.icfxl{
+	font-size: 1.2em;
+}
+.icfxxl{
+	font-size: 1.4em;
+}

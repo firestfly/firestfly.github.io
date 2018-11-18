@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+.ui-info-top {
+  padding: 20px 10px 0 10px;
+}
+
+.ui-info-bottom {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0;
+  padding: 0 10px;
+  overflow: auto;
+}
+
+#userinfo_xingqu .xingqu-checkbox-group {
+  // width: 600px;
+}
+
+#userinfo_xingqu .form-inline label {
+  width: 15em;
+  margin-bottom: 10px;
+
+  input {
+    margin-top: 0;
+    margin-right: 6px;
+  }
+}
+
+#userinfo_xingqu .xingqu-btns {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* newuser */
+.table-newuser th, .table-newuser td {
+  border-top: none;
+}
+
+.table-newuser th {
+  font-weight: normal;
+  width: 8em;
+  text-align: right;
+}
+
+/*------------------taskList.jsp我的任务页面CSS------------------*/

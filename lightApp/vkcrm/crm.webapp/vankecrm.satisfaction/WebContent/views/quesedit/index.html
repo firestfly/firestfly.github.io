@@ -1,0 +1,101 @@
+<div class="height scrollable quesedit">
+	<div ms-controller="quesedit" class="panel">
+		<fieldset>
+			<legend>问卷信息</legend>
+			<form action="javascript:void(0)">
+				<table class="table table-info">
+					<tr>
+						<th>问卷标题</th>
+						<td><input type="text" class="span2"></td>
+						<th>问卷比例</th>
+						<td><input type="text" class="span2"></td>
+						<th>年度完成率</th>
+						<td><input type="text" class="span2"></td>
+					</tr>
+					<tr>
+						<th>开始时间</th>
+						<td><input type="text" class="span2"></td>
+						<th>结束时间</th>
+						<td><input type="text" class="span2"></td>
+						<th>是否启用</th>
+						<td><input type="checkbox"/></td>
+					</tr>
+					<tr>
+						<th>问卷说明</th>
+						<td colspan="4">
+							<textarea rows="3" class="span8"></textarea>
+						</td>
+						<td>
+							<button class="btn">保存</button>
+							<button class="btn">重置</button>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</fieldset>
+		<fieldset>
+			<legend>问题列表
+			<div class="btn btn-primary fr" ms-click="addQuest">新增</div>
+			</legend>
+			<table class="table table-list">
+				<thead>
+					<tr>
+						<th>序号</th>
+						<th>题目</th>
+						<th>权重</th>
+						<th>指标</th>
+						<th>选项类型</th>
+						<th>选项数量</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ms-repeat="questionList">
+						<td>{序号}</td>
+						<td>{题目}</td>
+						<td>{权重}</td>
+						<td>{指标}</td>
+						<td>{选项类型}</td>
+						<td>{选项数量}</td>
+						<td>{操作}</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		<div class="modal hide edit-dialog" id="questionEditDialog">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3>问题信息</h3>
+			</div>
+			<div class="modal-body">
+				<table class="table table-info">
+					<tr>
+						<th>分类</th>
+						<td><input type="text" class="span2"></td>
+						<th>权重</th>
+						<td><input type="text" class="span2"></td>
+					</tr>
+					<tr>
+						<th>题目</th>
+						<td colspan="3">
+							<textarea class="span5"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<th>类型</th>
+						<td><select class="span2">
+							<option>单选</option>
+							<option>多选</option>
+							<option>半开放</option>
+							<option>填空</option>
+						</select></td>
+					</tr>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn" data-dismiss="modal" aria-hidden="true">关闭</a>
+				<a href="#" class="btn btn-primary">保存</a>
+			</div>
+		</div>
+	</div>
+</div>

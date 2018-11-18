@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+    <!-- 查询出需要同步的任务数据 -->
+    <entry key="sql.query.failedTask">
+        <![CDATA[
+       select id,title,content,contactsName,contactsMobile,houseName,houseCode,projectCode,
+       businessType,reportUserMobile,appointmentStartTime
+       from task_records where `status`=2 and isSync =0
+
+    ]]>
+    </entry>
+
+    <!-- 更新任务状态 -->
+    <entry key="sql.update.failedTask">
+        <![CDATA[
+        update task_records set isSync='1',taskNo=#taskNo#,lastSyncTime=NOW()
+        where id=#taskId#
+    ]]>
+    </entry>
+
+
+    <!-- 根据项目code查询项目名 -->
+    <entry key="sql.query.project.byCode">
+        <![CDATA[
+        select name from main_project where code = #code# limit 1
+    ]]>
+    </entry>
+
+    <!-- 根据房屋code查询房屋名 -->
+    <entry key="sql.query.house.byCode">
+        <![CDATA[
+        select name from main_house where code = #code# limit 1
+    ]]>
+    </entry>
+
+    <!-- 查询一个任务是否已经存在(同步任务表sync_task_records) -->
+    <entry key="sql.exist.syncTask">
+        <![CDATA[
+        select count(1) from sync_task_records where task_no=#task_no#
+    ]]>
+    </entry>
+
+    <!-- 更新任务列表(同步任务表sync_task_records) -->
+    <entry key="sql.update.syncTask">
+        <![CDATA[
+        update sync_task_records set title=#title#,
+        address=#address#,
+        housekeeper=#housekeeper#,
+        staff_mobile=#staff_mobile#,
+        paid=#paid#,
+        business_type=#business_type#,
+        content=#content#,
+        contact=#contact#,
+        mobile=#mobile#,
+        created=#created#,
+        project_code=#project_code#,
+        project_name=#project_name#,
+        house_code=#house_code#,
+        house_name=#house_name#,
+        report_user_mobile=#report_user_mobile#,
+        status=#status#,
+        system_head=#system_head#,
+        staff=#staff#,
+        source=#source#,
+        crm_duty=#crm_duty#,
+        crm_source=#crm_source#,
+        crm_priority=#crm_priority#,
+        crm_evaluation=#crm_evaluation#,
+        score=#score#,
+        sync_time=NOW()
+        where task_no=#task_no#
+        ]]>
+    </entry>
+
+    <!--判断一个任务类型是否存在-->
+    <entry key="sql.exist.businessType">
+        <![CDATA[
+        select count(1) from task_businesstype where businessCode=#code#
+    ]]>
+    </entry>
+
+
+    <!--更新任务类型-->
+    <entry key="sql.update.businessType">
+        <![CDATA[
+        update task_businesstype set businessName=#businessName#,parentCode=#parentCode#,modifyTime=now()
+        where businessCode=#businessCode#
+    ]]>
+    </entry>
+
+
+    <!--逻辑删除任务类型-->
+    <entry key="sql.delete.businessType">
+        <![CDATA[
+        update task_businesstype set isDeleted=1 where businessCode=#businessCode#
+    ]]>
+    </entry>
+
+
+
+
+
+    <!--查询任务类型-->
+    <entry key="sql.query.businessType">
+        <![CDATA[
+        select businessCode as code,
+        businessName as name,
+        parentCode as parent_code,
+        IFNULL(isDeleted,0) as isDeleted,
+        0 as flag
+        from task_businesstype
+        where IFNULL(isDeleted,0) =0
+    ]]>
+    </entry>
+
+    <!--插入任务类型-->
+    <entry key="sql.insert.businessType">
+        <![CDATA[
+        insert into task_businesstype
+        (`id`,`businessCode`,`parentCode`,`businessName`,`status`,`createTime`,`isDeleted`)
+        VALUES(null,#businessCode#,#parentCode#,#businessName#,1,NOW(),0)
+    ]]>
+    </entry>
+
+    <!--插入任务记录-->
+    <entry key="sql.insert.taskrecords">
+        <![CDATA[
+         insert into sync_task_records(`id`,`task_no`,`title`,`address`,`housekeeper`,`housekeeper_name`,`staff_mobile`,`paid`,`image`,
+         `business_type`,`business_type_name`,`content`,`contact`,`mobile`,`created`,`appointment_start_time`,
+        `appointment_end_time`,`project_code`,`project_name`,`house_code`,`house_name`,`report_user_mobile`,`status`,`system_head`,`system_head_name`,
+        `staff`,`staff_name`,`source`,`crm_duty`,`crm_source`,`crm_priority`,`crm_evaluation`,`score`,`sync_time`)
+        VALUES(null,#task_no#,#title#,#address#,#housekeeper#,#housekeeper_name#,#staff_mobile#,#paid#,#imgs#,
+        #business_type#,#business_name#,#content#,#contact#,#mobile#,#created#,#appointment_start_time#,
+        #appointment_end_time#,#project_code#,#project_name#,#house_code#,#house_name#,#report_user_mobile#,#status#,#system_head#,#system_head_name#,
+        #staff#,#staff_name#,#source#,#crm_duty#,#crm_source#,#crm_priority#,#crm_evaluation#,#score#,now())
+
+    ]]>
+    </entry>
+
+    <!--插入任务记录(TimeLine)-->
+    <entry key="sql.insert.apptimeline">
+        <![CDATA[
+       INSERT INTO app_task_timeline (`id`,`task_no`,`status`,`msg`,`images`,`time`,`creator`)
+       VALUES(null,#task_no#,#status#,#msg#,#img#,#time#,#creator#);
+    ]]>
+    </entry>
+
+    <!--插入任务记录(cooperator)-->
+    <entry key="sql.insert.cooperator">
+        <![CDATA[
+       INSERT INTO app_task_cooperator (`pid`,`id`,`mobile`,`task_no`)VALUES(null,#id#,#mobile#,#task_no#)
+    ]]>
+    </entry>
+
+
+    <!--插入任务记录-->
+    <entry key="sql.insert.appTaskRecord">
+        <![CDATA[
+        INSERT INTO app_task_records(`id`,`system_head`,`staff`,`images`,`project_code`,`crm_evaluation`,`title`,
+        `content`,`source`,`score`,`crm_duty`,`crm_source`,`status`,`updated`,`staff_mobile`,`paid`,`appointment_start_time`,`appointment_end_time`,
+        `address`,`task_no`,`report_user_mobile`,`business_type`,`house_code`,`created`,`mobile`,`housekeeper`,`contact`,`timeout`,`syncTime`)
+        VALUES(null,#system_head#,#staff#,#img#,#project_code#,#crm_evaluation#,#title#,
+        #content#,#source#,#score#,#crm_duty#,#crm_source#,#status#,#updated#,#staff_mobile#,#paid#,#appointment_start_time#,#appointment_end_time#,
+        #address#,#task_no#,#report_user_mobile#,#business_type#,#house_code#,#created#,#mobile#,#housekeeper#,#contact#,'否',now())
+    ]]>
+    </entry>
+
+    <!--判断一个任务是否存在-->
+    <entry key="sql.exist.appTaskRecord">
+        <![CDATA[
+        select count(1) from app_task_records where task_no =#taskNo#
+    ]]>
+    </entry>
+
+
+    <!--更新任务数据-->
+    <entry key="sql.update.appTaskRecord">
+        <![CDATA[
+        update app_task_records SET system_head = #system_head#,staff=#staff#,images=#img#,project_code=#project_code#,
+        crm_evaluation=#crm_evaluation#,title=#title#,content=#content#,source=#source#,
+        score=#score#,crm_duty=#crm_duty#,crm_source=#crm_source#,status=#status#,updated=#updated#,
+        staff_mobile=#staff_mobile#,paid=#paid#,
+        appointment_start_time=#appointment_start_time#,appointment_end_time=#appointment_end_time#,address=#address#,
+        report_user_mobile=#report_user_mobile#,business_type=#business_type#,house_code=#house_code#,created=#created#,mobile=#mobile#,
+        housekeeper=#housekeeper#,contact=#contact#,syncTime=now()
+        where task_no=#task_no#
+    ]]>
+    </entry>
+
+
+
+    <!--更新mc_name字段-->
+    <entry key="sql.update.mc_name">
+        <![CDATA[
+        UPDATE app_task_records a
+        INNER JOIN vankecrm_center.main_project mp
+        on a.project_code = mp.code
+        INNER JOIN vankecrm_center.tree_organization b
+        on mp.id = b.id
+        INNER JOIN vankecrm_center.tree_organization c
+        on b.parentId = c.id
+        set a.mc_name = c.`name`
+        {? where a.created >= #requestTime#}
+    ]]>
+    </entry>
+
+
+    <!--更新city_name字段-->
+    <entry key="sql.update.city_name">
+        <![CDATA[
+        UPDATE  app_task_records a
+        INNER JOIN vankecrm_center.main_project b
+        on a.project_code = b.`code`
+        INNER JOIN
+        (select ddi.code,ddi.`value` from vankecrm_center.dim_dictionary  dd
+        inner join `vankecrm_center`.dim_dictionary_items ddi on dd.id = ddi.dictionaryId
+        where dd.tableName = 'main_project' and dd.fieldName = 'citycode') as mm
+        on b.citycode = mm.`code`
+        set a.city_name = mm.`value`
+        {? where a.created >= #requestTime#}
+    ]]>
+    </entry>
+
+    <!--更新gridId，buildingName字段-->
+    <entry key="sql.update.gridId_buildingName">
+        <![CDATA[
+        UPDATE app_task_records a
+        INNER JOIN vankecrm_center.main_house b
+        on a.house_code = b.`code`
+        INNER JOIN vankecrm_center.mid_project_house c
+        on b.id = c.houseId
+        set a.grid_id  = c.gridId,a.buildingName = b.buildingName
+        {? where a.created >= #requestTime#}
+    ]]>
+    </entry>
+
+    <!--更新grid_name字段-->
+    <entry key="sql.update.grid_name">
+        <![CDATA[
+        UPDATE  app_task_records a
+        INNER JOIN vankecrm_center.main_grid b
+        on a.grid_id = b.id
+        set a.grid_name = b.`name`
+        {? where a.created >= #requestTime#}
+    ]]>
+    </entry>
+
+    <!--更新house_name字段-->
+    <entry key="sql.update.house_name">
+        <![CDATA[
+        update app_task_records  a
+        set house_name = (select `name` from vankecrm_center.main_house where `code`=a.house_code LIMIT 1)
+        {? where a.created >= #requestTime#}
+    ]]>
+    </entry>
+
+    <!--更新project_name字段-->
+    <entry key="sql.update.project_name">
+        <![CDATA[
+        update app_task_records  a
+        set project_name = (select `name` from vankecrm_center.main_project where `code`=a.project_code LIMIT 1)
+        {? where a.created >= #requestTime# }
+    ]]>
+    </entry>
+
+    <!--更新system_head_name字段-->
+    <entry key="sql.update.system_head_name">
+        <![CDATA[
+        update app_task_records a
+        set system_head_name = (select fullName from tmp_staff b where b.`﻿id` =  a.system_head LIMIT 1 )
+        {? where a.created >= #requestTime# }
+    ]]>
+    </entry>
+
+    <!--更新staff_name字段-->
+    <entry key="sql.update.staff_name">
+        <![CDATA[
+        update app_task_records a
+        set staff_name = (select b.fullName from tmp_staff b where b.`﻿id` =  a.staff LIMIT 1 )
+        {? where a.created >= #requestTime# }
+    ]]>
+    </entry>
+
+
+    <!--更新status_name字段-->
+    <entry key="sql.update.status_name">
+        <![CDATA[
+        update app_task_records  a
+        set status_name =
+        (select `value` from vankecrm_center.dim_dictionary_items where dictionaryId='d6c930787ded11e599cad00d52eb478c' and a.`status` = `code` LIMIT 1)
+        {? where a.created >= #requestTime# }
+
+    ]]>
+    </entry>
+
+    <!--更新business_type_name字段-->
+    <entry key="sql.update.business_type_name">
+        <![CDATA[
+        update app_task_records a
+        set a.business_type_name=(select businessName from vankecrm_business.task_businesstype  where  businessCode=a.business_type LIMIT 1 )
+        {? where a.created >= #requestTime# }
+    ]]>
+    </entry>
+
+    <!--更新housekeeper_name字段-->
+    <entry key="sql.update.housekeeper_name">
+        <![CDATA[
+         update app_task_records a
+        set housekeeper_name = (select fullName from tmp_staff b where b.`﻿id` = a.housekeeper LIMIT 1  )
+        {? where a.created >= #requestTime# }
+    ]]>
+    </entry>
+
+    <!--更新是否超时字段-->
+    <entry key="sql.update.timeout">
+        <![CDATA[
+        update app_task_records a INNER JOIN vankecrm_business.task_abnormal_records  b on a.task_no=b.taskNo
+        set a.timeout = '是'
+        where b.ctime >= #requestTime#
+    ]]>
+    </entry>
+
+    <!--更新处理方式字段-->
+    <entry key="sql.update.process_way">
+        <![CDATA[
+        update app_task_records a INNER JOIN vankecrm_business.task_records b
+        on a.task_no=b.taskNo
+        set a.processingWay=b.processingWay
+        {? where a.created >= #requestTime# }
+    ]]>
+    </entry>
+
+  <entry key="query.secuser.mobile">
+        <![CDATA[
+       select id,name,type,login_id,sex,status,org_id,created_by,created_date,last_updated_date,last_updated_by
+		from sec_user
+		where MOBILE_PHONE =#mobile# limit 0,1
+		  ]]>
+    </entry>
+    <entry key="query.house.id.housecode">
+        <![CDATA[
+      select ID
+	  from main_house
+	  where code =#code#
+    ]]>
+    </entry>
+    
+        <entry key="query.grid.id.gridcode">
+        <![CDATA[
+      select ID
+	  from main_grid
+	  where code =#code#
+    ]]>
+    </entry>
+    
+         <!--更新mid_project_house数据-->
+    <entry key="sql.update.midprojecthouse2">
+        <![CDATA[
+        update mid_project_house SET gridId = #gridId#
+        where houseId=#houseId#
+    ]]>
+    </entry>
+    
+        <entry key="sql.exist.appTaskTableTd">
+        <![CDATA[
+        select count(1) from main_grid  where code =#code#
+    ]]>
+    </entry>
+    
+    	    <!--插入任务记录-->
+    <entry key="sql.insert.appTaskTabletd">
+        <![CDATA[
+       INSERT INTO main_grid (`id`,`code`,`name`,`projectId`)VALUES(#id#,#code#,#name#,#project_code#)
+    ]]>
+    </entry>
+        <!--更新任务数据-->
+    <entry key="sql.update.appTaskTabletd">
+        <![CDATA[
+        update main_grid SET code = #code#,name=#name#,projectId=#project_code#
+        where code=#code#
+    ]]>
+    </entry>
+
+
+
+</properties>

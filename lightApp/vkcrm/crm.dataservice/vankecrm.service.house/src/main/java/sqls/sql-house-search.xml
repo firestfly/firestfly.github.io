@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>客服中心首页搜索功能</comment>
+
+    <entry key="sql.query.house.index.search.fuzzy">
+        <![CDATA[
+        	-- 模糊查询房屋信息
+			SELECT c.id,
+			       c. NAME,
+			       c. CODE,
+			       (SELECT mp.NAME
+			          FROM mid_project_house mph, main_project mp
+			         WHERE mph.houseId = c.id
+			           AND mp.id = mph.projectId
+			           AND mp.isDeleted = 0 limit 1) extend1,
+			       (SELECT group_concat(mc.fullName)
+			          FROM mid_customer_house mch, main_customer mc
+			         WHERE mch.houseId = c.id
+			           AND mch.customerId = mc.id
+			           AND mch.isDeleted = 0
+			           AND mc.isDeleted = 0
+			           AND mch.relationType = 1) extend2
+			  FROM main_house c
+			 INNER JOIN mid_organization_user su1
+			    ON su1.organizationId = c.projectId
+			   and su1.isdeleted = 0
+			   and su1.status = 1
+			   and su1.userId = #userId#
+			 WHERE c.isdeleted = 0
+			   AND c.$column$ LIKE CONCAT(CONCAT('%', #value#), '%') ESCAPE '/'
+			 LIMIT 10
+	    ]]>
+    </entry>
+
+    <entry key="sql.query.house.index.search.precise">
+        <![CDATA[
+        	-- 精确查询房屋信息
+			SELECT c.id,
+			       c. NAME,
+			       c. CODE,
+			       (SELECT mp.NAME
+			          FROM mid_project_house mph, main_project mp
+			         WHERE mph.houseId = c.id
+			           AND mp.id = mph.projectId
+			           AND mp.isDeleted = 0 limit 1) extend1,
+			       (SELECT group_concat(mc.fullName)
+			          FROM mid_customer_house mch, main_customer mc
+			         WHERE mch.houseId = c.id
+			           AND mch.customerId = mc.id
+			           AND mch.isDeleted = 0
+			           AND mc.isDeleted = 0
+			           AND mch.relationType = 1) extend2
+			  FROM main_house c
+			 INNER JOIN mid_organization_user su1
+			    ON su1.organizationId = c.projectId
+			   and su1.isdeleted = 0
+			   and su1.status = 1
+			   and su1.userId = #userId#
+			 WHERE c.isdeleted = 0
+			   and c.$column$ = #value#
+			 LIMIT 10
+	    ]]>
+    </entry>
+    
+    <entry key="sql.query.carport.index.search.fuzzy">
+        <![CDATA[
+        	-- 模糊查询车位信息
+			SELECT c.id,
+			       c.NAME,
+			       c.CODE,
+			       (select mp.name from main_project mp where mp.id = c.projectId) as extend1,
+			       (SELECT group_concat(mc.fullName)
+			          FROM mid_carport_customer mch, main_customer mc
+			         WHERE mch.carportId = c.id
+			           AND mch.customerId = mc.id
+			           AND mch.isDeleted = 0
+			           AND mc.isDeleted = 0) extend2
+			  FROM main_carport c
+			 INNER JOIN mid_organization_user su1
+			    ON su1.organizationId = c.projectId
+			   and su1.isdeleted = 0
+			   and su1.status = 1
+			   and su1.userId = #userId#
+			 WHERE c.isdeleted = 0
+			   AND c.$column$ LIKE CONCAT(CONCAT('%', #value#), '%') ESCAPE '/'
+			 LIMIT 10
+	    ]]>
+    </entry>
+
+    <entry key="sql.query.carport.index.search.precise">
+        <![CDATA[
+        	-- 精确查询车位信息
+			SELECT c.id,
+			       c.NAME,
+			       c.CODE,
+			       (select mp.name from main_project mp where mp.id = c.projectId) as extend1,
+			       (SELECT group_concat(mc.fullName)
+			          FROM mid_carport_customer mch, main_customer mc
+			         WHERE mch.carportId = c.id
+			           AND mch.customerId = mc.id
+			           AND mch.isDeleted = 0
+			           AND mc.isDeleted = 0) extend2
+			  FROM main_carport c
+			 INNER JOIN mid_organization_user su1
+			    ON su1.organizationId = c.projectId
+			   and su1.isdeleted = 0
+			   and su1.status = 1
+			   and su1.userId = #userId#
+			 WHERE c.isdeleted = 0
+			   AND c.$column$ LIKE CONCAT(CONCAT('%', #value#), '%') ESCAPE '/'
+			 LIMIT 10
+			select c.id,c.name,c.code from main_carport c where c.isdeleted = 0 and c.$column$ = #value# LIMIT 10
+	    ]]>
+    </entry>
+
+</properties>

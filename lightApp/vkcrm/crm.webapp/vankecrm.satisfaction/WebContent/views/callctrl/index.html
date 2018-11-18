@@ -1,0 +1,104 @@
+<div class="callctrl" ms-controller="callctrl">
+	<div class="callctrl-info" ms-class="active:infoActive">
+		<div class="callctrl-state">
+			<i ms-class="icf-{{status}}"></i>
+		</div>
+		<div class="callctrl-phone">
+			<span class="callctrl-number" ms-text="phoneNumber"></span>
+			<span class="callctrl-address" ms-text="phoneAddress"></span>
+		</div>
+		<div class="callctrl-time">
+			<span ms-text="statusText"></span>：<span ms-text="phoneTime"></span>
+		</div>
+	</div>
+	<span class="pipe"></span>
+	<div class="callctrl-btns">
+		<div class="btn" ms-class="disabled:btnLogin.disable">
+			<span ms-click="change('btnLogin')"><i class="icf-callin"></i> <span ms-text="btnLoginText">登录</span></span>
+			<div class="c-tipbox cbtns-login"  ms-visible="btnLogin.visible">
+				<div class="c-tipbox-content">
+				<label>工号：<select class="span2" ms-duplex="AgentId">
+					<option selected="selected">==请选择==</option>
+					<option ms-repeat="teluserOptions" ms-text="el.name" ms-attr-value="el.number"></option>
+				</select></label>
+				<label>分机：<input type="text" class="span2" ms-duplex-digit="AgentStation"></label>
+				<button class="btn btn-success" ms-click="btnLogin.login">确认</button>
+				<button class="btn btn-warning" ms-visible="hasLogined" ms-click="btnLogin.logout">注销</button>
+				<button class="btn" ms-click="btnLogin.cancel">取消</button>
+				</div>
+			</div>
+		</div>
+		<div class="btn" ms-class="disabled:btnHangOn.disable" ms-class-1="active:btnHangOn.holding">
+			<span ms-click="change('btnHangOn')"><i class="icf-hangon"></i> <span ms-text="btnHangOn.holding?'取消':'保持'"></span></span>
+			</div>
+		<div class="btn" ms-class="disabled:btnHangUp.disable">
+			<span ms-click="change('btnHangUp')"><i class="icf-hangup"></i> 挂机</span>
+			</div>
+	</div>
+</div>
+	<div style="position:absolute;top:0;left:0;">
+		<object ID="TestActiveX1Ctrl" CLASSID="clsid:726B26BB-8280-4BFD-80C1-4F970CA41243" width="0" height="0"></object>
+	</div>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtScreenPopDataArrival(strEvtMsg)">
+		SoftPhone.trigger("EvtScreenPopDataArrival",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtWillLogin(strEvtMsg)">
+		SoftPhone.trigger("EvtWillLogin",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtDidLogin(strEvtMsg)">
+		SoftPhone.trigger("EvtDidLogin",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtWillLogout(strEvtMsg)">
+		SoftPhone.trigger("EvtWillLogout",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtDidLogout(strEvtMsg)">
+		SoftPhone.trigger("EvtDidLogout",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtWillIdle(strEvtMsg)">
+		SoftPhone.trigger("EvtWillIdle",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtDidIdle(strEvtMsg)">
+		SoftPhone.trigger("EvtDidIdle",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtWillNotReady(strEvtMsg)">
+		SoftPhone.trigger("EvtWillNotReady",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtDidNotReady(strEvtMsg)">
+		SoftPhone.trigger("EvtDidNotReady",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtWillWrapup(strEvtMsg)">
+		SoftPhone.trigger("EvtWillWrapup",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtDidWrapup(strEvtMsg)">
+		SoftPhone.trigger("EvtDidWrapup",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtWillAlerting(strEvtMsg)">
+		SoftPhone.trigger("EvtWillAlerting",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtDidAlerting(strEvtMsg)">
+		SoftPhone.trigger("EvtDidAlerting",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtWillActive(strEvtMsg)">
+		SoftPhone.trigger("EvtWillActive",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtDidActive(strEvtMsg)">
+		SoftPhone.trigger("EvtDidActive",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtWillDial(strEvtMsg)">
+		SoftPhone.trigger("EvtWillDial",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtDidDial(strEvtMsg)">
+		SoftPhone.trigger("EvtDidDial",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtWillHold(strEvtMsg)">
+		SoftPhone.trigger("EvtWillHold",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtDidHold(strEvtMsg)">
+		SoftPhone.trigger("EvtDidHold",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtWillConsult(strEvtMsg)">
+		SoftPhone.trigger("EvtWillConsult",strEvtMsg);
+	</SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript1.2" FOR="TestActiveX1Ctrl" EVENT="EvtDidConsult(strEvtMsg)">
+		SoftPhone.trigger("EvtDidConsult",strEvtMsg);
+	</SCRIPT>

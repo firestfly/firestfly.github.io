@@ -1,0 +1,400 @@
+@charset "UTF-8";
+
+$btnHeight: 32px;
+.bi-house {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 32px;
+  text-align: center;
+  overflow: auto;
+  $ownerHeight: 240px;
+
+  .bi-owner {
+	//margin: 0 10px;
+	//padding-top: 10px;
+	//height: $ownerHeight;
+	//border-bottom: 1px solid $coGray;
+	overflow-y: auto;
+  }
+  .bi-owner-info {
+	padding: 6px 0;
+	border-bottom: 1px solid #efefef;
+	border-top: 1px solid #ffffff;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+
+	&:hover {
+	  .relation-del {
+		display: block;
+	  }
+	}
+  }
+  .bi-ownerbox-top {
+	margin: 3px 0 0 0px;
+	display: inline-block;
+  }
+  .bi-ownerbox-info {
+	float: left;
+	padding: 10px 0 0 0px;
+  }
+  .bi-owner-img {
+	float: left;
+	//width: 86px;
+	//height: 86px;
+	overflow: hidden;
+	//margin: 10px auto;
+	position: relative;
+
+	img {
+	  display: block;
+	  margin: auto;
+	  //padding-left: 12px;
+	  //padding-top: 10px;
+	}
+	&:after {
+	  //content: "";
+	  //display: block;
+	  //position: absolute;
+	  //top: 0;
+	  //left: 0;
+	  //width: 86px;
+	  //height: 86px;
+	  //background-image: url(../img/circle3.png);
+	  //background-repeat: no-repeat;
+	  //background-position: center;
+	}
+  }
+  .bi-owner-name {
+	font-size: 20px;
+	line-height: 30px;
+	width: 120px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	//margin-bottom: 10px;
+  }
+  .bi-owner-phone {
+	line-height: 20px;
+	color: $coCyan;
+	//margin-bottom: 10px;
+  }
+
+  .bi-owner-tags {
+	display: block;
+	margin-top: 4px;
+	padding-left: 14px;
+	overflow: hidden;
+	.owner-tagbox {
+	  width: 220px;
+	  margin: auto;
+
+	  .tag {
+		height: 20px;
+		width: 30px;
+		line-height: 20px;
+		font-size: 10px;
+		float: left;
+		margin-right: 5px;
+
+		&:after {
+		  content: "";
+		  display: block;
+		  height: 0;
+		  clear: both;
+		}
+	  }
+	}
+
+  }
+  .bi-relation {
+	//position: absolute;
+	//top: $ownerHeight+10;
+	//left: 0;
+	//right: 0;
+	//bottom: $btnHeight;
+
+	ul {
+	  margin: 0;
+	  padding: 0;
+	  list-style: none;
+	  height: 100%;
+	  overflow: auto;
+	}
+	li {
+	  clear: both;
+	}
+	.relation-tags {
+	  height: 27px;
+	  text-align: right;
+	  margin-right: 10px;
+	}
+	.tag {
+	  font-size: 12px;
+	  padding: 2px;
+	}
+	.relation {
+	  //margin: 0 10px;
+	  //height: 53px;
+	  padding: 10px 0;
+	  display: inline-block;
+	  width: 100%;
+	}
+  }
+
+  .bi-owner-two {
+	.bi-owner-info {
+	  //width: 50%;
+	  //float: left;
+	}
+	.bi-owner-name {
+	  font-size: 16px;
+	}
+	.bi-owner-phone {
+	  font-size: 14px;
+	}
+	$tagWidth: 24px;
+
+	.bi-owner-tags {
+	  //line-height: $tagWidth*2;
+
+	  .tag {
+		//font-size: 12px;
+		//height: $tagWidth;
+		//width: $tagWidth;
+		//line-height: $tagWidth;
+
+		&:after {
+		  //background-image: url(../img/circle4.png);
+		  //width: $tagWidth;
+		  //height: $tagWidth;
+		}
+	  }
+	}
+  }
+}
+
+.bi-relation-btns {
+  border-top: 1px solid $coGray;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: $btnHeight +2;
+  z-index: 1;
+
+  .bi-relation-btn {
+	float: left;
+	line-height: $btnHeight;
+	height: $btnHeight;
+	border-left: 1px solid $coGray;
+	text-align: center;
+	display: inline-block;
+	width: 49%;
+	background-color: $coLightGray2;
+
+	&:first-child {
+	  border-left: none;
+	}
+  }
+}
+.tag {
+  color: #FFF;
+  font-size: 10px;
+
+  &.tag-yellow {
+	background-color: $coYellow;
+  }
+  &.tag-blue {
+	background-color: $coBlue;
+  }
+  &.tag-cyan {
+	background-color: $coCyan;
+  }
+  &.tag-green {
+	background-color: $coGreen;
+  }
+  &.tag-red {
+	background-color: $coLightRed;
+  }
+  &.tag-orange {
+	background-color: $coDeepOrange;
+  }
+  &.tag-off {
+	background-color: #b5b5b5;
+	color: #e3e3e3;
+  }
+}
+
+#transferRelationList {
+  .tag {
+	padding: 2px;
+  }
+}
+.bi-history {
+  display: none;
+  background-color: #2c4967;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 35px;
+  left: 0;
+  text-align: left;
+  color: #dfe3ee;
+  z-index: 2;
+
+  &.active {
+	display: block;
+  }
+  .bi-history-header {
+	line-height: 40px;
+	font-size: 20px;
+	padding-left: 20px;
+
+	i {
+	  cursor: pointer;
+	}
+
+	/* &:before {
+        @include iconfont;
+        content: "\e62e";
+        margin-left: 20px;
+    } */
+  }
+  .bi-history-body {
+	position: absolute;
+	top: 40px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 10px 0 10px 10px;
+	overflow: auto;
+
+	.name {
+	  display: inline-block;
+	  width: 60px;
+	  overflow: hidden;
+	  vertical-align: middle;
+	  @include ellipsis;
+	}
+	.phone {
+	  display: inline-block;
+	  width: 102px;
+	}
+	.tag {
+	  width: 16px;
+	  padding: 2px;
+	}
+  }
+  a {
+	color: #dfe3ee;
+
+	&:hover, &:focus {
+	  color: #dfe3ee;
+	}
+  }
+  ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+  }
+  li {
+	line-height: 32px;
+  }
+}
+.relation-del {
+  /*$width: 20px;
+cursor: pointer;
+display: none;
+position: absolute;
+bottom: 6px;
+right: 2px;
+height: $width;
+padding: 1px 2px;
+font-style: normal;
+width: $width;
+text-align: center;
+line-height: $width;
+font-size: 13px;
+color: #FFF;
+background-color: $coLightRed;
+border: 1px solid $coRed;*/
+
+  cursor: pointer;
+  display: none;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  height: 16px;
+  width: 16px;
+  background: url(../../img/icf-delete.png) no-repeat center;
+
+  &:before {
+	/*@include iconfont;
+    content: "\e628";*/
+  }
+}
+.relation {
+  $boxHeight: 40px;
+  $fontSize: 14px;
+  position: relative;
+  font-size: $fontSize;
+  line-height: 20px;
+  //line-height: 26px;
+  border-bottom: 1px solid $coGray;
+  padding: 6px 0 0 6px;
+
+  &:hover {
+	.relation-del {
+	  display: block;
+	}
+  }
+
+  .relation-img {
+	float: left;
+	width: 35px;
+	height: 35px;
+	position: relative;
+	margin: 2px 5px 0 14px;
+	cursor: pointer;
+
+	img {
+	  width: 35px;
+	  height: 35px;
+	}
+	&:before {
+	  content: "";
+	  display: block;
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  width: 35px;
+	  height: 35px;
+	  /*background-image: url(../img/circle2.png);
+    background-repeat: no-repeat;
+    background-position: center;*/
+	}
+  }
+  .relation-center {
+	float: left;
+	height: $boxHeight;
+	width: $fontSize * 5;
+  }
+  .relation-right {
+	margin-left: $fontSize * 5 + 40;
+  }
+  .relation-phone {
+	font-size: 12px;
+	text-align: left;
+	color: #29b2ff;
+  }
+  .relation-name {
+	font-size: 12px;
+	text-align: left;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+  }
+}

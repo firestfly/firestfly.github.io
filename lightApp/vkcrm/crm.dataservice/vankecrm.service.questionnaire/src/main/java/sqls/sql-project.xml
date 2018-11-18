@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>问卷调查选择项目</comment>
+		
+	<entry key="project.function.queryProject">
+	<![CDATA[
+		-- 查询项目
+		SELECT p.ID, p.NAME
+		  from main_project p
+		 where ifnull(p.isdeleted,0) = 0
+		 {?and p.name LIKE CONCAT(CONCAT('%', #PROJECT_NAME#), '%') ESCAPE '/'}
+	]]>
+	</entry>
+		
+	<entry key="project.function.querySelectedProject">
+	<![CDATA[
+		-- 获取已选项目列表
+		select * from mid_questionnaire_project qp where qp.questionnaire_id = ?
+	]]>
+	</entry>
+	
+	<entry key="project.function.delproject">
+	<![CDATA[
+		-- 清空问卷选择项目
+		delete from mid_questionnaire_project where questionnaire_id = ?
+	]]>
+	</entry>
+	
+	
+</properties>

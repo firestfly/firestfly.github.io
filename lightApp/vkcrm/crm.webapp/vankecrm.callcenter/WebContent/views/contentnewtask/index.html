@@ -1,0 +1,20 @@
+<div class="height" id="ms_task" ms-controller="contentnewtask" ms-class="sidebarvisible:sidebarVisible">
+	<div class="sidebar">
+		<div class="sidebar-handle" id="toggleSidebar">
+			<i class="handle"></i>
+		</div>
+		<div class="sidebar-content" ms-include-src="'views/sidebar/index.html'" data-include-rendered="sidebarRendered"></div>
+	</div>
+	<div class="container">
+		<ul class="nav nav-tabs task-tabs">
+	<li ms-class="active:visibleIndex=='taskinput'" ms-click="show('taskinput')"><a><span>任务录入</span></a></li>
+	<li ms-class="active:visibleIndex=='tasklist'" ms-click="show('tasklist')"><a><span>任务查询</span></a></li>
+	<li ms-class="active:visibleIndex=='taskquery'" ms-click="show('taskquery')"><a><span>任务详情</span></a></li>
+	<li ms-class="active:visibleIndex=='tasknotice'" ms-click="show('tasknotice')"><a><span>公告查询</span></a></li>
+		</ul>
+		<div class="tab task-tab" ms-visible="visibleIndex=='taskinput'" ms-include-src="src_taskinput" id="src_taskinput"></div>
+		<div class="tab task-tab" ms-visible="visibleIndex=='tasklist'" ms-include-src="src_tasklist"></div>
+		<div class="tab task-tab scrollable" ms-visible="visibleIndex=='taskquery'" ms-include-src="src_taskquery"></div>
+		<div class="tab task-tab" ms-visible="visibleIndex=='tasknotice'" ms-include-src="src_tasknotice"></div>
+	</div>
+</div>

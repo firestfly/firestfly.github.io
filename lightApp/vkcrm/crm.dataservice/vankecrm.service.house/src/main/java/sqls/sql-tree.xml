@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>用户模块权限表</comment>
+
+    <!--查询树的根节点-->
+    <entry key="sql.tree.query.root">
+        <![CDATA[
+        SELECT
+            o.id,
+            o.name,
+            o.levelType,
+            o.isOuter,
+            (SELECT
+                    COUNT(1) > 0
+                FROM
+                    tree_organization o1
+                        INNER JOIN
+                    mid_organization_user su1 ON su1.organizationId = o1.id and su1.isdeleted = 0 and su1.status=1
+                WHERE
+                    o1.parentId = o.id and IFNULL(o1.isDeleted,0) = 0) AS hasChild
+        FROM
+            tree_organization o
+                INNER JOIN
+            mid_organization_user su ON su.organizationId = o.id  and su.isdeleted = 0 and su.status = 1
+        WHERE
+            su.userId = #userId# AND ISNULL(parentId)
+                AND IFNULL(o.isDeleted, 0) = 0
+        ]]>
+    </entry>
+
+    <!--查询树的根节点-->
+    <entry key="sql.tree.query">
+        <![CDATA[
+        SELECT * FROM (
+            SELECT
+                o.id,
+                o.name,
+                o.levelType,
+                o.isOuter,
+                (SELECT
+                        COUNT(1) > 0
+                    FROM
+                        tree_organization o1
+                            INNER JOIN
+                        mid_organization_user su1 ON su1.organizationId = o1.id and su1.isdeleted = 0 and su1.status=1
+                    WHERE
+                        o1.parentId = o.id) AS hasChild
+            FROM
+                tree_organization o
+                    INNER JOIN
+                mid_organization_user su ON su.organizationId = o.id and su.isdeleted = 0 and su.status = 1
+            WHERE
+                su.userId = #userId#
+                    AND o.parentId = #treeNodeId#
+                    AND IFNULL(o.isDeleted, 0) = 0
+                    AND o.levelType NOT IN (5 , 6)
+                    {? AND ((o.levelType = 5 AND o.id IN (SELECT buildingId FROM mid_project_house WHERE gridId = #gridId#)) }
+                    {? OR (o.levelType = 6 AND o.id IN (SELECT unitId FROM mid_project_house WHERE gridId = #gridId#))) }
+            UNION
+            SELECT
+                o.id,
+                o.name,
+                o.levelType,
+                o.isOuter,
+                (SELECT
+                        COUNT(1) > 0
+                    FROM
+                        tree_organization o2
+                    WHERE
+                        o2.parentId = o.id) AS hasChild
+            FROM
+                tree_organization o
+            WHERE
+                o.parentId = #treeNodeId#
+                    AND o.levelType IN (5 , 6)
+                    AND IFNULL(o.isDeleted, 0) = 0
+                    {? AND ((o.levelType = 5 AND o.id IN (SELECT buildingId FROM mid_project_house WHERE gridId = #gridId#)) }
+                    {? OR (o.levelType = 6 AND o.id IN (select unitId FROM mid_project_house WHERE gridId = #gridId#))) }
+        ) AS tab
+        ORDER BY convert(name USING gbk) COLLATE gbk_chinese_ci
+        ]]>
+    </entry>
+
+    <entry key="sql.items.query">
+        <![CDATA[
+        SELECT
+            o.id,
+            o. NAME,
+            o.levelType
+        FROM
+            tree_organization o
+        INNER JOIN mid_organization_user su ON su.organizationId = o.id
+        WHERE
+            su.userId = #userId#
+        AND levelType = #levelType# and ifnull(su.isDeleted, 0) = 0
+        {? and o.parentId = #parentId# }
+        ORDER BY
+            CONVERT (o. NAME USING gbk) COLLATE gbk_chinese_ci
+        ]]>
+    </entry>
+
+</properties>

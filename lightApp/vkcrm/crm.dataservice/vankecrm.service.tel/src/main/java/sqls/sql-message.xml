@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>话务人员信息查询</comment>
+ 
+	<entry key="callcenter.sms.template.list">
+	<![CDATA[
+		-- 短信模板列表
+		SELECT c.type_name as category_name,
+		       (CASE
+				 WHEN st.type = 1 THEN '固定模板'
+				 WHEN st.type = 2 THEN '半定义模板'
+			   END) as type_name,
+		       st.*
+		  FROM sms_template st,sms_template_categories c  
+		 WHERE st.category_id = c.id 
+		   and st.deleted = 0
+		   and st.enabled = 1
+		   and (CASE
+				 WHEN now() < st.start_date THEN 1
+				 WHEN now() < DATE_ADD(st.end_date,Interval 1 day) THEN 2
+				 WHEN now() > DATE_ADD(st.end_date,Interval 1 day) THEN 3
+			   END) = 2
+		{? AND st.name LIKE CONCAT(CONCAT('%',#name#),'%') ESCAPE '/' }
+		{? AND st.content LIKE CONCAT(CONCAT('%',#content#),'%') ESCAPE '/' }
+	]]>
+	</entry>
+  
+</properties>

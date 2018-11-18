@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>数据字典sql</comment>
+
+    <!-- 根据字典编码查询字典项-->
+    <entry key="sql.select.dictionaries">
+        <![CDATA[
+		SELECT
+            ddi.id, ddi.code, ddi.value, dd.name AS typeName, dd.code AS dictionaryCode
+        FROM
+            dim_dictionary dd,
+            dim_dictionary_items ddi
+        WHERE
+            dd.id = ddi.dictionaryId
+            {? AND dd.code in (#DictionaryCodes#)}
+        ORDER BY ddi.sortNo
+	    ]]>
+    </entry>
+</properties>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>项目报事报表</comment>
+	
+    
+
+    <!-- 项目报事报表 -->
+    <entry key="sql.query.project.report">
+        <![CDATA[
+			select
+			created,
+			source,
+			address,
+			status,
+			task_no,
+			content,
+			business_type
+			from app_task_records
+        ]]>
+    </entry>
+
+
+
+    <!-- 根据房屋编码获取网格名 -->
+    <entry key="sql.query.gridname">
+        <![CDATA[
+            select name from grid_view  where `code` = #houseCode# limit 1
+       ]]>
+    </entry>
+
+    <!-- 判断一个任务是否超时 -->
+    <entry key="sql.query.istimeout">
+        <![CDATA[
+            select count(1) from task_abnormal_records where taskNo = #taskNo#
+       ]]>
+    </entry>
+
+
+</properties>

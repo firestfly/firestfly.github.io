@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+    <!-- 获取一段时间内的录音数据 -->
+    <entry key="sql.query.questionanire">
+    <![CDATA[
+        -- 查询进行中的问卷调查
+		SELECT q.questionnaire_id,
+		       q.begin_time,
+		       q.end_time,
+		       q.delay_time,
+		       q.sample_ratio,
+		       q.annual_complete_rate / 100 as annual_complete_rate,
+		       s.anomalous_months,
+		       q.exclude_specialidentities as 'excludeSpecialidentities'
+		  FROM biz_questionnaire q
+		  LEFT JOIN biz_subject s
+		    ON q.subject_id = s.subject_id and s.deleted = 0
+          WHERE q.deleted = 0
+            and q.enabled = 1
+            and q.begin_time < now()
+            and IFNULL(q.delay_time, q.end_time) > DATE_ADD(now(), Interval -1 day)
+    ]]>
+    </entry>
+
+    <!-- 查询问卷关联项目 -->
+    <entry key="sql.query.questionnaire.project">
+    <![CDATA[
+        SELECT project_id FROM mid_questionnaire_project t WHERE t.questionnaire_id = #questionnaireId#
+    ]]>
+    </entry>
+
+    <!-- 查询项目关联的网格 -->
+    <entry key="sql.insert.questionnaire.project.grid">
+    <![CDATA[
+    	INSERT INTO sati_extraction_project
+        (
+            questionnaire_id,
+            project_id,
+            project_code,
+            project_name,
+            grid_id
+        )
+        SELECT
+            #questionnaireId#,
+            t.projectId,
+            p. CODE,
+            p. NAME,
+            t.gridId
+        FROM
+            (
+                SELECT DISTINCT
+                    ph.projectId,
+                    ph.gridId
+                FROM
+                    mid_project_house ph
+                WHERE
+                    IFNULL(ph.gridId,'') <> ''
+                AND ph.projectId IN ($projectIds$)
+            ) AS t
+        LEFT JOIN main_project p ON t.projectId = p.id
+    ]]>
+    </entry>
+
+    <!--
+     抽取房屋
+     1\只抽取房屋类型为住宅的房屋
+     2\只抽取房屋户型不是 会所00006\商铺00008\学校00010 的房屋
+    -->
+    <entry key="sql.insert.questionanire.house">
+    <![CDATA[
+        INSERT INTO sati_extraction_house(questionnaire_id, project_id, grid_id, house_id)
+          SELECT #questionnaireId#, p.project_id, ph.gridId, h.id
+            FROM sati_extraction_project p
+                LEFT JOIN mid_project_house ph ON p.project_id = ph.projectId and p.grid_id = ph.gridId
+                LEFT JOIN main_house h ON ph.houseId = h.id
+                LEFT JOIN main_house_detail hd on h.id = hd.id
+                LEFT JOIN main_project mp on ph.projectId = mp.id
+            WHERE p.questionnaire_id = #questionnaireId#
+             {? AND IFNULL(mp.isOuter,0) = 0 AND TIMESTAMPDIFF(MONTH, CASE WHEN h.deliverTime IS NOT NULL THEN h.deliverTime ELSE h.billingDate END , NOW()) >= #deliverMonthMoreThan# }
+             {? AND IFNULL(mp.isOuter,0) = 0 AND TIMESTAMPDIFF(MONTH, CASE WHEN h.deliverTime IS NOT NULL THEN h.deliverTime ELSE h.billingDate END , NOW()) <  #deliverMonthLessThan# }
+             AND ph.gridId IS NOT NULL
+             AND h.type = 3
+			 AND hd.layout NOT IN ('00006', '00008', '00010')
+             AND IFNULL(h.isDeleted, 0) = 0
+             AND IFNULL(h.isVirtual, 0) = 0
+    ]]>
+    </entry>
+
+    <!-- 抽取常用联系人 -->
+    <!-- 客户生日为空，年龄18到65，或生日=1900-01-01；年龄上限65可选 -->
+    <entry key="sql.update.questionnaire.contacts">
+    <![CDATA[
+        UPDATE sati_extraction_house h
+        INNER JOIN main_house ch ON h.house_id = ch.id
+        INNER JOIN main_customer c on c.id = ch.contactsId
+        LEFT  JOIN main_customer_detail cd ON cd.id = c.id
+               AND (cd.birthday is null
+                    OR (TIMESTAMPDIFF(YEAR, cd.birthday, NOW()) >= #ageMoreThan#
+                        {? AND TIMESTAMPDIFF(YEAR, cd.birthday, NOW()) < #ageLessThan# } )
+                    OR cd.birthday = DATE_FORMAT('1900-01-01', '%Y-%m-%d'))
+               SET h.contacts_id = c.id
+             WHERE h.contacts_Id IS NULL
+               AND h.questionnaire_id = #questionnaireId#
+    ]]>
+    </entry>
+
+    <!-- 抽取随机客户 -->
+    <!-- 没有常用联系人随机抽取一个业主 -->
+    <!-- 客户生日为空，年龄18到65，或生日=1900-01-01；年龄上限65可选 -->
+    <entry key="sql.update.questionnaire.owner">
+    <![CDATA[
+	    UPDATE sati_extraction_house h
+	        INNER JOIN mid_customer_house ch ON h.house_id = ch.houseId AND IFNULL(ch.isDeleted, 0) = 0 AND ch.relationType = 1
+            INNER JOIN main_customer c on c.id = ch.customerId
+             LEFT JOIN main_customer_detail cd ON cd.id = c.id
+	       AND (cd.birthday is null
+	            or (TIMESTAMPDIFF(YEAR, cd.birthday, NOW()) >= #ageMoreThan#
+	                {? and TIMESTAMPDIFF(YEAR, cd.birthday, NOW()) < #ageLessThan# })
+	            or cd.birthday = DATE_FORMAT('1900-01-01', '%Y-%m-%d'))
+	       SET h.contacts_id = ch.customerId
+	     WHERE h.contacts_id IS NULL
+	       AND h.questionnaire_id = #questionnaireId#
+	]]>
+    </entry>
+
+    <!-- 更新排除的特殊身份客户 -->
+    <entry key="sql.insert.questionnaire.subscribe">
+    <![CDATA[
+		INSERT INTO sati_extraction_identity
+		  (customer_id)
+		  (SELECT s.customerId
+			FROM dim_cust_specialidentity s
+			WHERE s.identity IN ($identities$))
+	]]>
+    </entry>
+
+    <!-- 更新法律纠纷客户 -->
+    <entry key="sql.insert.questionnaire.subscribe.legaldispute">
+        <![CDATA[
+		INSERT INTO sati_extraction_identity
+		  (customer_id)
+		  (SELECT s.customerId
+            FROM dim_cust_specialidentity s
+            WHERE s.identity = '8'
+            AND NOW() BETWEEN s.beginDate and s.endDate)
+	]]>
+    </entry>
+
+    <!-- 查询不接受调查客户 -->
+    <entry key="sql.query.questionnaire.anomalous">
+    <![CDATA[
+        SELECT t.customer_id
+          FROM biz_anomalous_customer t
+          WHERE NOW() BETWEEN t.start_time AND t.end_time
+	   AND t.anomalous_type = #anomalousType#
+	]]>
+    </entry>
+
+    <!-- 查询预约客户 -->
+    <!-- 查询预约客户，强制抽取客户 -->
+    <!-- 查询关机，无法接听客户 -->
+    <!-- 查询错号修改客户 -->
+    <entry key="sql.query.questionnaire.subscribe">
+    <![CDATA[
+		SELECT t.project_id, -- 查询预约客户
+		       t.house_id,
+		       t.customer_id,
+		       t.subscribe_time AS appointment_time
+		  FROM biz_subscribe_customer t
+		WHERE t.questionnaire_id = #questionanireId#
+		   AND t.subscribe_time > now()
+		UNION
+		SELECT a.project_id,
+		       a.house_id,
+		       t.customer_id,
+		       '' as appointment_time
+		  FROM dim_anomalous_tags t, biz_answer a
+		WHERE t.answer_id = a.answer_id
+		   AND a.questionnaire_id = #questionanireId#
+		   AND t.tag_category = 1
+		   AND t.error_category in (1, 3)
+		   AND t.ctime > DATE_ADD(NOW(), INTERVAL -3 day)
+        GROUP BY a.house_id, t.customer_id
+		HAVING COUNT(*) < 3
+		UNION
+		SELECT a.project_id,
+		       a.house_id,
+		       t.customer_id,
+		       '' as appointment_time
+		  FROM dim_anomalous_tags t, biz_answer a
+		WHERE t.answer_id = a.answer_id
+		   AND a.questionnaire_id = #questionanireId#
+		   AND t.tag_category = 1
+		   AND t.error_category in (2, 4, 5, 6, 7)
+		   AND t.deleted = 1
+		   AND t.dtime > DATE_ADD(NOW(), INTERVAL -3 day)
+	]]>
+    </entry>
+
+    <!-- 查询已完成客户 -->
+    <entry key="sql.query.questionnaire.customer.completed">
+    <![CDATA[
+		SELECT a.project_id, a.house_id, a.customer_id
+		  FROM biz_answer a
+		 WHERE a.completed = 1
+		   AND a.questionnaire_id = #questionnaireId#
+	]]>
+    </entry>
+
+    <!-- 更新强制抽取客户所属的网格Id -->
+    <entry key="sql.update.questionnaire.subscribe.grid">
+    <![CDATA[
+		UPDATE sati_extraction_subscribe s4
+		JOIN mid_project_house ph ON ph.houseId = s4.house_id
+		SET s4.grid_id = ph.gridId
+	]]>
+    </entry>
+
+    <!-- 更新已完成客户所属的网格Id -->
+    <entry key="sql.update.questionnaire.completed.grid">
+    <![CDATA[
+		UPDATE sati_extraction_completed c7
+		JOIN mid_project_house ph ON ph.houseId = c7.house_id
+		SET c7.grid_id = ph.gridId
+	]]>
+    </entry>
+
+    <!-- 抽取房屋常用联系人 -->
+    <!-- 客户生日为空，年龄18到65，或生日=1900-01-01；年龄上限65可选 -->
+    <entry key="sql.insert.questionnaire.customer">
+    <![CDATA[
+		INSERT INTO sati_extraction_customer
+		  (questionnaire_id, project_id, grid_id, house_id, customer_id,main_mobile)
+		  SELECT #questionnaireId#, h.project_id, h.grid_id, h.house_id, c.id, c.mainMobile
+		    FROM sati_extraction_house h
+		    JOIN main_customer c on h.contacts_id = c.id
+		    LEFT JOIN main_customer_detail cd on h.contacts_id = cd.id
+		    WHERE h.questionnaire_id = #questionnaireId#
+		     AND (cd.birthday is null or
+		         (TIMESTAMPDIFF(YEAR, cd.birthday, NOW()) >= #ageMoreThan#
+		           {? and TIMESTAMPDIFF(YEAR, cd.birthday, NOW()) < #ageLessThan# } ) or
+		         cd.birthday = DATE_FORMAT('1900-01-01', '%Y-%m-%d'))
+	]]>
+    </entry>
+
+    <!-- 插入重复客户信息 -->
+    <!-- 将重复手机号码插入到临时表，并携带重复手机号码中的最大记录ID，此ID房屋将保留做调查 -->
+    <!-- 修改重复号码为空 -->
+    <!-- 保留一个号码 -->
+    <!-- 清除其它号码 -->
+    <entry key="sql.exec.questionnaire.duplicate.mobile.insert">
+    <![CDATA[
+        INSERT into sati_extraction_double
+          (id_id, project_id, main_mobile)
+          SELECT max(tc2.id), tc2.project_id, tc2.main_mobile
+           FROM sati_extraction_customer tc2
+           GROUP BY tc2.main_mobile,tc2.project_id
+           HAVING COUNT(1) > 1;
+	]]>
+    </entry>
+
+	<entry key="sql.exec.questionnaire.duplicate.mobile.updateByMobile">
+		<![CDATA[
+        UPDATE sati_extraction_customer c5
+		  JOIN sati_extraction_double d6 ON c5.main_mobile = d6.main_mobile AND c5.project_id = d6.project_id
+		   SET c5.main_mobile = NULL;
+	]]>
+	</entry>
+
+	<entry key="sql.exec.questionnaire.duplicate.mobile.updateById">
+		<![CDATA[
+        UPDATE sati_extraction_customer c5
+		  JOIN sati_extraction_double d6 ON c5.id = d6.id_id
+		   SET c5.main_mobile = d6.main_mobile;
+	]]>
+	</entry>
+
+	<entry key="sql.exec.questionnaire.duplicate.mobile.delete">
+		<![CDATA[
+		DELETE FROM sati_extraction_customer WHERE main_mobile IS NULL;
+	]]>
+	</entry>
+
+    <!-- 去重预约客户和强制抽取客户 -->
+    <!-- 插入预约客户到临时表 -->
+    <entry key="sql.exec.questionnaire.duplicate.customer.subscribe.insert">
+        <![CDATA[
+		INSERT INTO sati_extraction_double
+		    (customer_id, project_id)
+		    SELECT s.customer_id, s.project_id
+		        FROM sati_extraction_subscribe s
+		        WHERE s.appointment_time IS NOT NULL;
+	]]>
+    </entry>
+
+	<entry key="sql.exec.questionnaire.duplicate.customer.subscribe.delete">
+		<![CDATA[
+        DELETE FROM sati_extraction_subscribe
+		    WHERE customer_id in (SELECT d.customer_id FROM sati_extraction_double d)
+		    AND appointment_time IS NOT NULL;
+	]]>
+	</entry>
+
+    <!-- -->
+    <!-- 插入重复强制抽取客户到临时表 -->
+    <!-- 修改重复号码为空 -->
+    <!-- 保留一个号码 -->
+    <!-- 清除其它号码 -->
+    <entry key="sql.exec.questionnaire.duplicate.customer.force.insert">
+        <![CDATA[
+		INSERT INTO sati_extraction_double
+		(id_id, customer_id,project_id)
+		    SELECT MAX(tc2.id), tc2.customer_id, project_id
+		    FROM sati_extraction_subscribe tc2
+		    WHERE tc2.appointment_time is not null
+		    GROUP BY tc2.customer_id,project_id
+		    HAVING COUNT(1) > 1;
+	]]>
+    </entry>
+
+	<entry key="sql.exec.questionnaire.duplicate.customer.force.updateNull">
+		<![CDATA[
+        UPDATE sati_extraction_subscribe s4
+		  JOIN sati_extraction_double d6 ON s4.customer_id = d6.customer_id AND s4.project_id = d6.project_id
+		   SET s4.customer_id = NULL;
+	]]>
+	</entry>
+
+	<entry key="sql.exec.questionnaire.duplicate.customer.force.update">
+		<![CDATA[
+        UPDATE sati_extraction_subscribe s4
+		  JOIN sati_extraction_double d6 ON s4.id = d6.id_id
+		   SET s4.customer_id = d6.customer_id;
+	]]>
+	</entry>
+
+	<entry key="sql.exec.questionnaire.duplicate.customer.force.delete">
+		<![CDATA[
+		DELETE FROM sati_extraction_subscribe where customer_id IS NULL;
+	]]>
+	</entry>
+
+    <!-- 插入结果预约客户 -->
+    <entry key="sql.insert.questionnaire.result.subscribe.customer">
+    <![CDATA[
+		INSERT INTO sati_result_subscribe
+		  (questionnaire_id,project_id,grid_id,house_id,customer_id,appointment_time,status)
+		  SELECT questionnaire_id, project_id, grid_id, house_id, customer_id, appointment_time,0
+		    FROM sati_extraction_subscribe
+		    WHERE questionnaire_id = #questionnaireId#
+	]]>
+    </entry>
+
+    <!-- 查询项目完成率信息 -->
+    <entry key="sql.query.questionnaire.result.project">
+        <![CDATA[
+		SELECT a.project_id,
+		       a.grid_id,
+		       IFNULL(a.total,0) as total,
+		       IFNULL(c.count,0) as complete_total,
+		       IFNULL(s.count,0) as complete_today,
+		       (IFNULL(p.target_today,0) - ifnull(p.complete_today,0)) as leftYestoday
+		  from (select h.project_id, h.grid_id,h.questionnaire_id, count(*) as total -- 统计房屋总数
+		          from sati_extraction_house h
+		         where h.questionnaire_id = #questionnaireId#
+		         group by h.project_id, h.grid_id,h.questionnaire_id) a
+		  left join (select project_id, grid_id, count(*) as count -- 计算已完成数量
+		               from sati_extraction_completed
+		              group by project_id, grid_id) c
+		    on c.project_id = a.project_id
+		   and c.grid_id = a.grid_id
+		  left join (select project_id, grid_id, count(*) as count -- 计算强制抽取和预约数
+		               from sati_result_subscribe
+		              group by project_id, grid_id) s
+		    on s.project_id = a.project_id
+		   and s.grid_id = a.grid_id
+		  left join sati_result_project p -- 计算昨天剩余量
+		    on p.questionnaire_id = a.questionnaire_id
+		   and p.project_id = a.project_id
+		   and p.grid_id = a.grid_id
+		   and p.record_date =
+		       DATE_ADD(DATE_FORMAT(NOW(), '%Y-%m-%d'), Interval - 1 day)
+	]]>
+    </entry>
+
+    <!-- 插入结果客户 -->
+    <entry key="sql.insert.questionnaire.result.customer">
+        <![CDATA[
+		INSERT INTO sati_result_customer
+		  (questionnaire_id, project_id, grid_id, house_id, customer_id,status)
+		  SELECT questionnaire_id, project_id, grid_id, house_id, customer_id, 0
+		    FROM sati_extraction_customer where questionnaire_id = #questionnaireId#
+	]]>
+    </entry>
+
+    <!-- 当强制抽取客户大于当天目标时，删除多余强制抽取客户 -->
+    <entry key="sql.query.questionnaire.result.duplicate.subscribe">
+        <![CDATA[
+		SELECT p.project_id, p.grid_id, rs.count - p.target_today as COUNT
+		  FROM sati_result_project p,
+		       (SELECT s.project_id,s.grid_id, s.questionnaire_id, count(1) AS count
+		          FROM sati_result_subscribe s
+		         WHERE s.questionnaire_id = #questionnaireId#
+		         GROUP BY s.project_id,s.grid_id) rs
+		 WHERE p.project_id = rs.project_id
+		   AND p.grid_id = rs.grid_id
+		   AND p.questionnaire_id = rs.questionnaire_id
+		   AND rs.count > p.target_today
+		   AND p.questionnaire_id = #questionnaireId#
+	]]>
+    </entry>
+
+    <!-- 当强制抽取客户大于当天目标时，删除多余强制抽取客户 -->
+    <entry key="sql.delete.questionnaire.result.duplicate.subscribe">
+    <![CDATA[
+	    DELETE FROM sati_result_subscribe
+		WHERE appointment_time is null
+		   AND  questionnaire_id = #questionnaireId#
+		   AND project_id = #projectId# and grid_id = #gridId# LIMIT #limit#
+	]]>
+    </entry>
+
+</properties>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>通用配置信息</comment>
+
+    <!--系统登录模式，local：本地登录-->
+    <entry key="Profile.Security.Login_Mode">local</entry>
+
+    <!--Jso处理资源的模式，true：调试模式，false：生产模式-->
+    <entry key="Profile.Jso.Debug_Mode">true</entry>
+
+    <!--DhtmlxGrid导出Excel文件的临时目录-->
+    <entry key="Profile.DhtmlxGrid.Export_Excel_Path">c:\</entry>
+
+    <!--SSO单点登录的地址-->
+    <entry key="Profile.SSO.Server_Url">http://localhost:8080/sso/openid</entry>
+
+    <!--默认主题样式-->
+    <entry key="Profile.theme">mobile</entry>
+
+    <!--存放与Redis中的key-->
+    <entry key="log.datachangelog.key">dataChangeLog.key</entry>
+    <entry key="log.accesslog.key">accessLog.key</entry>
+    <entry key="log.exceptionlog.key">exceptionLog.key</entry>
+
+    <!--定时任务配置-->
+    <entry key="task.datachangelog.cron">0/10 * * * * ?</entry>
+    <entry key="task.restaccesslog.cron">0/10 * * * * ?</entry>
+    <entry key="task.interfaceaccesslog.cron">0/10 * * * * ?</entry>
+    <entry key="task.exceptionlog.cron">0/10 * * * * ?</entry>
+    <entry key="task.relationchangelog.cron">0/10 * * * * ?</entry>
+
+    <!--战图同步-->
+    <entry key="task.syncproject.cron">0/10 * * * * ?</entry>
+    <entry key="task.syncbuilding.cron">0/10 * * * * ?</entry>
+    <entry key="task.synccarport.cron">0/10 * * * * ?</entry>
+
+    <!-- APP任务相关同步-->
+    <entry key="task.createTask.cron">0 21 * * * ?</entry>
+    <entry key="task.syncTaskTask.cron">0 7 * * * ?</entry>
+    <entry key="task.syncBusinessType.cron">0 0 0 * * ?</entry>
+    <entry key="task.taskRecord.cron">0/10 * * * * ?</entry>
+
+    <!--报表相关-->
+    <entry key="task.telpro.cron">0 0 0 * * ?</entry>
+
+    <!--读取数据条数-->
+    <entry key="log.read.count">500</entry>
+
+    <!--战图接口相关数据 -->
+    <entry key="bmap.hostAndPort">http://bmap.vanke.com/WebService/Interface.ashx</entry>
+    <entry key="bmap.sysid">vkcrm</entry>
+    <entry key="bmap.wymap">wkmap</entry>
+
+    <!--tree表根结构数据-->
+    <entry key="tree.root.office">非住宅类</entry>
+    <entry key="tree.root.officeId">c835e4f8513711e599cad00d52eb478c</entry>
+    <entry key="tree.root.house">住宅类</entry>
+
+    <!--同步录音-->
+    <!--生产环境配置-->
+    <entry key="task.syncRecord.cron">0 0 6 * * ?</entry>
+    <entry key="record.sync.mode">增量</entry>
+    <!--yyyy-MM-dd HH:mm:ss-->
+    <entry key="record.sync.starttime">2015-11-11 00:00:00</entry>
+    <entry key="record.sync.endtime">2015-11-15 23:59:59</entry>
+
+    <!--app任务接口相关配置-->
+    <entry key="app.hostAndPort.prd">http://stage.4009515151.com</entry>
+    <entry key="app.AccessKey">a837326f79ac382f3c2275e0168b0df1</entry>
+    <entry key="app.SecretKey">db1ccbfca0971932ecda02ddd051c0a6</entry>
+    <!-- 问卷调查抽取任务 -->
+    <entry key="task.survey.cron">0 0 6 * * ?</entry>
+    <!--同步服务相关编码(用于读取数据库相关配置)-->
+    <entry key="sync.code.project">syncProject</entry>
+    <entry key="sync.code.house">syncHouse</entry>
+    <entry key="sync.code.carport">syncCarport</entry>
+    <entry key="sync.code.businessType">syncBusinessType</entry>
+    <entry key="sync.code.task">syncTask</entry>
+</properties>

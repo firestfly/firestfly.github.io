@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+    <!--插入客房关系修改日志-->
+    <entry key="sql.insert.relationlogs">
+        <![CDATA[
+       INSERT into log_relation_change(`id`,`serviceName`,`accessToken`,`clientIP`,
+    `appId`,`createDate`,`userId`,`userName`,`houseId`,`houseName`,`projectId`,`projectName`,`gridId`,`gridName`,`organizationId`,`organizationName`
+    ,`customerId`,`customerName`,`resourceId`,`resourceName`,`changeType`,`relationId`,`relationText`)
+    VALUES(#id#,#serviceName#,#accessToken#,#clientIP#,
+    #appId#,#createDate#,#userId#,#userName#,#houseId#,(select name from vankecrm_center.main_house where id =#houseId#),#projectId#,#projectName#,#gridId#,#gridName#,#organizationId#,#organizationName#
+    ,#customerId#,#customerName#,#resourceId#,#resourceName#,#changeType#,#relationId#,#relationText#)
+    ]]>
+    </entry>
+
+    <!--插入数据修改日志-->
+    <entry key="sql.insert.dataChangelogs">
+        <![CDATA[
+        insert into log_data_modify (`id`,`serviceName`,`accessToken`,`clientIP`,`appId`,`changeEntityClass`,`tableName`,`userId`,
+        `userName`,`createDate`,`customerId`,`customerName`,`houseId`,`houseName`,`projectId`,`projectName`,`gridId`,`gridName`,`organizationId`,`organizationName`)
+        VALUES(#id#,#serviceName#,#accessToken#,#clientIP#,#appId#,#changeEntityClass#,#tableName#,#userId#,
+        #userName#,#createDate#,#customerId#,#customerName#,#buildingId#,(select name from vankecrm_center.main_house where id =#buildingId#),
+        #projectId#,#projectName#,#gridId#,#gridName#,#organizationId#,#organizationName#)
+    ]]>
+    </entry>
+</properties>

@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd ">
+    <!-- 执行实际的调度器-->
+    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <!-- quartz 运行环境配置，文件名路径必须相同，此文件也可不进行配置 -->
+        <!-- <property name="configLocation" value="classpath:config/quartz.properties" /> -->
+        <property name="autoStartup" value="true"/>
+        <property name="triggers">
+            <list>
+                <!-- 注入触发器 -->
+                <!--<ref bean="exceptionLogCronTrigger"/>-->
+                <!--<ref bean="restAccessLogCronTrigger"/>-->
+                <ref bean="interfaceAccessLogCronTrigger"/>
+                <ref bean="dataChangeLogCronTrigger"/>
+                <ref bean="relationChangeLogCronTrigger"/>
+                <!--<ref bean="syncProjectCronTrigger"/>-->
+                <!--<ref bean="syncBuildingCronTrigger"/>-->
+                <!--<ref bean="syncCarportCronTrigger"/>-->
+                <!--<ref bean="createTaskTrigger"/>-->
+                <!--<ref bean="syncTaskTrigger"/>--> 
+                <!--<ref bean="recordSyncTrigger"/>-->
+                <!--<ref bean="businessTypeSyncTrigger"/>-->
+                <!--<ref bean="taskRecordSyncTrigger"/>-->
+                <!--<ref bean="questionnaireSurveyTrigger"/>-->
+                
+                <!--<ref bean="syncTabletdTrigger" />-->
+               <!--  <ref bean="syncGridHouseTrigger" />  --><!-- 网格  房屋 -->
+                <!-- <ref bean="syncGridStaffTrigger" /> --><!-- 网格 -管家 -->
+                <!--<ref bean="craatRportForBaseInfo"/>-->
+                <!--<ref bean="craatRportForUserInfo"/>-->
+                <!--<ref bean="updateTelCallRecordExpandTrigger"/>-->
+            </list>
+        </property>
+    </bean>
+
+    <!--Task配置-->
+    <!-- 指定任务Bean的实现类 -->
+
+    <bean id="exceptionLogTask" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.ExceptionLogTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="logService" value-ref="logService"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="restAccessLogTask" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.RestAccessLogTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="logService" value-ref="logService"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="interfaceAccessLogTask" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.InterfaceAccessLogTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="logService" value-ref="logService"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="dataChangeLogTask" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.DataChangeLogTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="logService" value-ref="logService"/>
+                <entry key="organizationService" value-ref="organizationService"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="relationChangeLogTask" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.RelationChangeLogTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="logService" value-ref="logService"/>
+                <entry key="organizationService" value-ref="organizationService"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="syncProjectTask" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.SyncProjectTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="syncService" value-ref="syncService"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="syncBuildingTask" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.SyncBuildTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="syncService" value-ref="syncService"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="syncCarportTask" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.SyncCarportTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="syncService" value-ref="syncService"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="syncTapeTask" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.RecordSyncTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="recordService" value-ref="recordService"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="createAppTaskTask" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.CreateAppTaskTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="appTaskService" value-ref="appTaskService"/>
+            </map>
+        </property>
+    </bean>
+
+
+    <bean id="syncBusinessTypeTask" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.SyncBusinessType</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="appTaskService" value-ref="appTaskService"/>
+            </map>
+        </property>
+    </bean>
+
+
+    <bean id="syncTaskTask" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.SyncTaskTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="appTaskService" value-ref="appTaskService"/>
+            </map>
+        </property>
+    </bean>
+
+
+    <bean id="syncTaskRecord" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.SyncTask4Report</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="appTaskService" value-ref="appTaskService"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--触发器配置-->
+
+    <!-- 定义触发器来管理任务Bean -->
+    <bean id="exceptionLogCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="exceptionLogTask"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value="${task.datachangelog.cron}"/>
+    </bean>
+
+    <bean id="restAccessLogCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="restAccessLogTask"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value="${task.restaccesslog.cron}"/>
+    </bean>
+
+    <bean id="interfaceAccessLogCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="interfaceAccessLogTask"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value="${task.interfaceaccesslog.cron}"/>
+    </bean>
+
+    <bean id="dataChangeLogCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="dataChangeLogTask"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value=" ${task.datachangelog.cron}"/>
+    </bean>
+
+    <bean id="relationChangeLogCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="relationChangeLogTask"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value=" ${task.relationchangelog.cron}"/>
+    </bean>
+
+    <bean id="syncProjectCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="syncProjectTask"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value=" ${task.syncproject.cron}"/>
+    </bean>
+
+    <bean id="syncBuildingCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="syncBuildingTask"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value=" ${task.syncbuilding.cron}"/>
+    </bean>
+
+    <bean id="syncCarportCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="syncCarportTask"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value=" ${task.synccarport.cron}"/>
+    </bean>
+
+    <bean id="createTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="createAppTaskTask"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value=" ${task.createTask.cron}"/>
+    </bean>
+    <!--同步任务(临时数据)-->
+    <bean id="syncTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="syncTaskTask"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value=" ${task.syncTaskTask.cron}"/>
+    </bean>
+
+    <!--同步录音-->
+    <bean id="recordSyncTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="syncTapeTask"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value=" ${task.syncRecord.cron}"/>
+    </bean>
+
+    <!--同步任务类型-->
+    <bean id="businessTypeSyncTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="syncBusinessTypeTask"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value=" ${task.syncBusinessType.cron}"/>
+    </bean>
+
+    <!--同步任务(用于报表)-->
+    <bean id="taskRecordSyncTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="syncTaskRecord"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value=" ${task.taskRecord.cron}"/>
+    </bean>
+
+
+    <!-- 问卷调查同步任务 -->
+    <bean id="questionnaireSurveyJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.QuestionnaireSurveyTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="surveyService" value-ref="surveyService"/>
+            </map>
+        </property>
+    </bean>
+
+    <!-- 问卷调查同步任务(触发器) -->
+    <bean id="questionnaireSurveyTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="questionnaireSurveyJob"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value="${task.survey.cron}"/>
+    </bean>
+
+	<!-- mybegin -->
+
+ <bean id="syndcTableTdBean" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.SyncTableTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="appTaskService" value-ref="appTaskService"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="syncTabletdTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="syndcTableTdBean"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value="${task.taskRecord.cron}"/>
+    </bean>
+    
+        <bean id="syncGridHouseTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="syndcGridHouseTdBean"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value="${task.taskRecord.cron}"/>
+    </bean>
+       <bean id="syndcGridHouseTdBean" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.SyncGridHouseTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="appTaskService" value-ref="appTaskService"/>
+            </map>
+        </property>
+    </bean>
+    
+        <bean id="syncGridStaffTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="syndcGridStaffTdBean"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value="${task.taskRecord.cron}"/>
+    </bean>
+       <bean id="syndcGridStaffTdBean" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.SyncGridStaffTask</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="appTaskService" value-ref="appTaskService"/>
+            </map>
+        </property>
+    </bean>
+
+<bean id="craatRportForBaseInfoBean" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.CreatRortForBaseInfo</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="appTaskService" value-ref="appTaskService"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="craatRportForBaseInfo" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="craatRportForBaseInfoBean"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value="${task.taskRecord.cron}"/>
+    </bean>
+
+
+ <bean id="craatRportForUserInfoBean" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.Creator4UserReport</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="appTaskService" value-ref="appTaskService"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="craatRportForUserInfo" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="craatRportForUserInfoBean"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value="${task.taskRecord.cron}"/>
+    </bean>
+<!-- mybegin -->
+    <bean id="updateTelCallRecordExpandTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- 注入实际执行任务的Bean -->
+        <property name="jobDetail" ref="updateTelCallRecordExpand"/>
+        <!-- 定义CRON表达式，任务执行周期 -->
+        <property name="cronExpression" value="${task.telpro.cron}"/>
+    </bean>
+
+    <bean id="updateTelCallRecordExpand" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>bingo.vkcrm.task.tasks.ExecuteProcedure</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="syncService" value-ref="syncService"/>
+            </map>
+        </property>
+    </bean>
+</beans>

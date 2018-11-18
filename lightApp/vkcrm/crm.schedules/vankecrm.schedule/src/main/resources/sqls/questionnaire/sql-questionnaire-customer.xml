@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>Excel异步导入相关的sql</comment>
+	
+	<entry key="sql-sati-extractionCustomer-insert">
+	<![CDATA[
+		/* 抽取房屋常用联系人 */
+		insert into sati_extraction_customer
+		  (questionnaire_id, project_id, grid_id, house_id, customer_id,main_mobile)
+		  select #questionnaireId# as questionnaire_id,
+		         h.project_id      as project_id,
+		         h.grid_id         as grid_id,
+		         h.house_id        as house_id,
+		         c.id              as customer_id,
+		         c.mainMobile      as main_mobile
+		    from sati_extraction_house h
+		    join main_customer c on h.contacts_id = c.id
+		    left join main_customer_detail cd on h.contacts_id = cd.id
+		   where h.questionnaire_id = #questionnaireId#
+		   	 -- 客户生日为空，年龄18到65，或生日=1900-01-01；年龄上限65可选
+		     and (cd.birthday is null or
+		         (timestampdiff(year, cd.birthday, NOW()) >= #customerAgeLess# 
+		           {?and timestampdiff(year, cd.birthday, NOW()) < #customerAgeLager#} ) or
+		         cd.birthday = date_format('1900-01-01', '%Y-%m-%d'))
+	]]>
+	</entry>
+	
+	 
+	
+</properties>

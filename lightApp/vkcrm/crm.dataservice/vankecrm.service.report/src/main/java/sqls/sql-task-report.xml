@@ -1,0 +1,862 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>任务报表</comment>
+
+    <!-- 任务报表 -->
+    <entry key="sql.query.taskReport">
+        <![CDATA[
+            select a.created,
+            a.system_head_name,
+            a.staff_name as staff,
+            a.task_no as taskNo,
+            a.contact,
+            a.mc_name as mcname,
+            (case
+            when a.source='crm' and a.crm_source='4' THEN '指挥中心'
+            when a.source='crm' and a.crm_source != '4' THEN '呼叫中心'
+            when a.source='zhuzher' THEN '住这儿'
+            when a.source='lebang' THEN '助这儿'
+            else a.source
+            END ) as source,
+            a.grid_name as gridName,
+            a.buildingName as buildName,
+            a.content,
+            a.score,
+            a.city_name as city,
+            a.project_code as projectCode,
+            a.project_name as projectName,
+            a.house_code as houseCode,
+            a.house_name as houseName,
+            a.business_type_name as businessType,
+            -- a.`status`,
+            a.status_name as status,
+            a.report_user_mobile as reportUserMobile,
+            a.mobile,
+            (case
+            when appointment_start_time is null then '否'
+            ELSE '是'
+            end)  as isOrder,
+            (CASE
+            when `status` in ('1009','1010','1011','1012') then '是'
+            else '否' end) as isCancel,
+            timeout as isTimeout,
+            a.crm_duty as crmDuty,
+            a.crm_evaluation as crmEvaluation
+            from app_task_records a
+            where 1=1
+            {? and a.content like CONCAT(CONCAT('%',#content#),'%') ESCAPE '/' }
+            {? and a.created >= #start# }
+            {? and a.created <= #end# }
+            {? and project_code  in  (select code from vankecrm_center.main_project where id in (select id from vankecrm_center.tree_organization where parentId = #mcId# )) }
+            {? and house_code    in  (select code from vankecrm_center.main_house   where id in(select houseId from vankecrm_center.mid_project_house where gridId = #gridId#)) }
+            {? and house_code    in  (select code from vankecrm_center.main_house where buildingCode= #buildingCode# ) 	}
+            {? and house_code    =   (select code from vankecrm_center.main_house where id = #houseId# limit 1) }
+            {? and project_code  =   (select code from vankecrm_center.main_project where id = #projectId# limit 1) }
+            {? and project_code  in  (select code from vankecrm_center.main_project where cityCode = #cityCode# ) }
+            {? and source = #source# }
+
+            {? and project_code in
+            (select CODE from vankecrm_center.main_project where id in
+            (select organizationId from vankecrm_center.mid_organization_user a INNER JOIN vankecrm_center.tree_organization b on a.organizationId=b.id
+            and a.isDeleted=0 and b.levelType=4 and a.userId = #mcuserId# ))}
+
+            {? and project_code in
+            (select CODE from vankecrm_center.main_project where id in
+            (select organizationId from vankecrm_center.mid_organization_user a INNER JOIN vankecrm_center.tree_organization b on a.organizationId=b.id
+            and a.isDeleted=0 and b.levelType=4 and a.userId = #prouserId# and b.parentId in
+            (select organizationId from vankecrm_center.mid_organization_user a INNER JOIN vankecrm_center.tree_organization b on a.organizationId=b.id
+            and a.isDeleted=0 and b.levelType=3 and a.userId = #prouserId# ))) }
+            ORDER BY a.created desc
+        ]]>
+    </entry>
+
+
+    <!-- 查询任务数量 -->
+    <entry key="sql.query.taskReport.count">
+        <![CDATA[
+            select count(1)
+            from app_task_records a
+            where 1=1
+            {? and a.content like CONCAT(CONCAT('%',#content#),'%') ESCAPE '/' }
+            {? and a.created >= #start# }
+            {? and a.created <= #end# }
+            {? and project_code  in  (select code from vankecrm_center.main_project where id in (select id from vankecrm_center.tree_organization where parentId = #mcId# )) }
+            {? and house_code    in  (select code from vankecrm_center.main_house   where id in(select houseId from vankecrm_center.mid_project_house where gridId = #gridId#)) }
+            {? and house_code    in  (select code from vankecrm_center.main_house where buildingCode= #buildingCode# ) 	}
+            {? and house_code    =   (select code from vankecrm_center.main_house where id = #houseId# limit 1) }
+            {? and project_code  =   (select code from vankecrm_center.main_project where id = #projectId# limit 1) }
+            {? and project_code  in  (select code from vankecrm_center.main_project where cityCode = #cityCode# ) }
+            {? and source = #source# }
+
+             {? and project_code in
+            (select CODE from vankecrm_center.main_project where id in
+            (select organizationId from vankecrm_center.mid_organization_user a INNER JOIN vankecrm_center.tree_organization b on a.organizationId=b.id
+            and a.isDeleted=0 and b.levelType=4 and a.userId = #mcuserId# ))}
+
+            {? and project_code in
+            (select CODE from vankecrm_center.main_project where id in
+            (select organizationId from vankecrm_center.mid_organization_user a INNER JOIN vankecrm_center.tree_organization b on a.organizationId=b.id
+            and a.isDeleted=0 and b.levelType=4 and a.userId = #prouserId# and b.parentId in
+            (select organizationId from vankecrm_center.mid_organization_user a INNER JOIN vankecrm_center.tree_organization b on a.organizationId=b.id
+            and a.isDeleted=0 and b.levelType=3 and a.userId = #prouserId# ))) }
+
+        ]]>
+    </entry>
+
+    <entry key="sql.query.localTask">
+        <![CDATA[
+            select processingWay,creator from task_records where taskNo=#taskNo# LIMIT 1;
+        ]]>
+    </entry>
+
+    <!-- 查询通话记录（话务查询） -->
+    <entry key="service.tel.call.records">
+        <![CDATA[
+			SELECT		tcr.callId AS callId,
+						tcr.recordId AS tapeCode,
+						tcr.callTime AS callTime,
+						tcr.type AS type,
+						tcr.typeText AS typeText,
+						tcr.callNumber AS callNumber,
+						tcr.duration AS duration,
+						tcr.hangup_byself AS hangUp,
+						(SELECT GROUP_CONCAT(mtcr.reasonId SEPARATOR ';') FROM mid_tel_callreason AS mtcr WHERE mtcr.callId = tcr.callId) AS reasonCodes,
+						sec_to_time(tcr.duration) AS durationTime,
+						tcr.telephonist AS telephonist,
+			CASE 		tcr.hasCheck
+			WHEN 		1 THEN '是'
+			WHEN 		0 THEN '否'
+			END 		AS hasCheck,
+						(SELECT GROUP_CONCAT(tc.content SEPARATOR ';') FROM tel_callreason AS tc WHERE tc.id IN (SELECT mtcr.reasonId AS reasonId FROM mid_tel_callreason AS mtcr WHERE mtcr.callId = tcr.callId) )AS reasons,
+						(SELECT GROUP_CONCAT(tr.taskNo SEPARATOR ';') FROM task_records AS tr WHERE tr.callNo = tcr.callId)AS tasks
+
+			FROM	tel_call_records AS tcr
+			WHERE	tcr.source = 1
+			{?AND	tcr.telephonist = #telephonist#}
+			{?AND	tcr.callNumber LIKE CONCAT(CONCAT('%',#callNumber#),'%') ESCAPE '/' }
+			{?AND	tcr.type = #type#}
+			{?AND	tcr.recordId = #tapeCode#}
+			{?AND	tcr.hasCheck = #hasCheck#}
+			{?AND	tcr.callTime >= #fromTime#}
+			{?AND	tcr.callTime <= #toTime#}
+			{?AND	tcr.duration >= #fromDuration#}
+			{?AND	tcr.duration <= #toDuration#}
+			{?AND 	tcr.callId in (SELECT mtc.callId FROM mid_tel_callreason AS mtc WHERE mtc.reasonId = #reasonId#)}
+			ORDER BY tcr.callTime DESC
+        ]]>
+    </entry>
+
+    <!-- 项目报表 -->
+    <entry key="sql.query.taskReport4Call">
+        <![CDATA[
+            select a.created,
+            a.system_head_name,
+            a.staff_name as staff,
+            a.task_no as taskNo,
+            a.contact,
+            a.mc_name as mcname,
+            (case
+            when a.source='crm' and a.crm_source='4' THEN '指挥中心'
+            when a.source='crm' and a.crm_source != '4' THEN '呼叫中心'
+            when a.source='zhuzher' THEN '住这儿'
+            when a.source='lebang' THEN '助这儿'
+            else a.source
+            END ) as source,
+            a.grid_name as gridName,
+            a.buildingName as buildName,
+            a.content,
+            a.score,
+            a.city_name as city,
+            a.project_code as projectCode,
+            a.project_name as projectName,
+            a.house_code as houseCode,
+            a.house_name as houseName,
+            a.business_type_name as businessType,
+            -- a.`status`,
+            a.status_name as status,
+            a.report_user_mobile as reportUserMobile,
+            a.mobile,
+            (case
+            when appointment_start_time is null then '否'
+            ELSE '是'
+            end)  as isOrder,
+            (CASE
+            when `status` in ('1009','1010','1011','1012') then '是'
+            else '否' end) as isCancel,
+            timeout as isTimeout,
+            a.crm_duty as crmDuty,
+            a.crm_evaluation as crmEvaluation,
+            (CASE
+            when `processingWay` ='1' then '由呼叫中心处理'
+            when `processingWay` ='2' or `processingWay` ='4' then '直接归档'
+            when `processingWay` ='3' then '由项目跟进处理'
+            when `processingWay` ='5' then '派单处理'
+            end) as process,
+            a.creator
+            from app_task_records a
+            where 1=1
+            {? and a.content like CONCAT(CONCAT('%',#content#),'%') ESCAPE '/' }
+            {? and a.created >= #start# }
+            {? and a.created <= #end# }
+            {? and project_code  in  (select code from vankecrm_center.main_project where id in (select id from vankecrm_center.tree_organization where parentId = #mcId# )) }
+            {? and house_code    in  (select code from vankecrm_center.main_house   where id in(select houseId from vankecrm_center.mid_project_house where gridId = #gridId#)) }
+            {? and house_code    in  (select code from vankecrm_center.main_house where buildingCode= #buildingCode# ) 	}
+            {? and house_code    =   (select code from vankecrm_center.main_house where id = #houseId# limit 1) }
+            {? and project_code  =   (select code from vankecrm_center.main_project where id = #projectId# limit 1) }
+            {? and project_code  in  (select code from vankecrm_center.main_project where cityCode = #cityCode# ) }
+            {? and source = #source# }
+
+            {? and project_code in
+            (select CODE from vankecrm_center.main_project where id in
+            (select organizationId from vankecrm_center.mid_organization_user a INNER JOIN vankecrm_center.tree_organization b on a.organizationId=b.id
+            and a.isDeleted=0 and b.levelType=4 and a.userId = #mcuserId# ))}
+
+            {? and project_code in
+            (select CODE from vankecrm_center.main_project where id in
+            (select organizationId from vankecrm_center.mid_organization_user a INNER JOIN vankecrm_center.tree_organization b on a.organizationId=b.id
+            and a.isDeleted=0 and b.levelType=4 and a.userId = #prouserId# and b.parentId in
+            (select organizationId from vankecrm_center.mid_organization_user a INNER JOIN vankecrm_center.tree_organization b on a.organizationId=b.id
+            and a.isDeleted=0 and b.levelType=3 and a.userId = #prouserId# ))) }
+            ORDER BY a.created desc
+        ]]>
+    </entry>
+
+    <!-- 查询通话记录（话务查询） -->
+    <entry key="sql.query.callcenter.tel">
+        <![CDATA[
+		SELECT		tcr.id,
+					tcr.callId AS callId,
+					tcr.recordId AS tapeCode,
+					tcr.callTime AS callTime,
+         CASE 		tcr.type
+		WHEN 		1 THEN '呼入'
+		WHEN 		2 THEN '呼出'
+		END 		AS typeText,
+					tcr.callNumber AS callNumber,
+					tcr.duration AS duration,
+					tcr.beginTime as beginTime,
+					tcr.endTime as endTime,
+         CASE 		tcr.hangup_byself
+		WHEN 		1 THEN '员工挂机'
+		WHEN 		0 THEN '客户挂机'
+		END 		AS hangUp,
+					sec_to_time(tcr.duration) AS durationTime,
+					tcr.telephonist AS telephonist,
+		CASE 		tcr.hasCheck
+		WHEN 		1 THEN '是'
+		WHEN 		0 THEN '否'
+		END 		AS hasCheck,
+					tce.callReason AS reasons,
+					tce.taskNo AS tasks,
+					tce.houseName as houseName,
+					tce.projectName as projectName,
+					tce.taskCreateTime as taskCreateTime,
+					tce.grid as grid
+		FROM	tel_call_records AS tcr
+		LEFT  JOIN tel_callrecord_expand tce on tcr.id=tce.callRecordid
+		WHERE	1=1
+		{?AND	tcr.callTime >= #fromTime#}
+		{?AND	tcr.callTime <= #toTime#}
+		ORDER BY tcr.callTime DESC
+     ]]>
+    </entry>
+
+
+
+    <!-- 查询通话记录条数（话务查询） -->
+    <entry key="sql.query.callcenter.tel.count">
+        <![CDATA[
+		SELECT		count(1)
+		FROM	tel_call_records AS tcr
+		LEFT  JOIN tel_callrecord_expand tce on tcr.id=tce.callRecordid
+		WHERE	1=1
+		{?AND	tcr.callTime >= #fromTime#}
+		{?AND	tcr.callTime <= #toTime#}
+     ]]>
+    </entry>
+    
+<entry key="sql.query.baseInfoByPro">
+        select br.organizationText,
+        br.projectId,
+        br.cityText,
+        br.gridText,
+        br.houseCount,
+        br.checkConut,
+        br.takeOverCount,
+        br.residentCount,
+        br.nullCount,
+        br.vacation,
+        br.leaseCount,
+        br.carCount,
+        br.petsCount,
+        br.ownerCount,
+        br.unOwnerCount,
+        br.personCount
+
+        from base_info_report br
+        where 1=1
+        {?and br.gridId= #gridId#}
+        {?and br.tonId =#mcId# }
+        {?and br.citycode=#cityCode# }
+        {?and br.projectId=#projectId#}
+        {?and br.projectId in(select mou.organizationId from mid_organization_user mou where
+        mou.isDeleted=0 and mou.userId=#sysUserId#)
+        }
+    </entry>
+
+    <entry key="sql.query.baseInfoByPro.count">
+        select count(*)
+        from base_info_report br
+        where 1=1
+        {?and br.gridId= #gridId#}
+        {?and br.tonId =#organization# }
+        {?and br.citycode=#cityCode# }
+        {?and br.projectId=#projectId#}
+        {?and br.projectId in(select mou.organizationId from mid_organization_user mou where
+        mou.isDeleted=0 and mou.userId=#sysUserId#)
+        }
+    </entry>
+  
+	<!-- 基础信息报表（迭代三） -->
+	<entry key="sql.query.baseInfoReport">
+        <![CDATA[
+        	SELECT 
+        		DISTINCT mph.gridId,
+				ou.userId, 
+				(SELECT t1.id FROM tree_organization t1 WHERE t1.id = o.parentId) AS mcId,
+				(SELECT t2.name FROM tree_organization t2 WHERE t2.id = o.parentId) AS organizationText,
+				mp.citycode,
+				o.id AS projectId,
+				o.name AS projectText,
+				mg.name AS gridText
+			FROM mid_project_house mph
+				LEFT JOIN main_project mp ON mp.id = mph.projectId 
+				LEFT JOIN main_grid mg ON mg.id = mph.gridId
+				LEFT JOIN tree_organization o ON o.id = mph.projectId
+				INNER JOIN mid_organization_user ou ON ou.organizationId = o.id
+			WHERE o.levelType = 4
+				{?AND ou.userId = #sysUserId#}
+				{?AND o.parentId = #mcId#}
+				{?AND o.id = #projectId#}
+				{?AND mg.id = #gridId#}
+				{?AND mp.citycode = #cityCode#}
+		 ]]>
+    </entry>
+	<!-- 基础信息报表（迭代三） -->
+    <entry key="sql.query.baseInfoReport.count">
+        <![CDATA[
+			SELECT COUNT(*)
+				FROM(
+					SELECT 
+		        		DISTINCT mph.gridId,
+						ou.userId, 
+						(SELECT t1.id FROM tree_organization t1 WHERE t1.id = o.parentId) AS mcId,
+						(SELECT t2.name FROM tree_organization t2 WHERE t2.id = o.parentId) AS organizationText,
+						mp.citycode,
+						o.id AS projectId,
+						o.name AS projectText,
+						mg.name AS gridText
+					FROM mid_project_house mph
+						LEFT JOIN main_project mp ON mp.id = mph.projectId 
+						LEFT JOIN main_grid mg ON mg.id = mph.gridId
+						LEFT JOIN tree_organization o ON o.id = mph.projectId
+						INNER JOIN mid_organization_user ou ON ou.organizationId = o.id
+					WHERE o.levelType = 4
+						{?AND ou.userId = #sysUserId#}
+						{?AND o.parentId = #mcId#}
+						{?AND o.id = #projectId#}
+						{?AND mg.id = #gridId#}
+						{?AND mp.citycode = #cityCode#}
+				)T
+		]]>
+    </entry>
+    <!-- 根据项目网格查询总户数 过滤失效房屋（main_house）-->
+    <entry key="sql.query.houseCount">
+		<![CDATA[
+			SELECT COUNT(DISTINCT ph.houseId) FROM mid_project_house ph 
+			WHERE ph.gridId = #gridId#
+			AND EXISTS( 
+				SELECT 1 FROM  main_house h WHERE IFNULL(h.isDeleted,0)=0 
+				AND h.id = ph.houseId
+			)
+		]]>
+	</entry>
+    <!-- 根据项目网格查询已接管户数 接管时间非空-->
+    <entry key="sql.query.takeOverCount">
+		<![CDATA[
+			SELECT COUNT(*) AS takeOverCount FROM mid_project_house ph 
+			WHERE ph.gridId = #gridId# 
+			AND EXISTS(SELECT 1 FROM main_house h WHERE (h.deliverTime IS NOT NULL OR h.billingDate IS NOT NULL OR h.takeOverTime IS NOT NULL))
+		]]>
+	</entry>
+    <!-- 根据项目网格查询已入住户数 入住时间非空的房屋-->
+    <entry key="sql.query.checkConut">
+		<![CDATA[
+			SELECT COUNT(*) AS checkConut FROM mid_project_house ph 
+			WHERE ph.gridId = #gridId# 
+			AND EXISTS(SELECT 1 FROM main_house h WHERE h.checkInTime IS NOT NULL)
+		]]>
+	</entry>
+    <!-- 根据项目网格查询常住户数 -->
+    <entry key="sql.query.residentCount">
+		<![CDATA[
+			SELECT COUNT(*) AS residentCount FROM main_house h 
+				LEFT JOIN mid_project_house ph ON h.id=ph.houseId 
+			WHERE h.status=1
+			AND ph.gridId=#gridId#
+		]]>
+	</entry>
+    <!-- 根据项目网格查询出租户数 -->
+    <entry key="sql.query.nullCount">
+		<![CDATA[
+			SELECT COUNT(*) AS nullCount FROM main_house h 
+				LEFT JOIN mid_project_house ph ON h.id=ph.houseId 
+			WHERE h.status=2 
+			AND ph.gridId=#gridId#
+		]]>
+	</entry>
+    <!-- 根据项目网格查询空置户数 -->
+    <entry key="sql.query.vacation">
+		<![CDATA[
+			SELECT COUNT(*) AS vacation FROM main_house h 
+				LEFT JOIN mid_project_house ph ON h.id=ph.houseId 
+			WHERE h.status=3
+			AND ph.gridId=#gridId#
+		]]>
+	</entry>
+    <!-- 根据项目网格查询度假户数 -->
+    <entry key="sql.query.leaseCount">
+		<![CDATA[
+			SELECT COUNT(*) AS leaseCount FROM main_house h 
+				LEFT JOIN mid_project_house ph ON h.id=ph.houseId 
+			WHERE h.status=4 
+			AND ph.gridId=#gridId#
+		]]>
+	</entry>
+    <!-- 根据项目网格查询车辆数 有效的-->
+    <entry key="sql.query.carCount">
+		<![CDATA[
+			SELECT COUNT(*) carCount FROM dim_cust_cars dc 
+   				LEFT JOIN mid_customer_house mch ON dc.customerId=mch.customerId
+   				LEFT JOIN mid_project_house mph ON mph.houseId=mch.houseId 
+   			WHERE IFNULL(dc.isDeleted,0)=0
+   			AND mph.gridId=#gridId#
+		]]>
+	</entry>
+    <!-- 根据项目网格查询宠物数 有效的-->
+    <entry key="sql.query.petsCount">
+		<![CDATA[
+			SELECT COUNT(*) AS petsCount FROM dim_cust_pets dp 
+				LEFT JOIN mid_customer_house mch ON  dp.customerId=mch.customerId
+				LEFT JOIN mid_project_house mph ON mph.houseId=mch.houseId
+			WHERE IFNULL(dp.isDeleted,0)=0 
+			AND mph.gridId=#gridId# 
+		]]>
+	</entry>
+    <!-- 根据项目网格查询 总人数 客房关系有效的数量（cusid排重）-->
+    <entry key="sql.query.personCount">
+		<![CDATA[
+			SELECT COUNT(DISTINCT mch.customerId) AS personCount FROM mid_customer_house mch 
+				LEFT JOIN mid_project_house mph ON mch.houseId=mph.houseId 
+			WHERE IFNULL(mch.isDeleted,0)=0 
+			AND mph.gridId=#gridId#
+		]]>
+	</entry>
+    <!-- 根据项目网格查询 业主数量 -->
+    <entry key="sql.query.ownerCount">
+		<![CDATA[
+			SELECT COUNT(*) AS ownerCount FROM main_house mh 
+				LEFT JOIN mid_customer_house mch ON mh.id=mch.houseId
+				LEFT JOIN mid_project_house mph ON mh.id=mph.houseId
+			WHERE mch.relationType=1 
+			AND mph.gridId=	#gridId#
+		]]>
+	</entry>
+    <!-- 根据项目网格查询 住户（家庭成员） -->
+    <entry key="sql.query.unOwnerCount">
+		<![CDATA[
+			SELECT COUNT(*) AS unOwnerCount FROM main_house mh 
+				LEFT JOIN mid_customer_house mch ON mh.id=mch.houseId
+				LEFT JOIN mid_project_house mph ON mh.id=mph.houseId
+			WHERE mch.relationType <> 1 
+			AND mph.gridId=	#gridId#
+		]]>
+	</entry>
+    
+	<!-- 客户信息查询报表（迭代三） Author: luoml01-->
+	<entry key="sql.query.customerInfo.report">
+		<![CDATA[
+			SELECT 
+			  DISTINCT(mch.customerId) AS id,
+			  mc.code,
+			  mc.fullName,
+			  (SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = mc.sex
+				AND dd.code = 'CustomerSex' AND dd.tableName = 'main_customer' 
+			  ) AS sex,
+			 (DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW()) - TO_DAYS(mcd.birthday )),'%Y') + 0) age,
+			 (SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = mc.customerType
+				AND dd.code = 'CustomerType' AND dd.tableName = 'main_customer'
+			  ) AS customerType,
+			  mc.mainMobile,
+			  mc.standbyMobile,
+			  (SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = mc.affiliation
+				AND dd.code = 'CustomerAffilication' AND dd.tableName = 'main_customer'
+			  ) AS affiliation,
+			  (SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = mc.certificateType
+				AND dd.code = 'CustomerCertificateType' AND dd.tableName = 'main_customer' 
+			  ) AS certificateType,
+			  mc.certificateId,
+			  DATE_FORMAT(mcd.birthday,'%Y-%m-%d') AS birthday,
+			  mcd.urgencyContacts,
+			  mcd.urgencyMobileNumber,
+			  mcd.urgencyPhoneNumber,
+			  (SELECT (CASE COUNT(*) WHEN 1 THEN '有' ELSE '无' END) FROM dim_cust_cars dcc WHERE dcc.customerId = mc.id AND IFNULL(dcc.isDeleted,0)=0 LIMIT 1)AS isHaveCar,
+			  mcd.postCode,
+			  mcd.contactAddr,
+			  mcd.registerAddr,
+			  mcd.email,
+			  mcd.qq,
+			  mcd.weChat,
+			  (SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = mcd.blood
+				AND dd.code = 'CustomerBlood' AND dd.tableName = 'main_customer_detail' 
+			  ) AS blood,
+			  (SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = mcd.occupation
+				AND dd.code = 'CustomerOccupation' AND dd.tableName = 'main_customer_detail' 
+			  ) AS occupation,
+			  mcd.company,
+			  mcd.companyAddr,
+			  (SELECT GROUP_CONCAT(ddi.value) FROM dim_dictionary_items ddi 
+				INNER JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId 
+				INNER JOIN dim_cust_specialidentity cs ON ddi.code = cs.identity
+				WHERE 1=1
+				AND dd.code = 'CustomerIdentity' AND dd.tableName = 'dim_cust_specialidentity'
+				AND cs.customerId = mc.id) AS identity
+			FROM main_customer mc
+				INNER JOIN main_customer_detail mcd ON mc.id = mcd.id
+				LEFT JOIN mid_customer_house mch ON mc.id = mch.customerId
+				LEFT JOIN main_house h ON h.id = mch.houseId
+				LEFT JOIN mid_project_house mph ON h.id = mph.houseId
+				LEFT JOIN main_project mp ON mp.id = mph.projectId 
+				LEFT JOIN main_grid mg ON mg.id = mph.gridId
+				LEFT JOIN tree_organization o ON o.id = mph.projectId
+				INNER JOIN mid_organization_user ou ON ou.organizationId = o.id
+			WHERE o.levelType = 4
+			{?AND ou.userId =#sysUserId#}
+			{?AND o.parentId = #mcId#} 
+			{?AND o.id = #projectId#}
+			{?AND h.checkInTime >= #checkInTimeStart#}
+			{?AND h.checkInTime <= #checkInTimeEnd#}
+			{?AND h.deliverTime >= #startDeliversTime#}
+			{?AND h.deliverTime <= #endDeliverTime#}
+			{?AND mg.id = #gridId#}
+			{?AND mph.buildingId = #buildingId#}
+			{?AND mph.buildingCode = #buildingCode#}
+			{?AND h.id = #houseId#}
+			{?AND h.status = #houseStatus#}
+			{?AND mch.relationType = #houseCustomerRelationType#}
+			{?AND h.isSecondhand = #isSecondhand#}
+			{?AND mc.customerType = #customerType#}
+		  	{?AND mc.affiliation = #customerAffilication#}
+		  	{?AND mc.certificateType = #customerCertificateType#}
+		  	{?AND mc.certificateId = #certificateId#}
+		  	{?AND mc.fullName = #fullName#}
+		  	{?AND mc.mainMobile = #mainMobile#}
+		  	{?AND DATE_FORMAT(mcd.birthday,'%Y-%m-%d') = #birthday#}
+		  	{?AND (DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW()) - TO_DAYS(mcd.birthday )),'%Y') + 0)  >= #startAge#}
+		  	{?AND (DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW()) - TO_DAYS(mcd.birthday )),'%Y') + 0)  <= #endAge#}
+		  ]]>
+	</entry>
+	
+	<!-- 客户信息查询报表数量（迭代三） Author: luoml01-->
+	<entry key="sql.query.customerInfo.report.count">
+		<![CDATA[
+			SELECT 
+				COUNT(DISTINCT(mch.customerId))	
+			FROM 	main_customer mc
+				INNER JOIN main_customer_detail mcd ON mc.id = mcd.id
+				LEFT JOIN mid_customer_house mch ON mc.id = mch.customerId
+				LEFT JOIN main_house h ON h.id = mch.houseId
+				LEFT JOIN mid_project_house mph ON h.id = mph.houseId
+				LEFT JOIN main_project mp ON mp.id = mph.projectId 
+				LEFT JOIN main_grid mg ON mg.id = mph.gridId
+				LEFT JOIN tree_organization o ON o.id = mph.projectId
+				INNER JOIN mid_organization_user ou ON ou.organizationId = o.id
+			WHERE o.levelType = 4
+			{?AND ou.userId =#sysUserId#}
+			{?AND o.parentId = #mcId#} 
+			{?AND o.id = #projectId#}
+			{?AND h.checkInTime >= #checkInTimeStart#}
+			{?AND h.checkInTime <= #checkInTimeEnd#}
+			{?AND h.deliverTime >= #startDeliversTime#}
+			{?AND h.deliverTime <= #endDeliverTime#}
+			{?AND mg.id = #gridId#}
+			{?AND mph.buildingId = #buildingId#}
+			{?AND mph.buildingCode = #buildingCode#}
+			{?AND h.id = #houseId#}
+			{?AND h.status = #houseStatus#}
+			{?AND mch.relationType = #houseCustomerRelationType#}
+			{?AND h.isSecondhand = #isSecondhand#}
+			{?AND mc.customerType = #customerType#}
+		  	{?AND mc.affiliation = #customerAffilication#}
+		  	{?AND mc.certificateType = #customerCertificateType#}
+		  	{?AND mc.certificateId = #certificateId#}
+		  	{?AND mc.fullName = #fullName#}
+		  	{?AND mc.mainMobile = #mainMobile#}
+		  	{?AND DATE_FORMAT(mcd.birthday,'%Y-%m-%d') = #birthday#}
+		  	{?AND (DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW()) - TO_DAYS(mcd.birthday )),'%Y') + 0)  >= #startAge#}
+		  	{?AND (DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW()) - TO_DAYS(mcd.birthday )),'%Y') + 0)  <= #endAge#}
+		  ]]>
+	</entry>
+	<!-- 车辆信息查询报表（迭代三） Author: luoml01-->
+	<entry key="sql.query.carInfoReport">
+		<![CDATA[ 
+			SELECT 	
+				dc.licenseNumber,
+				DATE_FORMAT(dc.buyTime,'%Y-%m-%d') as buyTime,
+				dc.brand,
+				(SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = dc.brand
+					AND dd.code = 'CarBrand' AND dd.tableName = 'dim_cust_cars' 
+				) AS branText,
+				dc.color,
+				(SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = dc.color
+					AND dd.code = 'CarColor' AND dd.tableName = 'dim_cust_cars' 
+				) AS colorText,
+				o.id AS mcId,
+				o.name AS mcName,
+				mp.id AS projectId,
+				mp.code AS projectCode,
+				mp.name AS projectText,
+				mg.id AS gridId,
+				mg.code AS gridCode,
+				mg.name AS gridName,
+				mph.buildingId,
+				mph.buildingCode,
+				mph.buildingName,
+				h.id AS houseId,
+				h.code AS houseCode,
+				h.name AS huoseName,
+				h.unit,
+				(SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = h.status
+					AND dd.code = 'HouseStatus' AND dd.tableName = 'main_house' 
+				) AS statusText,
+				mc.fullName,
+				mc.mainMobile,
+				(SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = mc.certificateType
+					AND dd.code = 'CustomerCertificateType' AND dd.tableName = 'main_customer' 
+				) AS certificateText,
+				mc.certificateType,
+				mc.certificateId
+			FROM  dim_cust_cars dc 
+			INNER JOIN main_customer mc ON mc.id=dc.customerId 
+			LEFT JOIN mid_customer_house mch ON mc.id = mch.customerId
+			LEFT JOIN main_house h ON h.id = mch.houseId
+			LEFT JOIN mid_project_house mph ON h.id = mph.houseId
+			LEFT JOIN main_project mp ON mp.id = mph.projectId
+			LEFT JOIN main_grid mg ON mg.id = mph.gridId
+			LEFT JOIN tree_organization o ON o.id = mp.id 
+			WHERE 1=1
+			AND EXISTS( SELECT 1 FROM  tree_organization a INNER JOIN mid_organization_user ou ON ou.organizationId = a.id
+				WHERE o.parentId = a.parentId AND a.levelType = 4
+				{?AND ou.userId =#sysUserId#}
+				{?AND o.parentId = #mcId#} 
+			) 
+			{?AND dc.modifyTime >= #registerTimeStar#}
+			{?AND dc.modifyTime <= #registerTimeEnd#}
+			{?AND mp.id = #projectId#}
+			{?AND mg.id = #gridId#}
+			{?AND mph.buildingId = #buildingId#}
+			{?AND mph.buildingCode = #buildingCode#}
+			{?AND h.id = #houseId#}
+			{?AND h.status = #status#}
+			{?AND mc.fullName = #fullName#}
+			{?AND mc.mainMobile = #mainMobile#}
+			{?AND mc.certificateType = #certificateType#}
+			{?AND mc.certificateId = #certificateId#}
+			{?AND dc.licenseNumber = #licenseNumber#}
+		]]>		
+	</entry>
+	<!-- 车辆信息查询报表（迭代三） Author: luoml01-->
+	<entry key="sql.query.carInfoReport.count">
+		<![CDATA[
+			SELECT COUNT(*) FROM (
+				SELECT 	
+					dc.licenseNumber,
+					DATE_FORMAT(dc.buyTime,'%Y-%m-%d') as buyTime,
+					dc.brand,
+					(SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = dc.brand
+						AND dd.code = 'CarBrand' AND dd.tableName = 'dim_cust_cars' 
+					) AS branText,
+					dc.color,
+					(SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = dc.color
+						AND dd.code = 'CarColor' AND dd.tableName = 'dim_cust_cars' 
+					) AS colorText,
+					o.id AS mcId,
+					o.name AS mcName,
+					mp.id AS projectId,
+					mp.code AS projectCode,
+					mp.name AS projectText,
+					mg.id AS gridId,
+					mg.code AS gridCode,
+					mg.name AS gridName,
+					mph.buildingId,
+					mph.buildingCode,
+					mph.buildingName,
+					h.id AS houseId,
+					h.code AS houseCode,
+					h.name AS huoseName,
+					h.unit,
+					(SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = h.status
+						AND dd.code = 'HouseStatus' AND dd.tableName = 'main_house' 
+					) AS statusText,
+					mc.fullName,
+					mc.mainMobile,
+					(SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = mc.certificateType
+						AND dd.code = 'CustomerCertificateType' AND dd.tableName = 'main_customer' 
+					) AS certificateText,
+					mc.certificateType,
+					mc.certificateId
+				FROM  dim_cust_cars dc 
+				INNER JOIN main_customer mc ON mc.id=dc.customerId 
+				LEFT JOIN mid_customer_house mch ON mc.id = mch.customerId
+				LEFT JOIN main_house h ON h.id = mch.houseId
+				LEFT JOIN mid_project_house mph ON h.id = mph.houseId
+				LEFT JOIN main_project mp ON mp.id = mph.projectId
+				LEFT JOIN main_grid mg ON mg.id = mph.gridId
+				LEFT JOIN tree_organization o ON o.id = mp.id 
+				WHERE 1=1
+				AND EXISTS( SELECT 1 FROM  tree_organization a INNER JOIN mid_organization_user ou ON ou.organizationId = a.id
+					WHERE o.parentId = a.parentId AND a.levelType = 4
+					{?AND ou.userId =#sysUserId#}
+					{?AND o.parentId = #mcId#} 
+				)
+				{?AND dc.modifyTime >= #registerTimeStar#}
+				{?AND dc.modifyTime <= #registerTimeEnd#}
+				{?AND mg.id = #gridId#}
+				{?AND mph.buildingId = #buildingId#}
+				{?AND mph.buildingCode = #buildingCode#}
+				{?AND h.id = #houseId#}
+				{?AND h.status = #status#}
+				{?AND mc.fullName = #fullName#}
+				{?AND mc.mainMobile = #mainMobile#}
+				{?AND mc.certificateType = #certificateType#}
+				{?AND mc.certificateId = #certificateId#}
+				{?AND dc.licenseNumber = #licenseNumber#}
+			) t
+		]]>	
+	</entry>
+
+	<!-- 宠物信息查询报表（迭代三） Author: luoml01-->
+	<entry key="sql.query.petsInfoReport">
+    	<![CDATA[
+			SELECT 
+				dp.name,
+				(SELECT GROUP_CONCAT(ddi.value) FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = dp.breed
+					AND dd.code = 'PetBreed' AND dd.tableName = 'dim_cust_pets' 
+				) AS breed,
+				(SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = dp.sex
+					AND dd.code = 'PetSex' AND dd.tableName = 'dim_cust_pets' 
+				) AS sex,
+				dp.adoptTime,
+				dp.description,
+				o.name AS mcName,
+				mp.name AS projectText,
+				mg.name AS gridName,
+				h.unit,
+				h.buildingName,
+				h.name AS houseName,
+				(SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = h.status
+					AND dd.code = 'HouseStatus' AND dd.tableName = 'main_house' 
+				) AS statusText,
+				mc.fullName,
+				mc.mainMobile,
+				(SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = mc.certificateType
+					AND dd.code = 'CustomerCertificateType' AND dd.tableName = 'main_customer' 
+				  ) AS certificateTypeText,
+				mc.certificateId
+			FROM dim_cust_pets dp
+			INNER JOIN main_customer mc ON mc.id=dp.customerId 
+			LEFT JOIN mid_customer_house mch ON mc.id = mch.customerId
+			LEFT JOIN main_house h ON h.id = mch.houseId
+			LEFT JOIN mid_project_house mph ON h.id = mph.houseId
+			LEFT JOIN main_project mp ON mp.id = mph.projectId
+			LEFT JOIN main_grid mg ON mg.id = mph.gridId
+			LEFT JOIN tree_organization o ON o.id = mp.id
+			WHERE 1=1
+			AND EXISTS( SELECT 1 FROM  tree_organization a INNER JOIN mid_organization_user ou ON ou.organizationId = a.id
+				WHERE o.parentId = a.parentId AND a.levelType = 4
+				{?AND ou.userId =#sysUserId#}
+				{?AND o.parentId = #mcId#} 
+			)
+			{?AND dp.adoptTime >= #adoptTimeStart#}
+			{?AND dp.adoptTime <= #adoptTimeEnd#}
+			{?AND mp.id = #projectId#}
+			{?AND mg.id = #gridId#}
+			{?AND mph.buildingId = #buildingId#}
+			{?AND mph.buildingCode = #buildingCode#}
+			{?AND h.id = #houseId#}
+			{?AND h.status = #houseStatus#}
+			{?AND mc.fullName = #fullName#}
+			{?AND mc.mainMobile = #mainMobile#}
+			{?AND mc.certificateType = #certificateType#}
+			{?AND mc.certificateId = #certificateId#}
+	 	]]>
+	</entry>
+	<entry key="sql.query.petsInfoReport.count">
+		<![CDATA[
+			SELECT COUNT(*) FROM (
+		   		SELECT 
+					dp.name,
+					(SELECT GROUP_CONCAT(ddi.value) FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = dp.breed
+						AND dd.code = 'PetBreed' AND dd.tableName = 'dim_cust_pets' 
+					) AS breed,
+					(SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = dp.sex
+						AND dd.code = 'PetSex' AND dd.tableName = 'dim_cust_pets' 
+					) AS sex,
+					dp.adoptTime,
+					dp.description,
+					o.name AS mcName,
+					mp.name AS projectText,
+					mg.name AS gridName,
+					h.unit,
+					h.buildingName,
+					h.name AS houseName,
+					(SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = h.status
+						AND dd.code = 'HouseStatus' AND dd.tableName = 'main_house' 
+					) AS statusText,
+					mc.fullName,
+					mc.mainMobile,
+					(SELECT ddi.value FROM dim_dictionary_items ddi INNER  JOIN dim_dictionary dd ON dd.id = ddi.dictionaryId WHERE ddi.code = mc.certificateType
+						AND dd.code = 'CustomerCertificateType' AND dd.tableName = 'main_customer' 
+					  ) AS certificateTypeText,
+					mc.certificateId
+				FROM dim_cust_pets dp
+				INNER JOIN main_customer mc ON mc.id=dp.customerId 
+				LEFT JOIN mid_customer_house mch ON mc.id = mch.customerId
+				LEFT JOIN main_house h ON h.id = mch.houseId
+				LEFT JOIN mid_project_house mph ON h.id = mph.houseId
+				LEFT JOIN main_project mp ON mp.id = mph.projectId
+				LEFT JOIN main_grid mg ON mg.id = mph.gridId
+				LEFT JOIN tree_organization o ON o.id = mp.id
+				WHERE 1=1
+				AND EXISTS( SELECT 1 FROM  tree_organization a INNER JOIN mid_organization_user ou ON ou.organizationId = a.id
+					WHERE o.parentId = a.parentId AND a.levelType = 4
+					{?AND ou.userId =#sysUserId#}
+					{?AND o.parentId = #mcId#} 
+				)
+				{?AND dp.adoptTime >= #adoptTimeStart#}
+				{?AND dp.adoptTime <= #adoptTimeEnd#}
+				{?AND mp.id = #projectId#}
+				{?AND mg.id = #gridId#}
+				{?AND mph.buildingId = #buildingId#}
+				{?AND mph.buildingCode = #buildingCode#}
+				{?AND h.id = #houseId#}
+				{?AND h.status = #houseStatus#}
+				{?AND mc.fullName = #fullName#}
+				{?AND mc.mainMobile = #mainMobile#}
+				{?AND mc.certificateType = #certificateType#}
+				{?AND mc.certificateId = #certificateId#}
+			) T
+ 		]]>
+	</entry>
+</properties>
