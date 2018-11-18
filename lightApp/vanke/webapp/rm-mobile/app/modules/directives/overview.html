@@ -1,0 +1,21 @@
+<div class="list-group-item list-group-item-home overview-bg"
+     ng-class="{'overview-number-height': styleNumber, 'overview-text-height': styleText }">
+    <div class="overview-main">
+        <div class="overview-info" ng-show="showHead">
+            {{ headText }}
+        </div>
+        <div class="overview-content-number" ng-show="styleNumber">
+            <div class="content-font" ng-class="{'color-green':green, 'color-red':red, 'color-orange':orange}">
+                {{ number }}<span class="content-small">{{ unit }}</span>
+            </div>
+        </div>
+        <div class="overview-content-text" ng-show="styleText">
+            <div class="font-16 color-green margin-top-6">
+                {{ mainInfo }}
+            </div>
+            <div class="font-12 color-gray">
+                {{ subInfo }}
+            </div>
+        </div>
+    </div>
+</div>

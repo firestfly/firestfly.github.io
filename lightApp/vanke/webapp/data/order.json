@@ -1,0 +1,266 @@
+[
+  {
+    "id": "1",
+    "department": "万科城1",
+    "firstLevelOrderType": "一级",
+    "secondLevelOrderType": "二级",
+    "thirdLevelOrderType": "三级",
+    "originWealth": 123,
+    "orderCoefficient": 1.21,
+    "wealthCoefficient": "2",
+    "standardWorkingMinute": "2.1",
+    "assessmentCoefficient": {
+      "oneStarPoint": "1",
+      "twoStarPoint": "1",
+      "threeStarPoint": "1",
+      "fourStarPoint": "1",
+      "fiveStarPoint": "1",
+      "nonAssessment": "0.1"
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": "1",
+      "houseKeepingUncharged": "1.1",
+      "publicRepairOrder": "1.1"
+    }
+  },
+  {
+    "id": "2",
+    "department": "万科城2",
+    "firstLevelOrderType": "一级",
+    "secondLevelOrderType": "二级",
+    "thirdLevelOrderType": "三级",
+    "originWealth": "123",
+    "orderCoefficient": "1.1",
+    "wealthCoefficient": "2",
+    "standardWorkingMinute": "2",
+    "assessmentCoefficient": {
+      "oneStarPoint": "1",
+      "twoStarPoint": "1",
+      "threeStarPoint": "1",
+      "fourStarPoint": "1",
+      "fiveStarPoint": "1",
+      "nonAssessment": "1"
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": "1",
+      "houseKeepingUncharged": "1.1",
+      "publicRepairOrder": "1.1"
+    }
+  },
+  {
+    "id": "3",
+    "department": "万科城3",
+    "firstLevelOrderType": "一级",
+    "secondLevelOrderType": "二级",
+    "thirdLevelOrderType": "三级",
+    "originWealth": "123",
+    "orderCoefficient": "1.1",
+    "wealthCoefficient": "2",
+    "standardWorkingMinute": "2",
+    "assessmentCoefficient": {
+      "oneStarPoint": "1",
+      "twoStarPoint": "1",
+      "threeStarPoint": "1",
+      "fourStarPoint": "1",
+      "fiveStarPoint": "1",
+      "nonAssessment": "1"
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": "1",
+      "houseKeepingUncharged": "1.1",
+      "publicRepairOrder": "1.1"
+    }
+  },
+  {
+    "id": "4",
+    "department": "万科城4",
+    "firstLevelOrderType": "一级",
+    "secondLevelOrderType": "二级",
+    "thirdLevelOrderType": "三级",
+    "originWealth": "123",
+    "orderCoefficient": "1.1",
+    "wealthCoefficient": "2",
+    "standardWorkingMinute": "2",
+    "assessmentCoefficient": {
+      "oneStarPoint": "1",
+      "twoStarPoint": "1",
+      "threeStarPoint": "1",
+      "fourStarPoint": "1",
+      "fiveStarPoint": "1",
+      "nonAssessment": "1"
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": "1",
+      "houseKeepingUncharged": "1.1",
+      "publicRepairOrder": "1.1"
+    }
+  },
+  {
+    "id": "5",
+    "department": "万科城5",
+    "firstLevelOrderType": "一级",
+    "secondLevelOrderType": "二级",
+    "thirdLevelOrderType": "三级",
+    "originWealth": "123",
+    "orderCoefficient": "1.1",
+    "wealthCoefficient": "2",
+    "standardWorkingMinute": "2",
+    "assessmentCoefficient": {
+      "oneStarPoint": "1",
+      "twoStarPoint": "1",
+      "threeStarPoint": "1",
+      "fourStarPoint": "1",
+      "fiveStarPoint": "1",
+      "nonAssessment": "1"
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": "1",
+      "houseKeepingUncharged": "1.1",
+      "publicRepairOrder": "1.1"
+    }
+  },
+  {
+    "id": "6",
+    "department": "万科城6",
+    "firstLevelOrderType": "一级",
+    "secondLevelOrderType": "二级",
+    "thirdLevelOrderType": "三级",
+    "originWealth": "123",
+    "orderCoefficient": "1.1",
+    "wealthCoefficient": "2",
+    "standardWorkingMinute": "2",
+    "assessmentCoefficient": {
+      "oneStarPoint": "1",
+      "twoStarPoint": "1",
+      "threeStarPoint": "1",
+      "fourStarPoint": "1",
+      "fiveStarPoint": "1",
+      "nonAssessment": "1"
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": "1",
+      "houseKeepingUncharged": "1.1",
+      "publicRepairOrder": "1.1"
+    }
+  },
+  {
+    "id": "7",
+    "department": "万科城7",
+    "firstLevelOrderType": "一级",
+    "secondLevelOrderType": "二级",
+    "thirdLevelOrderType": "三级",
+    "originWealth": "123",
+    "orderCoefficient": "1.1",
+    "wealthCoefficient": "2",
+    "standardWorkingMinute": "2",
+    "assessmentCoefficient": {
+      "oneStarPoint": "1",
+      "twoStarPoint": "1",
+      "threeStarPoint": "1",
+      "fourStarPoint": "1",
+      "fiveStarPoint": "1",
+      "nonAssessment": "1"
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": "1",
+      "houseKeepingUncharged": "1.1",
+      "publicRepairOrder": "1.1"
+    }
+  },
+  {
+    "id": "8",
+    "department": "万科城8",
+    "firstLevelOrderType": "一级",
+    "secondLevelOrderType": "二级",
+    "thirdLevelOrderType": "三级",
+    "originWealth": "123",
+    "orderCoefficient": "1.1",
+    "wealthCoefficient": "2",
+    "standardWorkingMinute": "2",
+    "assessmentCoefficient": {
+      "oneStarPoint": "1",
+      "twoStarPoint": "1",
+      "threeStarPoint": "1",
+      "fourStarPoint": "1",
+      "fiveStarPoint": "1",
+      "nonAssessment": "1"
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": "1",
+      "houseKeepingUncharged": "1.1",
+      "publicRepairOrder": "1.1"
+    }
+  },
+  {
+    "id": "9",
+    "department": "万科城9",
+    "firstLevelOrderType": "一级",
+    "secondLevelOrderType": "二级",
+    "thirdLevelOrderType": "三级",
+    "originWealth": "123",
+    "orderCoefficient": "1.1",
+    "wealthCoefficient": "2",
+    "standardWorkingMinute": "2",
+    "assessmentCoefficient": {
+      "oneStarPoint": "1",
+      "twoStarPoint": "1",
+      "threeStarPoint": "1",
+      "fourStarPoint": "1",
+      "fiveStarPoint": "1",
+      "nonAssessment": "1"
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": "1",
+      "houseKeepingUncharged": "1.1",
+      "publicRepairOrder": "1.1"
+    }
+  },
+  {
+    "id": "10",
+    "department": "万科城10",
+    "firstLevelOrderType": "一级",
+    "secondLevelOrderType": "二级",
+    "thirdLevelOrderType": "三级",
+    "originWealth": "123",
+    "orderCoefficient": "1.1",
+    "wealthCoefficient": "2",
+    "standardWorkingMinute": "2",
+    "assessmentCoefficient": {
+      "oneStarPoint": "1",
+      "twoStarPoint": "1",
+      "threeStarPoint": "1",
+      "fourStarPoint": "1",
+      "fiveStarPoint": "1",
+      "nonAssessment": "1"
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": "1",
+      "houseKeepingUncharged": "1.1",
+      "publicRepairOrder": "1.1"
+    }
+  },
+  {
+    "id": "11",
+    "department": "万科城11",
+    "firstLevelOrderType": "一级",
+    "secondLevelOrderType": "二级",
+    "thirdLevelOrderType": "三级",
+    "originWealth": "123",
+    "orderCoefficient": "1.1",
+    "wealthCoefficient": "2",
+    "standardWorkingMinute": "2",
+    "assessmentCoefficient": {
+      "oneStarPoint": "1",
+      "twoStarPoint": "1",
+      "threeStarPoint": "1",
+      "fourStarPoint": "1",
+      "fiveStarPoint": "1",
+      "nonAssessment": "1"
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": "1",
+      "houseKeepingUncharged": "1.1",
+      "publicRepairOrder": "1.1"
+    }
+  }
+]

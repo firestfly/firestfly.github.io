@@ -1,0 +1,75 @@
+<div class="container-fluid attendance-container">
+    <div class="row vk-spaced-row">
+        <div class="col-md-8 col-sm-12">
+            <table class="table auto-person-row">
+                <tbody>
+                <tr>
+                    <td ng-repeat="personalInfoItem in personalInfoList">{{personalInfoItem.filterCompanyName}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <a href="#/attendance" target="_parent">
+                <button type="button" class="btn vk-btn-default fr">返回</button>
+            </a>
+        </div>
+    </div>
+
+    <div class="row vk-spaced-row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table id="attendance-table" class="table table-bordered table-hover nowrap dataTable">
+                    <thead border="1">
+                    <tr role="row">
+                        <th>签到时间</th>
+                        <th>签到地点</th>
+                        <th>是否在有效区域</th>
+                        <th>签到类型</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="attendanceDetail in attendanceDetails" on-finish-render
+                           class="attendance-details">
+                    <tr>
+                        <td ng-bind="attendanceDetail.attendanceDetailId" ng-hide="true" align="left"></td>
+                        <td ng-bind="attendanceDetail.attendanceTime" align="left"></td>
+                        <td ng-bind="attendanceDetail.attendanceSpot" align="left"></td>
+                        <td ng-bind="attendanceDetail.isValid"></td>
+                        <td ng-bind="attendanceDetail.attendanceType"></td>
+                        <td ng-bind-html="attendanceDetail.edit"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" ng-show="attendanceDetail.isShowAll" class="adjust-box">
+                            <div ng-show="attendanceDetail.isShowComment">说明：
+                                <input type="text"
+                                       class="editable-input ng-pristine ng-valid ng-valid-required"
+                                       ng-model="attendanceDetail.adjustComment"/>
+                                <button type="button" class="btn vk-btn-health"
+                                        ng-click="save(attendanceDetail)">保存
+                                </button>
+                                <button type="button" class="btn vk-btn-relax"
+                                        ng-click="cancel(attendanceDetail)">取消
+                                </button>
+                            </div>
+                            <div ng-show="attendanceDetail.isShowAdjust">
+                                <div ng-bind-html="attendanceDetail.adjustComment1"></div>
+                                <div ng-bind="attendanceDetail.adjustTime"></div>
+                                <div ng-bind="attendanceDetail.adjustPersonName"></div>
+                                <br/>
+                            </div>
+                            <div ng-show="attendanceDetail.isShowCancel">
+                                <div ng-bind-html="attendanceDetail.adjustComment2"></div>
+                                <div ng-bind="attendanceDetail.adjustTime2"></div>
+                                <div ng-bind="attendanceDetail.adjustPersonName2"></div>
+                                <br/>
+                            </div>
+                            <div></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

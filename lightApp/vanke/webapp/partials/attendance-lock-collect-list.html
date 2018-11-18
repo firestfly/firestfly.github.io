@@ -1,0 +1,96 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="container-fluid vk-container common-search-bar">
+            <div class="row vk-spaced-row">
+                <div class="col-md-3">
+                    <select id="select-company" class="selectpicker" multiple data-none-selected-text="全部公司"
+                            data-selected-text-format="count" data-width="100%" data-live-search="true"
+                            data-actions-box="true"
+                            ng-options="option.company_name for option in organizations track by option.company_id"
+                            ng-model="selectedCompanies"
+                            ng-finish-render>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select id="select-department" class="selectpicker" multiple data-none-selected-text="全部部门"
+                            data-selected-text-format="count" data-actions-box="true" data-live-search="true"
+                            ng-options="option.department_name for option in departments track by option.department_id"
+                            data-width="100%" ng-model="selectedDepartments">
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select id="select-lock-status" class="selectpicker" data-width="100%"
+                            ng-model="selectedStatus">
+                        <option value="">定案状态</option>
+                        <option value="0">未定案</option>
+                        <option value="1">一次定案</option>
+                        <option value="2">一次解定案</option>
+                        <option value="3">二次定案</option>
+                        <option value="4">二次解定案</option>
+                        <option value="5">三次定案</option>
+                        <option value="6">三次解定案</option>
+                        <option value="7">多次定案</option>
+                        <option value="8">多次解定案</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="selectpicker" data-width="100%" data-none-selected-text="统计周期" id="onlyLockCycle"
+                            data-selected-text-format="count" data-actions-box="true"
+                            ng-options="option.lockCycleName for option in onlyLockCycle track by option.lockCycleId"
+                            ng-model="selectedOnlyLockCycle">
+                    </select>
+                </div>
+                <!--<div class="col-md-3" id="sandbox-container">-->
+                <!--<div class="input-daterange input-group">-->
+                <!--<input type="text" class="input-sm form-control" name="start" placeholder="导出时间从"/>-->
+                <!--<span class="input-group-addon"> - </span>-->
+                <!--<input type="text" class="input-sm form-control" name="end" placeholder="到"/>-->
+                <!--</div>-->
+                <!--</div>-->
+            </div>
+            <div class="row vk-spaced-row">
+                <div class="col-md-3">
+                    <!--<div class="right-inner-addon ">-->
+                    <!--<i class="fa fa-search"></i>-->
+                    <!--<input class="form-control" id="input-search-field" type="search" placeholder="请输入定案名称"-->
+                    <!--ng-keydown="searchFromEnterKey($event)" ng-model="keywords">-->
+                    <!--</div>-->
+                </div>
+                <div class="col-md-9">
+                    <div class="pull-right">
+                        <a class="vk-btn-link" href="javascript:void(0)" ng-click="clear()">清除查询条件</a>
+                        <button type="button" ng-click="search()" class="btn btn-primary">查询</button>
+                        <button type="button" ng-click="unlock()" class="btn btn-primary">解定案</button>
+                        <button type="button" ng-click="exportLockEditeData()" class="btn vk-btn-default">导出数据修改记录
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form name="downloadFileForm" method="post" id="downloadFileForm">
+            <input type="submit" name="submitBtn" id="submitBtn" style="display:none"/>
+        </form>
+    </div>
+    <div class="row m-t-10">
+        <div class="table-responsive">
+            <table id="attendance-lock-collect-table" class="table table-bordered nowrap table-hover">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>定案名称</th>
+                    <th>公司编号</th>
+                    <th>公司</th>
+                    <th>部门编号</th>
+                    <th>部门</th>
+                    <th></th>
+                    <th>定案时间</th>
+                    <th>开始日期</th>
+                    <th>截止日期</th>
+                    <th>状态/操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div ng-show="showSelectedPop" class="attendance-selected-pop">当前已选{{ selectedNumber }}项</div>
+</div>

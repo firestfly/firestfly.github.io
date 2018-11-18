@@ -1,0 +1,32 @@
+/* box model */
+.box {
+  @include flex-align;
+}
+
+.bf1 {
+  @include flex-count;
+}
+
+.bf2 {
+  @include flex-count(2);
+}
+
+.bf3 {
+  @include flex-count(3);
+}
+
+.bf4 {
+  @include flex-count(4);
+}
+
+.direction-h {
+  @include flex-orient(h);
+}
+
+.direction-v {
+  @include flex-orient(v);
+}
+
+.box-justify {
+  @include flex-align-justify;
+}

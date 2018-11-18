@@ -1,0 +1,36 @@
+<div class="container-fluid">
+    <div class="row">
+        <div data-common-search-bar data-hide-date-range="true" data-operation-buttons="operation-buttons"
+             data-show-job-status="true" data-show-adjust-job-level="true"
+             data-show-export-template-btn="true"></div>
+    </div>
+    <div class="row  m-t-10">
+        <div class="table-responsive">
+            <table id="employee-table" class="table table-bordered table-hover nowrap">
+                <thead>
+                <tr>
+                    <th>资源编号</th>
+                    <th>EHR编号</th>
+                    <th>姓名</th>
+                    <th>公司</th>
+                    <th>部门</th>
+                    <th>岗位专业分类</th>
+                    <th>职位</th>
+                    <th>级别待调</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="exportEmployees.html">
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="exportDetail()">
+            导出明细列表
+        </button>
+        <button class="btn vk-btn-passion" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>

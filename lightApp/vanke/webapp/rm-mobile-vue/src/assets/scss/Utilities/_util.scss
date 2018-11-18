@@ -1,0 +1,105 @@
+@charset "UTF-8";
+
+.apps {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+
+.flexbox {
+  display: flex;
+  &.ev__ai {
+    align-items: center;
+  }
+  &.ev__jc {
+    justify-content: center;
+    text-align: center;
+  }
+  &.ev__space__between {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.flex {
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: 100%;
+}
+
+.flex-start {
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.flex-end {
+  justify-content: flex-end;
+  width: 100%;
+}
+
+// 页面模块
+.px-t {
+  @include ui-border(top, $border-color);
+}
+
+.px-b {
+  @include ui-border(bottom, $border-color);
+}
+
+.px-tb {
+  @include ui-border(tb, $border-color);
+}
+
+.px-l {
+  @include ui-border(left, $border-color);
+}
+
+.px-r {
+  @include ui-border(right, $border-color);
+}
+
+.px-all {
+  @include border-radius($border-color, 0);
+}
+
+.employee-author {
+  width: rem(84px);
+  height: rem(84px);
+  display: block;
+  margin: 0 auto;
+  border-radius: 100%;
+  position: relative;
+  background-image: url('./assets/images/default-head.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-color: #ddd;
+  &.add {
+    font-size: 26px;
+    font-weight: bold;
+    line-height: rem(90px);
+    color: #948d8d;
+    background-image: url('./assets/images/icon-plus-white.png');
+    background-size: 25px 25px;
+  }
+  &.author-del:after {
+    position: absolute;
+    content: '';
+    display: block;
+    background: url('assets/images/close2.png') no-repeat;
+    background-size: cover;
+    background-color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    right: 0;
+    bottom: 0;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -1,0 +1,122 @@
+//@font-face {
+//  font-family: 'iconfont';  /* project id 250049 */
+//  src: url('//at.alicdn.com/t/font_ffvo874e36a5g66r.eot');
+//  src: url('//at.alicdn.com/t/font_ffvo874e36a5g66r.eot?#iefix') format('embedded-opentype'),
+//  url('//at.alicdn.com/t/font_ffvo874e36a5g66r.woff') format('woff'),
+//  url('//at.alicdn.com/t/font_ffvo874e36a5g66r.ttf') format('truetype'),
+//  url('//at.alicdn.com/t/font_ffvo874e36a5g66r.svg#iconfont') format('svg');
+//}
+@font-face {
+  font-family: 'iconfont';  /* project id 250049 */
+  src: url('//at.alicdn.com/t/font_baaa0lgoz2gldi.eot');
+  src: url('//at.alicdn.com/t/font_baaa0lgoz2gldi.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_baaa0lgoz2gldi.woff') format('woff'),
+  url('//at.alicdn.com/t/font_baaa0lgoz2gldi.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_baaa0lgoz2gldi.svg#iconfont') format('svg');
+}
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: inherit;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-plus-img {
+  display: inline-block;
+  vertical-align: middle;
+  width: 18px;
+  height: 18px;
+  background: url(./assets/images/icon-plus.png) no-repeat;
+  background-size: cover;
+}
+.icon-approvaled:before {
+  content: "\e602";
+}
+.icon-tuihui:before {
+  content: "\e627";
+}
+.icon-revoked:before {
+  content: "\e603";
+}
+
+.icon-passed:before {
+  content: "\e604";
+}
+
+.icon-failed:before {
+  content: "\e605";
+}
+.icon-check {
+  display: inline-block;
+  width: 12px;
+  height: 6px;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transform-origin: (0 0);
+}
+
+.icon-checkbox {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #c7c7c7;
+
+  input[type="radio"]:checked ~ &, input[type="checkbox"]:checked ~ & {
+    background-color: currentColor;
+    border-color: currentColor;
+    &:before {
+      content: "";
+      display: inline-block;
+      width: 12px;
+      height: 6px;
+      position: absolute;
+      border-left: 1px solid #fff;
+      border-bottom: 1px solid #fff;
+      transform: rotate(-45deg);
+      top: 5px;
+      z-index: 23;
+      left: 3px;
+    }
+  }
+}
+
+.icon-stop {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: red;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+
+  &:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    content: "";
+    width: 10px;
+    height: 2px;
+    background-color: #fff;
+    display: inline-block;
+  }
+}
+
+.icon-angle-left:before {
+  @include angle(14px, 14px, 2px, currentColor);
+}
+
+.icon-angle-right:before {
+  @include angle($w: 10px, $h: 10px, $border-width: 2px, $border-color: $border-color, $deg: -135deg)
+}
+
+.icon-angle-top:before {
+  @include angle(10px, 10px, 2px, $border-color, -45deg);
+}
+
+.icon-angle-bottom:before {
+  @include angle(10px, 10px, 2px, $border-color, 135deg)
+}

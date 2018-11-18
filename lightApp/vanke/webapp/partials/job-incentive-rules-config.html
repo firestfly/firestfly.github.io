@@ -1,0 +1,118 @@
+<div class="container-fluid">
+    <div class="row vk-spaced-row">
+        <div class="col-md-4">
+            <div class="right-inner-addon ">
+                <i class="fa fa-search"></i>
+                <input class="form-control" id="search" type="search" ng-keydown="searchFromEnterKey($event)"
+                       ng-model="searchInputValue"
+                       placeholder="输入职位名称搜索"/>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="pull-right">
+                <a href="javascript:void(0)" class="vk-btn-link" ng-click="clear()">清除查询条件</a>
+                <button type="button" class="btn vk-btn-default" ng-click="search()">查询</button>
+                <a href="#/help-job-incentive-rules" class="btn vk-btn-default" >规则说明</a>
+                <a href="#/job-incentive-rules" class="btn btn-default">返回列表</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table id="job-incentive-rules-config-table" class="table table-bordered display nowrap"
+                       cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>职位</th>
+                        <th>提成基数</th>
+                        <th>基本兑换系数</th>
+                        <th>提成兑换系数</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="jobIncentiveRuleConfig in jobIncentiveRuleConfigs" on-finish-render>
+                        <td ng-bind="jobIncentiveRuleConfig.workJob.name"></td>
+                        <td ng-bind="jobIncentiveRuleConfig.incentiveRadix"></td>
+                        <td ng-bind="jobIncentiveRuleConfig.basicExchangeCoefficient"></td>
+                        <td ng-bind="jobIncentiveRuleConfig.incentiveExchangeCoefficient"></td>
+                        <td>
+                            <a href="javascript:void(0)"
+                               ng-click="open(jobIncentiveRuleConfig.workJob.id, $event)">设置</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="jobIncentiveRuleConfigDialog.html">
+    <form name="jobRuleConfigForm">
+        <div class="modal-header">
+            <strong class="modal-title" ng-bind="jobIncentiveRuleConfig.workJob.name"></strong>
+        </div>
+        <div class="modal-body">
+            <div class="container-fluid vk-dialog-container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="container-fluid vk-config-container">
+                            <div class="row vk-border-top vk-border-left vk-border-right vk-dialog-row-content">
+                                <div class="col-md-4 col-xs-6 text-center vk-border-left vk-border-right">
+                                    <p>提成基数(有效值0~100000)</p>
+                                </div>
+                                <div class="col-md-4 col-xs-6 text-center">
+                                    <p>基本兑换系数(有效值0~100)</p>
+                                </div>
+                                <div class="col-md-4 col-xs-6 text-center vk-border-left vk-border-right">
+                                    <p>提成兑换系数(有效值0~100)</p>
+                                </div>
+                            </div>
+                            <div class="row vk-border-top vk-border-left vk-border-right vk-border-bottom vk-dialog-row-content">
+                                <div class="col-md-4 col-xs-6 text-center vk-border-left vk-border-right vk-dialog-row-space"
+                                     ng-class="{ 'has-error': jobRuleConfigForm.basicIncentiveFeePoint.$invalid && !jobRuleConfigForm.basicIncentiveFeePoint.$pristine }">
+                                    <label for="basic-incentive-fee-point"
+                                           class="sr-only vk-config-label-bottom">提成基数</label>
+                                    <input id="basic-incentive-fee-point" type="text" class="form-control"
+                                           name="basicIncentiveFeePoint" ng-pattern="/^([0-9]\d{0,4}|100000)$/"
+                                           maxlength="10"
+                                           placeholder="0" ng-model="jobIncentiveRuleConfig.incentiveRadix"
+                                           required/>
+                                </div>
+                                <div class="col-md-4 col-xs-6 text-center vk-dialog-row-space"
+                                     ng-class="{ 'has-error': jobRuleConfigForm.basicIncentiveFeeCoefficient.$invalid && !jobRuleConfigForm.basicIncentiveFeeCoefficient.$pristine }">
+                                    <label for="basic-incentive-fee-coefficient"
+                                           class="sr-only vk-config-label-bottom">基本兑换系数</label>
+                                    <input id="basic-incentive-fee-coefficient" type="text" class="form-control"
+                                           name="basicIncentiveFeeCoefficient"
+                                           ng-pattern="/^(([1-9]\d|\d)(\.[0-9]{0,2})?|100)$/"
+                                           placeholder="0" maxlength="7"
+                                           ng-model="jobIncentiveRuleConfig.basicExchangeCoefficient" required/>
+                                </div>
+                                <div class="col-md-4 col-xs-6 text-center vk-border-left vk-border-right vk-dialog-row-space"
+                                     ng-class="{ 'has-error': jobRuleConfigForm.extraIncentiveFeeCoefficient.$invalid && !jobRuleConfigForm.extraIncentiveFeeCoefficient.$pristine }">
+                                    <label for="extra-incentive-fee-coefficient"
+                                           class="sr-only vk-config-label-bottom">提成兑换系数</label>
+                                    <input id="extra-incentive-fee-coefficient" type="text" class="form-control"
+                                           name="extraIncentiveFeeCoefficient"
+                                           ng-pattern="/^(([1-9]\d|\d)(\.[0-9]{0,2})?|100)$/"
+                                           placeholder="0" maxlength="7"
+                                           ng-model="jobIncentiveRuleConfig.incentiveExchangeCoefficient" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn vk-btn-health" type="button" ng-disabled="jobRuleConfigForm.$invalid" ng-click="ok()">
+                确认
+            </button>
+            <button class="btn vk-btn-passion" type="button" ng-click="cancel()">取消</button>
+        </div>
+    </form>
+</script>

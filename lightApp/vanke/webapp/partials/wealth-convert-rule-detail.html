@@ -1,0 +1,70 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive vk-table-complex">
+                <div class="row vk-spaced-row authority-container">
+                    <table class="table auto-person-row">
+                        <tbody>
+                        <tr>
+                            <td>{{employeeId}}</td>
+                            <td>{{sapId}}</td>
+                            <td>{{employeeName}}</td>
+                            <td>{{companyName}}</td>
+                            <td>{{departmentName}}</td>
+                            <td>{{workGroups}}</td>
+                            <td>{{postName}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 mb20">财富值计算周期：{{beginDate}}至{{endDate}}</div>
+                <table class="table table-bordered table-striped table-condensed">
+                    <thead>
+                    <tr>
+                        <th class="cp" ng-click="search('date')">日期 <span class="fa fa-arrows-v"></span></th>
+                        <th class="cp" ng-click="search('wealth')">总财富值 <span class="fa fa-arrows-v"></span></th>
+                        <th class="cp" ng-click="search('taskWealth')">任务财富值 <span class="fa fa-arrows-v"></span></th>
+                        <th class="cp" ng-click="search('notTaskWealth')">非任务财富值 <span class="fa fa-arrows-v"></span>
+                        </th>
+                        <th class="cp" ng-click="search('totalWorkhour')">总工时(小时) <span class="fa fa-arrows-v"></span>
+                        </th>
+                        <th class="cp" ng-click="search('taskWorkhour')">任务工时(小时) <span class="fa fa-arrows-v"></span>
+                        </th>
+                        <th class="cp" ng-click="search('notTaskWorkhour')">非任务工时(小时) <span
+                                class="fa fa-arrows-v"></span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in wealthDetails">
+                        <td>{{item.date}}</td>
+                        <td>{{item.wealth}}</td>
+                        <td ng-click="checkTaskWealth(item.taskWealth, item.date,'wealth')"
+                            ng-class="{'td-highlighted': item.taskWealth != 0  && flag == 'wealth'}">
+                            {{item.taskWealth}}
+                        </td>
+                        <td ng-click="checkNotTaskWealth(item.notTaskWealth, item.date,'wealth')"
+                            ng-class="{'td-highlighted': item.notTaskWealth != 0  && flag == 'wealth'}">
+                            {{item.notTaskWealth}}
+                        </td>
+                        <td>{{item.totalWorkhour}}</td>
+                        <td ng-click="checkTaskWealth(item.taskWorkhour, item.date,'workhour')"
+                            ng-class="{'td-highlighted': item.taskWorkhour != 0 && flag == 'workhour'}">
+                            {{item.taskWorkhour}}
+                        </td>
+                        <td ng-click="checkNotTaskWealth(item.notTaskWorkhour, item.date,'workhour')"
+                            ng-class="{'td-highlighted': item.notTaskWorkhour != 0  && flag == 'workhour'}">
+                            {{item.notTaskWorkhour}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div common-pagination></div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid ta-c">
+    <a href="#/wealth-convert-rule-check" class="btn btn-danger">返回</a>
+</div>

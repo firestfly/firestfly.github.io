@@ -1,0 +1,300 @@
+<div id="schedule-container" class="container-fluid vk-container">
+    <!--<div class="row vk-spaced-row">
+        <div class="col-md-9 col-xs-9">
+            <form method="post" action="file/import-schedule" enctype="multipart/form-data">
+                <input id="importExcelFile" name="importExcelFile" type="file" data-show-preview="false"
+                       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                <input name="beginDate" type="hidden" value="">
+                <input type="hidden" name="_csrf" value="542d7919-2ba3-4a33-a2a3-fba8b0303c34"/>
+            </form>
+        </div>
+        <div class="col-md-3 col-xs-3">
+            <a class="btn btn-default" href="file/download-schedule-template" role="button">下载模板</a>
+        </div>
+    </div>-->
+    <div data-common-search-bar data-week-range="true" data-search-notification="请选择筛选条件后查询"
+         data-show-standard-work-jobs="true" hide-export-btn="false"></div>
+    <div class="row vk-spaced-row">
+        <div class="col-md-12">
+            <div class="">
+                <form editable-form name="tableform" id="tableform"
+                      onbeforesave="totalCheckOverlappingTime(scheduleTable)"
+                      onaftersave="saveTable()" oncancel="cancel()">
+                    <!--onbeforesave="totalCheckOverlappingTime(scheduleTable)"-->
+                    <div class="row schedule-action-bar">
+                        <div class="col-md-12">
+                            <div class="btn-edit">
+                                <button type="button" class="btn vk-btn-passion vk-btn-lg"
+                                        ng-show="(!tableform.$visible && employees.length>0)"
+                                        ng-click="editSchedule()"
+                                        ng-disabled="tableform.$waiting">排班
+                                </button>
+                                <button type="button" class="btn vk-btn-relax"
+                                        ng-show="(!tableform.$visible && employees.length>0)"
+                                        ng-click="schedulePreviousWeek()">
+                                    上一周
+                                </button>
+                                <button type="button" class="btn vk-btn-relax"
+                                        ng-show="(!tableform.$visible && employees.length>0)"
+                                        ng-click="scheduleNextWeek()">下一周
+                                </button>
+                            </div>
+                            <div class="btn-edit" ng-show="tableform.$visible">
+                                <button type="submit" ng-disabled="tableform.$waiting" class="btn btn-primary">保存
+                                </button>
+                                <button type="button" ng-disabled="tableform.$waiting"
+                                        ng-click="copyPreviousWeekScheduleSheet()"
+                                        class="btn btn-default">复制上一周
+                                </button>
+                                <button type="button" ng-disabled="tableform.$waiting" ng-click="tableform.$cancel()"
+                                        class="btn btn-default" id="cancel">放弃编辑
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="schedule-table">
+                        <table class="table table-bordered table-striped table-condensed schedule-table-width">
+                            <thead>
+                            <tr>
+                                <th rowspan="2">
+                                    资源编号
+                                </th>
+                                <th rowspan="2">
+                                    EHR编号
+                                </th>
+                                <th rowspan="2">
+                                    姓名
+                                </th>
+                                <th rowspan="2">职位</th>
+                                <th rowspan="2">岗位专业分类</th>
+                                <th rowspan="2">经验值</th>
+                                <th class="weekday" ng-repeat="dateAndWeekday in dateAndWeekdays">
+                                    <img src="images/icon-copy.png" class="schedule-icon-mr"
+                                         ng-click="copyPreviousDay(dateAndWeekday)"
+                                         ng-show="(tableform.$visible)" title="排班复制">
+                                    {{dateAndWeekday}}
+                                    <img src="images/icon-warning.png" class="schedule-icon-ml"
+                                         ng-click="checkKeyPost(dateAndWeekday)" title="查看关键岗位排班">
+                                    <img src="images/icon-switch-shift.png" class="schedule-icon-ml"
+                                         ng-show="(tableform.$visible)"
+                                         ng-click="copyPreviousDay(dateAndWeekday,'switchShift')" title="倒班复制">
+                                </th>
+                                <th rowspan="2">常规出勤时长</th>
+                                <th rowspan="2">加班时长</th>
+                                <th rowspan="2">调休时长</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-show="!showInfo">
+                                <td colspan="14">表内无数据</td>
+                            </tr>
+                            <tr ng-repeat="scheduleRow in scheduleTable">
+                                <td ng-bind='scheduleRow.employee.employeeId'></td>
+                                <td ng-bind='scheduleRow.employee.sapId'></td>
+                                <td ng-bind='scheduleRow.employee.name'></td>
+                                <td ng-bind='scheduleRow.employee.jobName'></td>
+                                <td ng-bind='scheduleRow.employee.workGroup'></td>
+                                <td ng-bind='scheduleRow.employee.experience'></td>
+                                <td id="scheduleCellsTd" ng-repeat="scheduleCell in scheduleRow.scheduleCells"
+                                    title="{{scheduleCell.onDutyDay+'，'+scheduleRow.employee.name+'，'+scheduleRow.employee.jobName+'，'+scheduleRow.employee.experience}}"
+                                    ng-class="{ 'disable-td': scheduleCell.locked ,'has-error-scheduleCell': !scheduleCell.isCorrect}"
+                                    ng-click="checkLocked(scheduleCell.locked)">
+                                    <div class="schedule-cell-row">
+                                        <div class="inline-block">
+                                        <span editable-select="scheduleCell.beforeShiftOvertimeDurationId"
+                                              e-form="tableform"
+                                              e-ng-change="beforeShiftOvertimeDurationValueChange(this,scheduleCell)"
+                                              e-ng-disabled="(scheduleCell.otherType >=2 && scheduleCell.otherType != 3) || isDisabled(scheduleCell.label) || scheduleCell.locked"
+                                              e-ng-options="s.id as s.value for s in scheduleCell.beforeShiftOvertimeDurationOptions">
+                                            {{ (scheduleCell.beforeShiftOvertimeDurationOptions | filter:{id: scheduleCell.beforeShiftOvertimeDurationId})[0].value }}
+                                        </span>
+                                        </div>
+                                        <div class="inline-block">
+                                        <span editable-select="scheduleCell.shiftOptionValue" e-form="tableform"
+                                              e-ng-options="s.value as s.text for s in scheduleCell.shiftOptions"
+                                              e-ng-disabled="scheduleCell.otherType == 6 || scheduleCell.locked"
+                                              e-ng-change="shiftOptionValueChange(this, scheduleCell,scheduleRow.employee.experience)"
+                                              ng-bind="showLabel(scheduleCell)">
+                                        </span>
+                                        </div>
+                                        <div class="inline-block">
+                                        <span editable-select="scheduleCell.afterShiftOvertimeDurationId"
+                                              e-form="tableform"
+                                              e-ng-change="afterShiftOvertimeDurationValueChange(this,scheduleCell)"
+                                              e-ng-disabled="(scheduleCell.otherType >=2 && scheduleCell.otherType != 3) || isDisabled(scheduleCell.label) || scheduleCell.locked"
+                                              e-ng-options="s.id as s.value for s in scheduleCell.afterShiftOvertimeDurationOptions">
+                                            {{ (scheduleCell.afterShiftOvertimeDurationOptions | filter:{id: scheduleCell.afterShiftOvertimeDurationId})[0].value }}
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-cell-row" ng-show="isFixedPostId(scheduleRow.employee.jobId)">
+                                        <div class="fixedPost">
+                                        <span editable-select="scheduleCell.labelFixedPostId"
+                                              e-form="tableform"
+                                              e-ng-change="labelFixedPostValueChange(this,scheduleCell,scheduleRow.employee.experience)"
+                                              e-ng-disabled="isDisabled(scheduleCell.label) || scheduleCell.locked"
+                                              e-ng-options="s.fixedPostId as s.fixedPostName for s in scheduleCell.labelFixedPostOptions">
+                                            {{ (scheduleCell.labelFixedPostOptions | filter:{fixedPostId: scheduleCell.labelFixedPostId})[0].fixedPostName }}
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-cell-row">
+                                        <div class="inline-block">
+                                        <span editable-select="scheduleCell.otherType"
+                                              e-ng-disabled="scheduleCell.locked"
+                                              e-ng-options="a.id as a.value for a in scheduleCell.otherTypeOptions"
+                                              e-ng-change="otherTypeValueChange(this, scheduleCell)"
+                                              onbeforesave="checkOtherType(this, scheduleCell)"
+                                              e-form="tableform">
+                                            {{ (scheduleCell.otherTypeOptions | filter:{id: scheduleCell.otherType})[0].value }}
+                                        </span>
+                                        </div>
+                                        <div class="inline-block"
+                                             ng-show="scheduleCell.otherType == 1 || scheduleCell.otherType == 0">
+                                        <span editable-select="scheduleCell.fragmentBeginTimeId"
+                                              e-form="tableform"
+                                              e-ng-disabled="scheduleCell.otherType == 0 || scheduleCell.locked"
+                                              e-ng-change="fragmentBeginTimeValueChange(this,scheduleCell)"
+                                              e-ng-options="s.id as s.value for s in scheduleCell.fragmentBeginTimeOptions">
+                                            {{ (scheduleCell.fragmentBeginTimeOptions | filter:{id: scheduleCell.fragmentBeginTimeId})[0].value }}
+                                        </span>
+                                        </div>
+                                        <div class="inline-block"
+                                             ng-show="scheduleCell.otherType == 1 || scheduleCell.otherType == 0">
+                                        <span editable-select="scheduleCell.fragmentEndTimeId"
+                                              e-form="tableform"
+                                              e-ng-disabled="scheduleCell.otherType == 0 || scheduleCell.locked"
+                                              e-ng-change="fragmentEndTimeValueChange(this,scheduleCell)"
+                                              e-ng-options="s.id as s.value for s in scheduleCell.fragmentEndTimeOptions">
+                                            {{ (scheduleCell.fragmentEndTimeOptions | filter:{id: scheduleCell.fragmentEndTimeId})[0].value }}
+                                        </span>
+                                        </div>
+                                        <div class="inline-block"
+                                             ng-show="scheduleCell.otherType != 0 && scheduleCell.otherType != 1 && scheduleCell.otherType != 3 && scheduleCell.otherType != 6">
+                                        <span editable-select="scheduleCell.lieuLeaveBeginTimeId"
+                                              e-form="tableform"
+                                              e-ng-disabled="scheduleCell.locked"
+                                              e-ng-change="lieuLeaveBeginTimeValueChange(this,scheduleCell)"
+                                              e-ng-options="s.id as s.value for s in scheduleCell.lieuLeaveOptions">
+                                            {{ scheduleCell.lieuLeaveBeginTime }}
+                                        </span>
+                                        </div>
+                                        <div class="inline-block"
+                                             ng-show="scheduleCell.otherType != 0 && scheduleCell.otherType != 1 && scheduleCell.otherType != 3 && scheduleCell.otherType != 6">
+                                        <span editable-select="scheduleCell.lieuLeaveEndTimeId"
+                                              e-form="tableform"
+                                              e-ng-disabled="scheduleCell.locked"
+                                              e-ng-change="lieuLeaveEndTimeValueChange(this,scheduleCell)"
+                                              e-ng-options="s.id as s.value for s in scheduleCell.lieuLeaveOptions">
+                                             {{ scheduleCell.lieuLeaveEndTime }}
+                                        </span>
+                                        </div>
+                                        <div class="inline-block" ng-show="scheduleCell.otherType == 3">
+                                        <span editable-select="scheduleCell.additionShiftOptionValue"
+                                              e-ng-options="s.value as s.text for s in scheduleCell.additionShiftOptions"
+                                              e-ng-change="additionShiftOptionValueChange(this, scheduleCell,scheduleRow.employee.experience)"
+                                              ng-bind="showAdditionLabel(scheduleCell)">
+
+                                        </span>
+                                        </div>
+                                        <div class="inline-block" ng-show="scheduleCell.otherType == 3">
+
+                                        </div>
+                                    </div>
+                                    <div class="schedule-cell-row" ng-show="isFixedPostId(scheduleRow.employee.jobId)">
+                                        <div class="fixedPost">
+                                        <span editable-select="scheduleCell.labelFixedPostAdditionId"
+                                              e-form="tableform"
+                                              e-ng-change="labelFixedPostAdditionValueChange(this,scheduleCell,scheduleRow.employee.experience)"
+                                              e-ng-disabled="scheduleCell.otherType !=3 || isDisabled(scheduleCell.additionShiftOptionValue) || scheduleCell.locked"
+                                              e-ng-options="s.fixedPostId as s.fixedPostName for s in scheduleCell.labelFixedPostAdditionOptions">
+                                            {{ (scheduleCell.labelFixedPostAdditionOptions | filter:{fixedPostId: scheduleCell.labelFixedPostAdditionId})[0].fixedPostName }}
+                                        </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td ng-bind='scheduleRow.workingHours'></td>
+                                <td ng-bind='scheduleRow.overTimeWorkingHours'></td>
+                                <td ng-bind='scheduleRow.lieuLeaveTotalTime'></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <nav ng-show="paginationShow" style="text-align: right;">
+                <ul class="pagination">
+                    <li ng-class="{'disabled': noPrevious}">
+                        <a href="" class="" ng-click="selectPage(page - 1,'prev')">
+                            <span aria-hidden="true">上一页</span>
+                        </a>
+                    </li>
+                    <li ng-if="pageDozenPrev">
+                        <a href="" ng-click="pageDozen('prev')">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li ng-class="{'active': page == ($index + pageFirst)}"
+                        ng-repeat="k in counter(pageDozens) track by $index"><a href=""
+                                                                                ng-click="selectPage($index + pageFirst)">{{$index
+                        + pageFirst}}</a></li>
+                    <li ng-if="pageDozenNext">
+                        <a href=""  ng-click="pageDozen('next')">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li ng-class="{'disabled': noNext()}">
+                        <a href="" ng-click="selectPage(page + 1,'next')">
+                            <span aria-hidden="true">下一页</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="fixedPostRemindDialog.html">
+    <div class="modal-header">
+        <strong class="modal-title">关键岗位排班提醒</strong>
+
+        <div class="modal-close" ng-click="ok()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid vk-dialog-container">
+            <div class="key-post-remind"> {{message}}</div>
+            <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                <tr>
+                    <th ng-if="!!keyPostForShowList[0].date">日期</th>
+                    <th>岗位名称</th>
+                    <th>班次名称</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>经验值要求</th>
+                    <th ng-if="!!keyPostForShowList[0].employeeName">姓名</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="keyPostForShow in keyPostForShowList">
+                    <td ng-if="!!keyPostForShow.date" ng-bind="keyPostForShow.date"></td>
+                    <td ng-bind="keyPostForShow.keyPostName"></td>
+                    <td ng-bind="keyPostForShow.shiftName"></td>
+                    <td ng-bind="keyPostForShow.shiftBeginTime"></td>
+                    <td ng-bind="keyPostForShow.shiftEndTime"></td>
+                    <td ng-bind="keyPostForShow.exp"></td>
+                    <td ng-if="!!keyPostForShow.employeeName" ng-bind="keyPostForShow.employeeName"
+                        ng-class="{'color-crimson': keyPostForShow.notArrange}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn vk-btn-health" type="button" ng-click="ok()">
+            确认
+        </button>
+    </div>
+</script>

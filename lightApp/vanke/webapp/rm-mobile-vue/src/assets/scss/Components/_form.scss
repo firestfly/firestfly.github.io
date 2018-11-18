@@ -1,0 +1,40 @@
+@charset "UTF-8";
+input[type="search"], [type="reset"], [type="submit"], [type="file"], [type="number"] {
+  -webkit-appearance: none;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: rem(50px);
+  padding: rem(26px) rem(16px);
+  font-size: 14px;
+  font-family: $font-family;
+  line-height: $line-height-base;
+  color: #222;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: 0;
+  transition: all ease .3s;
+}
+
+.input-search {
+  display: flex;
+  align-items: center;
+  padding: rem(20px) rem(16px);
+  background-color: #c8c8cd;
+  .form-control {
+    background: url(./assets/images/search.png) 5px 50% #fff no-repeat;
+    transition: width cubic-bezier(0.7, 0.27, 0.46, 0.9) 0.3s;
+    background-size: 17px;
+    padding-left: 25px;
+    height: 30px;
+    border: none;
+    font-size: 14px;
+    &:focus {
+      width: calc(100% - 50px);
+      border: none;
+      box-shadow: none;
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "rm-mock",
+  "version": "1.0.0",
+  "description": "rm-mock",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mock": "json-server --watch api/db.json --port 8081"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "json-server": "^0.9.6",
+    "mockjs": "^1.0.1-beta3"
+  }
+}

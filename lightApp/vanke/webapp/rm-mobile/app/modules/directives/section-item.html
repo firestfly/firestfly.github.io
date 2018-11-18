@@ -1,0 +1,22 @@
+<div class="overview-bg mb5">
+    <div class="list-group-item table-item">
+        <div class="table-item-main">
+            <span class="table-item-main-left">{{mainLeft}}</span>
+            <span class="table-item-main-right" ng-if="mainRight">{{mainRight}}</span>
+        </div>
+    </div>
+    <div class="pl15 table-item2">
+        <div class="list-group-item table-item">
+            <div class="table-item-main">
+                <span class="table-item-main-left">{{infoLeft}}</span>
+                <span class="table-item-main-right" ng-class="{'color-red': fontColor1}">{{infoRight}}</span>
+            </div>
+        </div>
+        <div class="list-group-item table-item" ng-if="secondRow">
+            <div class="table-item-main">
+                <span class="table-item-main-left">{{infoLeft2}}</span>
+                <span class="table-item-main-right" ng-class="{'color-red': fontColor2}">{{infoRight2}}</span>
+            </div>
+        </div>
+    </div>
+</div>

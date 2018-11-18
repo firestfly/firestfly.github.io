@@ -1,0 +1,666 @@
+<div class="container-fluid authority-container">
+    <div class="my-tab row">
+        <span class="tab-item" ng-class="{'active': !tab}" ng-click="tab1()">调休假规则设置</span>
+        <span class="tab-item" ng-class="{'active': tab}" ng-click="tab2()">月休额度{{isCheck ? '查看': '设置'}}</span>
+    </div>
+    <div class="row">
+        <div class="search-in-right">
+            <div data-common-search-bar data-week-range="true" data-hide-export-btn="true" data-hide-groups="true"
+                 data-hide-date-range="true" data-hide-search-input="true" data-hide-company="true" show-butype="true"
+                 data-show-city-company="true" data-show-standard-work-jobs-one="true" data-hide-department="true"
+                 data-operation-div="operation-div"></div>
+        </div>
+        <div class="x-scroll-table" ng-if="!tab">
+            <div class="grid citycompany-table">
+                <div class="grid-row fl1 grid-head">
+                    <div class="grid-item fl1">
+                        <div class="p10">城市公司</div>
+                    </div>
+                    <div class="grid-item fl2">
+                        <div class="p10">管理中心</div>
+                    </div>
+                    <div class="grid-item fl3">
+                        <div class="grid-row fl1">
+                            <div class="grid-item fl1">
+                                <div class="p10">是否允许 <br>加班调休</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">调休假有效期 <br>(单位：考勤周期）</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">开始生效周期</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-item fl1" ng-hide="isCheck">
+                        <div class="p10">操作</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">最近一次修改时间</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">操作人</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">历史记录</div>
+                    </div>
+                </div>
+                <div class="grid-row fl1" ng-repeat="item in workDayHolidayRules">
+                    <div class="grid-item fl1">
+                        <div class="p10">{{item.regionName}}</div>
+                    </div>
+                    <div class="grid-item fl2">
+                        <div class="p10">{{item.companyNames}}</div>
+                    </div>
+                    <div class="grid-item fl3">
+                        <div class="grid-row fl1" ng-repeat="(k, rule) in item.rules">
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                                    <span editable-select="rule.isOvertimeAllowRest" e-form="rowForm"
+                                          e-ng-change="changeWisOverTimeAllowRest($data, rule)"
+                                          edit-disabled="{{ k == 0 && rule.ruleId != null }}"
+                                          e-ng-options="key as value for (key, value) in getIds" e-required>
+                                    {{ getIds[rule.isOvertimeAllowRest] }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                                    {{ rule.holidayValidity != 0? "-": "本考勤周期" }}
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                                    <span editable-select="rule.attendanceLockId" e-form="rowForm"
+                                          onbeforesave="checkDate($data)"
+                                          edit-disabled="{{ k == 0 && rule.ruleId != null }}"
+                                          e-ng-options="s.attendance_lock_id as s.name for s in takeTempEffectAttendanceList"
+                                          e-required>
+                                        {{ getAttendanceLockName(rule.attendanceLockId) || rule.attendanceLockName }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-item fl1" ng-hide="isCheck">
+                        <div class="p10">
+                            <form editable-form name="rowForm"
+                                  onbeforesave="saveWisOverTimeAllowRest(item, $data, $index, rowForm)"
+                                  ng-show="rowForm.$visible" class="form-buttons form-inline"
+                                  shown="shown == item">
+                                <button type="submit" class="link" ng-disabled="rowForm.$waiting">
+                                    保存
+                                </button>
+                                <button type="button" ng-disabled="rowForm.$waiting"
+                                        ng-click="removeWorkDayTempRule();rowForm.$cancel();"
+                                        ng-click=" removeTempPostRule(rowForm);"
+                                        class="link">
+                                    取消
+                                </button>
+                            </form>
+                            <div class="buttons" ng-show="!rowForm.$visible">
+                                <a class="" ng-click="editeWisOverTimeAllowRest(rowForm, item.rules)"
+                                   ng-disabled="isEdite">修改
+                                </a>
+                                <a class="btn vk-btn-health" ng-if="item.detail" ng-click="checkDetail(item)"
+                                   ng-disabled="isEdite">查看
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">{{item.lastModifyTime}}</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">{{item.operator || '-' }}</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">
+                            <a class="" ng-click="openOverallHolidayRuleDetail(item.regionId)">详情</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-wide" id="citycompany-table" ng-show="tab">
+            <div class="grid" ng-if="isO == 1">
+                <div class="grid-row fl1 grid-head">
+                    <div class="grid-item fl1">
+                        <div class="p10">城市公司</div>
+                    </div>
+                    <div class="grid-item fl2">
+                        <div class="p10">管理中心</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">职位</div>
+                    </div>
+                    <div class="grid-item fl9">
+                        <div class="grid-row fl1">
+                            <div class="grid-item fl1">
+                                <div class="p10 required">O序列人员额度</div>
+                            </div>
+                        </div>
+                        <div class="grid-row fl1">
+                            <div class="grid-item fl1">
+                                <div class="p5">OA</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p5">OB</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p5">OC</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p5">OD</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p5">OE</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p5">OF</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p5">OG</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p5">OH</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p5">OI</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">有效期(考勤周期)</div>
+                    </div>
+                    <div class="grid-item fl2">
+                        <div class="p10 required">开始生效周期</div>
+                    </div>
+                    <div class="grid-item" ng-hide="isCheck" ng-class="{'fl1': !isEdite, 'fl2': isEdite}">
+                        <div class="p10">操作</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">最近一次修改时间</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">操作人</div>
+                    </div>
+                    <!--<div class="grid-item fl1">-->
+                    <!--<div class="p10">历史记录</div>-->
+                    <!--</div>-->
+                </div>
+                <div class="grid-row fl1" ng-repeat="item in holidayRuleSetting">
+                    <div class="grid-item fl1">
+                        <div class="p10">{{item.region }}</div>
+                    </div>
+                    <div class="grid-item fl2">
+                        <div class="p10">{{item.company }}</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">{{item.workjob}}</div>
+                    </div>
+                    <div class="grid-item fl12">
+                        <div class="grid-row fl1" ng-repeat="(k, rule) in item.rules">
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                            <span editable-number="rule.oaDays" e-name="oaDays"
+                                  edit-disabled="{{ k == 0 && rule.id != null }}"
+                                  e-form="rowform" e-ng-change="changeWDays($data, rule.oaDays)"
+                                  onbeforesave="validateData($data)" e-required e-min="0"
+                                  ng-bind="rule.oaDays || 0">
+                            </span>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                            <span editable-number="rule.obDays" e-name="obDays"
+                                  edit-disabled="{{ k == 0 && rule.id != null }}"
+                                  e-form="rowform" e-ng-change="changeWDays($data, rule.obDays)"
+                                  onbeforesave="validateData($data)" e-required e-min="0"
+                                  ng-bind="rule.obDays || 0">
+                            </span>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                            <span editable-number="rule.ocDays" e-name="ocDays"
+                                  edit-disabled="{{ k == 0 && rule.id != null }}"
+                                  e-form="rowform" e-ng-change="changeWDays($data, rule.ocDays)"
+                                  onbeforesave="validateData($data)" e-required e-min="0"
+                                  ng-bind="rule.ocDays || 0">
+                            </span>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                            <span editable-number="rule.odDays" e-name="odDays"
+                                  edit-disabled="{{ k == 0 && rule.id != null }}"
+                                  e-form="rowform" e-ng-change="changeWDays($data, rule.odDays)"
+                                  onbeforesave="validateData($data)" e-required e-min="0"
+                                  ng-bind="rule.odDays || 0">
+                            </span>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                            <span editable-number="rule.oeDays" e-name="oeDays"
+                                  edit-disabled="{{ k == 0 && rule.id != null }}"
+                                  e-form="rowform" e-ng-change="changeWDays($data, rule.oeDays)"
+                                  onbeforesave="validateData($data)" e-required e-min="0"
+                                  ng-bind="rule.oeDays || 0">
+                            </span>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                            <span editable-number="rule.ofDays" e-name="ofDays"
+                                  edit-disabled="{{ k == 0 && rule.id != null }}"
+                                  e-form="rowform" e-ng-change="changeWDays($data, rule.ofDays)"
+                                  onbeforesave="validateData($data)" e-required e-min="0"
+                                  ng-bind="rule.ofDays || 0">
+                            </span>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                            <span editable-number="rule.ogDays" e-name="ogDays"
+                                  edit-disabled="{{ k == 0 && rule.id != null }}"
+                                  e-form="rowform" e-ng-change="changeWDays($data, rule.ogDays)"
+                                  onbeforesave="validateData($data)" e-required e-min="0"
+                                  ng-bind="rule.ogDays || 0">
+                            </span>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                            <span editable-number="rule.ohDays" e-name="ohDays"
+                                  edit-disabled="{{ k == 0 && rule.id != null }}"
+                                  e-form="rowform" e-ng-change="changeWDays($data, rule.ohDays)"
+                                  onbeforesave="validateData($data)" e-required e-min="0"
+                                  ng-bind="rule.ohDays || 0">
+                            </span>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                            <span editable-number="rule.oiDays" e-name="oiDays"
+                                  edit-disabled="{{ k == 0 && rule.id != null }}"
+                                  e-form="rowform" e-ng-change="changeWDays($data, rule.oiDays)"
+                                  onbeforesave="validateData($data)" e-required e-min="0"
+                                  ng-bind="rule.oiDays || 0">
+                            </span>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">{{rule.validMonths}}</div>
+                            </div>
+                            <div class="grid-item fl2">
+                                <div class="p10">
+                                <span editable-select="rule.takeEffectAttendanceId"
+                                      e-name="takeEffectAttendanceId"
+                                      e-form="rowform"
+                                      edit-disabled="{{ k == 0 && rule.id != null }}"
+                                      e-title="选择开始生效周期"
+                                      onshow="loadAttendance()"
+                                      e-ng-change="changeAttendance(rule, $data)"
+                                      onbeforesave="validateAttendance($data, item, k)"
+                                      e-ng-options="attendance.attendance_lock_id as attendance.name for attendance in takeEffectAttendanceList"
+                                      e-required>
+                                    {{rule.takeEffectAttendance}}
+                                    <!--{{ showEffectAttendance(rule.takeEffectAttendanceId) || (item.rules.length == 1 ? '全部周期' : (k != 0 ?rule.takeEffectAttendance : '选定周期以外的全部周期')) }}-->
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-item" ng-hide="isCheck" ng-class="{'fl1': !isEdite, 'fl2': isEdite}">
+                        <div class="grid-row fl1">
+                            <!--<div class="grid-item fl1" ng-show="rowform.$visible">-->
+                            <!--<div class="grid-row fl1" ng-repeat="(k, v) in item.rules track by k">-->
+                            <!--<div class="grid-item fl1" ng-show="$index == 0 && k == 0">-->
+                            <!--<div class="p5">-->
+                            <!--<img src="/images/add.png" width="22" height="22" class="cp" alt=""-->
+                            <!--title="添加规则"-->
+                            <!--ng-click="addHolidayRule(item.rules)">-->
+                            <!--</div>-->
+                                    <!--</div>-->
+                            <!--&lt;!&ndash;<div class="grid-item fl1" ng-show="$index != 0 && k != 0">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="p5">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<img src="/images/minus.png" class="cp" alt="" title="删除规则"&ndash;&gt;-->
+                            <!--&lt;!&ndash;ng-click="delRule(item.rules, k)">&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <div class="grid-item fl2">
+                                <div class="p10">
+                                    <form editable-form name="rowform"
+                                          onbeforesave="saveHolidayRuleSetting(item)"
+                                          ng-show="rowform.$visible" class="form-buttons form-inline">
+                                        <button type="submit" ng-disabled="rowform.$waiting"
+                                                class="btn btn-primary">
+                                            保存
+                                        </button>
+                                        <button type="button" ng-disabled="rowform.$waiting"
+                                                ng-click="removeTempRule();rowform.$cancel()"
+                                                class="btn btn-default">
+                                            取消
+                                        </button>
+                                    </form>
+                                    <div class="buttons" ng-show="!rowform.$visible">
+                                        <button class="link"
+                                                ng-click="editeHolidayRuleSetting(rowform);addHolidayRule(item.rules)">
+                                            修改
+                                        </button>
+                                        <button class="link" ng-if="item.detail"
+                                                ng-click="checkDetail(item.detail)">查看
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">{{item.modifyTime }}</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">{{item.operator || '-' }}</div>
+                    </div>
+                    <!--<div class="grid-item fl1">-->
+                    <!--<div class="p10">-->
+                    <!--<button class="btn btn-primary" ng-click="openOverallHolidayMonthlyRuleDetail(item.regionId,item.workjobId)">-->
+                    <!--详情-->
+                    <!--</button>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+            <div class="grid" ng-if="isO == 0">
+                <div class="grid-row fl1 grid-head">
+                    <div class="grid-item fl1">
+                        <div class="p10">城市公司</div>
+                    </div>
+                    <div class="grid-item fl3">
+                        <div class="p10">管理中心</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">职位</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p5">考勤周期内值班天数</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p5">有效期(考勤周期)</div>
+                    </div>
+                    <div class="grid-item fl2">
+                        <div class="p5">开始生效周期</div>
+                    </div>
+                    <div class="grid-item" ng-hide="isCheck" ng-class="{'fl_7': !isEdite, 'fl1': isEdite}">
+                        <div class="p10">操作</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">最近一次修改时间</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">操作人</div>
+                    </div>
+                    <!--<div class="grid-item fl1">-->
+                    <!--<div class="p10">历史记录</div>-->
+                    <!--</div>-->
+                </div>
+                <div class="grid-row fl1" ng-repeat="item in notOHolidayRuleSetting">
+                    <div class="grid-item fl1">
+                        <div class="p10">{{item.region}}</div>
+                    </div>
+                    <div class="grid-item fl3">
+                        <div class="p10">{{item.company}}</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">{{item.workjob}}</div>
+                    </div>
+                    <div class="grid-item fl4">
+                        <div class="grid-row fl1" ng-repeat="(k, rule) in item.rules">
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                            <span editable-number="rule.dutyDays" e-name="dutyDays"
+                                  e-form="rowform2" e-required e-min="0"
+                                  edit-disabled="{{ k == 0 && rule.id != null}}"
+                                  ng-bind="rule.dutyDays || 0">
+                            </span>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                                    {{rule.periodText}}
+                                </div>
+                            </div>
+                            <div class="grid-item fl2">
+                                <div class="p10">
+                                <span editable-select="rule.takeEffectAttendanceId"
+                                      e-name="takeEffectAttendanceId"
+                                      e-form="rowform2"
+                                      edit-disabled="{{ k == 0 && rule.id != null}}"
+                                      e-title="选择开始生效周期"
+                                      onshow="loadAttendance()"
+                                      e-ng-change="changeAttendance(rule, $data)"
+                                      onbeforesave="validateAttendance($data, item, k)"
+                                      e-ng-options="attendance.attendance_lock_id as attendance.name for attendance in takeEffectAttendanceList"
+                                      e-required>
+                                    {{rule.takeEffectAttendance}}
+                                    <!--{{ showEffectAttendance(rule.takeEffectAttendanceId) || (item.rules.length == 1 ? '全部周期' : (k != 0 ?rule.takeEffectAttendance : '选定周期以外的全部周期')) }}-->
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-item" ng-hide="isCheck" ng-class="{'fl_7': !isEdite, 'fl1': isEdite}">
+                        <div class="grid-row fl1">
+                            <!--<div class="grid-item fl_6" ng-show="rowform2.$visible">-->
+                            <!--&lt;!&ndash;<div class="grid-row fl1" ng-repeat="(k, v) in item.rules track by k">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="grid-item fl1" ng-show="$index == 0 && k == 0">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="p5">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<img src="/images/add.png" width="22" height="22" class="cp" alt=""&ndash;&gt;-->
+                            <!--&lt;!&ndash;title="添加规则"&ndash;&gt;-->
+                            <!--&lt;!&ndash;ng-click="addNotORule(item.rules)">&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;&lt;!&ndash;<div class="grid-item fl1" ng-show="$index != 0 && k != 0">&ndash;&gt;&ndash;&gt;-->
+                            <!--&lt;!&ndash;&lt;!&ndash;<div class="p5">&ndash;&gt;&ndash;&gt;-->
+                            <!--&lt;!&ndash;&lt;!&ndash;<img src="/images/minus.png" class="cp" alt="" title="删除规则"&ndash;&gt;&ndash;&gt;-->
+                            <!--&lt;!&ndash;&lt;!&ndash;ng-click="delRule(item.rules, k)">&ndash;&gt;&ndash;&gt;-->
+                            <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+                            <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--</div>-->
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                                    <form editable-form name="rowform2"
+                                          onbeforesave="saveNotOHolidayRuleSetting(item)"
+                                          ng-show="rowform2.$visible" class="form-buttons form-inline">
+                                        <button type="submit" ng-disabled="rowform2.$waiting"
+                                                class="btn btn-primary">
+                                            保存
+                                        </button>
+                                        <button type="button" ng-disabled="rowform2.$waiting"
+                                                ng-click="removeNotORule();rowform2.$cancel();"
+                                                class="btn btn-default">
+                                            取消
+                                        </button>
+                                    </form>
+                                    <div class="buttons" ng-show="!rowform2.$visible">
+                                        <button class="btn vk-btn-health" ng-disabled="isEdite"
+                                                ng-click="editeWisOverTimeAllowRest(rowform2);addNotORule(item.rules)">
+                                            修改
+                                        </button>
+                                        <button class="btn vk-btn-health" ng-if="item.detail"
+                                                ng-click="checkDetail(item.detail)">查看
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">{{item.modifyTime }}</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">{{item.operator || '-' }}</div>
+                    </div>
+                    <!--<div class="grid-item fl1">-->
+                    <!--<div class="p10">-->
+                    <!--<button class="btn btn-primary" ng-click="openNotOperationOverallHolidayMonthlyRuleDetail(item.regionId,item.workjobId)">-->
+                    <!--详情-->
+                    <!--</button>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt10">
+    <div common-pagination></div>
+</div>
+<div class="operation-div ml10 mt5" ng-show="tab == 1">
+    <label class="radio-inline">
+        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1" ng-model="isO" ng-click="search()">
+        O序列月休
+    </label>
+    <label class="radio-inline">
+        <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="0" ng-model="isO" ng-click="search()">
+        非O序列月休
+    </label>
+</div>
+<script type="text/ng-template" id="holidayRuleSettingModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">详情</h3>
+    </div>
+    <div class="modal-body" id="modal-body" ng-bind-html="detail"></div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="overallHolidayRuleDetailModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">详情</h3>
+    </div>
+    <div class="modal-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>城市公司</th>
+                <th>管理中心</th>
+                <th>是否允许加班调休</th>
+                <th>调休假有效期<br> (单位：考勤周期）</th>
+                <th>操作人</th>
+                <th>操作时间</th>
+                <th>开始生效日期</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in items">
+                <td>{{item.regionName}}</td>
+                <td>{{item.companyNames}}</td>
+                <td>{{item.isOvertimeAllowRest == 1 ? "是" : "否"}}</td>
+                <td>{{ item.holidayValidity != 0? "-": "本考勤周期" }}</td>
+                <td>{{item.operator || '-' }}</td>
+                <td>{{item.modifyTime }}</td>
+                <td>{{item.takeEffectAttendance }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="overallHolidayMonthlyRuleDetailModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">详情</h3>
+    </div>
+    <div class="modal-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th rowspan="2">城市公司</th>
+                <th rowspan="2">管理中心</th>
+                <th rowspan="2">职位</th>
+                <th colspan="9">O序列人员额度</th>
+                <th rowspan="2">操作人</th>
+                <th rowspan="2">操作时间</th>
+                <th rowspan="2">开始生效日期</th>
+            </tr>
+            <tr>
+                <th>OA</th>
+                <th>OB</th>
+                <th>OC</th>
+                <th>OD</th>
+                <th>OE</th>
+                <th>OF</th>
+                <th>OG</th>
+                <th>OH</th>
+                <th>OI</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in items">
+                <td>{{item.region}}</td>
+                <td>{{item.company}}</td>
+                <td>{{item.workjob}}</td>
+                <td>{{item.oaDays}}</td>
+                <td>{{item.obDays}}</td>
+                <td>{{item.ocDays}}</td>
+                <td>{{item.odDays}}</td>
+                <td>{{item.oeDays}}</td>
+                <td>{{item.ofDays}}</td>
+                <td>{{item.ogDays}}</td>
+                <td>{{item.ohDays}}</td>
+                <td>{{item.oiDays}}</td>
+                <td>{{item.operator || '-' }}</td>
+                <td>{{item.modifyTime }}</td>
+                <td>{{item.takeEffectAttendance }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="notOperationOverallHolidayMonthlyRuleDetailModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">详情</h3>
+    </div>
+    <div class="modal-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>城市公司</th>
+                <th>管理中心</th>
+                <th>职位</th>
+                <th>考勤周期内值班天数</th>
+                <th>操作人</th>
+                <th>操作时间</th>
+                <th>开始生效日期</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in items">
+                <td>{{item.region}}</td>
+                <td>{{item.company}}</td>
+                <td>{{item.workjob}}</td>
+                <td>{{item.dutyDays}}</td>
+                <td>{{item.operator || '-' }}</td>
+                <td>{{item.modifyTime }}</td>
+                <td>{{item.takeEffectAttendance }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+    </div>
+</script>

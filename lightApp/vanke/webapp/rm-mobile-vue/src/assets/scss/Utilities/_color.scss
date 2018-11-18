@@ -1,0 +1,102 @@
+@charset "utf-8";
+/* 常用颜色 */
+// 灰色
+.lighter {
+  color: $gray-light;
+}
+
+.gray {
+  color: $gray;
+}
+
+.color-link {
+  color: $color-link;
+}
+
+.color-primary {
+  color: $primaryBg
+}
+
+// 字体颜色 七彩色
+.red {
+  color: $color-red;
+}
+
+.orange {
+  color: $theme-warning;
+}
+
+.yellow {
+  color: #ffcc00;
+}
+
+.green {
+  color: $theme-success;
+}
+
+.cyan {
+  color: cyan
+}
+
+.blue {
+  color: $ios-color;
+}
+
+.purple {
+  color: #c644fc;
+}
+
+// 黑白色
+.black {
+  color: #000;
+}
+
+.white {
+  color: #fff;
+}
+
+// 背景色
+.bg-red {
+  background-color: $theme-danger;
+}
+
+.bg-orange {
+  background-color: $theme-warning;
+}
+
+.bg-yellow {
+  background-color: #ffcc00;
+}
+
+.bg-green {
+  background-color: $theme-success;
+}
+
+.bg-cyan {
+  background-color: cyan
+}
+
+.bg-blue {
+  background-color: $ios-color;
+}
+
+.bg-purple {
+  background-color: #c644fc;
+}
+
+.bg-black {
+  background-color: #000;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.bg-lighter {
+  background-color: #ddd;
+}
+
+.bg-gray {
+  background-color: #999;
+}
+

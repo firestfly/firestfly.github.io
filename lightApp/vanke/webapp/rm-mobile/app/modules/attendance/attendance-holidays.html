@@ -1,0 +1,37 @@
+<div class="scrollable">
+    <div class="employee-intro">
+        <span>{{ attendanceHolidays.employeeInfo.id }}</span>
+        <span>{{ attendanceHolidays.employeeInfo.name }}</span>
+        <span>{{ attendanceHolidays.employeeInfo.jobName }}</span>
+    </div>
+    <div class="scrollable-content">
+
+        <div class="page-bar ta-c">
+            <div class="title-area">
+                <h3 class="title-head"> {{period}} {{ attendanceHolidays.headText }}</h3>
+
+                <div class="title-area-radius large">
+                    <div class="title-centent-text">
+                        <div>
+                            <h3 ng-class="{'color-green':attendanceDetail.fontColor == 'green', 'color-red':attendanceDetail.fontColor == 'red', 'color-orange':attendanceDetail.fontColor == 'orange'}">
+                                {{ attendanceHolidays.totalDuration }}<span
+                                    class="unit">小时</span></h3>
+                            <!--<p>(12.04-12.05)</p>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-cell border-t">
+            <div class="cell arrow-right border-b"
+                 ng-repeat="holiday in attendanceHolidays.attendanceHolidaysList | orderBy: '-count'">
+                <a ng-href="{{ holiday.link }}">
+                    <div class="table-cell flex-box">
+                        <div class="flex">{{holiday.holidayName}}</div>
+                        <div class="ta-r">{{holiday.count}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

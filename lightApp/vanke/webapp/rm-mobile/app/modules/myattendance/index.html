@@ -1,0 +1,138 @@
+<div class="scrollable">
+    <div class="scrollable-content">
+        <div class="employee-intro">
+            <span>{{ myattendance.employeeInfo.id }}</span>
+            <span>{{ myattendance.employeeInfo.name }}</span>
+            <span>{{ myattendance.employeeInfo.jobName }}</span>
+        </div>
+        <div class="page-bar">
+            <div class="left-area" ng-class="{'color-disabled': lastDayDisabled}"
+                 ng-click="getMyAttendanceByDay('last')"><i class="bar-arrow arrow-left"></i>前一天
+            </div>
+            <div class="right-area" ng-class="{'color-disabled': todayDisabled}"
+                 ng-click="getMyAttendanceByDay('next')">后一天<i class="bar-arrow arrow-right"></i></div>
+            <div class="title-area">
+                <div class="title-area-radius">
+                    <div class="title-centent-text">
+                        <div>
+                            <h3>{{ myattendance.currentDate }}<span class="color-gray"
+                                                                    ng-bind="myattendance.currentWeek"></span>
+                                <i class="choose-week-arrow"></i></h3>
+                            <input type="text" ng-model="myattendance.date" pickadate readonly="readonly" no-extra-rows
+                                   format="yyyy-MM-dd" min-date="myattendance.mindate" max-date="myattendance.maxdate"/>
+                            <!--<p>(12.04-12.05)</p>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-cell white-bg" ng-show="myattendance.show">
+            <div class="cell-main ta-c pb-inner"><span class="label-name"
+                                                       ng-bind="myattendance.shiftname || '未排班'">未排班 </span>
+            </div>
+        </div>
+        <div class="section-cell white-bg" ng-if="!myattendance.show">
+            <div class="cell-main" ng-class="{'border-t15': !$first}"
+                 ng-repeat="myattendanceItem in myattendance.detail">
+                <div ng-repeat="shift in myattendanceItem.shifts">
+                    <div class="flex-box" ng-class="{'ta-c': shift.holidayRest == '1', 'cell-title': !shift.holidayRest}">
+                        <div class="flex">
+                            <span class="label-name">{{shift.shift}}</span>
+                        </div>
+                        <div class="flex ta-r inner-right" ng-if="shift.holidayRest != 1">
+                            {{ showSecondDay(myattendance.currentDate, shift.onDutyTime) }}-{{
+                            showSecondDay(myattendance.currentDate, shift.offDutyTime) }}
+                        </div>
+                    </div>
+                    <div class="cell-title flex-box" ng-if="shift.labelFixedPostName">
+                        <div class="flex">
+                            <div style="margin-top: 10px">
+                                <i class="map-pin"></i>
+                                <span>{{shift.labelFixedPostName}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="height:0.38rem;margin-left: .4rem;" ng-if="!shift.labelFixedPostAdditionName"></div>
+                    <div ng-if="!$last && !shift.labelFixedPostAdditionName">
+                        <div style="height:0.38rem;margin-left: .4rem;" ng-class="{'border-t': !$last}"></div>
+                    </div>
+                </div>
+                <div class="cell-time-list border-t5" ng-if="!myattendanceItem.lieuLeaveDuration">
+                    <div class="flex-box">
+                        <div class="flex">上班时间</div>
+                        <div class="flex ta-r inner-right">
+                            {{ myattendanceItem.actualOnDutyTime}}
+                        </div>
+                    </div>
+                    <div class="flex-box border-t">
+                        <div class="flex">下班时间</div>
+                        <div class="flex ta-r inner-right">
+                            {{ myattendanceItem.actualOffDutyTime }}
+                        </div>
+                    </div>
+                </div>
+                <div class="cell-time-list border-t5">
+                    <div class="flex-box border-t"
+                         ng-if="myattendanceItem.lieuLeaveDuration && myattendanceItem.shifts[0].holidayRest != '1'">
+                        <div class="flex">时长</div>
+                        <div class="flex ta-r inner-right color-orange">{{myattendanceItem.lieuLeaveDuration}}小时</div>
+                    </div>
+
+                    <div class="flex-box border-t"
+                         ng-if="myattendanceItem.actualOnDutyTime && myattendanceItem.actualOffDutyTime && !myattendanceItem.lieuLeaveDuration && !myattendanceItem.lateDuration && !myattendanceItem.earlierLeaveDuration && !myattendanceItem.absenteeism && !myattendanceItem.overtimeOnWorkingDay && !myattendanceItem.overtimeOnOffDay && !myattendanceItem.overtimeOnHoliday">
+                        <div class="flex ta-c inner-right color-orange">考勤正常</div>
+                    </div>
+                    <!-- 异常考勤种类 start-->
+                    <div class="flex-box border-t" ng-if="myattendanceItem.lateDuration">
+                        <div class="flex">迟到</div>
+                        <div class="flex ta-r inner-right color-orange">{{myattendanceItem.lateDuration}}分钟</div>
+                    </div>
+                    <div class="flex-box border-t" ng-if="myattendanceItem.earlierLeaveDuration">
+                        <div class="flex">早退</div>
+                        <div class="flex ta-r inner-right color-red">{{myattendanceItem.earlierLeaveDuration}}分钟</div>
+                    </div>
+                    <div class="flex-box border-t" ng-if="myattendanceItem.absenteeism">
+                        <div class="flex">旷工</div>
+                        <div class="flex ta-r inner-right color-red">{{myattendanceItem.absenteeism}}小时</div>
+                    </div>
+                    <!-- 异常考勤 end-->
+
+                    <!-- 加班种类 start-->
+                    <div class="flex-box border-t" ng-if="myattendanceItem.overtimeOnWorkingDay">
+                        <div class="flex">工作日加班</div>
+                        <div class="flex ta-r inner-right color-orange">
+                            {{myattendanceItem.overtimeOnWorkingDay}}小时
+                        </div>
+                    </div>
+                    <div class="flex-box border-t" ng-if="myattendanceItem.overtimeOnOffDay">
+                        <div class="flex">休息日加班</div>
+                        <div class="flex ta-r inner-right color-orange">
+                            {{myattendanceItem.overtimeOnOffDay}}小时
+                        </div>
+                    </div>
+                    <div class="flex-box border-t" ng-if="myattendanceItem.overtimeOnHoliday">
+                        <div class="flex">法定节假日加班</div>
+                        <div class="flex ta-r inner-right color-orange">
+                            {{myattendanceItem.overtimeOnHoliday}}小时
+                        </div>
+                    </div>
+                    <div class="flex-box border-t" ng-if="myattendanceItem.mixShift.count">
+                        <div class="flex">值班经理值班</div>
+                        <div class="flex ta-r inner-right color-orange">
+                            {{myattendanceItem.mixShift.count}}次
+                        </div>
+                    </div>
+                    <!-- 加班种类 end-->
+                </div>
+            </div>
+
+        </div>
+        <div class="tc">提示：连续的班次会自动合并，显示在首个班次那天</div>
+    </div>
+    <div class="loading-modal opacity90" ng-if="moduleAlertState">
+        <div class="module-alert">
+            <div class="module-alert--content">打卡记录处理中，请稍后再试</div>
+            <div class="module-alert--title" ng-click="ok()">确定</div>
+        </div>
+    </div>
+</div>

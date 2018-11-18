@@ -1,0 +1,76 @@
+<div class="container-fluid">
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active">
+            <div class="row vk-spaced-row search-in-right">
+                <div data-common-search-bar data-week-range="true" data-hide-export-btn="true"
+                     data-hide-groups="true" data-hide-date-range="true"
+                     data-hide-search-input="true" data-operation-buttons="operation-buttons"></div>
+            </div>
+            <div class="row vk-row">
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <tr>
+                                <th width="25%">岗位名称</th>
+                                <th width="25%">岗位简称</th>
+                                <!--<th width="20%">本岗严格要求<br>上岗时间内有人在岗</th>-->
+                                <th>查看</th>
+                            </tr>
+                            <tr ng-repeat="post in posts">
+                                <td>
+                                    <span edit-disabled="{{post.type == 1}}" editable-text="post.postName"
+                                          e-name="postName"
+                                          e-form="rowform"
+                                          e-required ng-bind="post.postName" onbeforesave="checkName($data, $index)">
+                                    </span>
+                                </td>
+                                <td>
+                            <span editablet-text="post.postShortName" e-name="postShortName" e-form="rowform"
+                                  e-required ng-bind="post.postShortName" onbeforesave="checkShortName($data, $index)">
+                            </span>
+                                </td>
+                                <!--<td>
+                                    <span editable-select="post.isForceInPost" e-form="rowform"
+                                          e-ng-disabled="post.disableForceInPost"
+                                          e-ng-options="s.id as s.text for s in isForceInPosts"
+                                          e-ng-change="changeForceInPosts($data, $index)"
+                                          onbeforesave="checkIsForceInPost($data, $index)">
+                                        {{ isForceInPosts[post.isForceInPost].text }}
+                                    </span>
+                                </td>-->
+                                <td style="white-space: nowrap">
+                                    <form editable-form name="rowform"
+                                          onbeforesave="savePost($data, post.postId, post.postName, post.type, $index, rowform)"
+                                          ng-show="rowform.$visible" class="form-buttons form-inline"
+                                          shown="shown == post">
+                                        <button type="submit" ng-disabled="rowform.$waiting"
+                                                class="btn vk-btn-default">
+                                            保存
+                                        </button>
+                                        <button type="button" ng-disabled="rowform.$waiting"
+                                                ng-click="rowform.$cancel(); removeTempPost()"
+                                                class="btn vk-btn-passion">
+                                            取消
+                                        </button>
+                                    </form>
+                                    <div class="buttons" ng-show="!rowform.$visible">
+                                        <a ng-click="setRule(post)">查看上岗规则</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-show="searchIng">
+                                <td colspan="4">正在搜索...</td>
+                            </tr>
+                            <tr ng-show="noData">
+                                <td colspan="4">未搜索到数据</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div common-pagination></div>
+</div>

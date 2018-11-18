@@ -1,0 +1,492 @@
+<%@ page language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<div class="navbar-default sidebar" role="navigation">
+    <div id="vk-sidebar" class="sidebar-nav navbar-collapse">
+        <sec:authorize access="isFullyAuthenticated()">
+            <ul class="nav" id="side-menu">
+                <sec:authorize access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_EMPLOYEE')">
+                    <li>
+                        <a href="#/" links="employees employee-create employee employee-edit" class="switch">人员管理</a>
+                        <ul class="nav nav-second-level">
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_EMPLOYEES_SETTING')">
+                                <li>
+                                    <a href="#/employees" class="item"><i class="fa fa-circle-o fa-fw"></i> 人员信息管理</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_EMPLOYEES_VIEW')">
+                                <li>
+                                    <a href="#/employees-see" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        人员信息查看</a>
+                                </li>
+                            </sec:authorize>
+                            <%--ROLE_EMPLOYEE_TRANSFER--%>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_EMPLOYEE_TRANSFER')">
+                                <li>
+                                    <a href="#/employee-transfer-info-confirm?isCrossDepartment=1" class="item"><i
+                                            class="fa fa-circle-o fa-fw"></i>
+                                        员工变动</a>
+                                </li>
+                            </sec:authorize>
+                        </ul>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_DEPARTMENT')">
+                    <li>
+                        <a href="#/" links="employees employee-create employee employee-edit" class="switch">部门管理</a>
+                        <ul class="nav nav-second-level">
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_DEPARTMENT_VIEW')">
+                                <li>
+                                    <a href="#/department-info-view" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        部门信息管理</a>
+                                </li>
+                            </sec:authorize>
+                        </ul>
+                    </li>
+                </sec:authorize>
+                <sec:authorize
+                        access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_AUTHORISE_')">
+                    <li>
+                        <a href="#/authority/auth-global-list"
+                           links="authority/auth-global-list authority/auth-organization-config authority/auth-function-config authority/auth-group-config"
+                           class="item">
+                            权限设置</a>
+                    </li>
+                </sec:authorize>
+                <sec:authorize
+                        access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_EXPERIENCE')">
+                    <li>
+                        <a href="#/" class="switch">经验值管理</a>
+                        <ul class="nav nav-second-level">
+                            <sec:authorize access="hasRole('ROLE_EXPERIENCE_RULE_SETTING')">
+                                <li>
+                                    <a href="#/experience-setting"
+                                       links="post-exp-rule post-exp-rule-authority post-exp-rule-config post-exp-config"
+                                       class="item">
+                                        <i class="fa fa-circle-o fa-fw"></i> 经验值规则设置</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('ROLE_EXPERIENCE_VERIFY')">
+                                <li>
+                                    <a href="#/experience-verify"
+                                       links="post-exp-rule post-exp-rule-authority post-exp-rule-config post-exp-config"
+                                       class="item">
+                                        <i class="fa fa-circle-o fa-fw"></i> 经验值审核</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('ROLE_EXPERIENCE_SEARCH')">
+                                <li>
+                                    <a href="#/experience-search"
+                                       links="post-exp-rule post-exp-rule-authority post-exp-rule-config post-exp-config"
+                                       class="item">
+                                        <i class="fa fa-circle-o fa-fw"></i> 经验值查询</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('ROLE_EXPERIENCE_INPUT')">
+                                <li>
+                                    <a href="#/experience-enter"
+                                       class="item">
+                                        <i class="fa fa-circle-o fa-fw"></i> 经验值录入</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('ROLE_EXPERIENCE_SUMMARY')">
+                                <li>
+                                    <a href="#/experience-summarizing"
+                                       links="post-exp-rule post-exp-rule-authority post-exp-rule-config post-exp-config"
+                                       class="item">
+                                        <i class="fa fa-circle-o fa-fw"></i> 经验值汇总</a>
+                                </li>
+                            </sec:authorize>
+                        </ul>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_TASK')">
+                    <li>
+                        <a href="#/" class="switch">财富值管理</a>
+                        <ul class="nav nav-second-level">
+                                <%-- <sec:authorize
+                                         access="hasRole('ROLE_TASK_POINT_RULE_SETTING')">
+                                     <li>
+                                         <a href="#/task-point-rules"
+                                            links="task-point-rules task-point-rules-authority task-point-rules-config"
+                                            class="item"><i class="fa fa-circle-o fa-fw"></i> 任务财富值规则设置</a>
+                                     </li>
+                                 </sec:authorize>--%>
+                            <sec:authorize
+                                    access="hasRole('ROLE_TASK_POINT_INFO')">
+                                <li>
+                                    <a href="#/task-point-view" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        任务财富值查看</a>
+                                </li>
+                            </sec:authorize>
+                                <%-- <sec:authorize
+                                         access="hasRole('ROLE_TASK_INCENTIVE_RULE_SETTING')">
+                                     <li>
+                                         <a href="#/job-incentive-rules"
+                                            links="job-incentive-rules job-incentive-rules-authority job-incentive-rules-config"
+                                            class="item"><i class="fa fa-circle-o fa-fw"></i> 财富值兑换规则设置</a>
+                                     </li>
+                                 </sec:authorize>
+                                 <sec:authorize
+                                         access="hasRole('ROLE_TASK_SINGLE_INFO')">
+                                     <li>
+                                         <a href="#/task-report" class="item"><i class="fa fa-circle-o fa-fw"></i> 单项任务财富值查看</a>
+                                     </li>
+                                 </sec:authorize>
+                                 <sec:authorize
+                                         access="hasRole('ROLE_TASK_MONTHLY_REPORT')">
+                                     <li>
+                                         <a href="#/task-incentive-monthly-report" class="item"><i
+                                                 class="fa fa-circle-o fa-fw"></i> 财富值兑换信息查看</a>
+                                     </li>
+                                 </sec:authorize>--%>
+                            <sec:authorize
+                                    access="hasRole('ROLE_TASK_REPAIR_WEALTH_SETTING')">
+                                <li>
+                                    <a href="#/repair-wealth-rule" class="item"><i
+                                            class="fa fa-circle-o fa-fw"></i> 维修财富值规则总设置</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="hasRole('ROLE_TASK_REPAIR_WEALTH_ORDER_SETTING')">
+                                <li>
+                                    <a href="#/order-coefficient-setting" class="item"><i
+                                            class="fa fa-circle-o fa-fw"></i> 工单任务调节系数设置</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="hasRole('ROLE_TASK_REPAIR_WEALTH_CONVERT_RULE')">
+                                <li>
+                                    <a href="#/wealth-convert-rule-setting" class="item"><i
+                                            class="fa fa-circle-o fa-fw"></i> 财富值兑换规则设置</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="hasRole('ROLE_TASK_WEALTH_CONVERT_INFO')">
+                                <li>
+                                    <a href="#/wealth-convert-rule-check" class="item"><i
+                                            class="fa fa-circle-o fa-fw"></i> 财富值兑换查看</a>
+                                </li>
+                            </sec:authorize>
+                                        <%--<sec:authorize--%>
+                                <%--access="hasRole('ROLE_REPAIR_WEALTH_LOCK_SAVE')">--%>
+                                <%--<li>
+                                    <a href="#/wealth-lock-cycle" class="item"><i
+                                            class="fa fa-circle-o fa-fw"></i> 财富值定案周期设置</a>
+                                </li>--%>
+                                        <%--</sec:authorize>--%>
+                            <sec:authorize
+                                    access="hasRole('ROLE_TASK_REPAIR_WEALTH_LOCK')">
+                                <li>
+                                    <a href="#/wealth-lock" class="item"><i
+                                            class="fa fa-circle-o fa-fw"></i> 财富值定案</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="hasRole('ROLE_TASK_REPAIR_WEALTH_UNLOCK')">
+                                <li>
+                                    <a href="#/wealth-unlock" class="item"><i
+                                            class="fa fa-circle-o fa-fw"></i> 财富值解定案</a>
+                                </li>
+                            </sec:authorize>
+                                    <sec:authorize
+                                            access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_TASK_NOT_WEALTH_SETTING')">
+                                        <li>
+                                            <a href="#/not-task-wealth/setting" class="item">
+                                                <i class="fa fa-circle-o fa-fw"></i> 非任务财富值规则设置</a>
+                                        </li>
+                                    </sec:authorize>
+                                    <sec:authorize
+                                            access="hasRole('ROLE_TASK_WEALTH_LOOK')">
+                                        <li>
+                                            <a href="#/not-task-wealth" class="item"><i
+                                                    class="fa fa-circle-o fa-fw"></i> 非任务财富值查看与录入</a>
+                                        </li>
+                                    </sec:authorize>
+                        </ul>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_')">
+                    <li>
+                        <a href="#/" class="switch">考勤管理</a>
+                        <ul class="nav nav-second-level">
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_WHITE_LIST_SETTING')">
+                                <li>
+                                    <a href="#/white-list" class="item"><i class="fa fa-circle-o fa-fw"></i> 白名单录入</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_ATTENDANCE_SHIFT')">
+                                <li>
+                                    <a href="#/shift-group" class="item"><i class="fa fa-circle-o fa-fw"></i> 班次组管理</a>
+                                </li>
+                            </sec:authorize>
+                                <%--<sec:authorize--%>
+                                <%--access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_ATTENDANCE_SHIFT')">--%>
+                                <%--<li>--%>
+                                <%--<a href="#/shifts-config" class="item"><i class="fa fa-circle-o fa-fw"></i> 班次设置</a>--%>
+                                <%--</li>--%>
+                                <%--</sec:authorize>--%>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_ATTENDANCE_VIEW_SHIFT')">
+                                <li>
+                                    <a href="#/shift-view" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        班次查看
+                                    </a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_ATTENDANCE_SWITCH_SHIFT')">
+                                <li>
+                                    <a href="#/switch-shift" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        倒班管理
+                                    </a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_HOLIDAY_RULE_SETTING')">
+                                <li>
+                                    <a href="#/holiday-rule-setting" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        标准工时制休假规则设置</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_COMPOSITE_RULE_SETTING')">
+                                <li>
+                                    <a href="#/overall-holiday-rule-setting" class="item"><i
+                                            class="fa fa-circle-o fa-fw"></i>
+                                        综合工时制休假规则设置</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_BALANCE_RULE_SETTING')">
+                                <li>
+                                    <a href="#/other-holiday-balance" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        休假额度设置</a>
+                                </li>
+                            </sec:authorize>
+                            <!--<sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_BALANCE_VIEW')">
+                                <li>
+                                    <a href="#/lieu-quota?check=1" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        休假额度查看</a>
+                                </li>
+                            </sec:authorize>-->
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_BALANCE_DETAIL_VIEW')">
+                                <li>
+                                    <a href="#/leave-records-list" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        休假明细查看</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_HOLIDAY_DETAIL_VIEW')">
+                                <li>
+                                    <a href="#/lieu-quota" class="item"><i class="fa fa-circle-o fa-fw"></i> 额度明细查看</a>
+                                </li>
+                            </sec:authorize>
+
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_ATTENDANCE_PUBLIC_HOLIDAY')">
+                                <li>
+                                    <a href="#/public-holiday" class="item"><i class="fa fa-circle-o fa-fw"></i> 法定假期设置</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_ATTENDANCE_ABNORMAL_RULE')">
+                                <li>
+                                    <a href="#/attendance-abnormality-ruleset" class="item"><i
+                                            class="fa fa-circle-o fa-fw"></i> 异常出勤规则设置</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="hasRole('ROLE_ATTENDANCE_LOCK_RANGE_SETTING')">
+                                <li>
+                                    <a href="#/attendance-lock-cycle" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        定案周期设置</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_DUTY_FEE')">
+                                <li>
+                                    <a href="#/duty-fees-setting" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        值班费标准设置</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_POST_RULE_SETTING')">
+                                <li>
+                                    <a href="#/post" class="item"><i class="fa fa-circle-o fa-fw"></i> 上岗规则设置</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_POST_RULE_ONLY_VIEW')">
+                                <li>
+                                    <a href="#/post-check" class="item"><i class="fa fa-circle-o fa-fw"></i> 上岗规则查看</a>
+                                </li>
+                            </sec:authorize>
+                                <%--<sec:authorize--%>
+                                <%--access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_HOLIDAY_RULE_SETTING')">--%>
+                                <%--<li>--%>
+                                <%--<a href="#/holiday-rule-setting" class="item"><i class="fa fa-circle-o fa-fw"></i>--%>
+                                <%--调休假规则设置</a>--%>
+                                <%--</li>--%>
+                                <%--</sec:authorize>--%>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_SIGN_IN_AREAR_SETTING')">
+                                <li>
+                                    <a href="#/sign-in-area" class="item">
+                                        <i class="fa fa-circle-o fa-fw"></i> 签到区域设置</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_SIGN_IN_AREAR_ONLY_VIEW')">
+                                <li>
+                                    <a href="#/sign-in-area-check" class="item">
+                                        <i class="fa fa-circle-o fa-fw"></i> 签到区域查看</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_WORK_REQUIREMENT_SETTING')">
+                                <li>
+                                    <a href="#/experience" class="item">
+                                        <i class="fa fa-circle-o fa-fw"></i> 上岗要求设置</a>
+                                </li>
+                            </sec:authorize>
+                                <%--<sec:authorize--%>
+                                <%--access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_ATTENDANCE_SCHEDULE')">--%>
+                                <%--<li>--%>
+                                <%--<a href="#/fast-schedules" class="item"><i class="fa fa-circle-o fa-fw"></i> 快速排班</a>--%>
+                                <%--</li>--%>
+                                <%--</sec:authorize>--%>
+                                <%--<sec:authorize--%>
+                                <%--access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_ATTENDANCE_SCHEDULE')">--%>
+                                <%--<li>--%>
+                                <%--<a href="#/schedules" class="item"><i class="fa fa-circle-o fa-fw"></i> 排班管理</a>--%>
+                                <%--</li>--%>
+                                <%--</sec:authorize>--%>
+                                <%--<sec:authorize--%>
+                                <%--access="@securityRoleControlUtils.roleStartsWith(principal, 'NEW_ROLE_ATTENDANCE_SCHEDULE')">--%>
+                                <%--<li>--%>
+                                <%--<a href="#/new-schedules" class="item"><i class="fa fa-circle-o fa-fw"></i> 新版排班管理</a>--%>
+                                <%--</li>--%>
+
+                                <%--</sec:authorize>--%>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_ATTENDANCE_SCHEDULE')">
+                                <li>
+                                    <a href="#/super-schedules" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        排班管理</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_SCHEDULE_VIEW')">
+                                <li>
+                                    <a href="#/super-schedules-check" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        排班查看</a>
+                                </li>
+                            </sec:authorize>
+                                <%--<sec:authorize--%>
+                                <%--access="hasRole('ROLE_ATTENDANCE_DATA_VIEW')">--%>
+                                <%--<li>--%>
+                                <%--<a href="#/attendance" class="item"><i class="fa fa-circle-o fa-fw"></i> 签到管理</a>--%>
+                                <%--</li>--%>
+                                <%--</sec:authorize>--%>
+                                <%--新版--%>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_ATTENDANCE_DATA_VIEW')">
+                                <li>
+                                    <a href="#/new-attendance" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        签到管理</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_ATTENDANCE_ONLY_VIEW')">
+                                <li>
+                                    <a href="#/sign-in-check" class="item"><i class="fa fa-circle-o fa-fw"></i> 签到查看</a>
+                                </li>
+                            </sec:authorize>
+                                <%--<sec:authorize--%>
+                                <%--access="hasRole('ROLE_ATTENDANCE_CHECK_VIEW')">--%>
+                                <%--<li>--%>
+                                <%--<a href="#/attendance-check" class="item"><i class="fa fa-circle-o fa-fw"></i> 考勤结果</a>--%>
+                                <%--</li>--%>
+                                <%--</sec:authorize>--%>
+                                <%--新版--%>
+                            <sec:authorize
+                                    access="hasRole('ROLE_ATTENDANCE_CHECK_VIEW')">
+                                <li>
+                                    <a href="#/new-attendance-check" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        考勤结果</a>
+                                </li>
+                            </sec:authorize>
+                                <%--<sec:authorize--%>
+                                <%--access="hasRole('ROLE_ATTENDANCE_OVERTIME_VIEW')">--%>
+                                <%--<li>--%>
+                                <%--<a href="#/overtime-attendance-check" class="item"><i--%>
+                                <%--class="fa fa-circle-o fa-fw"></i> 考勤汇总</a>--%>
+                                <%--</li>--%>
+                                <%--</sec:authorize>--%>
+                                <%--新版--%>
+                            <sec:authorize
+                                    access="hasRole('ROLE_ATTENDANCE_OVERTIME_VIEW')">
+                                <li>
+                                    <a href="#/new-overtime-attendance-check" class="item"><i
+                                            class="fa fa-circle-o fa-fw"></i> 考勤汇总</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="hasRole('ROLE_ATTENDANCE_LOCK_EXCEPT')">
+                                <li>
+                                    <a href="#/attendance-lock-except" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        考勤预定案</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="hasRole('ROLE_ATTENDANCE_LOCK_SAVE')">
+                                <li>
+                                    <a href="#/attendance-lock" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        考勤定案</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="hasRole('ROLE_ATTENDANCE_LOCK_DELETE')">
+                                <li>
+                                    <a href="#/attendance-lock-collect" class="item"><i
+                                            class="fa fa-circle-o fa-fw"></i> 考勤解定案</a>
+                                </li>
+                            </sec:authorize>
+                            <sec:authorize
+                                    access="hasRole('ROLE_ATTENDANCE_LOCK_SAP')">
+                                <li>
+                                    <a href="#/attendance-lock-sap" class="item"><i class="fa fa-circle-o fa-fw"></i>
+                                        SAP考勤结果</a>
+                                </li>
+                            </sec:authorize>
+                        </ul>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_OUTER_')">
+                    <li>
+                        <a href="#/" links="employees employee-create employee employee-edit" class="switch">发薪管理</a>
+                        <ul class="nav nav-second-level">
+                            <sec:authorize
+                                    access="@securityRoleControlUtils.roleStartsWith(principal, 'ROLE_OUTER_PAYOFF_RULE_SET')">
+                                <li>
+                                    <a href="#/outer-payoff-management" class="item"><i
+                                            class="fa fa-circle-o fa-fw"></i>
+                                        外盘发薪管理</a>
+                                </li>
+                            </sec:authorize>
+                        </ul>
+                    </li>
+                </sec:authorize>
+            </ul>
+        </sec:authorize>
+    </div>
+</div>

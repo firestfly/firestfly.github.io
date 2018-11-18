@@ -1,0 +1,134 @@
+<div class="container-fluid">
+    <div class="row">
+        <div data-common-search-bar data-hide-export-btn="true" data-hide-opt-btn="true"
+             data-hide-date-range="true" data-show-standard-work-jobs-one="true"
+         data-hide-search-input="true"></div>
+    </div>
+    <div class="row back-row">
+        <div class="text-right">
+            <a href="#/not-task-wealth" class="btn btn-default history-back">返回列表</a>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">录入信息</div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="notTaskWealthInput" novalidate autocomplete="off">
+                <div class="row form-group">
+                    <div class="col-xs-12 col-md-4">
+
+                        <label for="" class="control-label col-xs-5 col-md-4">人员</label>
+
+                        <div class="col-xs-5 col-md-6 not-task">
+                            <!--<input type="text" id="employeeName" class="form-control"-->
+                            <!--name="employeeName" placeholder="选择人员" ng-model="selectedEmployeeSap[0].name"-->
+                            <!--disabled/>-->
+
+                            <!--<div class="employee-sap-clear" ng-click="selectedEmployeeSap = []">X</div>-->
+
+                            <select id="select-employee" class="selectpicker" name="selectedEmployeeSap"
+                                    data-width="100%" data-live-search="true"
+                                    data-none-selected-text="选择人员"
+                                    ng-options="option.name for option in employeeSap track by option.employeeId"
+                                    ng-model="selectedEmployeeSap">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-xs-12 col-md-4">
+                        <label for="" class="control-label col-xs-5 col-md-4 required">类型</label>
+
+                        <div class="col-xs-7 col-md-8"
+                             ng-class="{ 'has-error': showValidationMessages && notTaskWealthInput.notTaskWealthType.$invalid }">
+                            <select id="not-task-wealth-type" class="selectpicker" name="notTaskWealthType"
+                                    data-width="100%" data-live-search="true"
+                                    ng-options="key as value for (key, value) in taskWealthType"
+                                    ng-model="selectedTaskWealthType">
+                            </select>
+
+                            <p class="text-danger"
+                               ng-show="showValidationMessages && notTaskWealthInput.notTaskWealthTypeName.$invalid">
+                                *必选</p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-4">
+                        <label for="" class="control-label col-xs-5 col-md-4">标准财富值</label>
+
+                        <div class="col-xs-7 col-md-8">
+                            <input type="text" id="standardWealthValue" class="form-control" name="standardWealthValue"
+                                   disabled ng-model="standardWealthValue" placeholder="标准财富值" required/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-4 ta-l" style="padding-top: 7px;">
+                        财富值/分钟
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-xs-12 col-md-4">
+                        <label for="" class="control-label col-xs-5 col-md-4 required">开始时间</label>
+
+                        <div class="col-xs-7 col-md-8"
+                             ng-class="{ 'has-error': showValidationMessages && notTaskWealthInput.beginDate.$invalid }">
+                            <input type="text" id="" class="form-control" placeholder="请选择开始时间"
+                                   name="beginDate" date-response data-date-end-date="0d"
+                                   ng-model="beginDate" required/>
+
+                            <p class="text-danger"
+                               ng-show="showValidationMessages && notTaskWealthInput.beginDate.$invalid">
+                                *必选</p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-4">
+                        <label for="" class="control-label col-xs-5 col-md-4 required">结束时间</label>
+
+                        <div class="col-xs-7 col-md-8"
+                             ng-class="{ 'has-error': showValidationMessages && notTaskWealthInput.endDate.$invalid }">
+                            <input type="text" id="" class="form-control" name="endDate" placeholder="请选择结束时间"
+                                   date-response
+                                   data-date-end-date="0d"
+                                   ng-model="endDate" required/>
+
+                            <p class="text-danger"
+                               ng-show="showValidationMessages && notTaskWealthInput.endDate.$invalid">
+                                *必选</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-xs-12 col-md-4">
+                        <label for="" class="control-label col-xs-5 col-md-4 required">时长</label>
+
+                        <div class="col-xs-5 col-md-6"
+                             ng-class="{ 'has-error': showValidationMessages && notTaskWealthInput.duration.$invalid }">
+                            <input type="number" ng-change="changeDuration()" id="duration" class="form-control"
+                                   name="duration" min="0" ng-model="duration" partern="/\d/" placeholder="输入时长"
+                                   required/>
+
+                            <p class="text-danger"
+                               ng-show="showValidationMessages && notTaskWealthInput.duration.$invalid">
+                                *请输入正确的时长</p>
+                        </div>
+                        <div class="col-xs-2" style="padding-top: 7px;">分钟</div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-xs-12 col-md-4">
+                        <label for="" class="control-label col-xs-5 col-md-4">本次获得财富值</label>
+
+                        <div class="col-xs-7 col-md-8">
+                            <input type="text" id="" class="form-control" disabled ng-model="wealthValueSum"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 col-sm-offset-4">
+                        <input class="btn vk-btn-passion" type="button" ng-click="saveInfo(notTaskWealthInput)"
+                               value="确认录入">
+                        <button class="btn vk-btn-empty" ng-click="reset()">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

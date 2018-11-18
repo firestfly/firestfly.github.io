@@ -1,0 +1,223 @@
+<form id="downloadFileForm" method="post"></form>
+<div common-search-bar data-hide-date-range="true" data-hide-groups="false"
+     data-show-other-holiday-type="true" data-show-standard-work-jobs="true" Jobs
+     data-extend-buttons="true|新增休假额度|btn-primary"></div>
+<div class="lieu-quota-button-group pt10 pb10 clearfix" ng-if="!isCheck">
+    <div class="fl">
+        <form id="card_form" name="card_form" class="form-horizontal">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="file-input-button">
+                        <span class="btn vk-btn-default">批量导入</span>
+                        <input type="file" name="OtherHolidayBalanceFile" id="OtherHolidayBalanceFile"
+                               onchange="return angular.element(this).scope().uploads(this);">
+                    </div>
+                </div>
+                <div class="pull-left" ng-show="initFiles.isUpload">
+                    {{initFiles.name}}
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="pull-left">
+        <a class="btn btn-primary" ng-click="download()">下载批量导入模板</a>
+    </div>
+</div>
+<div class="" style="padding:20px">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>姓名</th>
+            <th>休假类型</th>
+            <th style="width: 130px">生效日期</th>
+            <th style="width: 130px">失效日期</th>
+            <th style="width: 85px">总额度</th>
+            <th>已使用额度</th>
+            <th>剩余额度</th>
+            <th>资源编号</th>
+            <th>EHR编号</th>
+            <th>公司</th>
+            <th>部门</th>
+            <th>岗位专业分类</th>
+            <th>职位</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="list in ohb.lists" class="holiday-balance-list">
+            <td>{{list.name}}</td>
+            <td>{{list.holidayTypeId | holidayTypeFilter}}</td>
+            <td>
+                 <span editable-bsdate="list.effectiveDate" e-name="effectiveDate" e-form="rowform"
+                       e-is-open="opened1.$data"
+                       e-ng-click="open1($event,'$data')"
+                       e-datepicker-popup="yyyy-MM-dd"
+                       onbeforesave="checkEffectiveDate($data)"
+                       e-required ng-bind="(list.effectiveDate | date:'yyyy-MM-dd')"></span>
+            </td>
+            <td> <span editable-bsdate="list.expiryDate" e-name="expiryDate" e-form="rowform"
+                       e-is-open="opened2.$data"
+                       e-ng-click="open2($event,'$data')"
+                       e-datepicker-popup="yyyy-MM-dd"
+                       onbeforesave="checkExpiryDate($data)"
+                       e-required ng-bind="(list.expiryDate | date:'yyyy-MM-dd')"></span></td>
+            <td><span editable-number="list.quota" e-name="quota" e-form="rowform"
+                      onbeforesave="checkQuota($data,list.usedQuota)"
+                      e-required ng-bind="list.quota"></span>{{list.quotaType}}
+            </td>
+            <td>{{list.usedQuota + list.quotaType}}</td>
+            <td>{{list.leftQuota + list.quotaType}}</td>
+            <td>{{list.employeeId}}</td>
+            <td>{{list.sapId}}</td>
+            <td>{{list.companyName}}</td>
+            <td>{{list.departmentName}}</td>
+            <td>{{list.workGroups}}</td>
+            <td>{{list.postName}}</td>
+            <td>
+                <!-- form -->
+                <form editable-form name="rowform"
+                      onbeforesave="modify($data, rowform, list.id, list.usedQuota, list)"
+                      ng-show="rowform.$visible" class="form-buttons form-inline"
+                      shown="shown == list">
+                    <button type="submit" ng-disabled="rowform.$waiting"
+                            class="btn vk-btn-default">
+                        保存
+                    </button>
+                    <button type="button" ng-disabled="rowform.$waiting"
+                            ng-click="cancel(rowform)"
+                            class="btn vk-btn-passion">
+                        取消
+                    </button>
+                </form>
+                <div class="buttons" ng-show="!rowform.$visible">
+                    <a ng-href="" ng-click="edit(list,rowform)">修改
+                    </a>
+                    <a ng-href="" ng-click="del(list, $index)">删除</a>
+                </div>
+            </td>
+        </tr>
+        <tr ng-if="noData">
+            <td colspan="12">未搜索到数据</td>
+        </tr>
+        </tbody>
+    </table>
+    <div common-pagination></div>
+</div>
+<script type="text/ng-template" id="addHolidayBalance.html">
+    <div class="modal-header">
+        新增休假额度
+    </div>
+    <div class="modal-body holiday-balance-list">
+        <div class="container-fluid" style="margin: 0 20px">
+            <div class="row">
+                <div class="col-md-4 vk-flex-box ai-flex">
+                    <div class="flex">
+                        <select id="selectCompany" class="selectpicker" data-none-selected-text="选择公司"
+                                data-selected-text-format="count" data-width="100%" data-live-search="true"
+                                ng-options="option.company_name for option in organizations track by option.company_id"
+                                ng-model="selectedCompanies"
+                                ng-finish-render>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4 vk-flex-box ai-flex">
+                    <div class="flex">
+                        <select id="selectDepartment" class="selectpicker" data-none-selected-text="选择部门"
+                                data-selected-text-format="count" data-live-search="true"
+                                ng-options="option.department_name for option in departments track by option.department_id"
+                                data-width="100%" ng-model="selectedDepartments">
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col-md-4 vk-flex-box ai-flex">
+                    <div>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</div>
+                    <div class="flex">
+                        <select id="employeeSap" class="selectpicker" data-selected-text-format="count"
+                                data-none-selected-text="姓名" data-width="100%" data-live-search="true"
+                                ng-options="option.name for option in employeeSap track by option.employeeId"
+                                ng-model="selectedEmployeeSap">
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row mt20">
+                <div class="col-md-4 vk-flex-box ai-flex">
+                    <div>EHR编号：</div>
+                    <div class="flex"><input class="form-control" placeholder=""
+                                             value="{{selectedEmployeeSap.sapId}}" type="text" disabled></div>
+
+                </div>
+                <div class="col-md-4 vk-flex-box ai-flex">
+                    <div class="">资源编号：</div>
+                    <div class="flex"><input class="form-control" placeholder=""
+                                             value="{{selectedEmployeeSap.employeeId}}" type="text" disabled></div>
+                </div>
+                <div class="col-md-4 vk-flex-box ai-flex">
+                    <div class="">&nbsp;&nbsp;休假类型：</div>
+                    <div class="flex"><select class="selectpicker" id="holidayType" data-width="100%"
+                                              data-none-selected-text="休假类型"
+                                              data-selected-text-format="count"
+                                              data-live-search="true"
+                                              ng-options="option.value for option in otherHolidayType track by option.code"
+                                              ng-model="selectedOtherHolidayType" ng-finish-render>
+                    </select></div>
+
+                </div>
+            </div>
+            <div class="row mt20">
+                <div class="input-daterange col-md-8">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6 vk-flex-box ai-flex">
+                                <div class="">生效日期：</div>
+                                <div class="flex"><input type="text" style="text-align: left" placeholder="请选择"
+                                                         ng-model="effectiveDate"
+                                                         class="input-sm form-control" name="start" width="100%"/></div>
+
+                            </div>
+                            <div class="col-md-6 vk-flex-box ai-flex">
+                                <div class="">失效日期：</div>
+                                <div class="flex"><input type="text" style="text-align: left" placeholder="请选择"
+                                                         ng-model="expiryDate"
+                                                         class="input-sm form-control" name="end" id="endtimes"/></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 vk-flex-box ai-flex">
+                    <div>总&nbsp;&nbsp;&nbsp;额&nbsp;&nbsp;&nbsp;度：</div>
+                    <div class="flex">
+                        <input type="number" placeholder="" ng-model="quota" class="input-sm form-control"
+                               onkeyup="this.value=/^\d+\.?5?$/.test(this.value) ? this.value : ''"/>
+                    </div>
+                    <div>（{{quotaUnit}}）</div>
+                </div>
+            </div>
+            <div class="row mt20">
+                <div class="col-md-4 vk-flex-box ai-flex">
+                    <div>已使用额度：</div>
+                    <div class="flex">
+                        <input type="number" placeholder="" ng-model="usedQuota" class="input-sm form-control"
+                               onkeyup="this.value=/^\d+\.?5?$/.test(this.value) ? this.value : ''"/>
+                    </div>
+                    <div>（{{quotaUnit}}）</div>
+                </div>
+            </div>
+            <div class="alert alert-danger mt20" role="alert" ng-show="alertText">
+                请选择{{alertText}}!
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer ta-c">
+        <button class="btn vk-btn-default" type="button" ng-click="actionSave()">
+            保存
+        </button>
+        <button class="btn vk-btn-passion" type="button" ng-click="cancel()">
+            取消
+        </button>
+    </div>
+</script>

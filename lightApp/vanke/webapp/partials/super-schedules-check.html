@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <div class="my-tab row">
+        <span class="active tab-item">按人查看</span>
+        <a class="tab-item" href="#/super-schedules-check-post">按岗查看</a>
+    </div>
+    <div id="schedule-container" class="vk-schedule-container row">
+        <div data-common-search-bar data-search-notification="请选择筛选条件后查询"
+             data-show-standard-work-jobs="true" data-hide-export-btn="false" class="vk-common-search"
+             data-show-category-radio="false"></div>
+        <section class="vk-schedule-body">
+            <div ui-grid="gridOptions" ui-if="gridOptions.data.length>0" id="grid1" class="schedule-grid"
+                 ui-grid-pinning
+                 ui-grid-selection></div>
+            <div common-pagination></div>
+        </section>
+
+    </div>
+</div>

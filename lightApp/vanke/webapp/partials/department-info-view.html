@@ -1,0 +1,176 @@
+<div class="container-fluid authority-container">
+    <div class="row">
+        <div data-common-search-bar data-week-range="true" data-hide-groups="true"
+             data-show-isonlinerm="true" data-hide-date-range="true" data-show-is-valid="true"
+             data-auto-check-department="true"
+             data-show-is-docking-wage="true" data-show-import-template-btn="true" data-show-import-btn="true"></div>
+    </div>
+    <!--data-extend-buttons="addRow|新增|btn-primary"data-auto-check-department="true"-->
+    <div class="row">
+        <div class="x-scroll-table">
+            <table class="table table-bordered table-hover" style="min-width:1200px;">
+                <thead>
+                <tr>
+                    <th width="6%">部门名称</th>
+                    <th width="6%">所属公司</th>
+                    <th width="6%">所属城市</th>
+                    <th width="6%">是否有效</th>
+                    <th width="8%">失效日期</th>
+                    <th width="6%">是否上线RM</th>
+                    <th width="8%">上线RM时间</th>
+                    <th width="8%">下线RM时间</th>
+                    <th width="6%">是否已对接<br>考勤工资</th>
+                    <th width="6%">对接考勤工资时间</th>
+                    <th width="6%">对接合伙人</th>
+                    <th>所属BU</th>
+                    <th>组织分类</th>
+                    <th>部门属性</th>
+                    <th width="12%" ng-if="pageLimit != 0">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-show="noData">
+                    <td colspan="14">未搜索到数据</td>
+                </tr>
+                <tr ng-repeat="item in departmentInfos">
+                    <td>
+                        {{item.department? item.department: item.company}}
+                    </td>
+                    <td>
+                        <span editable-text="item.company" edit-disabled="{{item.company != ''}}"
+                              onshow="showSelectpicker()" e-name="company"
+                              e-form="rowform" e-title="部门" onbeforesave="checkValid($data)">
+                            {{item.company}}
+                        </span>
+                    </td>
+                    <td>
+                        <span editable-text="item.regionName" edit-disabled="{{item.regionName != ''}}"
+                              onshow="showSelectpicker()" e-name="regionName"
+                              e-form="rowform" e-title="城市公司" onbeforesave="checkValid($data)">
+                            {{item.regionName}}
+                        </span>
+                    </td>
+                    <td>
+                        <span editable-select="item.isValid" edit-disabled="{{pageLimit != 1}}"
+                              onshow="showSelectpicker()" e-name="isValid"
+                              e-form="rowform" e-title="是否有效" onbeforesave="checkValid($data)"
+                              e-ng-options="key as value for (key, value) in isValidArr">
+                            {{ isValidArr[item.isValid] }}
+                        </span>
+                    </td>
+                    <td>
+                        <span editable-datetime="item.invalidDate"
+                              edit-disabled="{{pageLimit != 1 || item.isEhrInvalidDate == 1}}"
+                              e-form="rowform" e-ng-click="openDatePicker(item.datePicker)"
+                              e-datepicker-popup="yyyy-MM-dd" e-is-open="item.datePicker.opened"
+                              e-show-weeks="false" e-ng-change="updateDate($data, item.invalidDate)"
+                              ng-bind="item.invalidDate | date:'yyyy-MM-dd' || ''">
+                        </span>
+                    </td>
+                    <td>
+                        <span editable-select="item.isOnLineRM" onbeforesave="checkValid($data)"
+                              onshow="showSelectpicker()" e-name="isOnLineRM" e-form="rowform"
+                              e-title="是否上线RM" e-ng-change="changeIsOnLineRM($data, item)"
+                              e-ng-options="key as value for (key, value) in isValidArr">
+                            {{ isValidArr[item.isOnLineRM] }}
+                        </span>
+                    </td>
+                    <td>
+                        <span editable-datetime="item.onLineRMDate"
+                              onbeforesave="checkOnLineRMDate($data, item.isOnLineRM)"
+                              e-form="rowform" e-ng-click="openDatePicker(item.datePicker2)"
+                              e-datepicker-popup="yyyy-MM-dd" e-is-open="item.datePicker2.opened"
+                              e-show-weeks="false" e-ng-change="updateDate($data, item.offLineRMDate)"
+                              ng-bind="item.onLineRMDate | date:'yyyy-MM-dd' || '-'">
+                        {{item.onLineRMDate?(item.onLineRMDate | date:'yyyy-MM-dd' || ''):'-'}}
+                        </span>
+                    </td>
+                    <td>
+                        <span editable-datetime="item.offLineRMDate"
+                              e-form="rowform" e-ng-click="openDatePicker(item.datePicker3)"
+                              e-datepicker-popup="yyyy-MM-dd" e-is-open="item.datePicker3.opened"
+                              e-show-weeks="false" e-ng-change="updateDate($data, item.offLineRMDate)">
+                            {{item.offLineRMDate?(item.offLineRMDate | date:'yyyy-MM-dd' || ''):'-'}}
+                        </span>
+                    </td>
+                    <td ng-show="item.isOnLineRM != '0'">
+                        <span editable-select="item.isDockingWage"
+                              edit-disabled="{{pageLimit != 1}}"
+                              onshow="showSelectpicker()" e-name="isDockingWage" e-form="rowform"
+                              e-title="是否已对接考勤工资" e-ng-change="changeIsDockingWage($data, item)"
+                              e-ng-options="key as value for (key, value) in isValidArr">
+                            {{ isValidArr[item.isDockingWage] }}
+                        </span>
+                    </td>
+                    <td ng-show="item.isOnLineRM == '0' && item.isDockingWage == 0">
+                        否
+                    </td>
+                    <td ng-show="item.isOnLineRM == '0' && item.isDockingWage == 1">
+                        是
+                    </td>
+                    <td>
+                        <span editable-select="item.dockingWageDateId" edit-disabled="{{pageLimit != 1}}"
+                              onbeforesave="checkDockingWage($data, item)"
+                              e-ng-change="changeDockingWageDate($data, item)"
+                              onshow="showSelectpicker(0, item)" e-name="dockingWageDateId" e-form="rowform"
+                              e-title="对接考勤工资时间" e-ng-options="key as value for (key, value) in dockingWageDates">
+                            {{ +item.dockingWageDateId != 0?(dockingWageDates[item.dockingWageDateId] || '-'): '-'}}
+                        </span>
+                    </td>
+                    <td>
+                        <span editable-select="item.dockingPartnerId" onshow="showSelectpicker(item.companyId, item)"
+                              e-name="dockingPartnerId" e-form="rowform"
+                              e-title="对接合伙人" e-ng-options="key as value for (key, value) in dockingPartnerIds">
+                            {{ dockingPartnerIds[item.dockingPartnerId] || item.dockingPartner}}
+                        </span>
+                    </td>
+                    <td>
+                        <!--<span editable-select="item.buType" edit-disabled="{{pageLimit != 1}}"-->
+                        <!--onshow="showSelectpicker()" onbeforesave="checkValid($data)"-->
+                        <!--e-form="rowform" e-title="所属BU" e-name="buType"-->
+                        <!--e-ng-options="key as value for (key, value)  in buTypes">-->
+                        <!--{{ buTypes[item.buType] }}-->
+                        <!--</span>-->
+                        {{ buTypes[item.buType] }}
+                    </td>
+                    <td>
+                        {{ item.groupType }}
+                    </td>
+                    <td>
+                        <!--<span editable-select="item.departmentAttrId" edit-disabled="{{pageLimit != 1}}"-->
+                        <!--onshow="showSelectpicker()" onbeforesave="checkValid($data)"-->
+                        <!--e-ng-change="changeDepartmentAttrId($data, item)"-->
+                        <!--e-form="rowform" e-title="部门属性" e-name="departmentAttrId"-->
+                        <!--e-ng-options="key as value for (key, value)  in departmentAttrIds">-->
+                        <!--{{ departmentAttrIds[item.departmentAttrId] }}-->
+                        <!--</span>-->
+                        {{ departmentAttrIds[item.departmentAttrId] }}
+                    </td>
+                    <td ng-show="pageLimit != 0">
+                        <form editable-form name="rowform"
+                              onbeforesave="saveDepartmentInfo($data, item)"
+                              ng-show="rowform.$visible" class="form-buttons form-inline">
+                            <button type="submit" class="btn-a" ng-disabled="rowform.$waiting">
+                                保存
+                            </button>
+                            &nbsp;|&nbsp;
+                            <a href="javascript:void(0);" ng-class="{'pointer-stop': rowform.$waiting}"
+                               ng-click="removeTempRule();rowform.$cancel();">
+                                取消
+                            </a>
+                        </form>
+                        <div class="buttons" ng-show="!rowform.$visible">
+                            <a class="editeRow" href="javascript:void(0);" ng-click="editedepartmentInfo(rowform)"
+                               ng-class="{'pointer-stop': isEdite}">修改
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div common-pagination></div>
+</div>

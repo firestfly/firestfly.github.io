@@ -1,0 +1,129 @@
+<div id="attendance-lock-container" class="container-fluid">
+    <div class="row vk-spaced-row">
+        <div class="col-md-6 sps-red">
+            修改“定案周期周末天数”，月休额度将在次日生效
+        </div>
+        <div class="col-md-6 text-right">
+            <button class="btn btn-primary" ng-click="addItem()">新增定案周期</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-condensed">
+                    <tr>
+                        <th>序号</th>
+                        <th>定案周期名称</th>
+                        <th>开始日期</th>
+                        <th>截止日期</th>
+                        <th>定案周期周末天数</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr ng-repeat="attendanceLock in vm.attendanceLocks">
+                        <td style="width: 10%;" ng-bind="$index + 1">
+                        </td>
+                        <td style="width: 20%;">
+                            <span editable-text="attendanceLock.name" e-name="name" e-form="rowForm" e-required
+                                  ng-bind="attendanceLock.name">
+                            </span>
+                        </td>
+                        <td class="start-date">
+                            <span editable-datetime="attendanceLock.startDate"
+                                  e-name="startDate" e-form="rowForm"
+                                  e-required
+                                  e-ng-click="openDatePicker(attendanceLock.startDatePicker)"
+                                  e-datepicker-popup="yyyy-MM-dd"
+                                  e-is-open="attendanceLock.startDatePicker.opened"
+                                  e-show-weeks="false"
+                                  e-style="width: 150px;"
+                                  ng-bind='attendanceLock.startDate | date:"yyyy-MM-dd"'>
+                            </span>
+                        </td>
+                        <td class="end-date">
+                            <span editable-datetime="attendanceLock.endDate"
+                                  e-name="endDate" e-form="rowForm"
+                                  e-required
+                                  e-ng-click="openDatePicker(attendanceLock.endDatePicker)"
+                                  e-datepicker-popup="yyyy-MM-dd"
+                                  e-is-open="attendanceLock.endDatePicker.opened"
+                                  e-show-weeks="false"
+                                  e-style="width: 150px;"
+                                  ng-bind='attendanceLock.endDate | date:"yyyy-MM-dd"'>
+                            </span>
+                        </td>
+                        <td>
+                            <span editable-number="attendanceLock.weekendDays" e-name="weekendDays"
+                                  e-form="rowForm" e-min="0" e-max="1000000" e-required
+                                  ng-bind="attendanceLock.weekendDays">
+                            </span>
+                        </td>
+                        <td style="white-space: nowrap;width: 20%;">
+                            <form editable-form name="rowForm" onbeforesave="saveItem($data, attendanceLock)"
+                                  ng-show="rowForm.$visible" class="form-buttons form-inline"
+                                  shown="vm.inserted == attendanceLock">
+                                <button type="submit" ng-disabled="rowForm.$waiting" class="btn vk-btn-health">
+                                    保存
+                                </button>
+                                <button type="button" ng-disabled="rowForm.$waiting"
+                                        ng-click="rowForm.$cancel(); deleteInserted(attendanceLock)"
+                                        class="btn btn-default">
+                                    取消
+                                </button>
+                            </form>
+                            <div class="buttons" ng-show="!rowForm.$visible">
+                                <a class="" ng-click="rowForm.$show()">修改</a> |
+                                <a class=""
+                                        ng-click="deleteItem($index, attendanceLock.attendance_lock_id)">
+                                    删除
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3" style="padding-left:20px;">
+                每页显示<select
+                    ng-model="pageSize"
+                    name="pageSize"
+                    ng-change="changePageSize()"
+                    ng-options="o as o for o in pageSizes">
+            </select>条
+            </div>
+            <div class="col-md-2" ng-show="pageCount()<=1"></div>
+            <div class="col-md-offset-5 col-md-1">
+                第<span ng-bind="currentPage"></span>页/共<span ng-bind="pageCount()"></span>页
+            </div>
+            <div class="col-md-1" ng-hide="pageCount()<=1">
+                跳转第<select
+                    ng-model="currentPage"
+                    name="currentPage"
+                    ng-change="reload()"
+                    ng-options="o as o for o in pages">
+            </select>页
+            </div>
+            <div class="col-md-2" ng-hide="pageCount()<=1">
+                <button ng-click="prevPage()" ng-disabled="currentPage<=1">
+                    上一页
+                </button>
+                <button ng-click="nextPage()">
+                    下一页
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/ng-template" id="attendance-lock-dialog.html">
+    <div class="modal-header">
+        <h3 class="modal-title"></h3>
+    </div>
+    <alert type="">
+        <div ng-repeat="message in data.messages">{{message}}</div>
+    </alert>
+    <div class="modal-footer">
+        <button class="btn vk-btn-default" type="button" ng-click="ok()">确定</button>
+        <button class="btn vk-btn-passion" type="button" ng-click="cancel()" ng-show="!data.noCancelButton">取消</button>
+    </div>
+</script>

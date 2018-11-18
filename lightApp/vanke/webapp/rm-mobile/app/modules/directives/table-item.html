@@ -1,0 +1,17 @@
+<div>
+    <a class="list-group-item table-item" href="{{linkage}}"
+       ng-class="{'table-item-large':largeStyle, 'table-item-medium':mediumStyle,
+                    'table-item-small':smallStyle, 'disable-link':disableLink}">
+        <div class="table-item-main">
+            <div class="table-item-main-left">{{ mainLeft }}</div>
+            <i class="fa fa-chevron-right pull-right" ng-class="{'vertical-middle':showInfoLeft}"
+               ng-show="showChevron"></i>
+
+            <div class="table-item-main-right" ng-class="{'vertical-middle':showInfoLeft}">{{ mainRight }}</div>
+        </div>
+        <div class="table-item-info">
+            <div class="table-item-info-left" ng-show="showInfoLeft">{{ infoLeft }}</div>
+            <div class="table-item-info-right" ng-show="showInfoRight">{{ infoRight }}</div>
+        </div>
+    </a>
+</div>

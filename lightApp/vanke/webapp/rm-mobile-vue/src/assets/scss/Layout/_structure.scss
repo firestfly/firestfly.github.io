@@ -1,0 +1,23 @@
+@charset "utf-8";
+.page {
+  //position: absolute;width: 100%;height: 100%; 安卓设备的QQ微信上有bug----表格无法设置滚动
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  @include flex-align;
+  @include flex-orient(v);
+  background-color: $body-bg-color;
+  transition: all .3s cubic-bezier(.55, 0, .1, 1);
+  padding-top: rem(90px);
+}
+
+.content {
+  padding-bottom: rem(60px);
+  overflow: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  @include flex-count;
+  transform-origin: top center;
+}

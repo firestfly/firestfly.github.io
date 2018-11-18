@@ -1,0 +1,302 @@
+[
+  {
+    "id": "0",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  },
+  {
+    "id": "1.01",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  },
+  {
+    "id": "2",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  },
+  {
+    "id": "3",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  },
+  {
+    "id": "4",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  },
+  {
+    "id": "0",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  },
+  {
+    "id": "1.01",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  },
+  {
+    "id": "2",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  },
+  {
+    "id": "3",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  },
+  {
+    "id": "4",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  },
+  {
+    "id": "0",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  },
+  {
+    "id": "1.01",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  },
+  {
+    "id": "2",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  },
+  {
+    "id": "3",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  },
+  {
+    "id": "4",
+    "department": {
+      "departmentName": "万科城"
+    },
+    "wealthCoefficient": 1.01,
+    "assessmentCoefficient": {
+      "oneStarPoint": 1.01,
+      "twoStarPoint": 1.01,
+      "threeStarPoint": 1.01,
+      "fourStarPoint": 1.01,
+      "fiveStarPoint": 1.01,
+      "nonAssessment": 1.01
+    },
+    "typeCoefficient": {
+      "houseKeepingCharged": 1.01,
+      "houseKeepingUncharged": 1.01,
+      "publicRepairOrder": 1.01
+    }
+  }
+]

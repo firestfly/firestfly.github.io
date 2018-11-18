@@ -1,0 +1,107 @@
+<div class="container-fluid authority-container experience-setting">
+    <div class="row">
+        <div class="container-fluid vk-container common-search-bar">
+            <div class="row vk-spaced-row">
+                <div class="col-md-3">
+                    <select id="select-standard-post" class="selectpicker" multiple
+                            data-selected-text-format="count"
+                            data-none-selected-text="岗位" data-width="100%" data-actions-box="true"
+                            data-live-search="true"
+                            ng-options="option.workJobName for option in standardPost track by option.workJobId"
+                            ng-model="selectedStandardPost">
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select id="select-target" class="selectpicker" multiple data-selected-text-format="count"
+                            data-none-selected-text="请输入指标名称搜索" data-width="100%" data-actions-box="true"
+                            data-live-search="true"
+                            ng-options="option.targetName for option in targets track by option.targetNumber"
+                            ng-model="selectedTarget">
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select id="select-situation" class="selectpicker" multiple data-selected-text-format="count"
+                            data-none-selected-text="请输入情况名称搜索" data-width="100%" data-actions-box="true"
+                            data-live-search="true"
+                            ng-options="option.situationName for option in situation track by option.situationId"
+                            ng-model="selectedSituation">
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button type="button" ng-click="search(1)" class="btn btn-primary fr">查询</button>
+                </div>
+            </div>
+            <div class="row vk-spaced-row">
+                <div class="col-md-12">
+                    <a class="search-detail fr" href="download/vocational_certificate_list.xlsx"
+                       download="职业证书清单.xlsx">查询职业技能(资质证书)经验值明细</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table id="experience-setting-table" class="table table-bordered table-hover nowrap">
+            <thead>
+            <tr>
+                <th width="13%">岗位</th>
+                <th width="20%">指标</th>
+                <th width="13%">情况</th>
+                <th width="13%">符号</th>
+                <th width="13%">数值</th>
+                <th width="13%">数据来源</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in experienceSetting">
+                <td>{{item.workJobName}}</td>
+                <td>{{ item.targetName }}</td>
+                <td>{{ item.situationName }}</td>
+                <td>
+                    <span editable-select="item.symbol" e-name="symbol" e-form="rowform" e-title="请选择符号"
+                          e-ng-options="s.text as s.value for s in symbols"
+                          e-required ng-bind="item.symbol" onbeforesave="checkSymbol($data)">
+                    </span>
+                </td>
+                <td>
+                    <span editable-number="item.expValue" e-name="expValue" e-min="0" e-form="rowform"
+                          ng-bind="item.expValue"
+                          e-required onbeforesave="checkExpValue($data)">
+                    </span>
+                </td>
+                <td>{{ experienceOrigin[item.dataSource] }}</td>
+                <td>
+                    <form editable-form name="rowform"
+                          onbeforesave="saveExperienceSetting($data, item.id)"
+                          ng-show="rowform.$visible" class="form-buttons form-inline">
+                        <button type="submit" ng-disabled="rowform.$waiting"
+                                class="link">
+                            保存
+                        </button>
+                        <span class="separator">|</span>
+                        <button type="button" ng-disabled="rowform.$waiting"
+                                ng-click="rowform.$cancel(); removeTempRule()"
+                                class="link">
+                            取消
+                        </button>
+                    </form>
+                    <div class="buttons" ng-show="!rowform.$visible">
+                        <button class="link" ng-click="editeExperienceSetting(rowform)"
+                                ng-disabled="isEdite">修改
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-if="noData">
+                <td colspan="7">未搜索到数据</td>
+            </tr>
+            <tr ng-if="!experienceSetting">
+                <td colspan="7">请选择情况后搜索</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container-fluid">
+    <div common-pagination></div>
+</div>

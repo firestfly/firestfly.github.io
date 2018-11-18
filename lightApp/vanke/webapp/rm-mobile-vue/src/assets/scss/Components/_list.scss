@@ -1,0 +1,185 @@
+@charset "utf-8";
+
+.list {
+  margin: rem(30px) 0;
+  background-color: #fff;
+  overflow: hidden;
+  position: relative;
+  // 该设置当ul里面没有行um-list-item时会有上下2边框
+  @include ui-border(top, $border-color);
+  border-width: 1px 0 1px 0;
+  &:empty {
+    border-width: 0;
+  }
+  /* 圆角列表 */
+  &.list-corner {
+    @include border-radius($border-color, 6px);
+    background-color: #FFF;
+    border: 1px solid #dde;
+    background-image: none;
+    & .list-item:last-child {
+      background-image: none;
+      border: none;
+    }
+  }
+  .list-item-media {
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  /* 底线铺满的列表 */
+  &.list-full {
+    .list-item {
+      padding-left: 0;
+    }
+    .list-item-inner {
+      padding-left: 15px;
+    }
+  }
+
+  /* 列表行单元 */
+  .list-item {
+    position: relative;
+    @include flex-align(null, center);
+    padding: 0;
+    &.list-item-pl0 {
+      padding-left: 0;
+      .list-item-inner {
+        padding-left: rem($inner-width);
+      }
+    }
+    padding-left: rem(30px);
+    color: $font-color;
+    transition: all ease .3s;
+    &.list-item-touch-active {
+      cursor: pointer;
+      &:active,
+      &.active {
+        background-color: $list-active-bgcolor;
+      }
+    }
+    &.list-angle-right:after {
+      @include angle($w: 10px, $h: 10px, $border-width: 2px, $border-color: $border-color, $deg: -135deg);
+      position: absolute;
+      top: 50%;
+      right: rem($inner-width/1.2);
+      transform: translate(-50%, -50%) rotate(-135deg);
+    }
+    &.list-angle-down:after {
+      @include angle($w: 10px, $h: 10px, $border-width: 2px, $border-color: $border-color, $deg: -45deg);
+      position: absolute;
+      top: 50%;
+      right: rem($inner-width/1.2);
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+  .list-item-inner {
+    position: relative;
+    padding: rem($padding-base-vertical) 0;
+    @include ui-border(bottom, $border-color);
+    @include flex-align-justify; //该用法无法解决文字溢出问题
+    @include flex-count;
+    -webkit-align-self: stretch;
+    align-self: stretch;
+    z-index: 1;
+  }
+
+  .list-item-body {
+    @include flex-count;
+    padding-right: rem($inner-width);
+    -webkit-align-self: stretch;
+    align-self: stretch;
+  }
+  .list-item-left {
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    width: 35%;
+  }
+  .list-item-right {
+    padding-right: rem($inner-width);
+    text-align: right;
+    @include flex-count;
+    flex-shrink: 1;
+  }
+  .list-angle-right .list-item-right {
+    padding-right: rem(55px);
+  }
+  .list-item:last-child {
+    @include ui-border(bottom, $border-color);
+  }
+  .list-item:last-child .list-item-inner {
+    border-bottom: none;
+    background-image: none;
+  }
+}
+
+.list-divider {
+  font-size: $font-size-small;
+  background-color: $body-bg-color;
+  padding: 0 rem($padding-base-horizontal);
+  color: $gray;
+  & + .list {
+    margin-top: 0
+  }
+}
+
+// input[type=time],
+// input[type=number],
+// input[type=search],
+// input[type=text],
+// input[type=password],
+// input[type=email],
+// input[type=tel],
+// input[type=url],
+// input[type=date],
+// input[type=datetime-local],
+// select,
+// textarea
+.list .form-control {
+  appearance: none;
+  box-sizing: border-box;
+  border: none;
+  background: 0 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: block;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  color: $font-color;
+  height: 100%;
+}
+
+.list textarea.form-control {
+  height: 64px;
+}
+
+.swipe-btns {
+    position: absolute;
+    top: 0;
+    right: -1px;
+    bottom: 0;
+    display: flex;
+    transform: translate(100%, 0);
+}
+.swipe-btn {
+  width: 70px;
+  text-align: center;
+  background: red;
+  color: #fff;
+  height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.swiped {
+  transform: translateX(-70px);
+}

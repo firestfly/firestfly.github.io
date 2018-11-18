@@ -1,0 +1,60 @@
+<div common-search-bar data-hide-export-btn="true" data-show-standard-work-jobs="true" data-show-back-btn="true"
+     data-back-url="#/new-attendance"></div>
+<div class="container-fluid">
+    <div class="table-responsive row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover" ng-table="tableParams">
+                <tr>
+                    <th>姓名</th>
+                    <th>打卡照片</th>
+                    <th>签到时间</th>
+                    <th>岗位专业分类</th>
+                    <th>项目/部门</th>
+                    <th>资源编号</th>
+                    <th>操作</th>
+                </tr>
+                <tr ng-repeat="item in listData">
+                    <td ng-bind="item.name"></td>
+                    <td>
+                        <span class="photo-sign" ng-repeat="photo in item.photo"
+                              ng-click="openImagesModal($index, item.photo)">
+                            <img ng-src="{{ photo }}"/>
+                        </span>
+                    </td>
+                    <td ng-bind="item.signDatetime | date:'yyyy-MM-dd hh:mm:ss'"></td>
+                    <td ng-bind="item.workingGroups"></td>
+                    <td ng-bind="item.departments"></td>
+                    <td ng-bind="item.employeeId"></td>
+                    <td>
+                        <button class="link" ng-click="approval(item, 1)">通过</button>
+                        <span class="seperator">|</span>
+                        <button class="link" ng-click="approval(item, 0)">驳回</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div common-pagination></div>
+</div>
+
+<script type="text/ng-template" id="view-images-modal.html">
+    <div class="gallery-modal" id="gallery">
+        <a class="btn gallery-close" type="button" ng-click="ok()">&times;</a>
+        <div class="gallery-wrap">
+            <div class="gallery-control">
+                <a class="prev" ng-class="currentImageIndex == 0 ? 'disabled' : ''" ng-click="prev()"></a>
+                <a class="next" ng-class="currentImageIndex == photos.length - 1 ? 'disabled' : ''"
+                   ng-click="next()"></a>
+            </div>
+            <div class="gallery-preview">
+                <span ng-repeat="item in photos" class="gallery-preview-item"
+                      ng-class="currentImageIndex == $index ? 'active' : ''"></span>
+            </div>
+            <div class="gallery-current">
+                <img ng-src="{{ photos[currentImageIndex] }}"/>
+            </div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,204 @@
+<div class="container-fluid">
+    <div class="row vk-spaced-row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-bordered nowrap table-hover">
+                    <thead>
+                        <tr>
+                            <th>{{ attendanceDetails.attendanceLockName }}</th>
+                            <th>{{ attendanceDetails.companyName }}</th>
+                            <th>{{ attendanceDetails.departmentName }}</th>
+                            <th>{{ attendanceDetails.beginDate }}</th>
+                            <th>{{ attendanceDetails.endDate }}</th>
+                            <th>{{ attendanceDetails.status == '已定案' ? '定案日期：' + attendanceDetails.lockDate : attendanceDetails.status }}</th>
+                            <th ng-if="attendanceDetails.status == '未定案'"><button type="button" class="btn vk-btn-passion" ng-click="lock()">定案</button></th>
+                            <th ng-if="attendanceDetails.status == '已定案'"><button type="button" class="btn " disabled="disabled">已定案</button></th>
+                        </tr>
+                    </thead>
+                </table>
+                <form name="downloadFileForm" method="post" id="downloadFileForm">
+                    <input type="submit" name="submitBtn" id="submitBtn" style="display:none"/>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="my-tab">
+        <span ng-class="{'active': tab == 1}" class="tab-item" ng-click="switchTab(1)">关键加班数据</span>
+        <span ng-class="{'active': tab == 2}" class="tab-item" ng-click="switchTab(2)">加班明细</span>
+        <span ng-class="{'active': tab == 3}" class="tab-item" ng-click="switchTab(3)">请休假明细</span>
+        <span class="tab-item"><button type="button" ng-click="tab == 3 ? exportFile() : createModal()"
+                                       class="btn vk-btn-relax">导出</button><a class="btn btn-default"
+                                                                              href="#/attendance-lock">返回列表</a></span>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive" ng-if="tab == 1">
+                <table id="key-overtime-table" class="table table-bordered nowrap">
+                    <thead>
+                        <tr>
+                            <th width="12%"></th>
+                            <th width="24%"></th>
+                            <th>本考勤周期({{ attendanceCycle.first }})</th>
+                            <th>考勤周期({{ attendanceCycle.second }})</th>
+                            <th>考勤周期({{ attendanceCycle.third }})</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="item in keyOvertimeData">
+                        <tr>
+                            <td rowspan="4">{{ item.workJob }}</td>
+                            <td>工作日加班总时数（小时）</td>
+                            <td>{{ item.overtimeData.length > 0 ? item.overtimeData[0].workDayOvertime : '0.0' }}</td>
+                            <td>{{ item.overtimeData.length > 1 ? item.overtimeData[1].workDayOvertime : '0.0' }}</td>
+                            <td>{{ item.overtimeData.length > 2 ? item.overtimeData[2].workDayOvertime : '0.0' }}</td>
+                        </tr>
+                        <tr>
+                            <td>休息日加班总时数（小时）</td>
+                            <td>{{ item.overtimeData.length > 0 ? item.overtimeData[0].offDayOvertime : '0.0' }}</td>
+                            <td>{{ item.overtimeData.length > 1 ? item.overtimeData[1].offDayOvertime : '0.0' }}</td>
+                            <td>{{ item.overtimeData.length > 2 ? item.overtimeData[2].offDayOvertime : '0.0' }}</td>
+                        </tr>
+                        <tr>
+                            <td>法定节假日加班总时数（小时）</td>
+                            <td>{{ item.overtimeData.length > 0 ? item.overtimeData[0].holidayOvertime : '0.0' }}</td>
+                            <td>{{ item.overtimeData.length > 1 ? item.overtimeData[1].holidayOvertime : '0.0' }}</td>
+                            <td>{{ item.overtimeData.length > 2 ? item.overtimeData[2].holidayOvertime : '0.0' }}</td>
+                        </tr>
+                        <tr>
+                            <td>加班超过36小时的总人数</td>
+                            <td>{{ item.overtimeData.length > 0 ? item.overtimeData[0].overtimePeople : '0' }}</td>
+                            <td>{{ item.overtimeData.length > 1 ? item.overtimeData[1].overtimePeople : '0' }}</td>
+                            <td>{{ item.overtimeData.length > 2 ? item.overtimeData[2].overtimePeople : '0' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive" ng-if="tab == 2">
+                <table id="overtime-detail-table" class="table table-bordered nowrap">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">资源编号</th>
+                            <th rowspan="2">EHR编号</th>
+                            <th rowspan="2">员工姓名</th>
+                            <th rowspan="2">加班总时长<br>（小时）</th>
+                            <th colspan="3">加班时长（小时）</th>
+                            <th colspan="4">值班次数（次数）</th>
+                        </tr>
+                        <tr>
+                            <th>工作日加班</th>
+                            <th>休息日加班</th>
+                            <th>法定假日加班</th>
+                            <th>值班经理值班</th>
+                            <th>维修普通值班</th>
+                            <th>维修夜值</th>
+                            <th>其他夜值</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in overtimeDetails">
+                            <td>{{ item.employeeId }}</td>
+                            <td>{{ item.sapId }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.totalOvertime || '-' }}</td>
+                            <td>{{ item.workdayOvertimeDuration || '-' }}</td>
+                            <td>{{ item.offDayOvertimeDuration || '-' }}</td>
+                            <td>{{ item.holidayOvertimeDuration || '-' }}</td>
+                            <td>{{ item.managerDutyCount || '-' }}</td>
+                            <td>{{ item.repairGeneralCount || '-' }}</td>
+                            <td>{{ item.repairNightCount || '-' }}</td>
+                            <td>{{ item.otherNightCount || '-'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive" ng-if="tab == 3">
+                <table id="holiday-detail-table" class="table table-bordered nowrap">
+                    <thead>
+                        <tr>
+                            <th>资源编号</th>
+                            <th>EHR编号</th>
+                            <th>员工姓名</th>
+                            <th>月休</th>
+                            <th>调休假</th>
+                            <th>法定年休假</th>
+                            <th>额外带薪年休假</th>
+                            <th>结转年休假</th>
+                            <th>婚假</th>
+                            <th>丧假</th>
+                            <th>产假</th>
+                            <th>护理假</th>
+                            <th>节育假</th>
+                            <th>计划生育假</th>
+                            <th>普通病假或医疗期外</th>
+                            <th>法定病假医疗期</th>
+                            <th>法定工伤医疗期</th>
+                            <th>事假</th>
+                            <th>其他带薪假</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in holidayDetails">
+                            <td>{{ item.employeeId }}</td>
+                            <td>{{ item.sapId }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.alterNateDuration || '-' }}</td>
+                            <td>{{ item.adjustableDuration || '-' }}</td>
+                            <td>{{ item.statutoryAnnualDuration || '-' }}</td>
+                            <td>{{ item.annualPayDuration || '-' }}</td>
+                            <td>{{ item.carryOverDuration || '-' }}</td>
+                            <td>{{ item.marriageDuration || '-' }}</td>
+                            <td>{{ item.funeralDuration || '-' }}</td>
+                            <td>{{ item.maternityDuration || '-' }}</td>
+                            <td>{{ item.nursingDuration || '-' }}</td>
+                            <td>{{ item.contraceptionDuration || '-' }}</td>
+                            <td>{{ item.familyPlanningDuration || '-' }}</td>
+                            <td>{{ item.ordinarySickDuration || '-' }}</td>
+                            <td>{{ item.statutorySickDuration || '-' }}</td>
+                            <td>{{ item.industrialInjuryDuration || '-' }}</td>
+                            <td>{{ item.privateAffairDuration || '-' }}</td>
+                            <td>{{ item.otherPayDuration || '-' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div ng-if="tab == 2 || tab == 3" class="row paginate" style="margin-top: 20px;">
+        <div class="col-md-3" style="padding-left:20px; font-weight: bold;">
+            每页显示 <select ng-model="pageSize" name="pageSize" 
+                ng-change="changePageSize()" 
+                ng-options="o as o for o in pageSizes">
+            </select> 条
+        </div>
+        <div class="col-md-2" ng-show="pageCount()<=1"></div>
+        <div class="col-md-offset-3 col-md-2">
+            第 <span id="currentPage" ng-bind="currentPage()"></span> 页 / 共 <span ng-bind="pageCount()"></span> 页
+        </div>
+        <div class="col-md-2" ng-hide="pageCount()<=1">
+            跳转第 <select ng-model="selectedPage" name="currentPage"
+                ng-change="reload()"
+                ng-options="o as o for o in pages">
+            </select> 页
+        </div>
+        <div class="col-md-2" ng-hide="pageCount()<=1">
+            <button class="paginate_button previous" ng-click="prevPage()" ng-disabled="currentPage<=1">
+                上一页
+            </button>
+            <button class="paginate_button next" ng-click="nextPage()">
+                下一页
+            </button>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="exportOvertimeAttendance.html">
+    <div class="modal-header">
+        <strong class="modal-title">确认导出</strong>
+    </div>
+    <div class="modal-body">
+        <p>将导出考勤周期为{{ beginDate }}-{{ endDate }}的{{ label }}数据，是否确认导出？</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn vk-btn-default" type="button" ng-click="exportFile()">确认</button>
+        <button class="btn vk-btn-passion" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>

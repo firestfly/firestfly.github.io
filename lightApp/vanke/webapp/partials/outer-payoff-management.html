@@ -1,0 +1,158 @@
+<div class="container-fluid">
+    <div class="row vk-spaced-row">
+        <div id="outer-payoff-management" class="search-in-right">
+            <div data-common-search-bar data-week-range="true" data-hide-export-btn="true"
+                 data-hide-groups="true" data-hide-date-range="true" data-auto-check-department="true"
+                 data-hide-search-input="true" data-show-department-search-input-row-one="true"></div>
+        </div>
+    </div>
+    <div class="table-responsive row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover" ng-table="tableParams">
+                <tr>
+                    <th rowspan="2">部门名称</th>
+                    <th rowspan="2">所属公司</th>
+                    <th rowspan="2">所属城市</th>
+                    <th colspan="2">非万科编制人员发薪范围</th>
+                    <th rowspan="2">操作</th>
+                    <th rowspan="2">操作人</th>
+                    <th rowspan="2">更新时间</th>
+                </tr>
+                <tr>
+                    <th>是否发薪</th>
+                    <th>范围</th>
+                </tr>
+                <tr ng-if="!searchResult">
+                    <td colspan="9">数据加载中...</td>
+                </tr>
+                <tr ng-if="searchResult.length == 0">
+                    <td colspan="9">暂无数据，请重新选择部门查询</td>
+                </tr>
+                <tr ng-repeat="item in searchResult">
+                    <td>
+                        <span ng-bind="item.departmentName"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="item.companyName"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="item.cityName"></span>
+                    </td>
+                    <td>
+                        <span editable-radiolist="item.payoff" e-form="rowForm" e-required
+                              e-name="payoff" e-ng-options="s.id as s.value for s in isPayoff"
+                              e-ng-click="showRangeColumn($data, item)"
+                              ng-bind="isPayoff[item.payoff == 1 ? 0 : 1].value">
+                        </span>
+                    </td>
+                    <td>
+                        <span ng-show="item.payoff == 0" ng-bind="'-'"></span>
+                        <div ng-show="item.payoff == 1">
+                            <span ng-show="!rowForm.$visible">
+                                <span ng-show="item.range == 0">全部</span>
+                                <span ng-show="item.range == 2">排除以下：</span>
+                                <a ng-show="item.range == 1 || item.range ==2" ng-click="viewRangeList(item)">{{ displayRange(item) }}</a>
+                            </span>
+                            <span editable-radiolist="item.range" e-form="rowForm" e-required
+                                  e-name="range" e-ng-options="s.id as s.value for s in payoffRanges"
+                                  e-ng-click="showStaffSelectColumn($data, item)">
+                            </span>
+                            <div ng-hide="!item.range || item.range == 'null' || item.range == 0">
+                                <span editable-select="item.payoffList" e-form="rowForm"
+                                      e-data-none-selected-text="请选择" e-name="payoffList"
+                                      e-ng-options="s.employeeId as (s.name + '(' + s.sapId + ') ' + s.workJobName) for s in staffList[item.departmentId] track by s.employeeId"
+                                      e-data-selected-text-format="count" e-multiple="true"
+                                      onshow="showSelectpicker(item.departmentId, item)"
+                                      e-ng-change="changePayoffRange($data, item)">
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <form editable-form name="rowForm"
+                              ng-show="rowForm.$visible" class="form-buttons form-inline">
+                            <button class="link" type="button" ng-disabled="rowForm.$waiting"
+                                    ng-click="save(item, rowForm)">
+                                保存
+                            </button>
+                            <span class="seperator">|</span>
+                            <button class="link" type="button" ng-disabled="rowForm.$waiting"
+                                    ng-click="cancel(item, rowForm)">
+                                取消
+                            </button>
+                        </form>
+                        <div class="buttons" ng-show="!rowForm.$visible">
+                            <button ng-hide="!item.range || item.range == 'null' || item.range == 0" class="link"
+                                    type="button" ng-click="viewRangeList(item)">
+                                查看详情
+                            </button>
+                            <span class="seperator"
+                                  ng-hide="!item.range || item.range == 'null' || item.range == 0">|</span>
+                            <button class="link" type="button" ng-click="rowForm.$show()">
+                                修改
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        <span ng-bind="item.operator || '-'"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="item.updateTime || '-'"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div common-pagination></div>
+</div>
+
+<script type="text/ng-template" id="outer-payoff-modal.html">
+    <div class="modal-body">
+        {{ data.message }}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">确定</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="outer-payoff-list-Modal.html">
+    <div class="modal-body">
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-3">
+                <div class="right-inner-addon">
+                    <input class="form-control" type="search"
+                           ng-keydown="searchFromEnterKey($event)" placeholder="搜索..."
+                           ng-model="keywords">
+                    <i class="fa fa-search"></i>
+                </div>
+            </div>
+            <div class="col-md-3 fr" id="button-group" ng-hide="hideOptBtn" ng-class="{'vk-m-t-38':isFirstRow}">
+                <div class="pull-right vk-nowrap">
+                    <button type="button" class="btn vk-btn-empty" ng-click="clear()">清除条件</button>
+                    <button type="button" ng-click="search()" class="btn btn-primary">查询</button>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>员工姓名</th>
+                <th>EHR编号</th>
+                <th>职位</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in data">
+                <td ng-bind="item.name"></td>
+                <td ng-bind="item.sapId"></td>
+                <td ng-bind="item.workJobName"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">确定</button>
+    </div>
+</script>

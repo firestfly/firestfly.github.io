@@ -1,0 +1,213 @@
+@charset "UTF-8";
+//-----------------------------------------------------
+// Mixin
+//-----------------------------------------------------
+// 闭合子元素的浮动
+@mixin clearfix {
+  &:before,
+  &:after {
+    content: "";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+//正文内容排版
+@mixin article-entry {
+  div, p, h1, h2, h3, h4, h5, h6, ul, ol, img, table {
+    margin-bottom: rem(15px);
+  }
+  ul {
+    padding-left: rem(40px);
+    list-style: disc;
+  }
+  table {
+    border-width: 1px;
+    border-color: #ccc;
+    border-collapse: collapse;
+    width: 100%;
+    th {
+      border-width: 1px;
+      padding: 5px;
+      border-style: solid;
+      border-color: #ccc;
+      background-color: #dedede;
+      text-align: left;
+    }
+    td {
+      border-width: 1px;
+      padding: 5px;
+      border-style: solid;
+      border-color: #ccc;
+      background-color: #ffffff;
+    }
+  }
+}
+
+// 绝对定位，执行顺序 ‘上’ ‘右’ ‘下’ ‘左’
+@mixin posa($top: null,$right: null,$bottom: null,$left: null) {
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+  position: absolute;
+}
+
+// 文字超出文本宽度，用省略号代替
+@mixin ellipsis($n) {
+  overflow: hidden;
+  @if $n == 1 {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $n;
+    -webkit-box-orient: vertical;
+  }
+
+}
+
+// 上下垂直居中 --（H）垂直局长
+@mixin just-center($way:null) {
+  position: absolute;
+  @if $way == h {
+    top: 50%;
+    transform: translate(0, -50%);
+  } @else {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+// 1px hack 圆角 + 单线
+@mixin border-radius($borderColor: $border-color,$borderRadius: $border-radius-base) {
+  border: 1px solid $borderColor;
+  border-radius: $borderRadius;
+  @media screen and (-webkit-min-device-pixel-ratio: 2) {
+    position: relative;
+    border: 0;
+    &:before {
+      content: "";
+      width: 200%;
+      height: 200%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: 1px solid $borderColor;
+      transform: scale(.5);
+      transform-origin: 0 0;
+      padding: 1px;
+      border-radius: 2*$borderRadius;
+      pointer-events: none;
+    }
+  }
+}
+
+//
+@mixin device($res) {
+  @media screen and (-webkit-min-device-pixel-ratio: $res) {
+    @content;
+  }
+}
+
+@mixin ui-border($pos,$color: $border-color) {
+  @if $pos == tb {
+    border-top: 1px solid $color;
+    border-bottom: 1px solid $color;
+  } @else {
+    border-#{$pos}: 1px solid $color;
+  }
+
+  @include device(2) {
+    @if $pos == top {
+      border-#{$pos}: 0;
+      background-repeat: repeat-x;
+      background-size: 100% 1px;
+      background-position: left top;
+      background-image: border-t-color($color);
+
+    } @else if $pos == bottom {
+      border-#{$pos}: 0;
+      background-repeat: repeat-x;
+      -webkit-background-size: 100% 1px;
+      background-position: left bottom;
+      background-image: border-b-color($color);
+
+    } @else if $pos == left {
+      border-#{$pos}: 0;
+      background-position: left top;
+      background-image: border-l-color($color);
+      background-repeat: repeat-y;
+      background-size: 1px 100%;
+    } @else if $pos == right {
+      border-#{$pos}: 0;
+      background-position: right top;
+      background-image: border-r-color($color);
+      background-repeat: repeat-y;
+      background-size: 1px 100%;
+    } @else if $pos == tb {
+      border: 0;
+      background-repeat: repeat-x;
+      background-size: 100% 1px;
+      background-image: border-t-color($color), border-b-color($color);
+      background-position: top, bottom;
+    }
+  }
+}
+
+// 头像
+@mixin avatar($size) {
+  width: rem($size);
+  height: rem($size);
+  border-radius: 100%;
+  overflow: hidden;
+  & > span {
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 100%;
+  }
+
+}
+
+// flex-box  等分布局
+@mixin flexbox($child,$pos: null) {
+  display: flex;
+  width: 100%;
+  #{$child} {
+    flex: 1;
+    display: block;
+    text-align: $pos;
+  }
+}
+
+// 伪元素
+@mixin after($content: null) {
+  &:after {
+    display: block;
+    position: absolute;
+    content: "#{$content}";
+    @content;
+  }
+}
+
+@mixin before($content: null) {
+  &:after {
+    display: block;
+    position: absolute;
+    content: "#{$content}";
+    @content;
+  }
+}
+
+// size
+@mixin size($valuea,$valueb) {
+  width: $valuea/ 40px *1rem;
+  height: $valueb/ 40px *1rem;
+}

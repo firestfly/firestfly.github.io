@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="yes"/>
+    <title>500页面</title>
+    <style>
+      @charset "utf-8";
+      * {
+        box-sizing: border-box;
+      }
+
+      *:before, *:after {
+        box-sizing: border-box;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        line-height: 1;
+      }
+
+      body {
+        position: relative;
+        font-family: -apple-system-font, Helvetica Neue, Helvetica, "Microsoft Yahei", STHeiTi, monospace;
+        font-size: 14px;
+        color: #999;
+      }
+      .tc {
+        text-align: center
+      }
+      .content {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      .box {
+        display: -webkit-flex;
+        display: flex;
+      }
+      .bf1 {
+        -webkit-flex: 1;
+        flex: 1;
+      }
+      a {
+        text-decoration: none;
+        color: #666;
+        display: inline-block;
+      }
+      .bgimg img {
+        width: 100%;
+        height: auto;
+      }
+      .tips {
+        color: #666;
+        font-size: .4rem;
+        text-align: center;
+        line-height: 2;
+      }
+      .tips img {
+        max-width: 100%;
+      }
+      .tr {
+        text-align: right;
+      }
+    </style>
+    <!-- endbuild -->
+    <script>
+        !function (n) {
+            var e = n.document, t = e.documentElement, i = 750, d = i / 75, o = "orientationchange"in n ? "orientationchange" : "resize", a = function () {
+                var n = t.clientWidth || 320;
+                n > 540 && (n = 540), t.style.fontSize = n / d + "px"
+            };
+            e.addEventListener && (n.addEventListener(o, a, !1), e.addEventListener("DOMContentLoaded", a, !1))
+        }(window);
+    </script>
+    <script>
+    </script>
+</head>
+<body>
+  <div class="content">
+    <div class="bgimg tc"><img src="http://owlcdn.vankeservice.com/static/rm/error-500.png" alt=""></div>
+    <div class="tips box">
+      <div class="bf1">张工：<a href="tel:18038066858">18038066858</a></div>
+      <div class="bf1">李工：<a href="tel:13243747617">13243747617</a></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<div class="container-flex vk-employee-container" id="welcome-container">
+    <div class="flex-start">
+        <div class="row welcome-header">
+            <div class="col-md-12">
+                <h2>你好，{{ loginUserEmployee.name || '亲爱的用户' }}</h2>
+                <h4>欢迎访问万科物业资源管理系统</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 welcome-body">
+                <div class="row welcome-profile-title">
+                    <h4><i class="fa fa-user-circle-o"></i>个人信息</h4>
+                </div>
+                <div class="row welcome-profile-list">
+                    <p>EHR编号：<span ng-bind="loginUserEmployee.originalSapId || '无'"></span></p>
+                    <p>昵 称：<span ng-bind="loginUserEmployee.nickname || '无'"></span></p>
+                    <p>手机号码：<span ng-bind="loginUserEmployee.mobileNumber || '无'"></span></p>
+                    <p>固定电话：<span ng-bind="loginUserEmployee.telephoneNumber || '无'"></span></p>
+                    <p>公 司：<span ng-bind="loginUserEmployee.company.company_name || '无'"></span></p>
+                    <p>部 门：<span ng-bind="loginUserEmployee.department.department_name || '无'"></span></p>
+                </div>
+            </div>
+            <faq></faq>
+        </div>
+    </div>
+    <div class="bot-mail">
+        还有疑问？请邮件RM运维团队。邮箱地址：<a href="mailto:rm.feedback@vanke.com">rm.feedback@vanke.com</a>
+    </div>
+</div>

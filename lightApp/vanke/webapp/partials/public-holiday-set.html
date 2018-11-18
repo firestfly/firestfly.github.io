@@ -1,0 +1,127 @@
+<div id="public-holiday-container" class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-condensed">
+                    <tr>
+                        <th>假期名</th>
+                        <th>假期日期</th>
+                        <th>是否为地域性节假日</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr>
+                        <td style="width: 20%;">
+                            <span editable-text="day.name" e-form="rowForm" e-required ng-bind="day.name" e-ng-change="updateName($data, day)">
+                            </span>
+                        </td>
+                        <td>
+                            <ul class="holiday-rule">
+                                <li>
+                                    <span class="period">法定节假日</span>
+                                    <span class="start-date" editable-datetime="day.startDate"
+                                        e-form="rowForm" e-required
+                                        e-ng-click="openDatePicker(day.startDatePicker)"
+                                        e-datepicker-popup="yyyy-MM-dd"
+                                        e-is-open="day.startDatePicker.opened"
+                                        e-show-weeks="false" e-ng-change="updateDate($data, day, 'startDate')"
+                                        ng-bind="day.startDate | date:'yyyy-MM-dd'">
+                                    </span>
+                                    <span class="pipeline">至</span>
+                                    <span ng-hide="day.startDate == day.endDate" class="end-date" editable-datetime="day.endDate"
+                                        e-form="rowForm" e-required
+                                        e-ng-click="openDatePicker(day.endDatePicker)"
+                                        e-datepicker-popup="yyyy-MM-dd"
+                                        e-is-open="day.endDatePicker.opened"
+                                        e-show-weeks="false" e-ng-change="updateDate($data, day, 'endDate')"
+                                        ng-bind="day.endDate | date:'yyyy-MM-dd'">
+                                    </span>
+                                </li>
+                                <li ng-repeat="period in day.periods">
+                                    <span class="period" editable-select="period.type" e-form="rowForm"
+                                          e-ng-options="p.id as p.name for p in periods"
+                                          e-ng-change="updateType($data, period)"
+                                          e-required ng-bind="periods[period.type].name">
+                                        
+                                    </span>
+                                    <span class="start-date" editable-datetime="period.startDate"
+                                        e-form="rowForm" e-required
+                                        e-ng-click="openDatePicker(period.startDatePicker)"
+                                        e-datepicker-popup="yyyy-MM-dd"
+                                        e-is-open="period.startDatePicker.opened"
+                                        e-show-weeks="false" e-ng-change="updateDate($data, period, 'startDate')"
+                                        ng-bind="period.startDate | date:'yyyy-MM-dd'">
+                                    </span>
+                                    <span class="pipeline">至</span>
+                                    <span ng-hide="period.startDate == period.endDate" class="end-date" editable-datetime="period.endDate"
+                                        e-form="rowForm" e-required
+                                        e-ng-click="openDatePicker(period.endDatePicker)"
+                                        e-datepicker-popup="yyyy-MM-dd"
+                                        e-is-open="period.endDatePicker.opened"
+                                        e-show-weeks="false" e-ng-change="updateDate($data, period, 'endDate')"
+                                        ng-bind="period.endDate | date:'yyyy-MM-dd'">
+                                    </span>
+                                </li>
+                            </ul>
+                            <div ng-show="rowForm.$visible" class="btn-action">
+                                <button class="btn btn-primary" ng-click="addHolidayRule(day)">新增相应调班规则</button>
+                                <button class="btn vk-btn-empty" ng-click="deletePrevRule(day)">删除上一条规则</button>
+                            </div>
+                        </td>
+                        <td>
+                            <span style="width: 60px;" e-form="rowForm" e-name="specialHoliday" e-required
+                                  editable-select="day.specialHoliday || specialHoliday[0].value"
+                                  e-ng-options="s.value as s.text for s in specialHoliday"
+                                  e-ng-change="isSpecialHoliday($data, day)">
+                            </span>
+                        </td>
+                        <td style="white-space: nowrap;width: 20%;">
+                            <form ng-show="rowForm.$visible" editable-form name="rowForm"
+                                  class="form-buttons form-inline"
+                                  shown="true">
+                                <a href="javascript:;" ng-show="rowForm.$visible" e-form="rowForm"
+                                   ng-disabled="rowForm.$waiting" type="save" ng-click="saveItem(day)">保存</a>
+                                <a href="#/public-holiday" ng-show="rowForm.$visible">返回列表</a>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="public-holiday-detail" ng-show="showApplyDepartments">
+        <h3>适用项目</h3>
+        <div class="container-fluid vk-container authority-container" organizations-scroll>
+            <div class="row vk-spaced-row">
+                <div class="col-xs-8 col-md-5">
+                    <div class="right-inner-addon">
+                        <i class="fa fa-search"></i>
+                        <input class="auth-search form-control" type="search" placeholder="输入多选框组一级标题进行筛选"
+                               ng-model="keywords">
+                    </div>
+                </div>
+                <div class="col-xs-4 col-md-7">
+                    <button class="btn vk-btn-health" ng-click="search()">筛 选</button>
+                </div>
+            </div>
+            <div class="auth-org-list">
+                <div data-common-checkbox-group
+                     ng-repeat="company in organizations | limitTo: organizationsLenLimit track by $index"
+                     checkbox-group-data="company.departments" checkbox-group-title="company.company_name"
+                     checkbox-type="checkboxType" checkbox-config="checkboxConfig"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="public-holiday-dialog.html">
+    <div class="modal-header">
+        <h3 class="modal-title"></h3>
+    </div>
+    <alert type="">
+        <div ng-repeat="message in data.messages">{{message}}</div>
+    </alert>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()" ng-show="!data.noCancelButton">取消</button>
+    </div>
+</script>

@@ -1,0 +1,42 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:config/${spring.profiles.active}/db.properties"
+                                  ignore-unresolvable="true"/>
+
+    <bean id="lebangDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${db.lebang.driver}"/>
+        <property name="url" value="${db.lebang.url}"/>
+        <property name="username" value="${db.lebang.username}"/>
+        <property name="password" value="${db.lebang.password}"/>
+    </bean>
+
+    <bean id="lebangEntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="lebangDataSource"/>
+        <property name="packagesToScan" value="com.vanke.vkrms.lebang.model"/>
+        <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml"/>
+        <property name="persistenceUnitName" value="lebang"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="databasePlatform" value="org.hibernate.dialect.MySQL5Dialect"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="lebangTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="lebangEntityManagerFactory"/>
+    </bean>
+
+    <jpa:repositories base-package="com.vanke.vkrms.lebang.repository"
+                      entity-manager-factory-ref="lebangEntityManagerFactory"
+                      repository-impl-postfix="Impl"/>
+
+</beans>

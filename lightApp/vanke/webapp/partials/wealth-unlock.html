@@ -1,0 +1,42 @@
+<div class="container-fluid authority-container">
+    <div class="row">
+        <div data-common-search-bar data-show-lock-status="true" data-week-range="true" data-hide-export-btn="true"
+             data-hide-groups="true" data-hide-date-range="true" data-operation-buttons="operation-buttons"></div>
+    </div>
+    <div class="operation-buttons">
+        <button type="button" ng-click="unlock()" class="btn vk-btn-default">解定案</button>
+    </div>
+    <div class="table-responsive">
+        <table id="wealth-lock-collect-table" class="table table-bordered nowrap table-hover">
+            <thead>
+            <tr>
+                <th></th>
+                <th>定案名称</th>
+                <th>公司</th>
+                <th>部门</th>
+                <th>定案时间</th>
+                <th>开始日期</th>
+                <th>截止日期</th>
+                <th>状态/操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="project in projects">
+                <td><input type="checkbox" ng-model="project.checked" data-project="{{ project }}"
+                           ng-disabled="{{ project.lockStatus == 'unlock'}}"/></td>
+                <td class="vk-nowrap">{{ project.wealthLockName }}</td>
+                <td class="vk-nowrap">{{ project.companyName }}</td>
+                <td class="vk-nowrap">{{ project.departmentName }}</td>
+                <td class="vk-nowrap">{{ project.lockTime }}</td>
+                <td class="vk-nowrap">{{ project.startDate }}</td>
+                <td class="vk-nowrap">{{ project.endDate }}</td>
+                <td class="vk-nowrap">{{ project.lockStatus == 'lock' ? '已定案' : '未定案' }}</td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div common-pagination></div>
+</div>

@@ -1,0 +1,311 @@
+@import "./styl/config"
+@import "./styl/base"
+@import "./styl/border"
+@import "./styl/mixins"
+@import "./styl/fonts"
+@import "./styl/cell"
+@import "./styl/base"
+@import "./styl/angular-pickadate"
+//  page-bar
+
+html
+body
+  height: 100%;
+
+body
+  line-height: 1.5
+  color rgb(102 102 102)
+  height 100%;
+  background-color rgb(227, 230, 228)
+
+
+div, a
+  -webkit-tap-highlight-color rgba(0, 0, 0, 0)
+a
+  text-decoration: none
+  color base-text-color
+
+a:active
+  text-decoration: none
+
+.app, .app-body
+  height: 100%
+  overflow: hidden
+
+.app-content
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+
+.app-body
+  padding-top: px2rem(95)
+
+.scrollable
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+.scrollable-content
+  /*width: 100%;
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;*/
+
+.page-navbar
+  height page-title-height
+  line-height: page-title-height
+  position: absolute;
+  z-index: 1000;
+  top 0
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: rgb(46, 46, 51);
+  color #fff;
+  .navbar-brand-center
+    position: absolute
+    height: page-title-height
+    text-align: center
+    width 100%;
+    left 0
+    top: 0
+    font-size: px2rem(32)
+    color #fff;
+
+.left-icon, .right-icon
+  position: absolute
+  top 0
+  height page-title-height
+  padding: 0 default-inner
+
+.left-icon
+  left 0;
+
+.right-icon
+  right 0
+  color #fff
+.page-bar
+  padding: px2rem(30px) default-inner
+  background-color: #fff
+  margin-bottom: px2rem(20px)
+  .left-area, .right-area
+    position: relative
+    line-height px2rem(110)
+    font-size: px2rem(32)
+    color rgb(151, 151, 153)
+    &.color-disabled
+      color rgb(227 230 228)
+  .left-area
+    float: left
+  .right-area
+    float: right
+    text-align: right
+  .title-area
+    text-align: center
+    .title-head
+      font-size: 12px
+      color #979799
+      margin 0
+
+.bar-arrow
+  display: inline-block
+  position: relative
+  vertical-align: middle;
+  margin-top: -2px;
+  arrow(2px)
+  &.arrow-left
+    transform rotate(45deg)
+  &.arrow-right
+    transform rotate(-135deg)
+  &.arrow-down
+    transform rotate(-45deg)
+
+.title-area-radius
+  -webkit-border-radius 1.2rem
+  border: 1px solid border-color
+  text-align: center
+  display: inline-block
+  padding 0 px2rem(30)
+  min-width px2rem(320)
+  &.large .title-centent-text
+    height px2rem(130)
+    h3
+      font-size: px2rem(75);
+      .unit
+        font-size: px2rem(28)
+  .title-centent-text
+    display flex
+    align-items center
+    align-content center
+    justify-content center
+    height px2rem(110)
+    position relative
+    h3
+      margin 0
+      color themes-color
+      font-size: px2rem(32px);
+      font-weight: normal
+    p
+      margin 0;
+      font-size: 12px
+      color: #ccc
+    input
+      position absolute
+      width: 100%;
+      height 100%;
+      left 0
+      top 0
+      background-color transparent
+      border none
+      color transparent
+      &:focus
+        outline none;
+
+.choose-week-arrow
+  arrow(1px, 10px);
+  display: inline-block
+  position: relative
+  vertical-align top
+  color #ccc
+  transform rotate(-45deg)
+  margin-top 3px;
+  margin-left 5px
+
+.map-pin
+  width 18px
+  height 16px
+  background url(../images/map-pin.png) no-repeat
+  background-size auto 100%
+  display inline-block
+  vertical-align: top
+
+.nav-close {
+  position: relative;
+  width: px2rem(36)
+  height: px2rem(36)
+  background-image: url('../images/close.png');
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  background-size: 100% 100%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.nav-back {
+  display: inline-block;
+  position: relative;
+  top: 7px;
+  width: 12px;
+  height: 24px;
+  background-image: url('../images/back.png');
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  background-size: 100% 100%;
+}
+
+.nav-calendar {
+  display: inline-block;
+  position: relative;
+  top: 7px;
+  width: 25px;
+  height: 25px;
+  background-image: url('../images/calendar.png');
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  background-size: 100% 100%;
+}
+
+
+.cell-line:before
+  content: "";
+  position: absolute
+  left: .4rem;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: #ddd;
+
+.invalid-sheet
+  color: color-red;
+  border: 1px solid color-red;
+  padding: 2px 1px;
+  font-size: 14px;
+  vertical-align: middle;
+  margin-left: 7px;
+  border-radius: 4px;
+
+.modal-box
+  display: none
+  &.active
+    display block
+
+.modal-backdrop
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: rgba(0, 0, 0, .5)
+
+.modal-dialog
+  background-color #fff;
+  position: fixed
+  z-index 1050;
+  top: 50%;
+  left 50%;
+  width 70%;
+  transform translate(-50%, -50%)
+  box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+  -webkit-border-radius 2px
+  .modal-header
+    padding 5px default-inner
+    background-color #f9f9f9
+    h3
+      margin 0;
+      font-weight: 400
+  .modal-body
+    padding default-inner
+  .modal-footer
+    padding 5px default-inner
+    text-align: right
+    background-color #f9f9f9
+
+.list-label
+  margin-bottom: 10px
+  span
+    font-size: 12px
+    color rgb(151 151 153)
+
+.list-label-input
+  input
+    width 100%;
+    height px2rem(74)
+    line-height px2rem(74)
+    appearance none
+    border: 1px solid #eee;
+    padding 4px;
+
+.show-alert
+  background-color #f2dede;
+  color #a94442
+  padding 10px
+  border-radius 3px;
+  position: relative
+  .close
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color #CE9392;
+    text-shadow: 0 1px 0 #fff;
+    position: absolute
+    right 15px
+
+@import "./styl/wifi"
+@import "./styl/schedule"

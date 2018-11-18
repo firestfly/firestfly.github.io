@@ -1,0 +1,318 @@
+<div id="schedule-container" class="vk-schedule-container container-fluid">
+    <div class="row">
+    <div data-common-search-bar data-search-notification="请选择筛选条件后查询" data-show-schedule-status="true"
+         data-show-standard-work-jobs="true" data-hide-export-btn="false" class="vk-common-search"
+         data-show-job-status="true"></div>
+    <section class="vk-schedule-body">
+        <div class="vk-flex-row">
+            <button type="button" class="btn btn-info" ng-click="sps.linkFastSchedule()" ng-if="!editState">快速排班
+            </button>
+            <button type="button" class="btn btn-primary" ng-click="sps.editSchedule()" ng-if="!editState">排班
+            </button>
+            <button type="button" class="btn vk-btn-default" ng-click="sps.okSchedule()"
+                    ng-if="editState">完成
+            </button>
+            <button type="button" class="btn btn-default" ng-if="editState && !sps.copyState"
+                    ng-click="sps.scheduleCopy()">
+                复制所选列
+            </button>
+            <button type="button" class="btn btn-primary vk-btn-passion" ng-if="sps.copyState"
+                    ng-click="sps.saveSchedule('all')"
+                    ng-if="editState">保存复制
+            </button>
+            <button type="button" class="btn vk-btn-relax" ng-if="sps.copyState" ng-click="sps.cancelEditSchedule()"
+                    ng-if="editState">放弃复制
+            </button>
+        </div>
+        <div ui-grid="gridOptions" ui-if="gridOptions.data.length>0" id="grid1" class="schedule-grid" ui-grid-pinning
+             ui-grid-selection></div>
+        <div id="schedule-table" class="vk-schedule-table">
+
+            <div class="super-schedule-model" ng-show="sps.modelState" drag>
+                <div class="model-close" ng-click="sps.closeModel()"></div>
+                <div class="super-schedule-alert" drag-handle ng-class="{'active': sps.toastState}">
+                    <span>{{sps.toast ? '提示：' + sps.toast : '' }}&nbsp;</span></div>
+                <div ng-show="sps.loadingDate" class="white-bg">
+                    <div class="super-schedule-model-bar">
+                        <span class="icon-time"></span><span class="fixed-width-info">{{sps.showTable.datetime}}</span>
+                        <span class="icon-no"></span><span
+                            class="fixed-width-info">{{sps.showTable.employeeId}}</span>
+                        <span class="icon-user"></span><span class="fixed-width-name">{{sps.showTable.name}}</span>
+                        <span class="icon-member"></span>{{sps.showTable.member}}<span class="icon-ex"></span>{{sps.showTable.experience}}
+                    </div>
+                    <div class="super-schedule-shift-state">
+                        <div class="shift-state-list" ng-repeat="regularShift in sps.modelActiveShift.regularSchedules"
+                             ng-if="regularShift.operationState != 'delete'">
+                            <div class="line-schedule"
+                                 ng-class="{'on': $index == sps.currentLineShiftNo}"
+                                 ng-click="sps.editLineSchedule(regularShift,$index)">
+                                <span class="schedule-model-show-label post-short-name">{{regularShift.postShortName}}</span>
+                                <span class="schedule-model-show-label"><b ng-if="sps.onHolidayRest">加班:</b>{{regularShift.before ? regularShift.before + '+': ''}} {{regularShift.relatedShift ? regularShift.label + '+' + regularShift.relatedShift.label : regularShift.label }} {{regularShift.after ? '+' + regularShift.after: ''}}</span>
+                                <span class="schedule-model-show-label">{{regularShift.onDutyTime | limitTo: 5}} - {{regularShift.relatedOffDutyTime || regularShift.offDutyTime | limitTo: 5}} {{isShowAdjustTime(regularShift)}}</span>
+                            </div>
+                            <span class="fr del" ng-click="sps.delLineShift(regularShift,$index)"></span>
+                        </div>
+                        <div class="shift-state-list"
+                             ng-repeat="overtime in sps.modelActiveShift.overtimeSchedules"
+                             ng-if="overtime.flag != 'extend'" ng-show="overtime.operationState != 'delete'">
+                            <div class="line-schedule" ng-class="{'on': sps.currentLineOvertimeNo == $index}"
+                                 ng-click="sps.editLineOvertime(overtime,$index)">
+                                <span class="schedule-model-show-label" ng-if="overtime.status != 0">{{overtime.postShortName}}</span>
+                                <span class="schedule-model-show-label">{{overtime.label || "加班"}} <i class="label-app"
+                                                                                                      ng-if="overtime.status == 0">app</i></span>
+                                <span class="schedule-model-show-label">{{overtime.overtimeBeginTime | limitTo: 5}}-{{overtime.overtimeEndTime | limitTo: 5}}</span>
+                            </div>
+                            <span class="fr del" ng-click="sps.delLineOvertime($index, overtime.status)"></span>
+                        </div>
+                        <div class="shift-state-list" ng-repeat="holiday in sps.modelActiveShift.holidaySchedules"
+                             ng-if="holiday.operationState != 'delete'">
+                            <div class="line-schedule" ng-class="{'on': holiday.active == 'on'}"
+                                 ng-click="sps.editLineHoliday(holiday,$index)">
+                                <span class="schedule-model-show-label">{{holiday.type | holidayTypeFilter}}<i
+                                        class="label-app"
+                                        ng-if="holiday.status == 0">app</i></span>
+                                <span class="schedule-model-show-label">{{holiday.holidayBeginTime | limitTo: 5}}-{{holiday.holidayEndTime | limitTo: 5}}</span>
+                                <span class="schedule-model-show-label" ng-if="holiday.holidayType == 1">整班次休假</span>
+                                <span class="schedule-model-show-label" ng-if="holiday.holidayType == 2">前半班次休假</span>
+                                <span class="schedule-model-show-label" ng-if="holiday.holidayType == 3">后半班次休假</span>
+                            </div>
+                            <span class="fr del" ng-click="sps.delLineHoliday($index, holiday)"></span>
+                        </div>
+                        <div class="shift-state-list" ng-repeat="goOut in sps.modelActiveShift.goOutSchedules"
+                             ng-if="goOut.operationState != 'delete'">
+                            <div class="line-schedule" ng-class="{'on': sps.currentLineGoOutNo ==$index}"
+                                 ng-click="sps.editLineGoOut(goOut,$index)">
+                                <span class="schedule-model-show-label">{{goOut.type | holidayTypeFilter}}</span>
+                                <span class="schedule-model-show-label">{{goOut.goOutBeginTime | limitTo: 5}}-{{goOut.goOutEndTime | limitTo: 5}}</span>
+                                <span class="schedule-model-show-label" ng-if="goOut.goOutType == 1">整班次{{goOut.type | holidayTypeFilter}}</span>
+                                <span class="schedule-model-show-label" ng-if="goOut.goOutType == 2">前半班次{{goOut.type | holidayTypeFilter}}</span>
+                                <span class="schedule-model-show-label" ng-if="goOut.goOutType == 3">后半班次{{goOut.type | holidayTypeFilter}}</span>
+                            </div>
+                            <span class="fr del" ng-click="sps.delLineGoOut($index)"></span>
+                        </div>
+                    </div>
+                    <div class="super-schedule-tab" ng-click="oneOffHolidaylimitFunc()">
+                        <div class="stuff-tab clearfix" ng-if="!isOfficialHoliday(sps.showTable.datetime)">
+                            <div class="adjust-span pull-left" ng-class="{'active': sps.onHolidayRest == item.code}"
+                                 ng-click="sps.setHolidayRest(item, $index)" ng-repeat="item in sps.holidayRest"><i
+                                    class=""></i>{{item.name}} &nbsp;
+                                <span ng-if="$index == 0 && !sps.showTable.isOuter">
+                                    <em class="dot-spin" ng-if="showHolidayMonthlyLoading">1</em>
+                                    <em class="font-style" ng-if="isCheckHolidayMonthly && !showHolidayMonthlyLoading"
+                                        ng-bind="holidayMonthlyBalance > 31 ? '' : '(' + holidayMonthlyBalance + '天)'"></em> &nbsp; &nbsp;
+                                </span>
+                            </div>
+                        </div>
+                        <div class="schedule-model-title" ng-init="tab =1">
+                            <ul class="super-schedule-model-tab clearfix">
+                                <li ng-class="{'active': tab == 1}" ng-click="sps.modelTabs(1)">班次</li>
+                                <li ng-class="{'active': tab == 2}" ng-click="sps.modelTabs(2)">加班</li>
+                                <li ng-class="{'active': tab == 3}" ng-click="sps.modelTabs(3)"
+                                    ng-if="!sps.scheduleShift.onLineDepartment">休假
+                                </li>
+                                <li ng-class="{'active': tab == 4}" ng-click="sps.modelTabs(4)">外勤、出差</li>
+                            </ul>
+                        </div>
+                        <div class="schedule-model-content" ng-class="{'pointer-stop': oneOffHolidayLimit}">
+                            <div class="schedule-model-box" ng-show="tab == 1">
+                                <div>岗位:</div>
+                                <div class="super-schedule-fixedposts">
+                                    <ul class="schedule-fixedposts-list">
+                                        <li ng-class="{'active': fixedPos.postId == sps.currentLineShift.postId}"
+                                            ng-click="sps.selectPost(fixedPos)" ng-repeat="fixedPos in fixedPosts">
+                                            {{fixedPos.postShortName}}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="schedule-model-shifts" ng-if="sps.currentLineShift.postId">
+                                    <div>班次:</div>
+                                    <span class="label label-info"
+                                          data-tip="{{item.onDutyTime | limitTo: 5}}-{{item.relatedOffDutyTime || item.offDutyTime | limitTo: 5}} {{isShowAdjustTime(item)}}"
+                                          ng-class="{'active': item.label == sps.currentLineShift.label}"
+                                          ng-click="getOptionShiftValue(item)"
+                                          ng-repeat="item in defaultShifts"
+                                          ng-if="item.shiftType != 1 && !item.related" ng-bind="item.groupLabel || item.label"></span>
+                                </div>
+                                <div class="super-schedule-shifts-extend"
+                                     ng-if="sps.currentLineShift.postId && sps.currentLineShift.label">
+                                    <div class="extend-tab-title vk-flex-box" ng-init="extendTab = 2">
+                                        <div class="vk-flex-colomn ta-c" ng-class="{'active': extendTab == 1}"
+                                             ng-click="extendTab = 1">班前加班
+                                        </div>
+                                        <div class="vk-flex-colomn ta-c last" ng-class="{'active': extendTab == 2}"
+                                             ng-click="extendTab = 2">班后加班
+                                        </div>
+                                    </div>
+                                    <div class="extend-tab-content" ng-init="extendTab = 2">
+                                        <div class="super-extend-content vk-flex-box  ta-c" ng-show="extendTab==1">
+                                            <span
+                                                    class="vk-flex-colomn"
+                                                    ng-click="sps.setBeforeShiftOvertime(time)"
+                                                    ng-class="{'active': time == sps.currentLineShift.before}"
+                                                    ng-repeat="time in sps.extendTime">{{time | number: 1}}</span></div>
+                                        <div class="super-extend-content vk-flex-box ta-c" ng-show="extendTab==2">
+                                            <span
+                                                    class="vk-flex-colomn"
+                                                    ng-click="sps.setAfterShiftOvertime(time)"
+                                                    ng-class="{'active': time == sps.currentLineShift.after}"
+                                                    ng-repeat="time in sps.extendTime">{{time | number: 1}}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="schedule-model-box" ng-show="tab == 2">
+                                <div>岗位:</div>
+                                <div class="super-schedule-fixedposts">
+                                    <ul class="schedule-fixedposts-list">
+                                        <li ng-class="{'actives': fixedPos.postId == sps.currentLineOvertime.postId}"
+                                            ng-click="sps.selectPost(fixedPos)" ng-repeat="fixedPos in fixedPosts">
+                                            {{fixedPos.postShortName}}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="schedule-model-shifts" ng-show="sps.currentLineOvertime.postId">
+                                    常规加班： <span
+                                        class="label label-info"
+                                        ng-class="{'active': item.label == sps.currentLineOvertime.label}"
+                                        data-tip="{{item.onDutyTime | limitTo: 5}}-{{item.offDutyTime | limitTo: 5}}"
+                                        ng-click="sps.getFixedOvertime(item)"
+                                        ng-repeat="item in defaultShifts"
+                                        ng-if="item.shiftType == 1">{{item.label}}</span>
+
+                                </div>
+                                <div class="fragmentTime" ng-show="sps.currentLineOvertime.postId">
+                                    <div range-slider min="sps.overtime.range.min" max="sps.overtime.range.max"
+                                         model-min="sps.overtime.minValue" attach-handle-values="true" filter="datetime"
+                                         model-max="sps.overtime.maxValue" step="1"
+                                         disabled="sps.overtime.disabled"></div>
+                                </div>
+                                <div class="bot-alert" ng-show="sps.currentLineOvertime.postId"><span
+                                        class="vk-color-red">*</span>提示:采用拖动时间轴方式选定时间不扣除班次中间休息时长。
+                                </div>
+                            </div>
+                            <div class="schedule-model-box" ng-if="tab == 3">
+                                <ul class="schedule-fixedposts-list">
+                                    <li class="label label-info"
+                                        ng-class="{'active': item.code == sps.cacheHoliday.type}"
+                                        ng-click="sps.selectType(item.code)"
+                                        ng-repeat="item in sps.holidayType">{{item.name}}
+                                    </li>
+                                </ul>
+                                <div style="min-height: 143px;">
+                                    <div class="fragmentTime" style="padding-top: 20px;" ng-if="sps.cacheHoliday.type">
+                                        <div class="vk-flex-box" style="margin-bottom: 40px;">
+                                            <div class="vk-flex-colomn">
+                                                <span class="adjust-span"
+                                                      ng-class="{'active': sps.cacheHoliday.holidayType == 1}"
+                                                      ng-click="sps.setShiftAdjust(1)"><i class=""></i>整班次休假</span>
+                                            </div>
+                                            <div class="vk-flex-colomn" ng-if="isShowHalfShifts">
+                                                <span class="adjust-span"
+                                                      ng-class="{'active': sps.cacheHoliday.holidayType == 2}"
+                                                      ng-click="sps.setShiftAdjust(2)"><i class=""></i>前半班次休假</span>
+                                            </div>
+                                            <div class=" ta-r" ng-if="isShowHalfShifts">
+                                                <span class="adjust-span"
+                                                      ng-class="{'active': sps.cacheHoliday.holidayType == 3}"
+                                                      ng-click="sps.setShiftAdjust(3)"><i class=""></i>后半班次休假</span>
+                                            </div>
+                                        </div>
+
+                                        <div ng-class="{'all-adjust': sps.shiftAdjustType == 'all', 'isShow': sps.isShowAdjustTimeRange == null}"
+                                             adjust="sps.isShowAdjustTimeRange" range-slider
+                                             min="sps.holidayRange.range.min" max="sps.holidayRange.range.max"
+                                             model-min="sps.holidayRange.minValue" attach-handle-values="true"
+                                             filter="datetime" model-max="sps.holidayRange.maxValue" step="1"
+                                        >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ta-c" ng-if="isCheckLeaveBalance && lieuLeaveObj.lieuLeaveBalance">
+                                    <span class="vk-color-red">*</span>提示:剩余调休额度为 {{lieuLeaveObj.lieuLeaveBalance}}
+                                    ，其中非整班次调休额度为{{lieuLeaveObj.notWholeScheduleBalance}}小时
+                                </div>
+                                <!--<div class="ta-c"-->
+                                     <!--ng-if="isCheckLeaveBalance && sps.cacheHoliday.type == 'HOLIDAY_ADJUSTABLE' && lieuLeaveObj.allWorkingHours && lieuLeaveObj.salaryType == 'W'">-->
+                                    <!--<span class="vk-color-red">*</span>提示:项目为综合工时制O系,暂无调休假-->
+                                <!--</div>-->
+                                <div class="bot-alert"><span class="vk-color-red">*</span>提示:采用拖动时间轴方式选定时间不扣除班次中间休息时长。</div>
+                            </div>
+                            <div class="schedule-model-box" ng-if="tab == 4">
+                                <ul class="schedule-fixedposts-list">
+                                    <li ng-class="{'active': item.code == sps.cacheGoOut.type}"
+                                        class="label label-info" ng-repeat="item in sps.gooutType"
+                                        ng-click="sps.selectType2(item.code)">{{item.name}}
+                                    </li>
+                                </ul>
+                                <div style="min-height: 143px;">
+                                    <div class="fragmentTime" style="padding-top: 20px;" ng-if="sps.cacheGoOut.type">
+                                        <div class="vk-flex-box" style="margin-bottom: 40px;" ng-if="sps.isShowGoOut">
+                                            <div class="vk-flex-colomn">
+                                                <span class="adjust-span" ng-class="{'active': sps.shiftGoOutType == 'all'}" ng-click="sps.setShiftGoOut('all')"><i class=""></i>整班次{{sps.cacheGoOut.type == 'GOOUT_TRIP' ? '外勤' : '出差' }}</span>
+                                            </div>
+                                            <div class="vk-flex-colomn" ng-if="isShowHalfShiftsGoOut">
+                                                <span class="adjust-span" ng-class="{'active': sps.shiftGoOutType == 'before'}" ng-click="sps.setShiftGoOut('before')"><i class=""></i>前半班次{{sps.cacheGoOut.type == 'GOOUT_TRIP' ? '外勤' : '出差' }}</span>
+                                            </div>
+                                            <div class=" ta-r" ng-if="isShowHalfShiftsGoOut">
+                                                <span class="adjust-span" ng-class="{'active': sps.shiftGoOutType == 'after'}" ng-click="sps.setShiftGoOut('after')"><i class=""></i>后半班次{{sps.cacheGoOut.type == 'GOOUT_TRIP' ? '外勤' : '出差' }}</span>
+                                            </div>
+                                        </div>
+                                        <div range-slider min="sps.goOutRange.range.min" max="sps.goOutRange.range.max"
+                                             model-min="sps.goOutRange.minValue" attach-handle-values="true"
+                                             filter="datetime"
+                                             model-max="sps.goOutRange.maxValue" step="1"
+                                             disabled="sps.goOutRange.disabled">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-alert"><span class="vk-color-red">*</span>提示:采用拖动时间轴方式选定时间不扣除班次中间休息时长。</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div common-pagination></div>
+    </section>
+    </div>
+</div>
+<script type="text/ng-template" id="scheduleCopy.html">
+    <div class="modal-header">
+        <strong class="modal-title">排班复制</strong>
+
+        <div class="modal-close" ng-click="cancel()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid vk-dialog-container">
+            <div class="pasteTitle">{{copyTitleInfo}}</div>
+            <div id="sandbox-container" class="pasteModel">
+                <span class="pull-left">粘贴时间：</span>
+
+                <div class="input-daterange input-group" id="datepicker">
+                    <input type="text" ng-change="getPasteStartTime()" ng-model="pasteStarts"
+                           class="input-sm form-control" name="start"/>
+                    <span class="input-group-addon">-</span>
+                    <input type="text" ng-change="getPasteEndTime()" ng-model="pasteEnds" class="input-sm form-control"
+                           name="end" disabled="disabled" id="endtimes"/>
+                </div>
+            </div>
+            <div class="alert alert-danger" ng-if="copyDatetimeLength > 1 && alertTime">
+                粘贴天数必须是复制天数({{copyDatetimeLength}}天)的正整数倍，结束时间必须是如下时间之一:
+                <div class="alertTime"><span ng-repeat="day in alertTime">{{day}}&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+            </div>
+            <div class="alert alert-danger" ng-if="errorMsg">
+                {{errorMsg}}
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn vk-btn-health" type="button" ng-click="actionCopy()" ng-disabled="actionGo">
+            确定
+        </button>
+        <button class="btn vk-btn-relax" type="button" ng-click="cancel()">
+            取消
+        </button>
+    </div>
+</script>

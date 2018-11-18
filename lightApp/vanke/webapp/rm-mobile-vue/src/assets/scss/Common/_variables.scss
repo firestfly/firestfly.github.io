@@ -1,0 +1,96 @@
+@charset "utf-8";
+//== Colors
+//
+// 字体默认颜色
+$font-color: #4A4A4A !default;
+// 页面body背景
+$body-bg-color: #efeff4 !default;
+// 导航栏背景色
+$header-bgcolor: #2e2e33 !default;
+// 边框颜色
+$border-color: #dddddd !default;
+// touch active color
+$list-active-bgcolor: #E8E8E8;
+
+// IOS系统蓝色
+$ios-color: #007aff !default;
+
+$dark: #494949 !default;
+$gray: #A8A8A9 !default;
+// #555
+$gray-light: lighten($dark, 46.7%) !default;
+// #777
+
+//== Typography
+//
+//## Font, line-height, and color for body text, headings, and more.
+
+$font-family: -apple-system-font, Helvetica Neue, Helvetica, "Microsoft Yahei", STHeiTi, monospace !default;
+
+$font-size-base: 14px !default;
+$font-size-large: 16px !default;
+$font-size-small: 12px !default;
+
+//** Unit-less `line-height` for use in components like buttons.
+$line-height-base: 1.5 !default;
+$line-height-large: 2.5 !default;
+
+$padding-base-vertical: 30px !default;
+$padding-base-horizontal: 1.2 * 22px !default;
+
+$padding-large-vertical: 1.2 * 22px !default;
+$padding-large-horizontal: 1.6 * 22px !default;
+
+$padding-small-vertical: 0.6 * 22px !default;
+$padding-small-horizontal: 1.2 * 22px !default;
+
+$border-radius-base: 6px !default;
+$border-radius-large: 10px !default;
+$border-radius-small: 4px !default;
+$header-height: 90px !default;
+
+// color
+$themes-color: #4DB87F;
+$color-red: #E65045;
+$color-link: #586C94;
+$color-gray: #A8A8A9;
+$themes-text-color: #4A4A4A;
+$themes-title-color: #222226;
+
+$theme-primary: #4DB87F !default;
+//darken(#428bca, 6.5%) !default; // #337ab7
+$theme-success: #4DB87F !default;
+//#5cb85c !default;
+$theme-info: #5bc0de !default;
+$theme-warning: #F6A623 !default;
+$theme-danger: #E65045 !default;
+$theme-gray: #d9d9d9 !default;
+
+// 尺寸
+$base-fonts-default: 75px;
+// 全局基本字体大小
+$max-container-width: 750px !default;
+$min-container-width: 320px !default;
+$inner-width: 30px;
+//左右留白间距
+// -------
+// btn grounp-color
+// -------
+$defaultBg: $gray;
+$defaultActiveBg: #939396;
+$defaultDisabledBg: rgba($gray, 0.6);
+
+$primaryBg: #4DB87F;
+$primaryActiveBg: #299a5e;
+$primaryDisabledBg: #9ED99D;
+
+$warnBg: #E65045;
+$warnActiveBg: #CE3C39;
+$warnDisabledBg: #EC8B89;
+// 主题配置
+//
+// 单位换算 基准数
+@function rem($px) {
+  @return $px / 72px * 1rem;
+}
+

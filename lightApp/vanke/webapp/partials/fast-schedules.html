@@ -1,0 +1,170 @@
+<div class="fs-container">
+    <section class="fs-header">
+        <div class="fs-company">
+            {{fsc.company.company_name}}
+        </div>
+        <div class="fs-department">
+            {{fsc.department.department_name}}
+        </div>
+    </section>
+    <div class="fs-timeFrame pl10" style="width: 40%">
+        <div>排班范围：</div>
+        <div class="input-daterange input-group" id="fastscheduledatepicker">
+            <input type="text" class="input-sm form-control datepicker" name="start" ng-model="fsc.beginDay"
+                   ng-change="fsc.searchAll()"/>
+            <span class="input-group-addon"> - </span>
+            <input type="text" class="input-sm form-control datepicker" name="end" ng-model="fsc.endDay"
+                   ng-change="fsc.searchAll()"/>
+        </div>
+    </div>
+    <section class="fs-operation">
+        <div class="fs-body">
+            <div class="fs-body-post">
+                <div class="fs-search">
+                    <input type="text" placeholder="岗位简称" class="fs-input" ng-model="fsc.postShortName"
+                           ng-change="fsc.searchPosts()"/>
+                </div>
+                <div class="fs-table">
+                    <scrollable-table watch="fsc.posts">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th col="postShortName">岗位简称</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="post in fsc.posts track by post.postId"
+                                ng-click="fsc.tableSelect(fsc.posts,post);fsc.searchShifts();fsc.searchEmployees()"
+                                ng-class="{true: 'selected',false:'unselected'}[post.selected]">
+                                <td>{{post.postShortName}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </scrollable-table>
+                </div>
+            </div>
+            <div class="fs-body-shift">
+                <div class="fs-search">
+                    <input type="text" placeholder="班次" class="fs-input" ng-model="fsc.label"
+                           ng-change="fsc.searchShifts()"/>
+                </div>
+                <div class="fs-table">
+                    <scrollable-table watch="fsc.shifts">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>班次</th>
+                                <th>类型</th>
+                                <th>开始时间</th>
+                                <th>结束时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="shift in fsc.shifts track by $index"
+                                ng-click="fsc.tableSelect(fsc.shifts,shift);fsc.searchPosts();fsc.searchEmployees()"
+                                ng-class="{true: 'selected',false:'unselected'}[shift.selected]">
+                                <td>{{shift.relatedShift ? shift.label + '+' + shift.relatedShift.label : shift.label}}</td>
+                                <td>{{fsc.typeDictionary[shift.type]}}</td>
+                                <td>{{shift.onDutyTime}}</td>
+                                <td>{{shift.relatedShift ? shift.relatedShift.offDutyTime : shift.offDutyTime}}</td>
+                                <!--<td>{{shift.offDutyTime}}</td>-->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </scrollable-table>
+                </div>
+            </div>
+            <div class="fs-body-employee">
+                <div class="fs-prompt">人员支持多选</div>
+                <div class="fs-search">
+                    <div class="fs-search-name">
+                        <input type="text" placeholder="姓名/资源编号" class="fs-input" ng-model="fsc.keyword"
+                               ng-change="fsc.searchEmployees()"/>
+                    </div>
+                    <div class="fs-search-job">
+                        <select name="" id="selectJob" class="selectpicker" multiple
+                                ng-options="option.workJobName for option in fsc.jobs track by option.workJobId"
+                                ng-model="fsc.selectedJob" ng-change="fsc.searchEmployees()"
+                                data-none-selected-text="全部职位">
+                        </select>
+                    </div>
+                </div>
+                <div class="fs-table">
+                    <scrollable-table watch="fsc.employees">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>姓名</th>
+                                <th>资源编号</th>
+                                <th>职位</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="employee in fsc.employees track by employee.id"
+                                ng-click="fsc.tableSelect(fsc.employees,employee,'multiselect');fsc.searchPosts();fsc.searchShifts()"
+                                ng-class="{true: 'selected',false:'unselected'}[employee.selected]">
+                                <td>{{employee.employeeName}}</td>
+                                <td>{{employee.id}}</td>
+                                <td>{{employee.jobName}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </scrollable-table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="fs-info">
+        <div class="fs-title">
+            <div class="fs-prompt">
+            </div>
+            <div class="">
+                <button class="fs-btn-info" ng-click="fsc.addSchedule()">添加排班</button>
+            </div>
+            <div>
+                &nbsp;
+            </div>
+        </div>
+        <div class="fs-table">
+            <scrollable-table watch="fsc.rules">
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="basewidth">岗位</th>
+                        <th class="basewidth">班次</th>
+                        <th class="basewidth">类型</th>
+                        <th class="doublewidth">开始时间</th>
+                        <th class="doublewidth">结束时间</th>
+                        <th class="basewidth">姓名</th>
+                        <th class="doublewidth">资源编号</th>
+                        <th class="doublewidth">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="rule in fsc.rules track by $index"
+                        ng-class="{true: 'warning',false:'normal'}[rule.selected]">
+                        <td>{{rule.post.postShortName}}</td>
+                        <td>{{rule.shift.relatedShift ? rule.shift.label + '+' + rule.shift.relatedShift.label : rule.shift.label}}</td>
+                        <td>{{fsc.typeDictionary[rule.shift.type]}}</td>
+                        <td>{{rule.shift.onDutyTime}}</td>
+                        <td>{{rule.shift.relatedShift ? rule.shift.relatedShift.offDutyTime : rule.shift.offDutyTime}}</td>
+                        <td>{{rule.employee.employeeName}}</td>
+                        <td>{{rule.employee.id}}</td>
+                        <td>
+                            <button class="fs-btn-info" ng-click="fsc.deleteRule(rule)">删除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </scrollable-table>
+        </div>
+        <div class="fs-footer">
+            <button type="button" class="btn btn-success" ng-click="fsc.save()"
+                    ng-disabled="!fsc.rules || (fsc.rules.length == 0)">保存
+            </button>
+            <button type="button" class="btn btn-info" ng-click="fsc.back()">返回
+            </button>
+        </div>
+    </section>
+
+</div>

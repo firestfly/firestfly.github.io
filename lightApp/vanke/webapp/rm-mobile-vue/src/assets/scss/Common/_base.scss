@@ -1,0 +1,359 @@
+@charset "utf-8";
+// normalize css
+// p,button,blockquote
+dl, dt, dd, ul, ol, li, pre, form, p, fieldset, input, textarea, blockquote, th, td, button {
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+img {
+  border: 0;
+  vertical-align: middle;
+}
+
+ol, ul {
+  list-style: none
+}
+
+abbr, acronym {
+  border: 0
+}
+
+a:active, a:hover {
+  outline: 0;
+}
+
+h1, h2, h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #222226;
+}
+
+h4, h5, h6 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: #222226;
+}
+
+// Scaffolding
+* {
+  box-sizing: border-box;
+}
+
+*:before, *:after {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: $body-bg-color;
+}
+
+// Body reset
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+body {
+  position: relative; // 3d动画属性必备
+  transform: translate3d(0, 0, 0);
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $font-color;
+}
+
+// Links
+a {
+  color: $font-color;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.hide,
+[hidden] {
+  display: none;
+}
+
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font-size: 100%;
+  margin: 0;
+  vertical-align: baseline;
+  line-height: normal;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  max-width: 100%;
+}
+
+blockquote {
+  background: #C6C6C4;
+  margin: 0 5px 10px 5px;
+  padding: 10px;
+  border-left: 3px solid #797979;
+}
+
+blockquote p {
+  margin-bottom: 0 !important;
+}
+
+/* type */
+.fb {
+  font-weight: 500
+}
+
+.t2 {
+  text-indent: 2em
+}
+
+.lh1 {
+  line-height: 1
+}
+
+.lh1_5 {
+  line-height: 1.5
+}
+
+.lh1_8 {
+  line-height: 1.8
+}
+
+.lh2 {
+  line-height: 2
+}
+
+.unl {
+  text-decoration: underline
+}
+
+.no_unl {
+  text-decoration: none
+}
+
+.cp {
+  cursor: pointer
+}
+
+.ti {
+  text-indent: -99999px;
+}
+
+/* position */
+.tl {
+  text-align: left
+}
+
+.tc {
+  text-align: center
+}
+
+.tr {
+  text-align: right
+}
+
+.bc {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fl {
+  float: left;
+  display: inline
+}
+
+.fr {
+  float: right;
+  display: inline
+}
+
+.cb {
+  clear: both
+}
+
+.cl {
+  clear: left
+}
+
+.cr {
+  clear: right
+}
+
+.clearfix {
+  display: block
+}
+
+.clearfix:before, .clearfix:after {
+  display: table;
+  content: " ";
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.db {
+  display: block;
+}
+
+.ib {
+  display: inline-block;
+}
+
+.none {
+  display: none;
+}
+
+.vm {
+  vertical-align: middle
+}
+
+.vt {
+  vertical-align: top
+}
+
+.vb {
+  vertical-align: bottom
+}
+
+.pr {
+  position: relative
+}
+
+.pa {
+  position: absolute
+}
+
+.hidden {
+  visibility: hidden
+}
+
+/* font-size */
+@for $i from 12 through 16 {
+  @if ($i % 2 == 0) {
+    .f#{$i} {
+      font-size: $i + 0px;
+    }
+  }
+}
+
+/* height width */
+.w {
+  width: 100%
+}
+
+.h {
+  height: 100%
+}
+
+@for $i from 10 to 100 {
+  @if ($i % 10 == 0) {
+    .w#{$i} {
+      width: $i + 0px;
+    }
+    .h#{$i} {
+      height: $i + 0px;
+    }
+  }
+}
+
+@for $i from 100 to 350 {
+  @if ($i % 50 == 0) {
+    .w#{$i} {
+      width: $i + 0px;
+    }
+    .h#{$i} {
+      height: $i + 0px;
+    }
+  }
+}
+
+/* margin */
+@for $i from 5 through 40 {
+  @if ($i % 5 == 0) {
+    .m#{$i} {
+      margin: rem($i * 2 + 0px);
+    }
+    .p#{$i} {
+      padding: rem($i * 2 + 0px);
+    }
+  }
+}
+
+@for $i from 5 through 40 {
+  @if ($i % 5 == 0) {
+    .mt#{$i} {
+      margin-top: rem($i * 2 + 0px);
+    }
+    .mr#{$i} {
+      margin-right: rem($i * 2 + 0px);
+    }
+    .mb#{$i} {
+      margin-bottom: rem($i * 2 + 0px);
+    }
+    .ml#{$i} {
+      margin-left: rem($i * 2 + 0px);
+    }
+    .pt#{$i} {
+      padding-top: rem($i * 2 + 0px);
+    }
+    .pr#{$i} {
+      padding-right: rem($i * 2 + 0px);
+    }
+    .pb#{$i} {
+      padding-bottom: rem($i * 2 + 0px);
+    }
+    .pl#{$i} {
+      padding-left: rem($i * 2 + 0px);
+    }
+  }
+}
+/* overflow 溢出处理 */
+.oh {
+  overflow: hidden
+}
+
+.oa {
+  overflow: auto
+}
+
+.te {
+  -webkit-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+
+.op0 {
+  opacity: 0;
+}
+
+.op_5 {
+  opacity: .5;
+}
+

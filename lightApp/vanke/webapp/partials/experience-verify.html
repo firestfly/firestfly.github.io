@@ -1,0 +1,151 @@
+<div class="container-fluid authority-container">
+    <div class="row">
+        <div data-common-search-bar data-show-standard-work-jobs="true" data-show-verify-status="true"
+             data-hide-export-btn="true"></div>
+    </div>
+
+    <div class="experience-verify-table">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>职位</th>
+                <th>发起时间</th>
+                <th>指标</th>
+                <th>情况</th>
+                <th>标准</th>
+                <th>审核人</th>
+                <th>状态</th>
+                <th>资源编号</th>
+                <th>EHR编号</th>
+                <th>公司</th>
+                <th>项目</th>
+                <th>在职状态</th>
+                <th>查看详情</th>
+                <th>审核</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="experienceVerify in evc.experienceVerifylist">
+                <td>{{experienceVerify.employeeName || "-"}}</td>
+                <td>{{experienceVerify.jobName || "-"}}</td>
+                <td>{{experienceVerify.publishTime || "-"}}</td>
+                <td>{{experienceVerify.target || "-"}}</td>
+                <td>{{experienceVerify.situation || "-"}}</td>
+                <td>{{experienceVerify.standard || "-"}}</td>
+                <td>{{experienceVerify.auditor || "-"}}</td>
+                <td>{{verifyStatusArr[experienceVerify.state].name || "-"}}</td>
+                <td>{{experienceVerify.employeeId || "-"}}</td>
+                <td>{{experienceVerify.sapId || "-"}}</td>
+                <td>{{experienceVerify.companyName || "-"}}</td>
+                <td>{{experienceVerify.departmentName || "-"}}</td>
+                <td>{{experienceVerify.jobStatus || "-"}}</td>
+                <td>
+                    <a href="javascript: ;" class="view" ng-click="evc.openDetail(experienceVerify)">查看</a>
+                </td>
+                <td class="vk-nowrap">
+                    <div ng-if="experienceVerify.state == 1">
+                        <button type="button" class="btn btn-primary btn-sm"
+                                ng-click="evc.open(experienceVerify.id,'2')">
+                            通过
+                        </button>
+                        <button type="button" class="btn btn-info btn-sm" ng-click="evc.open(experienceVerify.id,'3')">
+                            拒绝
+                        </button>
+                    </div>
+                    <div ng-if="experienceVerify.state != 1">
+                        已审核
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div common-pagination></div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="verifyModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">审核</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <textarea name="" id="" cols="30" rows="5" placeholder="{{placeholder}}" class="form-control"
+                  ng-model="verifyOpinion" maxlength="500"></textarea>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="experienceDetailModal.html">
+    <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span
+                aria-hidden="true">&times;</span></button>
+        <div class="experience-row" ng-if="detail.origin != '自动抓取'">
+            <div class="experience-label flex-30">
+                <div>审核人：</div>
+                <div>审核时间：</div>
+                <div>审核结果：</div>
+                <div>审核意见：</div>
+            </div>
+            <div class="experience-content flex-70">
+                <div>{{detail.auditor|| " -"}}</div>
+                <div>{{detail.verifyTime|| "- "}}</div>
+                <div>{{verifyStatusArr[detail.verifyResult] || "- "}}</div>
+                <div>{{detail.verifyOpinion|| " -"}}</div>
+            </div>
+        </div>
+        <div class="experience-row" ng-if="detail.origin == '自动抓取'">
+            <div class="experience-label flex-30">
+                <div>任务编号：</div>
+                <div>评价时间：</div>
+                <div>评价星级：</div>
+                <div>完成人：</div>
+                <div>任务主题：</div>
+            </div>
+            <div class="experience-content flex-70">
+                <div>{{detail.taskId || ""}}</div>
+                <div>{{detail.evaluateTime || ""}}</div>
+                <rating ng-model="detail.evaluateStar" max="max" readonly="isReadonly" on-hover="hoveringOver(value)"
+                        on-leave="overStar = null" class="experience-rating"></rating>
+                <div>{{detail.employeeName || ""}}</div>
+                <div>{{detail.taskSubject || ""}}</div>
+            </div>
+        </div>
+        <hr/>
+        <div class="experience-column experience-accessory">
+            <div class="title">
+                附件列表
+            </div>
+            <div class="experience-row">
+                <div class="flex border-right">
+                    <div class="experience-row m-t-10" ng-repeat="a in detail.files track by $index"
+                         ng-if="($index+1)%2 == 1">
+                        <div class="flex">附件{{$index + 1}}</div>
+                        <div class="flex">
+                            <a href="javascript: ;" type="view" ng-click="openImg(a)">查看</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="experience-row m-t-10" ng-repeat="a in detail.files track by $index"
+                         ng-if="($index+1)%2 == 0">
+                        <div class="flex">附件{{$index+1}}</div>
+                        <div class="flex">
+                            <a href="javascript: ;" type="view" ng-click="openImg(a)">查看</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="experienceImgModal.html">
+    <div class="modal-body experience-img">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span
+                aria-hidden="true">&times;</span></button>
+        <img src="{{imgs}}" alt="">
+    </div>
+</script>

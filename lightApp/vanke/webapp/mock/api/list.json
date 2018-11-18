@@ -1,0 +1,120 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "dispatchType": "BUSINESS_TRIP",
+      "datetime": "2017-04-06 12:00:00",
+      "employees": [
+        {
+          "id": 1212122,
+          "name": "陈冠希",
+          "workJob": "人行出入口/车行出入口",
+          "startTime": "2017-09-02 12:00:00",
+          "endTime": "2017-09-03 12:00:00",
+          "department": "璞悦山"
+        },
+        {
+          "id": 2122122,
+          "name": "张扬",
+          "workJob": "车行出入口/人行出入口",
+          "startTime": "2017-11-20 12:00:00",
+          "endTime": "2017-11-21 12:00:00",
+          "department": "璞悦山"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "dispatchType": "TEMPORARY_WORK_OVERTIME",
+      "datetime": "2017-04-06 12:00:00",
+      "employees": [
+        {
+          "id": 1212122,
+          "name": "张智霖",
+          "workJob": "人行出入口/车行出入口",
+          "startTime": "2017-09-02 12:00:00",
+          "endTime": "2017-09-03 12:00:00",
+          "department": "璞悦山"
+        },
+        {
+          "id": 2122122,
+          "name": "张扬",
+          "workJob": "车行出入口/人行出入口",
+          "startTime": "2017-11-20 12:00:00",
+          "endTime": "2017-11-21 12:00:00",
+          "department": "璞悦山"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "dispatchType": "TEMPORARY_WORK_OVERTIME",
+      "datetime": "2017-04-06 12:00:00",
+      "employees": [
+        {
+          "id": 1212122,
+          "name": "张智霖",
+          "workJob": "人行出入口/车行出入口",
+          "startTime": "2017-09-02 12:00:00",
+          "endTime": "2017-09-03 12:00:00",
+          "department": "璞悦山"
+        },
+        {
+          "id": 2122122,
+          "name": "张扬",
+          "workJob": "车行出入口/人行出入口",
+          "startTime": "2017-11-20 12:00:00",
+          "endTime": "2017-11-21 12:00:00",
+          "department": "璞悦山"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "dispatchType": "TEMPORARY_WORK_OVERTIME",
+      "datetime": "2017-04-06 12:00:00",
+      "employees": [
+        {
+          "id": 1212122,
+          "name": "张智霖",
+          "workJob": "人行出入口/车行出入口",
+          "startTime": "2017-09-02 12:00:00",
+          "endTime": "2017-09-03 12:00:00",
+          "department": "璞悦山"
+        },
+        {
+          "id": 2122122,
+          "name": "张扬",
+          "workJob": "车行出入口/人行出入口",
+          "startTime": "2017-11-20 12:00:00",
+          "endTime": "2017-11-21 12:00:00",
+          "department": "璞悦山"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "dispatchType": "TEMPORARY_WORK_OVERTIME",
+      "datetime": "2017-04-06 12:00:00",
+      "employees": [
+        {
+          "id": 1212122,
+          "name": "张智霖",
+          "workJob": "人行出入口/车行出入口",
+          "startTime": "2017-09-02 12:00:00",
+          "endTime": "2017-09-03 12:00:00",
+          "department": "璞悦山"
+        },
+        {
+          "id": 2122122,
+          "name": "张扬",
+          "workJob": "车行出入口/人行出入口",
+          "startTime": "2017-11-20 12:00:00",
+          "endTime": "2017-11-21 12:00:00",
+          "department": "璞悦山"
+        }
+      ]
+    }
+  ],
+  "recordsTotal": 12
+}

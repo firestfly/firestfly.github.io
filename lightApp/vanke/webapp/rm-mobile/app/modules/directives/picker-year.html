@@ -1,0 +1,36 @@
+<div class="modal-year" ng-show="modelYearBox">
+    <div class="modal-backdrop" ng-click="yearCancel()"></div>
+    <div class="modal-year-box">
+        <div class="inner-cell modal-year-title ">
+            <span class="" ng-click="yearCancel()">取消</span>
+            <span class="fr" ng-click="yearOk()">确定</span>
+        </div>
+        <div class="modal-year-content inner-cell">
+            <div class="picker-items">
+                <div class="picker-slot-left" ng-style="transclateScroll.year">
+                    <div class="picker-slot-wrapper"
+                         ng-Touchmove="onTouchmove($event,'year')"
+                         ng-touchend="onTouchend($event,'year')"
+                         ng-touchstart="onTouchstart($event,'year')"
+                            >
+                        <div class="picker-item" ng-repeat="year in initDate.years"
+                             ng-class="{'picker-selected': year.id == currentYear}">{{year.name}}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="picker-slot-right" ng-style="transclateScroll.month">
+                    <div class="picker-slot-wrapper" ng-Touchmove="onTouchmove($event,'month')"
+                         ng-touchend="onTouchend($event,'month')"
+                         ng-touchstart="onTouchstart($event,'month')">
+                        <div class="picker-item" ng-repeat="month in initDate.months"
+                             ng-class="{'picker-selected': month.id == currentMonth}">{{month.name}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="picker-center-highlight"></div>
+        </div>
+    </div>
+</div>

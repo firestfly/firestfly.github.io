@@ -1,0 +1,161 @@
+<div class="container-fluid">
+    <div class="my-tab row">
+        <span class="tab-item" ng-class="{'active':switchTableOrMapValue==0}"
+              ng-click="switchTableOrMapValue=0">按表格查看</span>
+        <span class="tab-item" ng-class="{'active':switchTableOrMapValue==1}"
+              ng-click="switchTableOrMapValue=1">按地图查看</span>
+    </div>
+    <div class="row">
+        <div data-common-search-bar data-hide-export-btn="true" data-show-standard-work-jobs="true"></div>
+    </div>
+    <div class="clearfix">
+        <button type="button" ng-click="export()" class="btn vk-btn-default">
+            导出签到率数据
+        </button>
+    </div>
+    <div class="row vk-top-row" ng-show="attendanceDetails && switchTableOrMapValue=='0'">
+        <div class="table-responsive">
+            <table id="attendance-table" class="table table-bordered display nowrap">
+                <thead>
+                <tr>
+                    <th class="hide">出勤编号</th>
+                    <th>姓名</th>
+                    <th>签到时间</th>
+                    <th>是否考勤时间</th>
+                    <th>签到地点</th>
+                    <th>签到类型</th>
+                    <th>是否在有效区域</th>
+                    <th>资源编号</th>
+                    <th>EHR编号</th>
+                    <th>公司</th>
+                    <th>项目/部门</th>
+                    <th>岗位专业分类</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="row" ng-show="attendanceDetails && switchTableOrMapValue=='1'">
+        <div class="col-md-12">
+            <ul id="mapLegend">
+                <li>区域外</li>
+                <li>区域内</li>
+                <li>手动校正</li>
+                <li>考勤时间</li>
+            </ul>
+            <div class="map--infoWin-count">共&nbsp;&nbsp;<span ng-bind="attendanceDetails.length">0</span>&nbsp;&nbsp;条
+            </div>
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="attendanceFillView.html">
+    <div class="modal-header">
+        <h5 class="modal-title">查看补签到详情</h5>
+    </div>
+    <div class="modal-body vk-employee-container">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <label class="col-xs-4 control-label">姓名</label>
+
+                <div class="col-xs-8">
+                    <p ng-bind="attendanceFillViewData.name"></p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <label class="col-xs-4 control-label">操作人</label>
+
+                <div class="col-xs-8">
+                    <p ng-bind="attendanceFillViewData.operatorName"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <label class="col-xs-4 control-label">补签时间</label>
+
+                <div class="col-xs-8">
+                    <p ng-bind="attendanceFillViewData.attendanceFillTime"></p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <label class="col-xs-4 control-label">操作时间</label>
+
+                <div class="col-xs-8">
+                    <p ng-bind="attendanceFillViewData.operateTime"></p>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <label class="col-xs-4 control-label">补签地点</label>
+
+                <div class="col-xs-8">
+                    <p ng-bind="attendanceFillViewData.attendanceArea"></p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <label class="col-xs-5 control-label">操作人资源编号</label>
+
+                <div class="col-xs-7">
+                    <p ng-bind="attendanceFillViewData.operatorId"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <label class="col-xs-2 control-label">补签说明</label>
+
+                <div class="col-xs-10">
+                    <p ng-bind="attendanceFillViewData.operationExplain"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">确认</button>
+    </div>
+</script>
+<script type="text/ng-template" id="adjust-attendance.html">
+    <div class="modal-header">
+        <h5 class="modal-title" ng-bind="adjustTitle"></h5>
+    </div>
+    <div class="modal-body"
+         ng-form="adjustAttendance">
+        <div class="container-fluid" ng-if="showAttendanceAdjustCommon">
+            <textarea type="text" name="attendanceAdjustCommon" class="form-control" placeholder="输入操作说明，必填"
+                      ng-model="attendanceAdjustCommon"
+                      required></textarea>
+
+            <p class="text-danger" ng-if="attendanceAdjustCommonInvalid">* 操作理由必填，且在140个字以内</p>
+        </div>
+        <div class="container-fluid">
+            <table id="attendance-adjust-details-table" class="table table-bordered table-hover dataTable no-footer"
+                   ng-if="attendanceAdjustDetails && attendanceAdjustDetails.length>0" style="margin-top: 15px;">
+                <thead>
+                <tr>
+                    <th class="hide">操作id</th>
+                    <th>操作类型</th>
+                    <th>操作人</th>
+                    <th>操作时间</th>
+                    <th>操作说明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="attendanceAdjustDetail in attendanceAdjustDetails | orderBy:'adjustId'">
+                    <td ng-bind="attendanceAdjustDetail.adjustId" class="hide"></td>
+                    <td ng-bind="attendanceAdjustDetail.adjustType"></td>
+                    <td ng-bind="attendanceAdjustDetail.adjustPersonName"></td>
+                    <td ng-bind="attendanceAdjustDetail.adjustTime"></td>
+                    <td ng-bind="attendanceAdjustDetail.adjustComment"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-if="adjustTitle!='校正详情'" ng-click="save()">确认</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>

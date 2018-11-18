@@ -1,0 +1,56 @@
+<div class="container-fluid">
+    <div class="my-tab row">
+        <a class="tab-item" href="#/leave-records-list">休假明细查看</a>
+        <a class="active tab-item">休假审批概览</a>
+    </div>
+    <div class="row">
+        <div common-search-bar data-hide-export-btn="true" data-hide-groups="true"
+             data-show-lieu-quota="true" data-show-approval-status="true" data-show-vacation-order-statue="true"></div>
+        <div class="x-scroll-table lieu-line-setting">
+            <table class="table table-bordered">
+                <tr>
+                    <th>请假单号</th>
+                    <th width="6%">姓名</th>
+                    <th width="7%">休假类型</th>
+                    <th width="7%">开始日期</th>
+                    <th width="7%">结束日期</th>
+                    <th width="7%">休假时长</th>
+                    <th width="9%">状态</th>
+                    <th width="6%">审批人</th>
+                    <th width="7%">职位</th>
+                    <th width="12%">公司</th>
+                    <th width="12%">部门</th>
+                    <th width="7%">EHR编号</th>
+                    <th width="7%">资源编号</th>
+                </tr>
+                <tr ng-if="listData.length == 0">
+                    <td colspan="13">表内暂无数据</td>
+                </tr>
+                <tr ng-if="listData" ng-repeat="item in lal.list">
+                    <td rowspan="{{item.orderLength}}" ng-if="item.key == 0">
+                        <span class="revoke-tips"><div class="revoke-tips-title" ng-if="item.revokeOrders.length > 0"><p
+                                ng-repeat="revoke in item.revokeOrders">撤假单号：{{revoke.revokeApplyNumber}} <br/>
+                            审批人：{{revoke.revokeApprove.join(',')}} <br/>抄送人：{{revoke.revokeCCMan.join(',')}}</p></div>{{item.applyNumber}}<em
+                                class="font-style" ng-if="item.applyType == '2'">(撤假单)</em></span>
+                    </td>
+                    <td rowspan="{{item.orderLength}}" ng-if="item.key == 0">{{item.employeeName}}</td>
+                    <td>{{item.leaveType | holidayTypeFilter}}</td>
+                    <td>{{item.startDate}}</td>
+                    <td>{{item.endDate}}</td>
+                    <td>{{item.duration}}</td>
+                    <td rowspan="{{item.orderLength}}" ng-if="item.key == 0">{{approvalStatus[item.status]}}</td>
+                    <td rowspan="{{item.orderLength}}" ng-if="item.key == 0">{{item.approver}}</td>
+                    <td rowspan="{{item.orderLength}}" ng-if="item.key == 0">{{item.jobName}}</td>
+                    <td rowspan="{{item.orderLength}}" ng-if="item.key == 0">{{item.company}}</td>
+                    <td rowspan="{{item.orderLength}}" ng-if="item.key == 0">{{item.department}}</td>
+                    <td rowspan="{{item.orderLength}}" ng-if="item.key == 0">{{item.sapId}}</td>
+                    <td rowspan="{{item.orderLength}}" ng-if="item.key == 0">{{item.resourceId}}</td>
+                </tr>
+            </table>
+        </div>
+        <div common-pagination></div>
+    </div>
+</div>
+
+
+

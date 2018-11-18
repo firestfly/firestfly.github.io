@@ -1,0 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><!DOCTYPE html><html><head><meta charset=utf-8><title>时间管理</title><meta name=viewport content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1"><meta name=imagemode content=force><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-touch-fullscreen content=yes><meta name=apple-mobile-web-app-status-bar-style content=black-translucent><meta name=format-detection content="telephone=no"><meta name=format-detection content="email=no"><meta content="telephone=no,email=no" name=format-detection><script>!function (n) {
+      var e = n.document, t = e.documentElement, i = 750, d = i / 75, o = "orientationchange" in n ? "orientationchange" : "resize", a = function () {
+        var n = t.clientWidth || 320;
+        n > 540 && (n = 540), t.style.fontSize = n / d + "px"
+      };
+      e.addEventListener && (n.addEventListener(o, a, !1), e.addEventListener("DOMContentLoaded", a, !1))
+}(window);</script><link href=/rm-mobile-vue/dist/static/css/app.be724305edad007b24c73f66d1e34a74.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=/rm-mobile-vue/dist/static/js/manifest.1846b415411ad96eb0e3.js></script><script type=text/javascript src=/rm-mobile-vue/dist/static/js/vendor.833e1f2ba767ca42c7ab.js></script><script type=text/javascript src=/rm-mobile-vue/dist/static/js/app.7ed4e276b9e925618a90.js></script></body></html>

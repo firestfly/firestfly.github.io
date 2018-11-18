@@ -1,0 +1,360 @@
+<div class="container-fluid">
+    <div class="row vk-spaced-row">
+        <div class="col-md-4">
+            <div class="right-inner-addon ">
+                <i class="fa fa-search"></i>
+                <input class="form-control" id="search" type="search" ng-model="searchInputValue"
+                       placeholder="输入任务名称搜索"/>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="pull-right">
+                <a href="javascript:void(0)" class="vk-btn-link" ng-click="clear()">清除查询条件</a>
+                <button type="button" class="btn vk-btn-default" ng-click="search()">查询</button>
+                <a href="#/help-task-point-rules" class="btn vk-btn-default">规则说明</a>
+                <a href="#/task-point-rules" class="btn btn-default">返回列表</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table id="task-point-rules-config-table" class="table table-bordered display fix-table fl"
+                       cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th rowspan="3" width="200px">任务名称</th>
+                        <th rowspan="3" width="200px">任务类型</th>
+                        <th rowspan="3" width="60px">标准工时（分钟）</th>
+                        <th rowspan="3" width="60px">标准工时系数</th>
+                        <th colspan="3" width="200px">响应参数</th>
+                        <th colspan="3" width="200px">完成参数</th>
+                        <th colspan="5" width="220px">评价参数</th>
+                        <th rowspan="3" width="60px">收入参数</th>
+                        <th rowspan="3" width="60px">操作</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">额定时间（分钟）</th>
+                        <th colspan="2">加减分</th>
+                        <th rowspan="2">额定时间（小时）</th>
+                        <th colspan="2">加减分</th>
+                        <th colspan="5">加减分</th>
+                    </tr>
+                    <tr>
+                        <th>大于</th>
+                        <th>小于</th>
+                        <th>大于</th>
+                        <th>小于</th>
+                        <th>一星</th>
+                        <th>二星</th>
+                        <th>三星</th>
+                        <th>四星</th>
+                        <th>五星</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="taskPointRuleConfig in taskPointRuleConfigs" on-finish-render>
+                        <td ng-bind="taskPointRuleConfig.taskType.description"></td>
+                        <td ng-bind="taskPointRuleConfig.taskType.parentTypeDescription"></td>
+                        <td ng-bind="taskPointRuleConfig.taskType.standardWorkingMinute"></td>
+                        <td ng-bind="taskPointRuleConfig.standardWorkingHourCoefficient"></td>
+                        <td ng-bind="taskPointRuleConfig.responseTimeSetting.standardDurationInHours"></td>
+                        <td ng-bind="taskPointRuleConfig.responseTimeSetting.aboveStandardPoint"></td>
+                        <td ng-bind="taskPointRuleConfig.responseTimeSetting.belowStandardPoint"></td>
+                        <td ng-bind="taskPointRuleConfig.finishTimeSetting.standardDurationInHours"></td>
+                        <td ng-bind="taskPointRuleConfig.finishTimeSetting.aboveStandardPoint"></td>
+                        <td ng-bind="taskPointRuleConfig.finishTimeSetting.belowStandardPoint"></td>
+                        <td ng-bind="taskPointRuleConfig.assessmentSetting.oneStarPoint"></td>
+                        <td ng-bind="taskPointRuleConfig.assessmentSetting.twoStarPoint"></td>
+                        <td ng-bind="taskPointRuleConfig.assessmentSetting.threeStarPoint"></td>
+                        <td ng-bind="taskPointRuleConfig.assessmentSetting.fourStarPoint"></td>
+                        <td ng-bind="taskPointRuleConfig.assessmentSetting.fiveStarPoint"></td>
+                        <td ng-bind="taskPointRuleConfig.incomeCoefficient"></td>
+                        <td>
+                            <a href="javascript:void(0)" ng-click="open(taskPointRuleConfig.taskType.id, $event)">设置</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="taskPointRuleConfigDialog.html">
+    <form name="taskRuleConfigForm">
+        <div class="modal-header">
+            <h5 class="modal-title">任务积分规则设置</h5>
+        </div>
+        <div class="modal-body">
+            <div class="container-fluid vk-dialog-container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <strong ng-bind="taskPointRuleConfig.taskType.description"></strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <lable>标准工时:</lable>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span ng-bind="taskPointRuleConfig.taskType.standardWorkingMinute"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 form-inline"
+                         ng-class="{ 'has-error': taskRuleConfigForm.standardWorkingHoursCoefficient.$invalid && !taskRuleConfigForm.standardWorkingHoursCoefficient.$pristine }">
+                        <label for="standard-workingHours-coefficient" class="control-label">标准工时系数:</label>
+                        <input id="standard-workingHours-coefficient" type="text"
+                               name="standardWorkingHoursCoefficient" class="form-control"
+                               ng-model="taskPointRuleConfig.standardWorkingHourCoefficient"
+                               ng-pattern="/^[0-9]*(\.[0-9]{0,2})?$/" required>
+                        <label class="control-label">
+                            <small class="text text-muted">标准工时乘以此系数，得到该任务标准分</small>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>标准分:</label>
+                        <strong class="text text-muted"
+                                ng-bind="(taskPointRuleConfig.taskType.standardWorkingMinute * taskPointRuleConfig.standardWorkingHourCoefficient) | number:2"></strong>
+                    </div>
+                </div>
+                <div class="row vk-dialog-border-top">
+                    <div class="col-md-12">
+                        <strong>单项任务得分</strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul tabset justified="true">
+                            <li tab heading="响应时间设置">
+                                <div class="container-fluid vk-config-container">
+                                    <div class="row vk-dialog-row-title">
+                                        <div class="col-md-12 form-horizontal"
+                                             ng-class="{ 'has-error': taskRuleConfigForm.responseRating.$invalid && !taskRuleConfigForm.responseRating.$pristine }">
+                                            <label for="rating-response" class="col-sm-2 control-label">额定响应时间:</label>
+
+                                            <div class="col-sm-4">
+                                                <input id="rating-response" type="text" class="form-control"
+                                                       placeholder="输入时间" name="responseRating"
+                                                       ng-pattern="/^[0-9]*(\.[0-9]{0,2})?$/"
+                                                       ng-model="taskPointRuleConfig.responseTimeSetting.standardDurationInHours"
+                                                       required/>
+                                            </div>
+                                            <label for="rating-response" class="control-label">分钟</label>
+                                        </div>
+                                    </div>
+                                    <div class="row vk-border-top vk-dialog-row-content">
+                                        <div class="col-md-2 text-center">
+                                            <label class="vk-config-label-top">加减分设置:</label>
+                                        </div>
+                                        <div class="col-md-5 text-center vk-border-left vk-border-right vk-dialog-row-space"
+                                             ng-class="{ 'has-error': taskRuleConfigForm.responseAbove.$invalid && !taskRuleConfigForm.responseAbove.$pristine }">
+                                            <label for="above-response" class="vk-config-label-bottom">大于额定响应时间</label>
+                                            <input id="above-response" type="text" class="form-control"
+                                                   name="responseAbove" ng-pattern="/^[+-]?(\d+(\.?))$/"
+                                                   placeholder="0"
+                                                   ng-model="taskPointRuleConfig.responseTimeSetting.aboveStandardPoint"
+                                                   required/>
+                                        </div>
+                                        <div class="col-md-5 text-center vk-dialog-row-space"
+                                             ng-class="{ 'has-error': taskRuleConfigForm.responseBelow.$invalid && !taskRuleConfigForm.responseBelow.$pristine }">
+                                            <label for="below-response" class="vk-config-label-bottom">小于额定响应时间</label>
+                                            <input id="below-response" type="text" class="form-control"
+                                                   name="responseBelow" ng-pattern="/^[+-]?(\d+(\.?))$/"
+                                                   placeholder="0"
+                                                   ng-model="taskPointRuleConfig.responseTimeSetting.belowStandardPoint"
+                                                   required/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li tab heading="完成时间设置">
+                                <div class="container-fluid vk-config-container">
+                                    <div class="row vk-dialog-row-title">
+                                        <div class="col-md-12 form-horizontal"
+                                             ng-class="{ 'has-error': taskRuleConfigForm.completeRating.$invalid && !taskRuleConfigForm.completeRating.$pristine }">
+                                            <label for="rating-complete"
+                                                   class="col-sm-2 control-label">额定完成时间:</label>
+
+                                            <div class="col-sm-4">
+                                                <input id="rating-complete" type="text" class="form-control"
+                                                       placeholder="输入时间" name="completeRating"
+                                                       ng-pattern="/^[0-9]*(\.[0-9]{0,2})?$/"
+                                                       ng-model="taskPointRuleConfig.finishTimeSetting.standardDurationInHours"
+                                                       required/>
+                                            </div>
+                                            <label for="rating-complete"
+                                                   class="control-label">小时</label>
+                                        </div>
+                                    </div>
+                                    <div class="row vk-border-top vk-dialog-row-content">
+                                        <div class="col-md-2 text-center">
+                                            <label class="vk-config-label-top">加减分设置:</label>
+                                        </div>
+                                        <div class="col-md-5 text-center vk-border-left vk-border-right vk-dialog-row-space"
+                                             ng-class="{ 'has-error': taskRuleConfigForm.completeAbove.$invalid && !taskRuleConfigForm.completeAbove.$pristine }">
+                                            <label for="above-complete" class="vk-config-label-bottom">大于额定完成时间</label>
+                                            <input id="above-complete" type="text" class="form-control"
+                                                   name="completeAbove"
+                                                   ng-pattern="/^[+-]?(\d+(\.?))$/"
+                                                   placeholder="0"
+                                                   ng-model="taskPointRuleConfig.finishTimeSetting.aboveStandardPoint"
+                                                   required/>
+                                        </div>
+                                        <div class="col-md-5 text-center vk-dialog-row-space"
+                                             ng-class="{ 'has-error': taskRuleConfigForm.completeBelow.$invalid && !taskRuleConfigForm.completeBelow.$pristine }">
+                                            <label for="below-complete" class="vk-config-label-bottom">小于额定完成时间</label>
+                                            <input id="below-complete" type="text" class="form-control"
+                                                   name="completeBelow"
+                                                   ng-pattern="/^[+-]?(\d+(\.?))$/"
+                                                   placeholder="0"
+                                                   ng-model="taskPointRuleConfig.finishTimeSetting.belowStandardPoint"
+                                                   required/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li tab heading="评价设置">
+                                <div class="container-fluid vk-config-container">
+                                    <div class="row vk-dialog-row-title">
+                                        <div class="col-md-12 text-center">
+                                            乘法浮动系数设置，有效值为－5到5（该任务总分受此系数乘法浮动）
+                                        </div>
+                                    </div>
+                                    <div class="row vk-border-top vk-dialog-row-content">
+                                        <div class="col-md-15 col-xs-6 text-center">
+                                            <p>
+                                                <i class="fa fa-star check"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-15 col-xs-6 text-center vk-border-left vk-border-right">
+                                            <p>
+                                                <i class="fa fa-star check"></i>
+                                                <i class="fa fa-star check"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-15 col-xs-6 text-center">
+                                            <p>
+                                                <i class="fa fa-star check"></i>
+                                                <i class="fa fa-star check"></i>
+                                                <i class="fa fa-star check"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-15 col-xs-6 text-center vk-border-left vk-border-right">
+                                            <p>
+                                                <i class="fa fa-star check"></i>
+                                                <i class="fa fa-star check"></i>
+                                                <i class="fa fa-star check"></i>
+                                                <i class="fa fa-star check"></i>
+                                                <i class="fa fa-star"></i>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-15 col-xs-6 text-center">
+                                            <p>
+                                                <i class="fa fa-star check"></i>
+                                                <i class="fa fa-star check"></i>
+                                                <i class="fa fa-star check"></i>
+                                                <i class="fa fa-star check"></i>
+                                                <i class="fa fa-star check"></i>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row vk-border-top vk-dialog-row-content">
+                                        <div class="col-md-15 col-xs-6 text-center vk-dialog-row-space"
+                                             ng-class="{ 'has-error': taskRuleConfigForm.commentOneStar.$invalid && !taskRuleConfigForm.commentOneStar.$pristine }">
+                                            <label for="one-star-comment"
+                                                   class="sr-only vk-config-label-bottom">一星评价参数</label>
+                                            <input id="one-star-comment" type="text" class="form-control"
+                                                   name="commentOneStar" ng-pattern="/^[+-]?([0-5]?(\.[0-9]{0,2})?)$/"
+                                                   placeholder="0"
+                                                   ng-model="taskPointRuleConfig.assessmentSetting.oneStarPoint"
+                                                   required/>
+                                        </div>
+                                        <div class="col-md-15 col-xs-6 text-center vk-border-left vk-border-right vk-dialog-row-space"
+                                             ng-class="{ 'has-error': taskRuleConfigForm.commentTwoStar.$invalid && !taskRuleConfigForm.commentTwoStar.$pristine }">
+                                            <label for="two-star-comment"
+                                                   class="sr-only vk-config-label-bottom">二星评价参数</label>
+                                            <input id="two-star-comment" type="text" class="form-control"
+                                                   name="commentTwoStar" ng-pattern="/^[+-]?([0-5]?(\.[0-9]{0,2})?)$/"
+                                                   placeholder="0"
+                                                   ng-model="taskPointRuleConfig.assessmentSetting.twoStarPoint"
+                                                   required/>
+                                        </div>
+                                        <div class="col-md-15 col-xs-6 text-center vk-dialog-row-space"
+                                             ng-class="{ 'has-error': taskRuleConfigForm.commentThreeStar.$invalid && !taskRuleConfigForm.commentThreeStar.$pristine }">
+                                            <label for="three-star-comment"
+                                                   class="sr-only vk-config-label-bottom">三星评价参数</label>
+                                            <input id="three-star-comment" type="text" class="form-control"
+                                                   name="commentThreeStar" ng-pattern="/^[+-]?([0-5]?(\.[0-9]{0,2})?)$/"
+                                                   placeholder="0"
+                                                   ng-model="taskPointRuleConfig.assessmentSetting.threeStarPoint"
+                                                   required/>
+                                        </div>
+                                        <div class="col-md-15 col-xs-6 text-center vk-border-left vk-border-right vk-dialog-row-space"
+                                             ng-class="{ 'has-error': taskRuleConfigForm.commentFourStar.$invalid && !taskRuleConfigForm.commentFourStar.$pristine }">
+                                            <label for="four-star-comment"
+                                                   class="sr-only vk-config-label-bottom">四星评价参数</label>
+                                            <input id="four-star-comment" type="text" class="form-control"
+                                                   name="commentFourStar" ng-pattern="/^[+-]?([0-5]?(\.[0-9]{0,2})?)$/"
+                                                   placeholder="0"
+                                                   ng-model="taskPointRuleConfig.assessmentSetting.fourStarPoint"
+                                                   required/>
+                                        </div>
+                                        <div class="col-md-15 col-xs-6 text-center vk-dialog-row-space"
+                                             ng-class="{ 'has-error': taskRuleConfigForm.commentFiveStar.$invalid && !taskRuleConfigForm.commentFiveStar.$pristine }">
+                                            <label for="five-star-comment"
+                                                   class="sr-only vk-config-label-bottom">五星评价参数</label>
+                                            <input id="five-star-comment" type="text" class="form-control"
+                                                   name="commentFiveStar" ng-pattern="/^[+-]?([0-5]?(\.[0-9]{0,2})?)$/"
+                                                   placeholder="0"
+                                                   ng-model="taskPointRuleConfig.assessmentSetting.fiveStarPoint"
+                                                   required/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li tab heading="任务收入设置">
+                                <div class="container-fluid vk-config-container">
+                                    <div class="row vk-dialog-row-title">
+                                        <div class="col-md-12 form-horizontal"
+                                             ng-class="{ 'has-error': taskRuleConfigForm.incomeCoefficient.$invalid && !taskRuleConfigForm.incomeCoefficient.$pristine }">
+                                            <label for="income-coefficient"
+                                                   class="col-sm-2 control-label">任务收入系数:</label>
+
+                                            <div class="col-sm-4">
+                                                <input id="income-coefficient" type="text" class="form-control"
+                                                       placeholder="输入收入系数" name="incomeCoefficient"
+                                                       ng-pattern="/^[0-9]*(\.[0-9]{0,2})?$/"
+                                                       ng-model="taskPointRuleConfig.incomeCoefficient" required/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <small class="text-muted">可设定系数，实际收入乘以此系数即为收入浮动，加入当前任务得分</small>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn vk-btn-health" type="button" ng-disabled="taskRuleConfigForm.$invalid" ng-click="ok()">确认
+            </button>
+            <button class="btn vk-btn-passion" type="button" ng-click="cancel()">取消</button>
+        </div>
+    </form>
+</script>

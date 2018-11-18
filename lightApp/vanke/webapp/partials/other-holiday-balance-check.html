@@ -1,0 +1,67 @@
+<div class="container-fluid authority-container">
+    <div class="my-tab">
+        <a href="#/lieu-quota" class="tab-item">月休、调休假明细</a>
+        <span class="active tab-item">其它休假明细</span>
+    </div>
+    <div class="row">
+        <div common-search-bar data-hide-groups="true"
+             data-show-holiday-sixteen="true" data-hide-export-btn="true"></div>
+    </div>
+    <div class="">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>休假类型</th>
+                <th style="width: 130px">生效日期</th>
+                <th style="width: 130px">失效日期</th>
+                <th style="width: 85px">总额度</th>
+                <th>已扣减</th>
+                <th>剩余额度</th>
+                <th>资源编号</th>
+                <th>EHR编号</th>
+                <th>公司</th>
+                <th>部门</th>
+                <th>岗位专业分类</th>
+                <th>职位</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="list in ohb.lists" class="holiday-balance-list">
+                <td>{{list.name}}</td>
+                <td>{{list.holidayTypeId | holidayTypeFilter}}</td>
+                <td>
+                 <span editable-bsdate="list.effectiveDate" e-name="effectiveDate" e-form="rowform"
+                       e-is-open="opened1.$data"
+                       e-ng-click="open1($event,'$data')"
+                       e-datepicker-popup="yyyy-MM-dd"
+                       onbeforesave="checkEffectiveDate($data)"
+                       e-required ng-bind="(list.effectiveDate | date:'yyyy-MM-dd')"></span>
+                </td>
+                <td> <span editable-bsdate="list.expiryDate" e-name="expiryDate" e-form="rowform"
+                           e-is-open="opened2.$data"
+                           e-ng-click="open2($event,'$data')"
+                           e-datepicker-popup="yyyy-MM-dd"
+                           onbeforesave="checkExpiryDate($data)"
+                           e-required ng-bind="(list.expiryDate | date:'yyyy-MM-dd')"></span></td>
+                <td><span editable-number="list.quota" e-name="quota" e-form="rowform"
+                          onbeforesave="checkQuota($data)" e-min="0"
+                          e-required ng-bind="list.quota"></span>{{list.quotaType}}
+                </td>
+                <td>{{list.usedQuota + list.quotaType}}</td>
+                <td>{{list.leftQuota + list.quotaType }}</td>
+                <td>{{list.employeeId}}</td>
+                <td>{{list.sapId}}</td>
+                <td>{{list.companyName}}</td>
+                <td>{{list.departmentName}}</td>
+                <td>{{list.workGroups}}</td>
+                <td>{{list.postName}}</td>
+            </tr>
+            <tr ng-if="noData">
+                <td colspan="13">未搜索到数据</td>
+            </tr>
+            </tbody>
+        </table>
+        <div common-pagination></div>
+    </div>
+</div>

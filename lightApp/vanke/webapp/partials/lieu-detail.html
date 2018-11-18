@@ -1,0 +1,321 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="vk-table-complex">
+                <div class="row vk-spaced-row lieu-quota-box">
+                    <p>人员基本信息</p>
+                    <table class="table table-bordered m-t-10">
+                        <thead>
+                            <tr>
+                                <th>姓名</th>
+                                <th>资源编号</th>
+                                <th>EHR编号</th>
+                                <th>公司</th>
+                                <th>部门</th>
+                                <th>岗位专业分类</th>
+                                <th>职位</th>
+                                <th>工时制</th>
+                                <th>工资类别</th>
+                                <!--<th ng-show="isMonthlyHoliday">月休/值班天数</th>-->
+                                <th ng-show="!isMonthlyHoliday">是否允许{{leaveTypeDictionary[leaveType]}}加班调休</th>
+                                <th ng-show="!isMonthlyHoliday">调休有效期</th>
+                                <th ng-show="isMonthlyHoliday">月休天数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td ng-bind="lieuQuotaTable.employeeName"></td>
+                                <td ng-bind="lieuQuotaTable.employeeId"></td>
+                                <td ng-bind="lieuQuotaTable.sapNo"></td>
+                                <td ng-bind="lieuQuotaTable.companyName"></td>
+                                <td ng-bind="lieuQuotaTable.department"></td>
+                                <td ng-bind="lieuQuotaTable.workGroup"></td>
+                                <td ng-bind="lieuQuotaTable.workJob"></td>
+                                <td ng-bind="workingHours[lieuQuotaTable.workSchedule]"></td>
+                                <td ng-bind="lieuQuotaTable.salaryType == '05' ? lieuQuotaTable.osalaryType : salaryType[lieuQuotaTable.salaryType]"></td>
+                                <!--<td ng-show="isMonthlyHoliday" ng-bind="lieuQuotaTable.cycleQuotaUsedSum"></td>-->
+                                <td ng-show="!isMonthlyHoliday" ng-bind="lieuQuotaTable.allowLeave == 1 ? '是' : '否'"></td>
+                                <td ng-show="!isMonthlyHoliday">
+                                    <div ng-if="lieuQuotaTable.validityPeriod > 0" ng-bind="lieuQuotaTable.validityPeriod + '个考勤周期'"></div>
+                                    <div ng-if="lieuQuotaTable.validityPeriod == 0" ng-bind="'本个考勤周期'"></div>
+                                    <div ng-if="lieuQuotaTable.validityPeriod < 0" ng-bind="'-'"></div>
+                                </td>
+                                <td ng-show="isMonthlyHoliday" ng-bind="lieuQuotaTable.isOuter ? '-' : lieuQuotaTable.cycleQuotaSum + '天'"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row vk-spaced-row lieu-quota-box">
+                    <p>本周期{{isMonthlyHoliday ? '月休' : '调休假'}}数据</p>
+                    <table class="table table-bordered m-t-10" ng-show="lieuQuotaTable.transferStatus == 2">
+                    <!-- <table class="table table-bordered m-t-10" ng-show="lieuQuotaTable.transferStatus == 2 && !isTransfered"> -->
+                        <thead>
+                        <tr>
+                            <th ng-show="!isMonthlyHoliday">期初余额<div class="tips" data-toggle="tooltip" data-placement="top" title="=上期期末余额=上期期初余额+上期产生额度-上期使用额度-上期到期已结算额度"></div></th>
+                            <th>本周期产生额度<div ng-show="!isMonthlyHoliday" class="tips" data-toggle="tooltip" data-placement="top" title="本周期内加班转化为调休假的时长。"></div></th>
+                            <th ng-show="!isMonthlyHoliday">失效/结算日期</th>
+                            <th>本周期已使用额度
+                                <div ng-show="!isMonthlyHoliday" class="tips" data-toggle="tooltip" data-placement="top"
+                                     title="本周期内调休消耗的调休假时长。"></div>
+                            </th>
+                            <th>{{ quotaLockStatus == '1' ? '当前余额' : '期末余额' }}
+                                <div ng-show="quotaLockStatus == '1' && !isMonthlyHoliday " class="tips" data-toggle="tooltip" data-placement="top" title="在查询当时，可用的调休假余额。"></div>
+                                <div ng-show="quotaLockStatus != '1'" class="tips" data-toggle="tooltip" data-placement="top" title="考勤周期定案后，本考勤周期剩余的额度。"></div>
+                            </th>
+                            <th ng-show="!isMonthlyHoliday">{{ quotaLockStatus == '1' ? '到期应结算额度' : '到期已结算余额' }}
+                                <div ng-show="quotaLockStatus == '1'" class="tips" data-toggle="tooltip" data-placement="top" title="在查询当时，失效/结算日期在当月考勤周期结束之日的调休假额度总和。"></div>
+                                <div ng-show="quotaLockStatus != '1'" class="tips" data-toggle="tooltip" data-placement="top" title="考勤周期定案后，当个考勤周期已经结算为加班费的调休假额度。"></div>
+                            </th>
+                            <th ng-show="!isMonthlyHoliday">到期失效额度
+                                <div class="tips" data-toggle="tooltip" data-placement="top"
+                                     title="当个考勤周期结束时，失效清零的调休假时长。"></div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td ng-show="!isMonthlyHoliday" ng-bind="lieuQuotaTable.prevBalanceSum == '-' ? '-' : (lieuQuotaTable.prevBalanceSum + '小时')"></td>
+                                <td
+                                        ng-bind="isMonthlyHoliday && (lieuQuotaTable.cycleQuotaSum == '-' || lieuQuotaTable.cycleQuotaSum.split('.')[0] > 31) ? '-' : (lieuQuotaTable.cycleQuotaSum == '-' ? '-' : (lieuQuotaTable.cycleQuotaSum + (isMonthlyHoliday ? '天' : '小时')))"></td>
+                                <td ng-show="!isMonthlyHoliday" ng-bind="lieuQuotaTable.disabledDate"></td>
+                                <td ng-bind="lieuQuotaTable.cycleQuotaUsedSum == '-' ? '-' : (lieuQuotaTable.cycleQuotaUsedSum + (isMonthlyHoliday ? '天' : '小时'))"></td>
+                                <td ng-bind="isMonthlyHoliday && lieuQuotaTable.currentBalance.split('.')[0] > 31 ? '-' : lieuQuotaTable.currentBalance"></td>
+                                <td ng-show="!isMonthlyHoliday"
+                                    ng-bind="lieuQuotaTable.totalBalanceSum == '-' ? '-' : (lieuQuotaTable.totalBalanceSum + (isMonthlyHoliday ? '天' : '小时'))"></td>
+                                <td ng-show="!isMonthlyHoliday"
+                                    ng-bind="lieuQuotaTable.invalidBalance  == '-' ? '-' : (lieuQuotaTable.invalidBalance + (isMonthlyHoliday ? '天' : '小时'))"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered m-t-10" ng-show="lieuQuotaTable.transferStatus == 1">
+                        <!-- <table class="table table-bordered m-t-10" ng-show="lieuQuotaTable.transferStatus == 1 || isTransfered"> -->
+                        <thead>
+                        <tr>
+                            <th ng-show="!isMonthlyHoliday">状态</th>
+                            <th ng-show="!isMonthlyHoliday">开始时间</th>
+                            <th ng-show="!isMonthlyHoliday">结束时间</th>
+                            <th ng-show="!isMonthlyHoliday">期初余额
+                                <div class="tips" data-toggle="tooltip" data-placement="top"
+                                     title="=上期期末余额=上期期初余额+上期产生额度-上期使用额度-上期到期已结算额度"></div>
+                            </th>
+                            <th>本周期产生额度
+                                <div ng-show="!isMonthlyHoliday" class="tips" data-toggle="tooltip" data-placement="top"
+                                     title="本周期内加班转化为调休假的时长。"></div>
+                            </th>
+                            <th ng-show="!isMonthlyHoliday">失效/结算日期</th>
+                            <th>本周期已使用额度
+                                <div ng-show="!isMonthlyHoliday" class="tips" data-toggle="tooltip" data-placement="top"
+                                     title="本周期内调休消耗的调休假时长。"></div>
+                            </th>
+                            <th>{{ quotaLockStatus == '1' ? '当前余额' : '期末余额' }}
+                                <div ng-show="quotaLockStatus == '1' && !isMonthlyHoliday " class="tips"
+                                     data-toggle="tooltip" data-placement="top" title="在查询当时，可用的调休假余额。"></div>
+                                <div ng-show="quotaLockStatus != '1'" class="tips" data-toggle="tooltip"
+                                     data-placement="top" title="考勤周期定案后，本考勤周期剩余的额度。"></div>
+                            </th>
+                            <th ng-show="!isMonthlyHoliday">{{ quotaLockStatus == '1' ? '到期应结算额度' : '到期已结算余额' }}
+                                <div ng-show="quotaLockStatus == '1'" class="tips" data-toggle="tooltip"
+                                     data-placement="top" title="在查询当时，失效/结算日期在当月考勤周期结束之日的调休假额度总和。"></div>
+                                <div ng-show="quotaLockStatus != '1'" class="tips" data-toggle="tooltip"
+                                     data-placement="top" title="考勤周期定案后，当个考勤周期已经结算为加班费的调休假额度。"></div>
+                            </th>
+                            <th ng-show="!isMonthlyHoliday">到期失效额度
+                                <div class="tips" data-toggle="tooltip" data-placement="top"
+                                     title="当个考勤周期结束时，失效清零的调休假时长。"></div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody ng-if="!isMonthlyHoliday">
+                            <tr>
+                                <td>变动前</td>
+                                <td ng-bind="lieuQuotaTable.prev.beginDate"></td>
+                                <td ng-bind="lieuQuotaTable.prev.endDate"></td>
+                                <td>
+                                    {{lieuQuotaTable.prev.prevBalanceSum == '-' ? '-' : (lieuQuotaTable.prev.prevBalanceSum + '小时')}}
+                                </td>
+                                <td>
+                                    {{lieuQuotaTable.prev.cycleQuotaSum == '-' ? lieuQuotaTable.prev.cycleQuotaSum :
+                                    (lieuQuotaTable.prev.cycleQuotaSum + '小时') }}
+                                </td>
+                                <td ng-bind="lieuQuotaTable.prev.disabledDate"></td>
+                                <td>
+                                    {{lieuQuotaTable.prev.cycleQuotaUsedSum == '-' ? lieuQuotaTable.prev.cycleQuotaUsedSum :
+                                    (lieuQuotaTable.prev.cycleQuotaUsedSum + '小时') }}
+                                </td>
+                                <td>
+                                    {{lieuQuotaTable.prev.currentBalance == '-' ? lieuQuotaTable.prev.currentBalance :
+                                    (lieuQuotaTable.prev.currentBalance + '小时') }}
+                                </td>
+                                <td>
+                                    {{lieuQuotaTable.prev.totalBalanceSum == '-' ? lieuQuotaTable.prev.totalBalanceSum :
+                                    (lieuQuotaTable.prev.totalBalanceSum + '小时') }}
+                                </td>
+                                <td>
+                                    {{lieuQuotaTable.prev.invalidBalance == '-' ? lieuQuotaTable.prev.invalidBalance :
+                                    (lieuQuotaTable.prev.invalidBalance + '小时') }}
+                                </td>
+                            </tr>
+                            <!-- <tr>
+                                <td>变动后</td>
+                                <td ng-bind="lieuQuotaTable.post.beginDate"></td>
+                                <td ng-bind="lieuQuotaTable.post.endDate"></td>
+                                <td>
+                                    {{lieuQuotaTable.post.prevBalanceSum == '-' ? '-' : (lieuQuotaTable.post.prevBalanceSum + '小时')}}
+                                </td>
+                                <td>
+                                    {{lieuQuotaTable.post.cycleQuotaSum == '-' ? lieuQuotaTable.post.cycleQuotaSum :
+                                    (lieuQuotaTable.post.cycleQuotaSum + '小时') }}
+                                </td>
+                                <td ng-bind="lieuQuotaTable.post.disabledDate"></td>
+                                <td>
+                                    {{lieuQuotaTable.post.cycleQuotaUsedSum == '-' ? lieuQuotaTable.post.cycleQuotaUsedSum :
+                                    (lieuQuotaTable.post.cycleQuotaUsedSum + '小时') }}
+                                </td>
+                                <td>
+                                    {{lieuQuotaTable.post.currentBalance == '-' ? lieuQuotaTable.post.currentBalance :
+                                    (lieuQuotaTable.post.currentBalance + '小时') }}
+                                </td>
+                                <td>
+                                    {{lieuQuotaTable.post.totalBalanceSum == '-' ? lieuQuotaTable.post.totalBalanceSum :
+                                    (lieuQuotaTable.post.totalBalanceSum + '小时') }}
+                                </td>
+                                <td>
+                                    {{lieuQuotaTable.post.invalidBalance == '-' ? lieuQuotaTable.post.invalidBalance :
+                                    (lieuQuotaTable.post.invalidBalance + '小时') }}
+                                </td>
+                            </tr> -->
+                            <tr ng-repeat="post in lieuQuotaTable.post">
+                                <td>变动后</td>
+                                <td ng-bind="post.beginDate"></td>
+                                <td ng-bind="post.endDate"></td>
+                                <td>
+                                    {{post.prevBalanceSum == '-' ? '-' : (post.prevBalanceSum + '小时')}}
+                                </td>
+                                <td>
+                                    {{post.cycleQuotaSum == '-' ? post.cycleQuotaSum : (post.cycleQuotaSum + '小时') }}
+                                </td>
+                                <td ng-bind="post.disabledDate"></td>
+                                <td>
+                                    {{ post.cycleQuotaUsedSum == '-' ? post.cycleQuotaUsedSum : (post.cycleQuotaUsedSum + '小时') }}
+                                </td>
+                                <td>
+                                    {{ post.currentBalance == '-' ? post.currentBalance : (post.currentBalance + '小时') }}
+                                </td>
+                                <td>
+                                    {{ post.totalBalanceSum == '-' ? post.totalBalanceSum : (post.totalBalanceSum + '小时') }}
+                                </td>
+                                <td>
+                                    {{ post.invalidBalance == '-' ? post.invalidBalance : (post.invalidBalance + '小时') }}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <!-- <tbody ng-if="isMonthlyHoliday">
+                            <tr>
+                                <td>变动前</td>
+                                <td ng-bind="transferDataPrev.beginDate"></td>
+                                <td ng-bind="transferDataPrev.endDate"></td>
+                                <td ng-bind="transferDataPrev.quota + '天'"></td>
+                                <td ng-bind="transferDataPrev.usedQuota + '天'"></td>
+                                <td ng-bind="transferDataPrev.balanceQuota + '天'"></td>
+                            </tr>
+                            <tr ng-repeat="post in transferDataPost">
+                                <td>变动后</td>
+                                <td ng-bind="post.beginDate"></td>
+                                <td ng-bind="post.endDate"></td>
+                                <td ng-bind="post.quota + '天'"></td>
+                                <td ng-bind="post.usedQuota + '天'"></td>
+                                <td ng-bind="post.balanceQuota + '天'"></td>
+                            </tr>
+                        </tbody> -->
+                    </table>
+                </div>
+                <div class="row vk-spaced-row lieu-quota-box"  ng-show="!isMonthlyHoliday">
+                    <p>当前余额构成详情</p>
+                    <table class="table table-bordered m-t-10">
+                        <thead>
+                        <tr>
+                            <th width="20%">额度产生周期</th>
+                            <th ng-repeat="item in lieuQuotaTable.currentBalanceDetail" colspan="2">{{item.lockCycleName}}</th>
+                        </tr>
+                        <tr>
+                            <td width="20%">额度属性</td>
+                            <td ng-repeat="i in balanceDetailDouble track by $index">{{$index%2 == 0 ? '整班次' : '非整班次'}}</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td width="20%">时长</td>
+                            <td ng-repeat="item in duration">{{item.value == '-' ? item.value : item.value + '小时'}}</td>
+                        </tr>
+                        <tr>
+                            <td width="20%">失效/结算日期</td>
+                            <td ng-repeat="item in lieuQuotaTable.currentBalanceDetail" colspan="2">{{item.endDate}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row vk-spaced-row lieu-quota-box m-b-15" ng-show="!isMonthlyHoliday">
+                    <p>本周期额度产生与使用明细</p>
+                    <table class="table table-bordered table-striped table-condensed m-t-10">
+                        <thead>
+                        <tr>
+                            <th>类别</th>
+                            <th>加班日期</th>
+                            <th>调休日期/结算日期</th>
+                            <th>时长</th>
+                            <th>整班次/非整班次</th>
+                            <th>备注</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="q in lieuQuotaDetail">
+                            <!--<td>$scope.lieuQuotaDataDictionary[{{q.type}}]</td>-->
+                            <td>{{q.type || '-'}}</td>
+                            <td>{{q.date || '-'}}</td>
+                            <td>{{q.endDate || '-'}}</td>
+                            <td>{{q.duration || '-'}}</td>
+                            <td>{{lieuShiftType[q.isFullShift]}}</td>
+                            <td>{{q.memo || '-'}}</td>
+                        </tr>
+                        <tr ng-if="noData">
+                            <td colspan="40">未搜索到数据</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="container-fluid m-t-10">
+                        <div common-pagination></div>
+                    </div>
+                </div>
+
+                <div class="row vk-spaced-row lieu-quota-box"  ng-show="isMonthlyHoliday">
+                    <p>本周期月休使用明细</p>
+                    <table class="table table-bordered table-striped table-condensed m-t-10">
+                        <thead>
+                        <tr>
+                            <th>休假开始日期</th>
+                            <th>休假结束日期</th>
+                            <th>时长</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="q in lieuQuotaDetail">
+                                <!--<td>$scope.lieuQuotaDataDictionary[{{q.type}}]</td>-->
+                                <td>{{q.beginDate}}</td>
+                                <td>{{q.beginDate}}</td>
+                                <td>{{q.timing + '天'}}</td>
+                            </tr>
+                            <tr ng-if="noData">
+                                <td colspan="40">未搜索到数据</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="container-fluid">
+                        <div common-pagination></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

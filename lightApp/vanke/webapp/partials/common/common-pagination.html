@@ -1,0 +1,25 @@
+<div ng-show="totalPage > 0" class="common-pagination-content">
+    <div class="pull-left" ng-show="!isShowOptions">
+        每页显示 <select name="" class="selectJob" class=""
+                     ng-options="o as o for o in config.pageOptions"
+                     ng-model="page" data-width="60px">
+    </select>条
+    </div>
+    <div class="pull-right">
+        <span>
+            第 <span ng-bind="currentPage"></span>页/共 <span ng-bind="totalPage"></span>页
+        </span>
+        <span class="m-l-20">
+            跳转至 <input type="text" class="common-pagination-jump" ng-model="currentPage" min="1" max="{{totalPage}}"/>页
+        </span>
+        <span class="m-l-20">
+            <button type="button" class="btn vk-btn-default" ng-click="gotoPreviousPage()"
+                    ng-disabled="currentPage == 1">
+                上一页
+            </button>
+            <button type="button" class="btn vk-btn-default" ng-click="gotoNextPage()"
+                    ng-disabled="currentPage == totalPage">下一页
+            </button>
+        </span>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="container-fluid sign-container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row vk-spaced-row">
+                <div class="search-in-right">
+                    <div data-common-search-bar data-week-range="true" data-hide-export-btn="true"
+                         data-hide-groups="true" data-hide-date-range="true"
+                         data-hide-search-input="true" data-operation-buttons="operation-buttons"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div id="allmap" class="vk-spaced-row">
+        <!--<p>注意：百度地图API对浏览器有要求，请在最新版Chrome、Firefox浏览器下使用该功能。</p>-->
+        <!--地图显示模块-->
+        <div id="map">
+            <div class="BMap_mask"></div>
+        </div>
+        <!--加载搜索工具栏-->
+        <div id="r-result">
+            <input type="text" id="suggestId" class="searchMap_input form-control" ng-model="keyword"/>
+            <button type="button" class="searchMap_btn" ng-click="searchMap()"></button>
+        </div>
+        <!--绘制工具条遮罩-->
+        <div id="drawingPoptip"></div>
+        <div id="searchResultPanel"></div>
+    </div>
+</div>

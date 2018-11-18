@@ -1,0 +1,205 @@
+<c:set var="baseUrl" value="${pageContext.request.contextPath}"/>
+
+<script type="text/javascript">
+    var baseUrl = "${baseUrl}";
+    var apiBaseUrl = "${baseUrl}/internal/api";
+    var _ajaxCount = 0;
+</script>
+
+<c:if test="${profiles[0] == 'dev'}">
+    <script type="text/javascript" src="<c:url value="/components/jquery/dist/jquery.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/components/angular/angular.js"/>"></script>
+    <%--<script type="text/javascript" src="<c:url value="/components/angular-animate/angular-animate.js"/>"></script>--%>
+    <script type="text/javascript" src="<c:url value="/components/angularjs-slider/dist/rzslider.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/components/angular-route/angular-route.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/components/angular-i18n/angular-locale_zh-cn.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/components/angular-sanitize/angular-sanitize.min.js"/>"></script>
+
+    <script type="text/javascript" src="<c:url value="/components/bootstrap/dist/js/bootstrap.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/components/metisMenu/dist/metisMenu.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/components/angular-bootstrap/ui-bootstrap-tpls.js"/>"></script>
+    <script type="text/javascript"
+            src="<c:url value="/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"/>"></script>
+    <script type="text/javascript"
+            src="<c:url value="/components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/lib/bootstrap-select.js"/>"></script>
+    <script type="text/javascript"
+            src="<c:url value="/components/bootstrap-select/dist/js/i18n/defaults-zh_CN.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/components/angular-xeditable/dist/js/xeditable.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/components/DataTables/media/js/jquery.dataTables.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/components/underscore/underscore.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/components/bootstrap-fileinput/js/fileinput.js" />"></script>
+    <script type="text/javascript" src="<c:url value="/app/directives/angular-scrollable-table.js" />"></script>
+    <script type="text/javascript"
+            src="<c:url value="/components/bootstrap-fileinput/js/fileinput_locale_zh.js"/>"></script>
+    <script type="text/javascript"
+            src="<c:url value="/components/bootstrap-timepicker/js/bootstrap-timepicker.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/extension.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/vkrms.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/app.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/user-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/employee-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/auth-config.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/company-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/public-holiday-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/common-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/fast-schedules-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/super-schedules-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/data-table-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/overtime-attendance-check-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/selected-employee-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/task-rule-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/task-rule-auth-config.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/task-point-rule-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/job-incentive-rule-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/attendance-lock-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/attendance-lock-cycle-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/attendance-lock-collect-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/task-incentive-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/attendance-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/attendance-fill-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/attendance-check-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/sign-in-area-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/experience-ruleset-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/shift-group-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/shift-group-authority-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/post-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/post-rule-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/task-point-view-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/repair-wealth-rule-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/order-coefficient-setting-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/wealth-convert-rule-setting-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/wealth-convert-rule-check-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/wealth-lock-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/wealth-lock-cycle-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/experience-search-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/experience-summarizing-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/experience-verify-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/experience-setting-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/experience-input-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/not-task-wealth-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/holiday-rule-setting-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/overall-holiday-rule-setting-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/lieu-quota-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/lieu-line-setting-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/other-holiday-balance-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/leave-records-list-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/duty-fees-setting-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/department-info-view-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/outer-payoff-management.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/photo-sign-approval-service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/employee.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/employee-create-save.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/employee-edit-save.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/employee-view.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/experience-ruleset.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/task-rules.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/task-rules-authority-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/job-rules-authority-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/task-point-rules-config.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/job-incentive-rules-config.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/task-report.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/task-incentive-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/shift.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/shift-group.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/shift-group-authority.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/shift-view.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/public-holiday-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/public-holiday-set-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/outer-payoff-management.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/attendance-abnormality-ruleset.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/fast-schedules.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/super-schedules.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/super-schedules-check.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/super-schedules-check-post.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/attendance-details-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/new-attendance-check.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/attendance-fill.js"/>"></script>
+    <script type="text/javascript"
+            src="<c:url value="/app/controllers/overtime-attendance-check-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/attendance-lock-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/attendance-lock-detail-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/attendance-lock-cycle-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/switch-shift.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/task-point-view.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/experience-search.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/experience-enter.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/experience-setting.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/experience-summarizing.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/experience-verify.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/experience-setting.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/experience-input.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/lieu-quota.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/lieu-line-settings.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/other-holiday-balance.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/other-holiday-balance-check.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/lieu-detail.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/leave-records-list-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/leave-approve-list-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/duty-fees-setting.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/attendance-lock-data-record.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/white-list.js"/>"></script>
+    <script type="text/javascript"
+            src="<c:url value="/app/controllers/attendance-lock-collect-controller.js"/>"></script>
+    <script type="text/javascript"
+            src="<c:url value="/app/controllers/authority/auth-global-list-controller.js"/>"></script>
+    <script type="text/javascript"
+            src="<c:url value="/app/controllers/authority/auth-organization-config-controller.js"/>"></script>
+    <script type="text/javascript"
+            src="<c:url value="/app/controllers/authority/auth-function-config-controller.js"/>"></script>
+    <script type="text/javascript"
+            src="<c:url value="/app/controllers/authority/auth-group-config-controller.js"/>"></script>
+    <script type="text/javascript"
+            src="<c:url value="/app/controllers/common/common-select-department-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/sign-in-area-list.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/post.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/post-rule.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/faq.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/repair-wealth-rule.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/order-coefficient-setting.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/wealth-lock-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/wealth-lock-cycle-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/wealth-convert-rule-setting.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/wealth-convert-rule-check.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/not-task-wealth.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/not-task-wealth-setting.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/not-task-wealth-input.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/holiday-rule-setting.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/overall-holiday-rule-setting.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/department-info-view.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/employee-transfer-leave-rule.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/employee-transfer-info-confirm.js"/>"></script>
+    <script type="text/javascript"
+            src="<c:url value="/app/controllers/employee-transfer-cross-leave-rule.js"/>"></script>
+    <script type="text/javascript"
+            src="<c:url value="/app/controllers/employee-transfer-cross-info-confirm.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/employee-transfer-detail.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/photo-sign-approval.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/services/employee-transfer.service.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/directives/common-search-bar.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/directives/common-checkbox-group.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/directives/auth-common-checkbox-group.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/directives/auth-common-top-banner.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/directives/angular-drag.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/directives/angular.rangeSlider.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/directives/faq.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/directives/common-pagination.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/directives/ngToast.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/sign-in-area-controller.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/directives/common-company-department.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/controllers/attendance.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/filter/filter.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/app/directives/on-finish-render.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/components/baidu-map/sign-in-area-GeoUtils_min.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/components/angular-ui-grid/ui-grid.js"/>"></script>
+    <script type="text/javascript"
+            src="https://api.map.baidu.com/api?v=2.0&ak=PTiRHfiOODukdOvyWADpexkNcYOgYS00"></script>
+    <script type="text/javascript"
+            src="<c:url value="/components/baidu-map/sign-in-area-drawing-manager.js"/>"></script>
+    <%--<script type="text/javascript" src="<c:url value="/components/bugtags/bugtags-1.0.3.js" />"></script>
+    <script>
+        // VERSION_NAME 替换为项目的版本，VERSION_CODE 替换为项目的子版本
+        new Bugtags('de023325ff2f2379a73b609c1909e027', 'v1.0', 'rmv1.0');
+    </script>--%>
+</c:if>
+

@@ -1,0 +1,67 @@
+<div class="scrollable" id="wealth-value">
+    <div class="scrollable-content margin-top-15">
+        <div class="section-cell">
+            <div class="list-group text-center white-bg mt10"
+                 ng-repeat="history in mwh.wealthValueHistorys track by $index">
+                <div class="ta-l p15 border-b">
+                    <span class="color-black f18 vm">{{ history.endDate | date: 'yyyy.MM'}}</span>
+                    <span class="color-gray vm">（{{ history.beginDate | date: 'MM-dd'}} 至 {{ history.endDate | date: 'MM-dd'}}）</span>
+                </div>
+                <div class="cell">
+                    <div class="flex-box inner-cell tc">
+                        <div class="flex ta-r">
+                            <span class="wealth-f" ng-style="mwh.horizontalStepColor(history.exchangeRule,history.wealthValue)">{{ mwh.NumberToFixed(history.wealthValue)}}</span>
+                            点财富值
+                        </div>
+                        <div class="ta-c ml10 mr10">
+                            <img src="rm-mobile/app/images/wealth_exchange.png" width="30" class="vm" alt=""/>
+                        </div>
+                        <div class="flex ta-l">
+                            <span ng-style="mwh.horizontalStepColor(history.exchangeRule,history.wealthValue)">{{mwh.NumberToFixed(history.vValue)}}</span>
+                            V币
+                        </div>
+                    </div>
+                </div>
+                <div class="tc flex-box pr color-gray f14">
+                    <div class="flex wealth-line pr"></div>
+                    <div>兑换明细</div>
+                    <div class="flex wealth-line pr"></div>
+                </div>
+
+                <div class="inner-cell">本月财富值兑换系数 {{history.exchangeRatio}}
+                    <img ng-click="mwh.showModelWealthBox = 1" src="rm-mobile/app/images/wealth_tips.png" width="16"
+                         alt=""/>
+                </div>
+                <div class="inner-cell">
+                    <div class="posr">
+                        <div class="wealth-state2 flex-box">
+                            <div class="wealth-state-list flex" ng-repeat="item in history.exchangeRule">
+                                <div class="wealth-step-name f12">{{item.ruleName}}</div>
+                                <div class="ta-r">
+                                    <span class="wealth-name-gray" ng-style="{fontSize: mwh.smallFont}">{{mwh.toFixed(item.end)}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wealthActive"
+                             ng-style="mwh.horizontalStepWidth(history.exchangeRule,history.wealthValue)">
+                            <span class="">{{mwh.toFixed(history.wealthValue)}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="no-point" ng-show="!mwh.wealthValueHistorys">
+                <div class="icon-money"></div>
+                <div class="color-grey">本时间段内还没有任务财富值历史记录</div>
+            </div>
+        </div>
+    </div>
+</div>
+<picker-year></picker-year>
+<div class="modal-year" ng-show="mwh.showModelWealthBox" ng-click="mwh.showModelWealthBox = 0">
+    <div class="modal-backdrop"></div>
+    <div class="modal-wealth-box">
+        <div class="modal-wealth-content inner-cell">
+            财富值兑换系数与你所在项目的整体业绩、设施设备满意度等指标相关
+        </div>
+    </div>
+</div>

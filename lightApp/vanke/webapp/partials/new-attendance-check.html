@@ -1,0 +1,71 @@
+<div id="attendance-check-container" class="container-fluid">
+    <div class="row">
+        <div data-common-search-bar data-show-standard-work-jobs="true" data-show-attendance-result="true"
+             data-hide-export-btn="false" data-show-attendance-type="true" data-show-job-status="true"></div>
+    </div>
+    <div class="row" id="switchTable">
+        <div class="table-responsive vk-table-complex">
+            <table id="attendance-check-table-new" class="table table-bordered display nowrap fl" cellspacing="0">
+                <thead>
+                <tr>
+                    <th rowspan="2">ID</th>
+                    <th rowspan="2">是否需要打卡</th>
+                    <th rowspan="2" width="80">姓名</th>
+                    <th rowspan="2" width="95">日期</th>
+                    <th colspan="4">排班信息</th>
+                    <th colspan="2">打卡时间</th>
+                    <th colspan="3">加班出勤时长</th>
+                    <th colspan="4">值班（次）</th>
+                    <th rowspan="2">迟到<br/>（分钟）</th>
+                    <th rowspan="2">早退<br/>（分钟）</th>
+                    <th colspan="1">半天旷工</th>
+                    <th colspan="1">全天旷工</th>
+                    <th rowspan="2">休假时长<br>（小时）</th>
+                    <th rowspan="2">资源编号</th>
+                    <th rowspan="2">EHR编号</th>
+                    <th rowspan="2">公司</th>
+                    <th rowspan="2">项目/部门</th>
+                    <th rowspan="2">岗位专业分类</th>
+                    <th rowspan="2">在职状态</th>
+                </tr>
+                <tr>
+                    <th>岗位</th>
+                    <th>班次</th>
+                    <th>开始时间</th>
+                    <th width="75">结束时间</th>
+                    <th>上班时间</th>
+                    <th>下班时间</th>
+                    <th>工作日</th>
+                    <th>休息日</th>
+                    <th>法定节假日</th>
+                    <th>值班经理值班</th>
+                    <th>维修普通值班</th>
+                    <th>维修夜间值班</th>
+                    <th>其他夜值</th>
+                    <th>时长（小时）</th>
+                    <th>时长（小时）</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="row hide" id="switchMap">
+        <div class="col-md-12">
+            <div id="allmap"></div>
+        </div>
+    </div>
+</div>
+
+<!--
+<script type="text/ng-template" id="exportAttendance.html">
+    <div class="modal-header">
+        <strong class="modal-title">选择导出类型</strong>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="exportDetail()">
+            导出明细列表
+        </button>
+        <button class="btn btn-default" type="button" ng-click="exportAbnormalSummary()">导出异常考勤汇总</button>
+        <button class="btn vk-btn-passion" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>-->

@@ -1,0 +1,63 @@
+<div class="scrollable">
+    <div class="scrollable-content">
+        <div class="employee-intro">
+            <span>{{ attendanceRest.employeeInfo.id }}</span>
+            <span>{{ attendanceRest.employeeInfo.name }}</span>
+            <span>{{ attendanceRest.employeeInfo.jobName }}</span>
+        </div>
+        <div class="page-bar">
+            <div class="title-area">
+                <h3 class="title-head">{{period}}{{title}}</h3>
+
+                <div class="title-area-radius large">
+                    <div class="title-centent-text">
+                        <div>
+                            <h3 ng-class="{'color-green':attendanceDetail.fontColor == 'green', 'color-red':attendanceDetail.fontColor == 'red', 'color-orange':attendanceDetail.fontColor == 'orange'}">
+                                {{+attendanceRest.totalDuration}}<span class="unit">次</span></h3>
+                            <!--<p>(12.04-12.05)</p>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-repeat="attendance in attendanceRest.details | orderBy: '-date'">
+            <div class="section-cell-datetime">{{attendance.date}}</div>
+
+            <div class="section-cell white-bg">
+                <div class="cell-main">
+                    <div class="cell-title flex-box">
+                        <div class="flex">
+                            <span class="label-name">{{attendance.shiftName}}</span>
+                        </div>
+                        <div class="flex ta-r inner-right" ng-if="attendance.shiftName == '月休'">
+                            -
+                        </div>
+                        <div class="flex ta-r inner-right" ng-if="attendance.shiftName != '月休'">
+                            {{showSecondDay(attendance.date,
+                            attendance.actualOnDutyTime)}}-{{showSecondDay(attendance.date,
+                            attendance.actualOffDutyTime)}}
+                        </div>
+                    </div>
+                    <div class="cell-title flex-box" ng-if="attendance.labelFixedPostName">
+                        <div class="flex">
+                            <div style="margin-top: 10px"
+                            <i class="map-pin"></i>
+                            <span>{{shift.labelFixedPostName}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="height:0.38rem;margin-left: .4rem;"></div>
+            </div>
+            <div class="cell-time-list border-t5">
+                <div class="flex-box border-t" ng-if="attendance.duration">
+                    <div class="flex dutytime">时长</div>
+                    <div class="flex ta-r inner-right"
+                         ng-class="{'color-green':attendanceDetail.fontColor == 'green', 'color-red':attendanceDetail.fontColor == 'red', 'color-orange':attendanceDetail.fontColor == 'orange'}">
+                        {{attendance.duration}}
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

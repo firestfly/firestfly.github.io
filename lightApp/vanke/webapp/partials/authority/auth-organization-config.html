@@ -1,0 +1,10 @@
+<div class="container-fluid vk-container authority-container" organizations-scroll>
+    <div auth-common-top-banner personal-info="personalInfo" save-function="saveAuthConfig()" search="search()"
+         top-banner-config="topBannerConfig"></div>
+    <div class="auth-org-list">
+        <div data-auth-common-checkbox-group
+             ng-repeat="company in organizations | limitTo: organizationsLenLimit track by $index"
+             checkbox-group-data="company.departments" checkbox-group-title="company.company_name"
+             checkbox-type="checkboxType" checkbox-config="checkboxConfig"></div>
+    </div>
+</div>

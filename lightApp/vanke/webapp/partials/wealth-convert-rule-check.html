@@ -1,0 +1,77 @@
+<div class="container-fluid authority-container">
+    <div class="row">
+        <div common-search-bar data-hide-date-range="true" data-show-standard-work-jobs-one="true"
+             data-show-job-status="true"
+             data-show-lock-cycle="true" data-show-wealth-section="true"></div>
+    </div>
+
+    <div class="wealth-convert-table">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>岗位专业分类</th>
+                <th>职位</th>
+                <th>定案周期</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th ng-click="search('wealth')" class="cp">总财富值 <span class="fa fa-arrows-v"></span></th>
+                <th ng-click="search('taskWealth')" class="cp">任务财富值 <span class="fa fa-arrows-v"></span></th>
+                <th ng-click="search('notTaskWealth')" class="cp">非任务财富值 <span class="fa fa-arrows-v"></span></th>
+                <th ng-click="search('totalWorkhour')" class="cp">总工时 <span class="fa fa-arrows-v"></span></th>
+                <th ng-click="search('taskWorkhour')" class="cp">任务工时 <span class="fa fa-arrows-v"></span></th>
+                <th ng-click="search('notTaskWorkhour')" class="cp">非任务工时 <span class="fa fa-arrows-v"></span></th>
+                <th>兑换收入</th>
+                <th>总兑换值</th>
+                <th>基本兑换值</th>
+                <th>一档兑换值</th>
+                <th>二档兑换值</th>
+                <th>三档兑换值</th>
+                <th>基本兑换比例</th>
+                <th>资源编号</th>
+                <th>EHR编号</th>
+                <th>在职状态</th>
+                <th>公司/管理中心</th>
+                <th>部门/项目</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="cr in wcrcc.convertResult">
+                <td ng-bind="cr.employeeName"></td>
+                <td ng-bind="cr.workGroup"></td>
+                <td ng-bind="cr.workJobName"></td>
+                <td ng-bind="cr.lockCycleName"></td>
+                <td ng-bind="cr.beginDate"></td>
+                <td ng-bind="cr.endDate"></td>
+                <td ng-bind="cr.wealth" ng-class="{'td-highlighted': cr.wealth > 0}"
+                    ng-click="wealthLineClick(cr, cr.wealth,'wealth')"></td>
+                <td ng-bind="cr.taskWealth" ng-class="{'td-highlighted': cr.taskWealth > 0}"
+                    ng-click="wealthLineClick(cr, cr.taskWealth,'wealth')"></td>
+                <td ng-bind="cr.notTaskWealth" ng-class="{'td-highlighted': cr.notTaskWealth > 0}"
+                    ng-click="wealthLineClick(cr, cr.notTaskWealth,'wealth')"></td>
+                <td ng-bind="cr.totalWorkhour" ng-class="{'td-highlighted': cr.totalWorkhour > 0}"
+                    ng-click="wealthLineClick(cr, cr.totalWorkhour,'workhour')"></td>
+                <td ng-bind="cr.taskWorkhour" ng-class="{'td-highlighted': cr.taskWorkhour > 0}"
+                    ng-click="wealthLineClick(cr, cr.taskWorkhour,'workhour')"></td>
+                <td ng-bind="cr.notTaskWorkhour" ng-class="{'td-highlighted': cr.notTaskWorkhour > 0}"
+                    ng-click="wealthLineClick(cr, cr.notTaskWorkhour,'workhour')"></td>
+                <td ng-bind="cr.convertEarning"></td>
+                <td ng-bind="cr.totalEarning"></td>
+                <td ng-bind="cr.baseEarning"></td>
+                <td ng-bind="cr.first"></td>
+                <td ng-bind="cr.second"></td>
+                <td ng-bind="cr.third"></td>
+                <td ng-bind="cr.wageReducePercent"></td>
+                <td ng-bind="cr.employeeId"></td>
+                <td ng-bind="cr.sapId"></td>
+                <td ng-bind="cr.jobStatus"></td>
+                <td ng-bind="cr.companyName"></td>
+                <td ng-bind="cr.departmentName"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container-fluid">
+    <div common-pagination></div>
+</div>

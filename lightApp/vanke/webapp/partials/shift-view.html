@@ -1,0 +1,70 @@
+<div class="container-fluid">
+    <div class="row vk-spaced-row">
+        <div id="shift-view" class="search-in-right">
+            <div data-common-search-bar data-week-range="true" data-hide-export-btn="true"
+                 data-hide-groups="true" data-hide-date-range="true"
+                 data-hide-search-input="true"></div>
+        </div>
+    </div>
+    <div class="table-responsive row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover" ng-table="tableParams">
+                <tr>
+                    <th>班次名称</th>
+                    <th>班次类型</th>
+                    <th>班次说明</th>
+                    <th>关联班次</th>
+                    <th>上班时间</th>
+                    <th>下班时间</th>
+                    <th>休息开始时间</th>
+                    <th>休息结束时间</th>
+                    <th>中途休息时长（小时）</th>
+                    <th>在岗时长（小时）</th>
+                    <th>倒班班次</th>
+                </tr>
+                <tr ng-if="shiftsSearchResult">
+                    <td colspan="9">暂无数据，请重新选择部门查询</td>
+                </tr>
+                <tr ng-if="!shiftsDefaultState">
+                    <td colspan="9">数据加载中...</td>
+                </tr>
+                <tr ng-repeat="shift in shifts">
+                    <td>
+                        <span ng-bind="shift.label"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="shiftTypes[shift.shiftType].value"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="shift.name"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="shift.relatedShift.label"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="(shift.onDutyTime | date:'HH:mm') || ''"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="(shift.offDutyTime | date:'HH:mm') || ''"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="(shift.diningStartDatetime | date:'HH:mm') || ''"></span>
+                    <td>
+                        <span ng-bind="(shift.diningEndDatetime | date:'HH:mm') || ''"></span>
+                    <td>
+                        <span ng-bind="shift.diningDuration | number:2"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="computeShiftTime(shift)"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="shift.switchShiftLabel || '-'"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div common-pagination></div>
+</div>

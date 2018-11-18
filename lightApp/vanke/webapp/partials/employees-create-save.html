@@ -1,0 +1,1143 @@
+<div class="container-fluid vk-employee-container" id="information-container">
+
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <a class="btn btn-default history-back">返回列表</a>
+        </div>
+    </div>
+
+    <form id="employee-form" class="form-horizontal" name="employeeForm" novalidate autocomplete="off">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading up">账号信息</div>
+                    <div class="panel-body">
+                        <div class="container-fluid">
+                            <div class="row" ng-hide="true">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="identify-phone" class="control-label col-xs-4">证件照片</label>
+                                    <img id="identify-phone" class="img-thumbnail col-xs-8" name="identify-phone"
+                                         style="width: 140px; height: 140px;"
+                                         src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTAxNDgzMGY0YiB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1MDE0ODMwZjRiIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQzLjU0MTY2NjAzMDg4Mzc5IiB5PSI3NC42NSI+MTQweDE0MDwvdGV4dD48L2c+PC9nPjwvc3ZnPg=="
+                                         alt="证件照片"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="name" class="control-label col-xs-4 required">姓名</label>
+
+                                    <div class="col-xs-8"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.userName.$invalid }">
+                                        <input type="text" class="form-control" id="name" name="userName"
+                                               placeholder="不超过20个字符" maxlength="45"
+                                               ng-model="dataValues.name" required/>
+
+                                        <p class="text-danger"
+                                           ng-show="showValidationMessages && employeeForm.userName.$invalid">*必选</p>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="loginMobile" class="control-label col-xs-4">登录账号</label>
+
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="loginMobile" name="loginMobile"
+                                               placeholder="登录账号"
+                                               ng-model="dataValues.loginMobile" disabled="true"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="original-sap-id" class="control-label col-xs-4">EHR编号</label>
+
+                                    <div class="col-xs-8">
+                                        <input type="text" id="original-sap-id" class="form-control"
+                                               name="originalSapId"
+                                               placeholder="EHR编号"
+                                               ng-model="dataValues.originalSapId" disabled="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="original-sap-id" class="control-label col-xs-4">EHR职位</label>
+
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" name="originalSapWork"
+                                               placeholder="EHR职位"
+                                               ng-model="dataValues.sapWorkJob.workJobName" disabled="true"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="id-type" class="control-label col-xs-4 required">证件类型</label>
+
+                                    <div class="col-xs-8">
+                                        <select id="id-type" name="id-type" class="selectpicker"
+                                                ng-options="key as value for (key, value) in data.identityTypes"
+                                                ng-model="dataValues.idType" ng-change="regIdTypeCheckr()">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="idNumber" class="control-label col-xs-4 required">证件号码</label>
+
+                                    <div class="col-xs-8"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.idNumber.$invalid }">
+                                        <input type="text" class="form-control" id="idNumber" name="idNumber"
+                                               placeholder="请输入证件号码" ng-model="dataValues.idNumber"
+                                               ng-change="regIdTypeCheckr()" required>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                    <p class="text-danger"
+                                       ng-show="showValidationMessages && employeeForm.idNumber.$invalid">
+                                        *请输入正确的证件号码</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label class="control-label col-xs-4">状态</label>
+
+                                    <div class="col-xs-8">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="active" ng-value="true"
+                                                   ng-model="dataValues.active"> 启用
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="active" ng-value="false"
+                                                   ng-model="dataValues.active"> 禁用
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading up">人员类别</div>
+                    <div class="panel-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="job-status" class="control-label col-xs-4">在职状态</label>
+
+                                    <div class="col-xs-8" ng-click="disabledAlert(1)">
+                                        <select id="job-status" name="job-status" class="selectpicker"
+                                                data-live-search="true" data-width="100%"
+                                                ng-class="{'pointer-stop': disabledAlertState}"
+                                                ng-options="key as value for (key, value) in data.jobStatuses"
+                                                ng-model="dataValues.jobStatus">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="work-group" class="control-label col-xs-4 required">岗位专业分类</label>
+
+                                    <div class="col-xs-8" ng-click="disabledAlert(0)"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.workGroup.$invalid }">
+                                        <select id="work-group" name="workGroup" class="selectpicker"
+                                                ng-class="{'pointer-stop': disabledAlertState}"
+                                                data-live-search="true" data-width="100%" data-size="15"
+                                                ng-options="option as option.work_group_name for option in data.workGroups track by option.work_group_id"
+                                                ng-model="dataValues.workGroup" required><!--class="form-control" -->
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                    <p class="text-danger"
+                                       ng-show="showValidationMessages && employeeForm.workGroup.$invalid"> *必选</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="entry-date" class="control-label col-xs-4 required">入职时间</label>
+
+                                    <div class="col-xs-8"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.entryDate.$invalid }">
+                                        <div class="date" ng-click="disabledAlert(0)">
+                                            <input id="entry-date" type="text" class="form-control"
+                                                   name="entryDate" ng-class="{'pointer-stop': disabledAlertState}"
+                                                   placeholder="加入时间" date-response ng-model="data.entryDate" required/>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                    <p class="text-danger"
+                                       ng-show="showValidationMessages && employeeForm.entryDate.$invalid">*必选</p>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="leave-date" class="control-label col-xs-4">离职时间</label>
+
+                                    <div class="col-xs-8">
+                                        <div class="date" ng-click="disabledAlert(0)">
+                                            <input id="leave-date" type="text" date-response class="form-control"
+                                                   name="leaveDate" ng-class="{'pointer-stop': disabledAlertState}"
+                                                   placeholder="离开时间" ng-model="data.leaveDate"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="primary-work-group" class="control-label col-xs-4">员工组</label>
+
+                                    <div class="col-xs-8" ng-click="disabledAlert(0)">
+                                        <select id="primary-work-group" class="selectpicker" name="primaryWorkGroup"
+                                                data-live-search="true" data-width="100%"
+                                                ng-class="{'pointer-stop': disabledAlertState}"
+                                                ng-options="key as value for (key, value) in data.primaryWorkGroups"
+                                                ng-model="dataValues.primaryWorkGroup">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+                                <div class="col-xs-12 col-md-6" ng-click="vertifyContractTypeId()">
+                                    <label for="contractTypeId" class="control-label col-xs-4 required">员工子组</label>
+
+                                    <div class="col-xs-8"
+                                         ng-class="{'pointer-stop': (dataValues.contractTypeId == '01' || dataValues.contractTypeId == '12' || dataValues.contractTypeId == 21 || dataValues.contractTypeId == 31 || dataValues.contractTypeId == 32 || dataValues.contractTypeId == 02) && dataValues.jobStatus == '01',
+                                         'has-error': showValidationMessages && employeeForm.contractTypeId.$invalid}">
+                                        <select id="contractTypeId" class="selectpicker" name="contractTypeId"
+                                                data-live-search="true" data-width="100%"
+                                                ng-model="dataValues.contractTypeId" required>
+                                            <option value="">请选择</option>
+                                            <option value="{{key}}"
+                                                    ng-disabled="key == 01 || key == 12 || key == 31 || key == 32"
+                                                    ng-repeat="(key, value) in data.contractTypes">{{value}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                    <p class="text-danger"
+                                       ng-show="showValidationMessages && employeeForm.contractTypeId.$invalid"> *必选</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="job" class="control-label col-xs-4 required">职位</label>
+
+                                    <div class="col-xs-8" ng-click="disabledAlert(1)"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.job.$invalid }">
+                                        <select id="job" name="job" class="selectpicker"
+                                                ng-class="{'pointer-stop': disabledAlertState}"
+                                                data-live-search="true" data-width="100%" data-size="15"
+                                                ng-options="option as option.workJobName for option in data.jobs track by option.workJobId"
+                                                ng-model="data.job" required><!---->
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                    <label class="col-xs-4"></label>
+
+                                    <p class="text-danger"
+                                       ng-show="showValidationMessages && employeeForm.job.$invalid">*必选</p>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="job-rank" class="control-label col-xs-4 required">职务</label>
+
+                                    <div class="col-xs-8" ng-click="disabledAlert(0)"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.jobRank.$invalid }">
+                                        <select id="job-rank" name="jobRank" class="form-control"
+                                                ng-class="{'pointer-stop': disabledAlertState}"
+                                                data-none-selected-text="请选择" data-live-search="true" data-width="100%"
+                                                ng-options="key as value for (key, value) in data.jobRanks"
+                                                ng-model="dataValues.jobRank" required>
+                                            <option value="" ng-show="false">请选择</option>
+                                        </select>
+                                    </div>
+                                    <label class="col-xs-4"></label>
+
+                                    <p class="text-danger"
+                                       ng-show="showValidationMessages && employeeForm.jobRank.$invalid">*必选</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="jobExperienceValue"
+                                           class="control-label col-xs-4">职位经验值</label>
+
+                                    <div class="col-xs-8"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.jobExperienceValue.$invalid }">
+                                        <input id="jobExperienceValue" type="text" name="jobExperienceValue"
+                                               class="form-control" placeholder="请输入数值"
+                                               ng-model="dataValues.jobExperienceValue"
+                                               ng-pattern="/^[-+]?[0-9]+(\.[0-9]+)?$/"
+                                               maxlength="10">
+                                    </div>
+                                    <label class="col-xs-4"></label>
+
+                                    <p class="text-danger"
+                                       ng-show="showValidationMessages && employeeForm.jobExperienceValue.$invalid">*
+                                        职位经验值必须为纯数字</p>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label class="control-label col-xs-4">级别</label>
+
+                                    <div class="col-xs-8"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.jobLevel.$invalid }">
+                                        <input type="text" class="form-control" id="job-level" name="jobLevel"
+                                               placeholder="级别"
+                                               ng-model="dataValues.jobLevel" disabled="true"/>
+                                        <input class="btn vk-btn-health fr" type="button" id="adjustJobLevel"
+                                               ng-click="adjustJobLevel()" value="调至{{data.adjustNewLevel.levelName}}"
+                                               style="position: absolute;right: -5px;top: 0;z-index: 100;"
+                                               ng-if="data.isAdjustJobLevel=='1'">
+                                    </div>
+                                    <label class="col-xs-4"></label>
+
+                                    <p class="text-danger"
+                                       ng-show="showValidationMessages && dataValues.jobExperienceValue!=null && employeeForm.jobLevel.$invalid">
+                                        * 级别必须与经验值范围相符</p>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="data.showAdjustComment">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="remark" class="control-label col-xs-4">操作说明</label>
+
+                                    <div class="col-xs-8">
+                                        <textarea name="adjustComment" id="adjustComment" name="adjustComment" cols="30"
+                                                  rows="1"
+                                                  class="form-control"
+                                                  maxlength="140" ng-model="dataValues.adjustComment"
+                                                  placeholder="不超过140字">
+                                        </textarea>
+                                    </div>
+                                    <label class="col-xs-4"></label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <div class="col-xs-4"></div>
+                                    <div class="col-xs-8"><a href="javascript:void(0);"
+                                                             ng-click="getExperienceLevelLogs();"
+                                                             ng-if="data.showAdjustInformationsTip">点击查看职位经验值
+                                        / 级别调整记录</a></div>
+                                </div>
+                                <div class="col-xs-12 col-md-6"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <div class="col-xs-4"></div>
+                                    <div class="col-xs-8" ng-if="data.adjustInformations.length<=0">
+                                        暂时没有职位经验值 / 级别调整记录
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6"></div>
+                            </div>
+                            <div class="row" ng-if="data.adjustInformations.length>0">
+                                <div class="col-xs-12 col-md-12">
+                                    <label class="control-label col-xs-4 col-md-2"></label>
+
+                                    <div class="col-xs-8 col-md-10 vk-row" name="adjustInformation">
+                                        <div class="table-responsive">
+                                            <table id="adjust-information-table"
+                                                   class="table table-bordered table-hover dataTable">
+                                                <thead>
+                                                <tr role="row" ng-if="data.adjustInformations">
+                                                    <th class="hide">ID</th>
+                                                    <th>原经验值</th>
+                                                    <th>原级别</th>
+                                                    <th>调整后经验值</th>
+                                                    <th>调整后级别</th>
+                                                    <th>操作说明</th>
+                                                    <th>操作人资源编号</th>
+                                                    <th>操作人姓名</th>
+                                                    <th>操作时间</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="adjustInformation in data.adjustInformations | orderBy:'adjustId'">
+                                                    <td ng-bind="adjustInformation.adjustId" class="hide"></td>
+                                                    <td ng-bind="adjustInformation.originExperienceValue"></td>
+                                                    <td ng-bind="adjustInformation.originLevel"></td>
+                                                    <td ng-bind="adjustInformation.adjustedExperienceValue"></td>
+                                                    <td ng-bind="adjustInformation.adjustedLevel"></td>
+                                                    <td ng-bind="adjustInformation.remark" align="left"></td>
+                                                    <td ng-bind="adjustInformation.operationId"></td>
+                                                    <td ng-bind="adjustInformation.operationName"></td>
+                                                    <td ng-bind="adjustInformation.operationTime"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="personnel-subarea" class="control-label col-xs-4">人事子范围</label>
+
+                                    <div class="col-xs-8"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.personnelSubarea.$invalid }">
+                                        <select id="personnel-subarea" class="selectpicker" name="personnelSubarea"
+                                                data-live-search="true" data-width="100%"
+                                                ng-options="key as value for (key, value) in data.personnelSubareas"
+                                                ng-model="dataValues.personnelSubarea">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="skill" class="control-label col-xs-4">技能</label>
+
+                                    <div class="col-xs-8">
+                                        <select id="skill" class="selectpicker" multiple
+                                                data-none-selected-text="请选择" data-selected-text-format="count"
+                                                data-live-search="true" data-size="15" data-width="100%"
+                                                ng-options="option.skillId as option.skillName for option in data.skills"
+                                                ng-model="dataValues.skillIds">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12">
+                                    <label class="control-label col-xs-2">工资类别</label>
+
+                                    <div class="col-xs-10" ng-click="disabledAlert(1, !initSalaryType)">
+                                        <label class="radio-inline"
+                                               ng-class="{'pointer-stop': initSalaryType && disabledAlertState}">
+                                            <input type="radio" name="employeeType" value="04" checked="checked"
+                                                   ng-model="dataValues.salaryType"> 非O序列
+                                        </label>
+                                        <label class="radio-inline"
+                                               ng-class="{'pointer-stop': initSalaryType && disabledAlertState}">
+                                            <input type="radio" name="employeeType" value="05"
+                                                   ng-model="dataValues.salaryType"> O序列
+                                        </label>
+                                        <label class="radio-inline"
+                                               ng-class="{'pointer-stop': initSalaryType && disabledAlertState}">
+                                            <select name="oSalaryType" id="oSalaryType"
+                                                    ng-model="dataValues.oSalaryType"
+                                                    ng-show="dataValues.salaryType == '05'">
+                                                <option value="">请选择</option>
+                                                <option value="{{value}}" ng-repeat="value in data.oSalaryTypes">
+                                                    {{value}}
+                                                </option>
+                                            </select>
+                                        </label>
+                                        <p class="text-danger"
+                                           ng-show="showValidationMessages && dataValues.salaryType == '05' && dataValues.oSalaryType == ''">
+                                            *必选</p>
+                                    </div>
+                                </div>
+                                <!--<div class="col-xs-12 col-md-6">-->
+                                <!--<label for="employeeChangeDate"-->
+                                <!--class="control-label col-xs-4">员工变动日期</label>-->
+
+                                <!--<div class="col-xs-8">-->
+                                <!--<input id="employeeChangeDate" type="text" name="employeeChangeDate"-->
+                                <!--class="form-control" ng-model="dataValues.employeeChangeDate" disabled="disabled">-->
+                                <!--</div>-->
+                                <!--</div>-->
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label class="control-label col-xs-4 required">工时制</label>
+
+                                    <div class="col-xs-8" ng-click="limitModify()">
+                                        <label class="radio-inline" ng-class="{'pointer-stop': !limitModifyState}">
+                                            <input type="radio" name="workingHours" value="STANDARD_WORKING_HOURS"
+                                                   ng-model="dataValues.workingHours" required> 标准工时制
+                                        </label>
+                                        <label class="radio-inline" ng-class="{'pointer-stop': !limitModifyState}">
+                                            <input type="radio" name="workingHours" value="COMPREHENSIVE_WORKING_HOURS"
+                                                   ng-model="dataValues.workingHours" required> 综合工时制
+                                        </label>
+                                        <label class="radio-inline" ng-class="{'pointer-stop': !limitModifyState}">
+                                            <input type="radio" name="workingHours" value="UNTIME_WORKING_HOURS"
+                                                   ng-model="dataValues.workingHours" required> 不定时工时制
+                                        </label>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+
+                                    <p class="text-danger col-xs-8"
+                                       ng-show="showValidationMessages && employeeForm.workingHours.$invalid">*必选</p>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="workhour-date" class="control-label col-xs-4"
+                                           ng-class="{'required': isWorkHourEffectRequired}">新工时制生效日期</label>
+
+                                    <div class="col-xs-8"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.workHoursEffectDate.$invalid }">
+                                        <div class="date">
+                                            <input id="workhour-date" type="text" date-response
+                                                   data-date-start-date="2017-08-01" class="form-control"
+                                                   name="workHourDate" placeholder="新工时制生效日期"
+                                                   ng-disabled="!isWorkHourEffectRequired"
+                                                   ng-model="data.workHoursEffectDate"
+                                                   ng-required="isWorkHourEffectRequired"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                    <p class="text-danger"
+                                       ng-show="showValidationMessages && employeeForm.workHoursEffectDate.$invalid">
+                                        *必选</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6" ng-click="tipVankeStaff()">
+                                    <label class="control-label col-xs-4">是否万科编制员工</label>
+
+                                    <div class="col-xs-8" ng-class="{'pointer-stop': !isOuter}">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="isVankeStaff" value="1"
+                                                   ng-click="changeIsVankeStaff()"
+                                                   ng-model="dataValues.isVankeStaff" required> 是
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="isVankeStaff" value="0"
+                                                   ng-click="changeIsVankeStaff()"
+                                                   ng-model="dataValues.isVankeStaff" required> 否
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6" ng-show="dataValues.isVankeStaff == 0">
+                                    <label class="control-label col-xs-4 required">是否合作物业公司编制</label>
+
+                                    <div class="col-xs-8"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.isCooperationStaff.$invalid && dataValues.isVankeStaff == 0 }">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="isCooperationStaff" value="1"
+                                                   ng-click="changeIsCooperationStaff()"
+                                                   ng-model="dataValues.isCooperationStaff"
+                                                   ng-required="dataValues.isVankeStaff == 0"> 是
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="isCooperationStaff" value="0"
+                                                   ng-click="changeIsCooperationStaff()"
+                                                   ng-model="dataValues.isCooperationStaff"
+                                                   ng-required="dataValues.isVankeStaff == 0"> 否
+                                        </label>
+                                        <p class="text-danger"
+                                           ng-show="showValidationMessages && employeeForm.isCooperationStaff.$invalid">
+                                            *必选</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row"
+                                 ng-show="dataValues.isVankeStaff == 0 && dataValues.isCooperationStaff == 0">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="cooperationCity" class="control-label col-xs-4 required">合作公司城市</label>
+
+                                    <div class="col-xs-8"
+                                         ng-class="{ 'has-error': showValidationMessages && !dataValues.cooperationCity }">
+                                        <select id="cooperationCity" class="selectpicker" data-none-selected-text="请选择"
+                                                data-selected-text-format="count"
+                                                data-live-search="true" data-size="15" data-width="100%"
+                                                ng-options="option.regionId as option.regionName for option in cooperationCitys"
+                                                ng-model="dataValues.cooperationCity"
+                                                ng-required="dataValues.isCooperationStaff == 0">
+                                            <option value="">请选择</option>
+                                        </select>
+                                        <p class="text-danger"
+                                           ng-show="showValidationMessages && !dataValues.cooperationCity">
+                                            *必选</p>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="cooperationCompany" class="control-label col-xs-4 required">合作公司</label>
+
+                                    <div class="col-xs-8"
+                                         ng-class="{ 'has-error': showValidationMessages && dataValues.cooperationCompany == ''}">
+                                        <select id="cooperationCompany" class="selectpicker"
+                                                data-none-selected-text="请选择" data-selected-text-format="count"
+                                                data-live-search="true" data-size="15" data-width="100%"
+                                                ng-options="option.companyId as option.companyName for option in cooperationCompanys"
+                                                ng-required="dataValues.isCooperationStaff == 0"
+                                                ng-model="dataValues.cooperationCompany">
+                                            <option value="">请选择</option>
+                                        </select>
+                                        <p class="text-danger"
+                                           ng-show="showValidationMessages && !dataValues.cooperationCompany">
+                                            *必选</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading up">组织职位</div>
+                    <div class="panel-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="company" class="control-label col-xs-4 required">公司</label>
+
+                                    <div class="col-xs-8" ng-click="disabledAlert(1)"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.company.$invalid }">
+                                        <select id="company" name="company" class="selectpicker" title="请选择"
+                                                ng-class="{'pointer-stop': disabledAlertState}"
+                                                data-live-search="true" data-width="100%" data-size="15"
+                                                ng-options="item as item.company_name for item in data.companyDepartments track by item.company_id"
+                                                ng-model="data.company" ng-change="loadDepartment(data.company)"
+                                                required>
+                                            <option value="" ng-if="false"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                    <p class="text-danger col-xs-8"
+                                       ng-show="showValidationMessages && employeeForm.company.$invalid">*必选</p>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="department" class="control-label col-xs-4 required">部门</label>
+
+                                    <div class="col-xs-8" ng-click="disabledAlert(1)"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.department.$invalid }">
+                                        <select id="department" name="department" class="selectpicker" title="请选择"
+                                                ng-class="{'pointer-stop': disabledAlertState}"
+                                                data-live-search="true" data-width="100%" data-size="15"
+                                                ng-options="option as option.department_name for option in data.departments track by option.department_id"
+                                                ng-model="data.department" required>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                    <p class="text-danger"
+                                       ng-show="showValidationMessages && employeeForm.department.$invalid">*必选</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="entry-date" class="control-label col-xs-4 required">加入组织时间</label>
+
+                                    <div class="col-xs-8"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.entryOrgDate.$invalid }">
+                                        <div class="date" ng-click="disabledAlert(0)">
+                                            <input id="entry-org-date" type="text" class="form-control"
+                                                   name="entryOrgDate" ng-class="{'pointer-stop': disabledAlertState}"
+                                                   placeholder="加入组织时间" date-response ng-model="data.entryOrgDate"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="leave-date" class="control-label col-xs-4">离开组织时间</label>
+
+                                    <div class="col-xs-8">
+                                        <div class="date" ng-click="disabledAlert(0)">
+                                            <input id="leave-org-date" type="text" date-response class="form-control"
+                                                   name="leaveOrgDate" ng-class="{'pointer-stop': disabledAlertState}"
+                                                   placeholder="离开组织时间" ng-model="data.leaveOrgDate"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="contract-start-date"
+                                           class="control-label col-xs-4">合同开始时间</label>
+
+                                    <div class="col-xs-8">
+                                        <div class="date">
+                                            <input id="contract-start-date" type="text" date-response
+                                                   class="form-control"
+                                                   name="contractStartDate"
+                                                   placeholder="合同开始时间" ng-model="data.contractStartDate"/>
+                                        </div>
+                                    </div>
+                                    <label class="col-xs-4"></label>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="contract-end-date"
+                                           class="control-label col-xs-4">合同结束时间</label>
+
+                                    <div class="col-xs-8">
+                                        <div class="date">
+                                            <input id="contract-end-date" type="text" date-response class="form-control"
+                                                   name="contractEndDate" placeholder="合同结束时间"
+                                                   ng-model="data.contractEndDate"/>
+                                        </div>
+                                    </div>
+                                    <label class="col-xs-4"></label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="probation" class="control-label col-xs-4">试用期</label>
+
+                                    <div class="col-xs-8">
+                                        <input id="probation" type="text" class="form-control" name="probation"
+                                               ng-pattern="/^\d{0,2}$/"
+                                               placeholder="试用期" ng-model="dataValues.probation" maxlength="2"/>
+                                        <span class="form-unit fr">个月</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12">
+                                    <label class="control-label col-xs-4 col-md-2">工作项目</label>
+
+                                    <div class="col-xs-8 col-md-10">
+                                        <p style="padding-top: 7px;">
+                                            <span>已选择{{ dataValues.workDepartment.length || 0}}项 </span><a
+                                                href="javascript:;"
+                                                ng-click="selectWorkDepartments()">修改工作项目</a>
+                                        </p>
+                                    </div>
+                                    <label class="control-label col-xs-4 col-md-2"></label>
+
+                                    <div class="col-xs-8 col-md-10">
+                                        <table id="workDepartment-table"
+                                               class="table table-bordered table-hover nowrap dataTable">
+                                            <tr ng-repeat="workDepartment in dataValues.workDepartments | orderBy:'departmentId'">
+                                                <td width="20%">
+                                                    <div ng-bind="workDepartment.departmentName"></div>
+                                                </td>
+                                                <td width="80%">
+                                                    <div class="row vk-spaced-row" style="margin-top: 0">
+                                                        <table>
+                                                            <td ng-repeat="workJob in workDepartment.workJobs | orderBy:'workJobId'"
+                                                                ng-bind="workJob.workJobName" class="fl"></td>
+                                                            <td class="fl">
+                                                                <a href="javascript:void(0)"
+                                                                   ng-click="selectWorkJobs(workDepartment,$event)">修改职位</a>
+                                                            </td>
+                                                        </table>
+
+                                                    </div>
+                                                    <div class="row vk-spaced-row hide">
+                                                        <div class="col-md-3">
+                                                            <select class="work-job" class="work-job selectpicker"
+                                                                    multiple
+                                                                    data-none-selected-text="请选择"
+                                                                    data-selected-text-format="count"
+                                                                    data-live-search="true" data-width="100%"
+                                                                    data-size="15"
+                                                                    ng-options="option as option.workJobName for option in data.workJobs track by option.workJobId"
+                                                                    ng-model="data.modifyWorkJob">
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="col-xs-3 col-sm-offset-4 col-sm-2">
+                                                                <input class="btn vk-btn-health" type="button"
+                                                                       ng-click="saveWorkJobs($event)" value="保存">
+                                                            </div>
+                                                            <div class="col-xs-3 col-sm-offset-4 col-sm-2">
+                                                                <input class="btn vk-btn-defult" type="button"
+                                                                       ng-click="cancelWorkJobs($event)" value="取消">
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="grid" class="control-label col-xs-4">网格</label>
+
+                                    <div class="col-xs-8">
+                                        <input id="grid" type="text" name="grid" class="form-control"
+                                               ng-model="dataValues.grid" maxlength="50">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="remark" class="control-label col-xs-4">备注</label>
+
+                                    <div class="col-xs-8">
+                                        <textarea name="remark" id="remark" name="remark" cols="30" rows="1"
+                                                  class="form-control"
+                                                  maxlength="140" ng-model="dataValues.remark" placeholder="不超过140字">
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading up">个人信息</div>
+                    <div class="panel-body">
+                        <div class="container-fluid">
+                            <div class="row" ng-hide="true">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="avator" class="control-label col-xs-4">上传头像</label>
+                                    <img id="avator" class="img-circle col-xs-8" style="width: 140px; height: 140px;"
+                                         src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTAxNDgzMGY0YiB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1MDE0ODMwZjRiIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQzLjU0MTY2NjAzMDg4Mzc5IiB5PSI3NC42NSI+MTQweDE0MDwvdGV4dD48L2c+PC9nPjwvc3ZnPg=="
+                                         alt="上传头像"/>
+                                    <!--<input type="file" class="button col-xs-4" ng-click="uploadAvatar()"/>-->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="nickname" class="control-label col-xs-4">昵称</label>
+
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="nickname" name="nickname"
+                                               placeholder="昵称"
+                                               ng-model="dataValues.nickname" maxlength="40">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label class="control-label col-xs-4">性别</label>
+
+                                    <div class="col-xs-8">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="gender" value="0"
+                                                   ng-model="dataValues.gender"> 男
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="gender" value="1"
+                                                   ng-model="dataValues.gender"> 女
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="telephone-number" class="control-label col-xs-4">联系电话</label>
+
+                                    <div class="col-xs-8"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.telephoneNumber.$invalid }">
+                                        <input type="text" class="form-control" id="telephone-number"
+                                               name="telephoneNumber"
+                                               placeholder="请输入电话号码" maxlength="16"
+                                               ng-model="dataValues.telephoneNumber"
+                                               ng-pattern="/^((1[3|4|5|7|8]\d{9}|\-|\(\)\+)+)|(0(((10|2[0-5|7-9])\-{0,1}\d{8})|[3-9][0-9]{2}\-{0,1}\d{7,8}))$/"
+                                        >
+
+                                        <p class="text-danger"
+                                           ng-show="showValidationMessages && employeeForm.telephoneNumber.$invalid">
+                                            *请输入固定电话或手机号，固定电话需加区号</p>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="email" class="control-label col-xs-4">电子邮箱</label>
+
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="email" name="email" maxlength="50"
+                                               placeholder="请输入电子邮箱"
+                                               ng-model="dataValues.email">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="postcode" class="control-label col-xs-4">邮政编码</label>
+
+                                    <div class="col-xs-8"
+                                         ng-class="{ 'has-error': showValidationMessages && employeeForm.postcode.$invalid }">
+                                        <input type="text" class="form-control" id="postcode" name="postcode"
+                                               placeholder="请输入邮政编码" maxlength="6"
+                                               ng-model="dataValues.postcode" ng-pattern="/^\d{6}$/">
+
+                                        <p class="text-danger"
+                                           ng-show="showValidationMessages && employeeForm.postcode.$invalid">
+                                            *请正确输入邮政编码</p>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="marital-status" class="control-label col-xs-4">婚姻状况</label>
+
+                                    <div class="col-xs-8">
+                                        <select id="marital-status" class="selectpicker" name="maritalStatus"
+                                                title="请选择" data-live-search="true" data-width="100%"
+                                                ng-options="key as value for (key, value) in data.maritalStatuses"
+                                                ng-model="dataValues.maritalStatus">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="nationality" class="control-label col-xs-4">民族</label>
+
+                                    <div class="col-xs-8">
+                                        <select id="nationality" class="selectpicker" name="nationality" title="请选择"
+                                                data-live-search="true" data-width="100%"
+                                                ng-options="key as value for (key, value) in data.nationalities"
+                                                ng-model="dataValues.nationality">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="political-identity" class="control-label col-xs-4">政治面貌</label>
+
+                                    <div class="col-xs-8">
+                                        <select id="political-identity" class="selectpicker" name="politicalIdentity"
+                                                title="请选择" data-live-search="true" data-width="100%"
+                                                ng-options="key as value for (key, value) in data.politicalIdentities"
+                                                ng-model="dataValues.politicalIdentity">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label class="control-label col-xs-4">户籍类型</label>
+
+                                    <div class="col-xs-8">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="domicileType" value="0"
+                                                   ng-model="dataValues.domicileType"> 城市
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="domicileType" value="1"
+                                                   ng-model="dataValues.domicileType"> 农村
+                                        </label>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="sapDomicile" class="control-label col-xs-4">EHR户籍</label>
+
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="sapDomicile" name="sapDomicile"
+                                               placeholder="EHR户籍" maxlength="20"
+                                               ng-model="dataValues.sapDomicile">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label class="control-label col-xs-4">户籍地</label>
+
+                                    <div class="col-xs-8">
+                                        <div name="domicile">
+                                            <select id="domicile-province" class="form-control" name="province"
+                                                    data-live-search="true" data-width="100%"
+                                                    ng-model="data.domicile.province"
+                                                    ng-options="option as option.text for option in data.domicile.provinces track by option.value">
+                                                <option value="">请选择省市</option>
+                                            </select>
+
+                                            <div class="row" ng-show="data.domicile.province.cities">
+                                                <select id="domicile-city" class="form-control" name="city"
+                                                        data-live-search="true" data-width="100%"
+                                                        ng-model="data.domicile.city"
+                                                        ng-options="city.text for city in data.domicile.province.cities">
+                                                    <option value="">请选择城市</option>
+                                                </select>
+                                            </div>
+                                            <div class="row"
+                                                 ng-show="data.domicile.city.counties && data.domicile.province.cities">
+                                                <select id="domicile-county" class="form-control" name="county"
+                                                        data-live-search="true" data-width="100%"
+                                                        ng-model="data.domicile.county"
+                                                        ng-options="county.text for county in data.domicile.city.counties">
+                                                    <option value="">请选择县区</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="contact-address" class="control-label col-xs-4">联系地址</label>
+
+                                    <div class="col-xs-8">
+                                    <textarea id="contact-address" name="contactAddress" cols="30" rows="5"
+                                              class="form-control"
+                                              placeholder="不超过140字" ng-maxlength="140"
+                                              ng-model="dataValues.contactAddress">
+                                    </textarea>
+
+                                        <p class="text-danger"
+                                           ng-show="showValidationMessages && employeeForm.contactAddress.$error.maxlength">
+                                            *不超过140字</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading up">家属信息</div>
+                    <div class="panel-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12">
+                                    <label class="control-label col-xs-4 col-md-2">家属信息</label>
+
+                                    <div class="col-xs-8 col-md-10 vk-row" name="familyInformation">
+                                        <div class="table-responsive">
+                                            <table id="family-information-table"
+                                                   class="table table-bordered table-hover nowrap dataTable">
+                                                <thead>
+                                                <tr role="row">
+                                                    <th class="hide">ID</th>
+                                                    <th>姓名</th>
+                                                    <th>电话</th>
+                                                    <th>与本人关系</th>
+                                                    <th>是否紧急联系人</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="familyInformation in data.familyInformations | limitTo:5 | orderBy:'familiesId'"
+                                                    on-finish-render>
+                                                    <td class="hide" ng-bind="familyInformation.familiesId"></td>
+                                                    <td align="left">
+                                                        <div>
+                                                            <input type="text" class="form-control" name="familiesName"
+                                                                   placeholder="姓名"
+                                                                   ng-model="familyInformation.familiesName"/>
+                                                        </div>
+                                                    </td>
+                                                    <td align="left">
+                                                        <div>
+                                                            <input type="text" class="form-control"
+                                                                   name="familiesMobile"
+                                                                   placeholder="电话"
+                                                                   ng-model="familyInformation.familiesMobile"/>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control" name="relationships"
+                                                                ng-model="familyInformation.relationship"
+                                                                ng-options="key as value for (key, value) in data.relationships">
+                                                            <option value="">与本人关系&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="checkbox" value="" name="isEmergencyContact"
+                                                               class="input-checkbox"
+                                                               ng-model="familyInformation.isEmergencyContact"
+                                                               ng-change="updateEmergencyContact(data.familyInformations[$index].familiesId)">
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-md-2"></div>
+                                    <p class="text-danger"
+                                       ng-show="showValidationMessages && employeeForm.familyInformation.$invalid">*
+                                        请正确、完整地一条填写家属信息</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading up">教育信息</div>
+                    <div class="panel-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <label for="highest-degree" class="control-label col-xs-4">最高学历</label>
+
+                                    <div class="col-xs-8">
+                                        <select id="highest-degree" class="selectpicker" name="highestDegree"
+                                                title="请选择" data-live-search="true" data-width="100%"
+                                                ng-options="key as value for (key, value) in data.highestDegrees"
+                                                ng-model="dataValues.highestDegree">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12">
+                                    <label class="control-label col-xs-4 col-md-2">教育经历</label>
+
+                                    <div class="col-xs-8 col-md-10 vk-row" name="educationExperience">
+                                        <div class="table-responsive">
+                                            <table id="education-experience-table"
+                                                   class="table table-bordered table-hover nowrap dataTable">
+                                                <thead>
+                                                <tr role="row">
+                                                    <th>开始时间</th>
+                                                    <th>结束时间</th>
+                                                    <th>学校</th>
+                                                    <th>学历</th>
+                                                    <th>专业</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="educationExperience in data.educationExperiences | limitTo:5 | orderBy:'educationId'"
+                                                    on-finish-render>
+                                                    <td align="left">
+                                                        <div class="date">
+                                                            <input type="text" date-response
+                                                                   class="form-control education-start-time"
+                                                                   name="educationStartTime"
+                                                                   placeholder="开始时间"
+                                                                   ng-model="educationExperience.educationStartTime"/>
+                                                        </div>
+                                                    </td>
+                                                    <td align="left">
+                                                        <div class="date">
+                                                            <input type="text" date-response
+                                                                   class="form-control education-end-time"
+                                                                   name="educationEndTime"
+                                                                   placeholder="结束时间"
+                                                                   ng-model="educationExperience.educationEndTime"/>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" maxlength="20"
+                                                               ng-model="educationExperience.educationSchool"
+                                                               placeholder="所在学校"/></td>
+                                                    <td>
+                                                        <select class="form-control education-degree"
+                                                                ng-model="educationExperience.educationDegree"
+                                                                ng-options="key as value for (key, value) in data.educationDegrees">
+                                                            <option value="">请选择学历&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                                                        </select>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" maxlength="20"
+                                                               ng-model="educationExperience.educationMajor"
+                                                               placeholder="所在专业"/></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-md-2"></div>
+                                    <p class="text-danger"
+                                       ng-show="showValidationMessages && employeeForm.educationExperience.$invalid">*
+                                        请完整填写一条教育信息</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3 col-sm-offset-4 col-sm-2" id="form-actions">
+                <input class="btn vk-btn-health" type="button" ng-click="saveInfo(employeeForm)"
+                       value="保存">
+            </div>
+            <div class="col-xs-3 col-sm-2">
+                <a href="#/employees" class="btn vk-btn-passion">返回</a>
+            </div>
+        </div>
+
+    </form>
+</div>

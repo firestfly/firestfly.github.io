@@ -1,0 +1,8 @@
+{
+  "revoke": {
+    "applyType": "HOLIDAY_MATERNITY",
+    "lockDate": "2017-12-09",
+    "beginDatetime": "2017-11-09",
+    "endDatetime": "2018-06-09"
+  }
+}

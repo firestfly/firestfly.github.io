@@ -1,0 +1,30 @@
+<form name="selectDepartmentsForm" >
+    <div class="modal-header">
+        <strong class="modal-title" >选择部门/项目</strong>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid vk-dialog-container">
+            <div class="row vk-spaced-row">
+                <div class="col-md-6">
+                    <select id="select-company" class="selectpicker" multiple data-none-selected-text="公司范围"
+                            data-selected-text-format="count" data-width="100%" data-live-search="true"
+                            ng-options="option.company_name for option in organizations track by option.company_id"
+                            ng-model="selectedCompanies"
+                            ng-finish-render>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select id="select-department" class="selectpicker" multiple data-none-selected-text="部门/项目"
+                            data-selected-text-format="count" data-actions-box="true" data-live-search="true"
+                            ng-options="option.department_name for option in departments track by option.department_id"
+                            data-width="100%" ng-model="selectedDepartments" ng-change="showDepts()">
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn vk-btn-health" type="button" ng-disabled="" ng-click="ok()">确认</button>
+        <button class="btn vk-btn-passion" type="button" ng-click="cancel()">取消</button>
+    </div>
+</form>

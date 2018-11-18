@@ -1,0 +1,35 @@
+<div class="container-fluid">
+    <div class="row vk-spaced-row">
+        <div class="col-md-4">
+            <div class="right-inner-addon ">
+                <i class="fa fa-search"></i>
+                <input class="form-control" id="search" type="search" placeholder="搜索"/>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="pull-right">
+                <a href="javascript:void(0)" class="vk-btn-link" ng-click="clear()">清除查询条件</a>
+                <button type="button" class="btn vk-btn-default" ng-click="search()">查询</button>
+                <a href="#/post-exp-rule" class="btn btn-default">返回列表</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table id="post-exp-rule-config-table" class="table table-bordered display nowrap"
+                       cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>职位</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

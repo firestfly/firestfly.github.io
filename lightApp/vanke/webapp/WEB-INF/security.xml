@@ -1,0 +1,118 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+    <security:http pattern="/images/**" security="none"/>
+    <security:http pattern="/download/**" security="none"/>
+    <security:http pattern="/partials/**" security="none"/>
+    <security:http pattern="/styles/**" security="none"/>
+    <security:http pattern="/components/**" security="none"/>
+    <security:http pattern="/app/**" security="none"/>
+    <security:http pattern="/static/**" security="none"/>
+    <security:http pattern="/favicon.ico" security="none"/>
+    <security:http pattern="/health" security="none"/>
+    <security:http pattern="/about/**" security="none"/>
+    <security:http pattern="/access-denied" security="none"/>
+    <security:http pattern="/login" security="none"/>
+    <security:http pattern="/login/app" security="none"/>
+    <security:http pattern="/login/app/employee/wealth" security="none"/>
+    <security:http pattern="/home-app/employee-wealth" security="none"/>
+    <security:http pattern="/login/app/employee/holiday" security="none"/>
+    <security:http pattern="/home-app/employee-holiday" security="none"/>
+    <security:http pattern="/login/app/employee/dispatch" security="none"/>
+    <security:http pattern="/home-app/employee-dispatch" security="none"/>
+    <security:http pattern="/login/app/employee/schedule" security="none"/>
+    <security:http pattern="/home-app/employee-schedule" security="none"/>
+    <security:http pattern="/login/app/employee/attendance" security="none"/>
+    <security:http pattern="/home-app/employee-attendance" security="none"/>
+    <security:http pattern="/home-app" security="none"/>
+    <security:http pattern="/403" security="none"/>
+    <security:http pattern="/task-fortune-detail" security="none"/>
+    <security:http pattern="/home-error" security="none"/>
+    <security:http pattern="/rm-mobile/**" security="none"/>
+    <security:http pattern="/internal/api/**-app" security="none"/>
+    <security:global-method-security secured-annotations="enabled"/>
+
+
+    <bean id="securityRoleControlUtils" class="com.vanke.vkrms.security.SecurityRoleControlUtils"/>
+    <bean id="authenticationTrustResolver"
+          class="org.springframework.security.authentication.AuthenticationTrustResolverImpl"/>
+
+
+    <!-- Entry Point & Authentication Manager -->
+    <bean id="entryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint"/>
+    <bean id="userDetailService" class="com.vanke.vkrms.service.CustomUserDetailsService"/>
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider user-service-ref="userDetailService">
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+
+    <!-- File Authentication -->
+    <security:http pattern="/file/**" auto-config="false" entry-point-ref="entryPoint">
+        <security:csrf disabled="true"/>
+    </security:http>
+
+
+    <!-- Basic Authentication -->
+    <bean id="authenticationEntryPoint"
+          class="org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint">
+        <property name="realmName" value="Name Of Your Realm"/>
+    </bean>
+
+    <bean id="basicAuthenticationFilter"
+          class="org.springframework.security.web.authentication.www.BasicAuthenticationFilter">
+        <constructor-arg name="authenticationManager" ref="authenticationManager"/>
+        <constructor-arg name="authenticationEntryPoint" ref="authenticationEntryPoint"/>
+    </bean>
+
+    <security:http pattern="/api/**" auto-config="false" entry-point-ref="entryPoint"
+                   authentication-manager-ref="authenticationManager">
+        <security:intercept-url pattern="/api/tasks" access="hasRole('ROLE_API')"/>
+        <security:intercept-url pattern="/api/attendances" access="hasRole('ROLE_API')"/>
+        <security:custom-filter ref="basicAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
+        <security:csrf disabled="true"/>
+    </security:http>
+
+
+    <!-- Mobile Authentication -->
+    <bean id="mobileFilter" class="com.vanke.vkrms.security.MobileAuthenticationProcessingFilter">
+        <property name="authenticationManager" ref="authenticationManager"/>
+        <property name="authenticationSuccessHandler" ref="authenticationHandler"/>
+        <property name="authenticationFailureHandler" ref="authenticationHandler"/>
+    </bean>
+
+    <security:http pattern="/home-mobile-login/**" auto-config="false" entry-point-ref="entryPoint">
+        <security:custom-filter ref="mobileFilter" position="FORM_LOGIN_FILTER"/>
+    </security:http>
+
+
+    <!-- OAuth Authentication -->
+    <bean id="authenticationHandler" class="com.vanke.vkrms.security.CustomAuthenticationHandler"/>
+    <bean id="csrfHeaderFilter" class="com.vanke.vkrms.security.CsrfHeaderFilter"/>
+
+    <bean id="customFilter" class="com.vanke.vkrms.security.CustomAuthenticationProcessingFilter">
+        <property name="authenticationManager" ref="authenticationManager"/>
+        <property name="authenticationSuccessHandler" ref="authenticationHandler"/>
+        <property name="authenticationFailureHandler" ref="authenticationHandler"/>
+    </bean>
+
+    <bean id="csrfTokenRepository" class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository">
+        <property name="headerName" value="X-XSRF-TOKEN"/>
+    </bean>
+
+    <security:http auto-config="false" entry-point-ref="entryPoint">
+        <security:intercept-url pattern="/" access="permitAll()"/>
+        <security:intercept-url pattern="/logout" access="permitAll()"/>
+        <security:intercept-url pattern="/home" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/**" access="isAuthenticated()"/>
+        <security:custom-filter ref="customFilter" position="FORM_LOGIN_FILTER"/>
+        <security:custom-filter ref="csrfHeaderFilter" after="CSRF_FILTER"/>
+        <security:csrf token-repository-ref="csrfTokenRepository"/>
+    </security:http>
+
+</beans>

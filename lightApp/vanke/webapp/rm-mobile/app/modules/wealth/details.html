@@ -1,0 +1,93 @@
+<div class="scrollable">
+    <div class="scrollable-content margin-top-15">
+        <div class="section-cell">
+            <div class="list-group text-center">
+                <div class="section-cell point-cell">
+                    <div class="w250 bc">
+                        <ul class="rm-tabbar">
+                            <li ng-class="{'active': mwd.showTask}">
+                                <a href="#/wealth/details/1">任务财富值</a>
+                            </li>
+                            <li ng-class="{'active': !mwd.showTask}">
+                                <a href="#/wealth/details/0">非任务财富值</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt15" ng-show="mwd.showTask"
+                         ng-repeat="detail in mwd.wealthValueDetails track by $index">
+                        <div class="cell cell-line">
+                            <div class="flex-box inner-cell">
+                                <div class="flex-70 ta-l">
+                                    <div class="f20 color-black">{{mwd.taskTitleOverflow(detail.taskTitle ||
+                                        "-")}} <span
+                                                class="invalid-sheet" ng-if="!detail.isValid">无效工单</span>
+                                    </div>
+                                    <span class="color-gray" ng-bind="detail.dateTime"></span>
+                                </div>
+                                <div class="flex-30 f24 ta-r mr15 color-green">{{ mwd.toFixed2(detail.wealthValue, 1)
+                                    }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cell">
+                            <div class="inner-cell flex-box">
+                                <div class="flex ta-l flex-box mr20">
+                                    <div class="flex">
+                                        <div>标准工时</div>
+                                        <div>任务系数</div>
+                                        <div>收费</div>
+                                    </div>
+                                    <div class="flex ta-r color-gray">
+                                        <div>{{detail.standardWorkingHours?(detail.standardWorkingHours + "分钟"):"-"}}
+                                        </div>
+                                        <div>{{detail.taskRatio?("* " + detail.taskRatio + "倍"): "-"}}</div>
+                                        <div>{{detail.charge? ("￥" + detail.charge): "-"}}</div>
+                                    </div>
+                                </div>
+                                <div class="flex ta-l flex-box">
+                                    <div class="flex">
+                                        <div>评价</div>
+                                        <div>分享比例</div>
+                                        <div>&nbsp;</div>
+                                    </div>
+                                    <div class="flex ta-r color-gray">
+                                        <div ng-if="detail.rate"><img
+                                                ng-repeat="i in mwd.generateArr(detail.rate) track by $index"
+                                                src="rm-mobile/app/images/star-rate.png" height="12" width="12"
+                                                alt=""/></div>
+                                        <div ng-if="detail.rate === 0">无需评价</div>
+                                        <div ng-if="detail.rate === -1">48小时内未获得评价</div>
+                                        <div>{{ detail.shareRatio || "-"}}</div>
+                                        <div>&nbsp;</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt15" ng-show="!mwd.showTask">
+                        <div class="cell cell-line" ng-repeat="detail in mwd.notWealthValueDetails track by $index">
+                            <div class="flex-box inner-cell">
+                                <div class="flex-70 ta-l">
+                                    <div class="f20 color-black">{{mwd.notWealthValueTypeObj[detail.taskTitle]}}</div>
+                                    <span class="color-gray">{{detail.startDateTime}}至{{detail.endDateTime}}</span>
+                                </div>
+                                <div class="flex-30 f24 ta-r mr15 color-green">+{{mwd.toFixed2(detail.wealthValue,
+                                    2)}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="no-point"
+                         ng-show="mwd.noData">
+                        <div class="icon-money"></div>
+                        <div class="color-grey">本时间段内还没有{{ mwd.showTask ?"": "非"}}任务财富值记录</div>
+                    </div>
+                    <div class="no-point" ng-show="mwd.showLoading">
+                        <div class="icon-money"></div>
+                        <div class="color-grey">正在加载{{ mwd.showTask ?"": "非"}}任务财富值记录</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

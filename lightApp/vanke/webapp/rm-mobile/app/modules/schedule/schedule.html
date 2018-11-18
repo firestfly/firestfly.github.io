@@ -1,0 +1,100 @@
+<div class="scrollable">
+    <div class="scrollable-content">
+        <div class="employee-intro">
+            <span>{{ schedule.employeeInfo.id }}</span>
+            <span>{{ schedule.employeeInfo.name }}</span>
+            <span>{{ schedule.employeeInfo.jobName }}</span>
+        </div>
+        <div class="page-bar">
+            <div class="left-area" ng-class="{'color-disabled': !weekCount}" ng-click="schedule.lastWeek()"><i
+                    class="bar-arrow arrow-left"></i>上一周
+            </div>
+            <div class="right-area" ng-click="schedule.nextWeek()">下一周<i class="bar-arrow arrow-right"></i></div>
+            <div class="title-area">
+                <div class="title-area-radius">
+                    <div class="title-centent-text">
+                        <div>
+                            <h3>{{ schedule.fromDate | date: 'yyyy.M.dd'}}-{{ schedule.toDate | date: 'yyyy.M.dd'}}</h3>
+                            <!--<p>(12.04-12.05)</p>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="schedule-container" ng-repeat="scheduleItem in schedule.schedules">
+            <div class="schedule-title">
+                <div class="schedule-day">{{scheduleItem.onDutyDay | date: 'EEE'}}</div>
+                <div class="schedule-date">{{scheduleItem.onDutyDay | date:'MM-dd'}}</div>
+            </div>
+            <div class="schedule-content">
+                <div class="schedule-info" ng-if="schedule.isOfficialHoliday(scheduleItem.onDutyDay)">
+                    <div class="schedule-row">
+                        <div class="schedule-label">
+                            法定节假日
+                        </div>
+                        <div class="schedule-label-time">
+                        </div>
+                    </div>
+                </div>
+                <div class="schedule-info border-b" ng-repeat="scheduleDay in scheduleItem.oneDaySchedule">
+                    <div class="schedule-row">
+                        <div class="schedule-label">
+                            {{scheduleDay.label}}
+                        </div>
+                        <div class="schedule-label-time">
+                            <div ng-if="scheduleDay.onDay > scheduleItem.onDutyDay">
+                                次日{{scheduleDay.onDutyTime | hourOver}}-次日{{scheduleDay.offDutyTime | hourOver}}
+                            </div>
+                            <div ng-if="scheduleDay.onDay <= scheduleItem.onDutyDay">
+                                <div ng-if="scheduleDay.onDutyTime < scheduleDay.offDutyTime">
+                                    {{scheduleDay.onDutyTime | hourOver}}-{{scheduleDay.offDutyTime | hourOver}}
+                                </div>
+                                <div ng-if="scheduleDay.onDutyTime > scheduleDay.offDutyTime">
+                                    {{scheduleDay.onDutyTime | hourOver}}-次日{{scheduleDay.offDutyTime | hourOver}}
+                                </div>
+                            </div>
+                            <div ng-if="scheduleDay.diningDuration && scheduleDay.diningDuration!=0">
+                                中途休息时长{{scheduleDay.diningDuration}}小时
+                            </div>
+                        </div>
+                    </div>
+                    <div class="schedule-row"
+                         ng-if="scheduleDay.labelFixedPostName && scheduleDay.labelFixedPostName != '' ">
+                        <div>
+                            <span class="schedule-map-pin"/></span>{{scheduleDay.labelFixedPostName}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="section-cell white-bg" ng-repeat="scheduleItem in schedule.schedules">-->
+        <!--<div class="schedule-cell" >-->
+        <!--<div class="schedule-main">-->
+        <!--<div class="date">{{scheduleItem.onDutyDay | date: 'EEE'}}<p class="styled">{{scheduleItem.onDutyDay-->
+        <!--| date:'MM-dd'}}</p></div>-->
+        <!--<div ng-repeat="scheduleDay in scheduleItem.oneDaySchedule">-->
+        <!--<div class="name">-->
+        <!--<div class="label-name">{{scheduleDay.label}}</div>-->
+        <!--</div>-->
+        <!--<div class="time ta-r inner-right f14">-->
+        <!--{{scheduleDay.onDutyTime | hourOver}}-{{scheduleDay.offDutyTime}}-->
+        <!--<p class="styled f12" ng-if="scheduleDay.diningDuration && scheduleDay.diningDuration != 0">-->
+        <!--用餐时长{{scheduleDay.diningDuration | number}}小时</p>-->
+        <!--</div>-->
+        <!--<div class="schedule-address">-->
+        <!--<span-->
+        <!--class="map-pin"></span>{{scheduleDay.labelFixedPostName}}-->
+        <!--</div>-->
+        <!--<hr/>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="ui-notice" ng-show="schedule.noSchedule">
+            <div class="ui-notice-inner">
+                <div class="icon-empty"></div>
+                <p>本周还没有排班</p>
+            </div>
+        </div>
+    </div>
+</div>

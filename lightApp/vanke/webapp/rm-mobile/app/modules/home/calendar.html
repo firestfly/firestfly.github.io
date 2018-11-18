@@ -1,0 +1,31 @@
+<div class="scrollable">
+    <div class="scrollable-content margin-top-15">
+        <div class="section-cell white-bg border-b">
+            <div class="inner">
+                <div class="list-label">
+                    <span class="">开始日期</span>
+
+                    <div class="list-label-input">
+                        <input type="text" pickadate format="yyyy-MM-dd" ng-model="beginDate" readonly="true"
+                               max-date="maxBeginDate" min-date="minBeginDate" placeholder="请选择开始日期"/>
+                    </div>
+                </div>
+                <div class="list-label">
+                    <span class="">结束日期</span>
+
+                    <div class="list-label-input">
+                        <input type="text" pickadate format="yyyy-MM-dd" ng-model="endDate" readonly="true"
+                               max-date="maxEndDate" min-date="minEndDate" placeholder="请选择开始日期"/>
+                    </div>
+                </div>
+                <div class="show-alert" ng-show="showAlert">
+                    <span class="close" ng-click="closeAlert()">×</span>
+                    {{ msg }}
+                </div>
+            </div>
+        </div>
+        <div class="inner">
+            <button type="button" class="btn btn-query" ng-click="query()">查询</button>
+        </div>
+    </div>
+</div>

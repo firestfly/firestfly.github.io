@@ -1,0 +1,36 @@
+<div class="white-list">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="" class="col-xs-2 control-label">生效时间</label>
+            <div class="col-xs-4">
+                <div class="input-daterange input-group">
+                    <input type="text" class="input-sm form-control" name="start" ng-model="startDate"
+                           placeholder="" disabled/>
+                    <span class="input-group-addon"> - </span>
+                    <input type="text" class="input-sm form-control" name="end" ng-model="endDate"
+                           placeholder="" disabled/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-xs-2 control-label">白名单</label>
+            <div class="col-xs-4">
+                <textarea name="" id="" cols="30" rows="10" placeholder="分行输入资源编号" class="form-control"
+                          ng-model="employeeIds" ng-pattern=""
+                          onkeyup="value=value.replace(/[^\d^\n]+/g,'')"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-xs-2 control-label">添加原因</label>
+            <div class="col-xs-4">
+                <textarea name="" id="" cols="30" rows="3" placeholder="输入字符不多于140字" class="form-control"
+                          ng-model="reason" maxlength="140" length="140"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default" ng-click="save()">提交</button>
+            </div>
+        </div>
+    </form>
+</div>

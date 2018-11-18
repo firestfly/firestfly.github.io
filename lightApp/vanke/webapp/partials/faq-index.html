@@ -1,0 +1,16 @@
+<div class="col-md-8 faq" ng-controller="FaqController">
+    <div class="row welcome-profile-title">
+        <h4><i class="fa fa-icon-faq"></i>常见问题</h4>
+    </div>
+    <div class="row">
+        <div class="faq-box" ng-repeat="category in categories">
+            <h3 class="faq-title"><a ng-href="#/faq/faq{{$index + 1}}">{{ category.name }}</a></h3>
+
+            <div class="faq-child-group">
+                <a ng-href="#/faq/faq{{ $parent.$index + 1 }}/{{$index + 1}}"
+                   ng-repeat="question in category.questions | filter: {indexShow: true}">{{ question.title
+                    }}</a>
+            </div>
+        </div>
+    </div>
+</div>

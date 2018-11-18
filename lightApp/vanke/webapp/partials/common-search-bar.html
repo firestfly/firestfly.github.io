@@ -1,0 +1,508 @@
+<div class="container-fluid vk-container common-search-bar">
+    <div class="row vk-spaced-row">
+        <div class="col-md-3" ng-hide="hideCompany">
+            <select id="select-company" class="selectpicker" multiple data-none-selected-text="全部公司"
+                    data-selected-text-format="count" data-width="100%" data-live-search="true" data-actions-box="true"
+                    ng-options="option.company_name for option in organizations track by option.company_id"
+                    ng-model="selectedCompanies"
+                    ng-finish-render>
+            </select>
+        </div>
+        <div ng-class="{'col-md-2': showEmployeeSap, 'col-md-3': !showEmployeeSap}" ng-hide="hideDepartment">
+            <select id="select-department" class="selectpicker" multiple data-none-selected-text="全部部门"
+                    data-selected-text-format="count" data-actions-box="true" data-live-search="true"
+                    ng-options="option.department_name for option in departments track by option.department_id"
+                    data-width="100%" ng-model="selectedDepartments">
+            </select>
+        </div>
+        <div ng-class="{'col-md-2': showEmployeeSap, 'col-md-3': !showEmployeeSap}" ng-hide="hideGroups">
+            <select id="select-group" class="selectpicker" multiple data-selected-text-format="count"
+                    data-none-selected-text="岗位专业分类" data-width="100%" data-actions-box="true" data-live-search="true"
+                    ng-options="option.work_group_name for option in groups track by option.work_group_id"
+                    ng-model="selectedGroups">
+            </select>
+        </div>
+        <div class="col-md-3" ng-show="showTaskWealthType">
+            <select id="task-wealth-type" class="selectpicker" multiple data-selected-text-format="count"
+                    data-none-selected-text="类型" data-width="100%" data-actions-box="true" data-live-search="true"
+                    ng-options="key as value for (key, value) in taskWealthType"
+                    ng-model="selectedTaskWealthType">
+            </select>
+        </div>
+        <div class="col-md-3" ng-if="showOneLockStatus">
+            <select class="selectpicker fl" data-width="100%"
+                    ng-model="$parent.quotaLockStatus">
+                <option value="2">已定案</option>
+                <option value="1">未定案</option>
+            </select>
+        </div>
+        <div class="col-md-3" ng-if="showIsValid">
+            <select class="selectpicker fl" data-width="100%"
+                    ng-model="$parent.isValid">
+                <option value="">是否有效</option>
+                <option value="1">是</option>
+                <option value="0">否</option>
+            </select>
+        </div>
+        <div class="col-md-3" ng-if="showIsonlinerm">
+            <select class="selectpicker fl" data-width="100%"
+                    ng-model="$parent.isOnLineRM">
+                <option value="">是否上线RM</option>
+                <option value="1">是</option>
+                <option value="0">否</option>
+            </select>
+        </div>
+        <div class="col-md-3" ng-if="showSearchInputRowOne">
+            <div class="right-inner-addon">
+                <input class="form-control" type="search"
+                       ng-keydown="searchFromEnterKey($event)" placeholder="输入资源编号/EHR编号/姓名/岗位 搜索"
+                       ng-model="$parent.keywords">
+                <i class="fa fa-search"></i>
+            </div>
+        </div>
+        <div class="col-md-3" ng-if="showDepartmentSearchInputRowOne">
+            <div class="right-inner-addon">
+                <input class="form-control" type="search" id="department-search-field"
+                       ng-keydown="searchFromEnterKey($event)" placeholder="请输入部门名称"
+                       ng-model="$parent.keywords">
+                <i class="fa fa-search"></i>
+            </div>
+        </div>
+        <div class="col-md-3" ng-show="showOnlyLockCycle">
+            <select class="selectpicker" data-width="100%" data-none-selected-text="统计周期" id="onlyLockCycle"
+                    data-selected-text-format="count" multiple data-actions-box="true"
+                    ng-options="option.lockCycleName for option in onlyLockCycle track by option.lockCycleId"
+                    ng-model="selectedOnlyLockCycle">
+            </select>
+        </div>
+        <div class="col-md-3" ng-show="showLieuQuota">
+            <select id="lieuQuota" class="selectpicker" data-width="100%" data-none-selected-text="休假类型"
+                    data-selected-text-format="count" data-actions-box="true" data-show-work-two-one="true"
+                    ng-options="option.value for option in lieuQuotaList track by option.code"
+                    ng-model="selectedLieuQuota" multiple>
+            </select>
+        </div>
+        <div class="col-md-3" ng-show="showHolidaySixteen">
+            <select id="HolidaySixteen" class="selectpicker" data-width="100%" data-none-selected-text="休假类型"
+                    data-selected-text-format="count" data-actions-box="true"
+                    ng-options="option.name for option in holidaySixteenList track by option.code"
+                    ng-model="selectedHolidaySixteen" multiple>
+            </select>
+        </div>
+        <div class="col-md-3" ng-hide="hideDateRange">
+            <div class="input-daterange input-group" id="scheduledatepicker">
+                <input type="text" class="input-sm form-control" name="start"
+                       placeholder="{{scheduleDatepickerPlaceholderFrom}}"/>
+                <span class="input-group-addon"> - </span>
+                <input type="text" class="input-sm form-control" name="end"
+                       placeholder="{{scheduleDatepickerPlaceholderTo}}"/>
+            </div>
+        </div>
+        <div class="col-md-2" ng-show="showOnlyOneDay">
+            <input type="text" class="input-sm form-control" placeholder="请选择日期" id="date" name="date"
+                   ng-model="selectedDate" date-response/>
+        </div>
+        <div class="col-md-3" ng-show="showCityCompany">
+            <select id="select-city-company" class="selectpicker" multiple data-none-selected-text="城市公司"
+                    data-selected-text-format="count" data-actions-box="true" data-live-search="true"
+                    ng-options="option.regionName for option in cityCompanies track by option.regionId"
+                    data-width="100%" ng-model="selectedCityCompanies">
+            </select>
+        </div>
+        <div class="col-md-2" ng-show="showButype">
+            <select id="butype" class="selectpicker" data-width="100%"
+                    ng-model="selectedButype" data-none-selected-text="选择BU">
+                <option value="">BU1</option>
+                <option value="（BU2.1）">BU2.1</option>
+                <option value="（BU2.2）">BU2.2</option>
+                <option value="（BU2.3）">BU2.3</option>
+            </select>
+        </div>
+        <div ng-class="{'col-md-2': showEmployeeSap || showButype, 'col-md-3': !showEmployeeSap && !showButype}"
+             ng-show="showStandardWorkJobsOne">
+            <select id="selected-standardWorkJobs-one" class="selectpicker" multiple data-selected-text-format="count"
+                    data-none-selected-text="全部标准职位" data-width="100%" data-actions-box="true" data-live-search="true"
+                    ng-options="option.workJobName for option in standardWorkJobs track by option.workJobId"
+                    ng-model="selectedStandardWorkJobs">
+            </select>
+        </div>
+        <div class="col-md-3" ng-show="showWWorkHourSystem">
+            <select id="selected-w-work-hour-system" class="selectpicker" multiple data-width="100%"
+                    ng-model="selectedWWorkHourSystem" data-none-selected-text="O序列工时制度">
+                <option value="1">标准工时制</option>
+                <option value="2">综合工时制</option>
+            </select>
+        </div>
+        <div class="col-md-3" ng-show="showEmployeeSap">
+            <div class="clearfix">
+                <div class="col-md-7">
+                    <select id="employee-sap" class="selectpicker" data-selected-text-format="count"
+                            data-none-selected-text="所有人员" data-width="100%" multiple data-live-search="true"
+                            ng-options="option.name for option in employeeSap track by option.employeeId"
+                            ng-model="selectedEmployeeSap">
+                    </select>
+                </div>
+                <div class="col-md-5" ng-show="!isEmployeeSapSelectpickerMultipe">
+                    <input type="search" placeholder="EHR编号" class="form-control"
+                           ng-model="selectedEmployeeSap[0].sapId" readonly/>
+                </div>
+            </div>
+        </div>
+        <!--<div class="col-md-3" ng-show="showOnlyLockCycle">-->
+        <!--<select class="selectpicker" data-width="100%" data-none-selected-text="统计周期" id="onlyLockCycle"-->
+        <!--data-selected-text-format="count" multiple-->
+        <!--ng-options="option.lockCycleName for option in onlyLockCycle track by option.lockCycleId"-->
+        <!--ng-model="selectedOnlyLockCycle">-->
+        <!--</select>-->
+        <!--</div>-->
+        <div class="col-md-3" ng-show="showHolidayTwo">
+            <select id="HolidayTwo" class="selectpicker" data-width="100%" data-none-selected-text="休假类型"
+                    data-selected-text-format="count" data-actions-box="true"
+                    ng-options="option.name for option in holidayTwoList track by option.code"
+                    ng-model="selectedHolidayTwo" multiple>
+            </select>
+        </div>
+        <div class="col-md-3" ng-show="showOtherHolidayType">
+            <select id="otherHolidayType" class="selectpicker" data-width="100%" data-none-selected-text="休假类型"
+                    data-selected-text-format="count" data-actions-box="true"
+                    ng-options="option.value for option in otherHolidayType track by option.code"
+                    ng-model="selectedOtherHolidayType" multiple>
+            </select>
+        </div>
+        <div class="col-md-3" ng-show="showLieuLineType">
+            <select id="selected-showLieuLineType" class="selectpicker" data-live-search="true" data-width="100%"
+                    data-none-selected-text="休假类型" data-selected-text-format="count"
+                    ng-options="option.name for option in lieuLineType | filter: '月休'" ng-model="selectedLieuLineType">
+            </select>
+        </div>
+        <div class="col-md-3" ng-show="showWorkJobs">
+            <select id="selected-workJobs" class="selectpicker" data-width="100%" multiple
+                    data-selected-text-format="count"
+                    data-none-selected-text="职位" data-actions-box="true"
+                    data-live-search="true"
+                    ng-options="option.workJobName for option in standardWorkJobs track by option.workJobId"
+                    ng-model="selectedStandardWorkJobs">
+            </select>
+        </div>
+        <div class="top-bar-right fl"></div>
+        <div class="col-md-3" ng-show="showLockStatus">
+            <select id="select-lock-status" class="selectpicker" data-width="100%" ng-model="selectedLockStatus">
+                <option value="">没有选中任何项</option>
+                <option value="0">未定案</option>
+                <option value="1">一次定案</option>
+                <option value="2">一次解定案</option>
+                <option value="3">二次定案</option>
+                <option value="4">二次解定案</option>
+                <option value="5">三次定案</option>
+                <option value="6">三次解定案</option>
+                <option value="7">多次定案</option>
+                <option value="8">多次解定案</option>
+            </select>
+        </div>
+    </div>
+    <div class="row vk-spaced-row" ng-show="showTaskType">
+        <div class="col-md-3">
+            <select id="taskTypeOne" class="selectpicker" data-width="100%" data-none-selected-text="全部一级任务类型"
+                    data-selected-text-format="count" data-live-search="true"
+                    ng-options="option.name for option in taskTypeOne track by option.id"
+                    ng-model="selectedTaskTypeOne">
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select id="taskTypeTwo" class="selectpicker" data-width="100%" data-none-selected-text="全部二级任务类型"
+                    data-selected-text-format="count" data-live-search="true"
+                    ng-options="option.name for option in taskTypeTwo track by option.id"
+                    ng-model="selectedTaskTypeTwo">
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select id="taskTypeLast" class="selectpicker" data-width="100%" multiple data-none-selected-text="全部末级任务类型"
+                    data-selected-text-format="count" data-live-search="true" data-actions-box="true"
+                    ng-options="option.name for option in taskTypeLast track by option.id"
+                    ng-model="selectedTaskTypeLast">
+            </select>
+        </div>
+        <div class="col-md-3" ng-show="showWealthCompleteTimeDateRange">
+            <div class="input-daterange input-group" id="wealthCompleteTimeDatepicker">
+                <input type="text" class="input-sm form-control" name="start" placeholder="完成时间从"/>
+                <span class="input-group-addon"> - </span>
+                <input type="text" class="input-sm form-control" name="end" placeholder="到"/>
+            </div>
+        </div>
+    </div>
+    <div class="row vk-spaced-row">
+        <div class="col-md-6" ng-show="showLockCycle">
+            <div class="row">
+                <div class="col-md-6">
+                    <select id="lockCycle" class="selectpicker" data-width="100%" data-none-selected-text="统计周期"
+                            data-selected-text-format="count" data-live-search="true"
+                            ng-options="option.lockCycleName for option in lockCycle track by option.lockCycleId"
+                            ng-model="selectedLockCycle">
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-daterange input-group" id="localCycleDatepicker">
+                        <input type="text" class="input-sm form-control" name="start"/>
+                        <span class="input-group-addon"> - </span>
+                        <input type="text" class="input-sm form-control" name="end"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 form-horizontal" ng-if="showWealthSection">
+            <div class="col-md-6">
+                <span class="col-md-4 control-label">总财富值:</span>
+
+                <div class="input-group col-md-8">
+                    <input type="number" min="0" max="1000000" ng-model="$parent.wealthStart"
+                           ng-change="wealthSectionChange(0)" class="input-sm form-control"/>
+                    <span class="input-group-addon"> 至 </span>
+                    <input type="number" min="0" max="1000000" ng-model="$parent.wealthEnd"
+                           ng-change="wealthSectionChange(1)" class="input-sm form-control"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <span class="col-md-4 control-label">总工时:</span>
+
+                <div class="input-group col-md-8">
+                    <input type="number" min="0" max="1000000" ng-model="$parent.workHourStart"
+                           ng-change="workHourSectionChange(0)" class="input-sm form-control"/>
+                    <span class="input-group-addon"> 至 </span>
+                    <input type="number" min="0" max="1000000" ng-model="$parent.workHourEnd"
+                           ng-change="workHourSectionChange(1)" class="input-sm form-control"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row vk-spaced-row search-area">
+        <div class="col-md-3" ng-show="showRowTwoLieuQuota">
+            <select id="leave-type" class="selectpicker" data-width="100%" data-none-selected-text="休假类型"
+                    ng-model="selectedLeaveType" multiple>
+                <option value="HOLIDAY_ADJUSTABLE_WORKDAY">工作日加班调休</option>
+                <option value="HOLIDAY_ADJUSTABLE">休息日加班调休</option>
+                <option value="HOLIDAY_ALTERNATE_HOLIDAY">月休</option>
+            </select>
+        </div>
+        <div class="col-md-3" ng-if="!hideSearchInput">
+            <div class="right-inner-addon">
+                <i class="fa fa-search"></i>
+                <input class="form-control" id="input-search-field" type="search"
+                       ng-keydown="searchFromEnterKey($event)" placeholder="输入资源编号/EHR编号/姓名/岗位 搜索"
+                       ng-model="$parent.keywords">
+            </div>
+        </div>
+        <div class="col-md-3" ng-if="showIsDockingWage">
+            <select class="selectpicker fl" data-width="100%"
+                    ng-model="$parent.isDockingWage">
+                <option value="">是否已对接考勤工资</option>
+                <option value="1">是</option>
+                <option value="0">否</option>
+            </select>
+        </div>
+        <div class="col-md-3" ng-if="showEmployeeTransferType">
+            <select class="selectpicker" data-width="100%" ng-model="$parent.selectedEmployeeTransferType">
+                <option value="">全部变动类型</option>
+                <option value="2">城市内变动</option>
+                <option value="3">跨城市变动</option>
+            </select>
+        </div>
+        <div class="col-md-3" ng-if="showLieuLeaveRule">
+            <select class="selectpicker" data-width="100%" ng-model="$parent.selectedEmployeeTransferStatus">
+                <option value="">全部设置方式</option>
+                <option value="1">变动前直接结算</option>
+                <option value="3">余额转入适用原规则</option>
+                <option value="2">余额转入适用新规则</option>
+            </select>
+        </div>
+        <div class="col-md-3" ng-if="showApprovalStatus">
+            <select class="selectpicker" data-width="100%" ng-model="$parent.selectedApprovalStatus">
+                <option value="">全部状态</option>
+                <option value="1">审批中</option>
+                <option value="2">审批通过</option>
+                <option value="3">审批不通过</option>
+                <option value="5">系统退回</option>
+                <option value="6">已撤销</option>
+            </select>
+        </div>
+        <div class="col-md-3" ng-if="showVacationOrderStatue">
+            <select class="selectpicker" data-width="100%" ng-model="$parent.selectedVacationOrderStatue"
+                    ng-options="option.value for option in vacationOrderStatue track by option.id">
+            </select>
+        </div>
+        <div ng-class="{'col-md-2': showAttendanceResult || shortSelect, 'col-md-3': !showAttendanceResult && !shortSelect}"
+             ng-if="showStandardWorkJobs">
+            <select id="selected-standardWorkJobs" class="selectpicker" multiple data-selected-text-format="count"
+                    data-none-selected-text="全部标准职位" data-width="100%" data-actions-box="true"
+                    data-live-search="true"
+                    ng-options="option.workJobName for option in standardWorkJobs track by option.workJobId"
+                    ng-model="$parent.selectedStandardWorkJobs">
+            </select>
+        </div>
+        <div class="col-md-3" ng-if="showExperienceStandardWorkJobs">
+            <select id="selected-experienceStandardWorkJobs" class="selectpicker" multiple
+                    data-selected-text-format="count"
+                    data-none-selected-text="岗位" data-width="100%" data-actions-box="true"
+                    data-live-search="true"
+                    ng-options="option.workJobName for option in experienceStandardWorkJobs track by option.workJobId"
+                    ng-model="$parent.selectedExperienceStandardWorkJobs">
+            </select>
+        </div>
+        <div class="col-md-2" ng-show="showVerifyStatus">
+            <select id="selected-verifyStatus" class="selectpicker"
+                    data-none-selected-text="按状态筛选" data-width="100%"
+                    ng-options="option.name for option in verifyStatusArr track by option.id"
+                    ng-model="selectedVerifyStatus">
+            </select>
+        </div>
+        <div class="col-md-2" ng-show="showIndicator">
+            <select id="selected-indicator" class="selectpicker"
+                    data-none-selected-text="全部指标" data-width="100%"
+                    ng-options="option.targetName for option in indicators track by option.targetNumber"
+                    ng-model="selectedIndicator">
+            </select>
+        </div>
+        <div ng-class="{'col-md-4': showValidArea || showAttendanceResult, 'col-md-3': !showValidArea && !showAttendanceResult}">
+            <div class="row">
+                <div class="col-md-6" ng-if="showAttendanceStatus">
+                    <select class="selectpicker" data-width="100%"
+                            ng-model="$parent.selectedStatus">
+                        <option value="0">全部</option>
+                        <option value="1">正常</option>
+                        <option value="2">异常</option>
+                    </select>
+                </div>
+                <div class="col-md-6" ng-if="showScheduleStatus">
+                    <select class="selectpicker" data-width="100%"
+                            ng-model="$parent.scheduleStatus">
+                        <option value="0">全部</option>
+                        <option value="1">正常</option>
+                        <option value="2">异常排班</option>
+                    </select>
+                </div>
+                <div class="col-md-6" ng-if="showJobStatus">
+                    <select class="selectpicker" data-width="100%"
+                            ng-model="$parent.jobStatus">
+                        <option value="">全部</option>
+                        <option value="01">在职</option>
+                        <option value="02">离职</option>
+                    </select>
+                </div>
+                <div class="col-md-6" ng-if="showStaffType">
+                    <select class="selectpicker" data-width="100%"
+                            ng-model="$parent.staffType">
+                        <option value="">员工子组</option>
+                        <option value="01">全日制</option>
+                        <option value="12">非全日制</option>
+                        <option value="21">劳务派遣员工</option>
+                        <option value="03">业务外包员工</option>
+                        <option value="31">退休返聘</option>
+                        <option value="32">顾问（非返聘）</option>
+                        <option value="02">实习</option>
+                        <option value="41">合资方派遣人员</option>
+                        <option value="51">家属</option>
+                        <option value="52">董监事</option>
+                        <option value="53">残障人员</option>
+                        <option value="05">乐邦</option>
+                        <option value="10">其他</option>
+                    </select>
+                </div>
+                <div class="col-md-6" ng-if="showTaskStatus">
+                    <select class="selectpicker" data-width="100%"
+                            ng-model="$parent.taskStatus">
+                        <option value="">全部有效性</option>
+                        <option value="0">有效</option>
+                        <option value="2">无效</option>
+                        <option value="1">重复</option>
+                    </select>
+                </div>
+                <div ng-if="showValidArea">
+                    <div class="col-md-4">
+                        <select class="selectpicker fl" data-width="100%"
+                                ng-model="$parent.attendanceType">
+                            <option value="">签到类型</option>
+                            <option value="0">助这儿GPS</option>
+                            <option value="4">助这儿WIFI</option>
+                            <option value="1">手动校正</option>
+                            <option value="2">手动补签</option>
+                            <option value="5">拍照打卡</option>
+                            <!-- <option value="3">系统补签到</option>-->
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="selectpicker fl" data-width="100%"
+                                ng-model="$parent.isValidArea">
+                            <option value="">是否有效区域</option>
+                            <option value="0">区域外</option>
+                            <option value="1">区域内</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4" ng-if="showAttendanceType && selectedStatus==2">
+                    <select class="selectpicker" data-width="100%"
+                            ng-model="$parent.selectedType">
+                        <option value="0">全部</option>
+                        <option value="1">迟到</option>
+                        <option value="2">早退</option>
+                        <option value="3">旷工</option>
+                        <option value="4">加班</option>
+                        <option value="5">漏打卡</option>
+                    </select>
+                </div>
+                <div class="col-md-6" ng-if="showAdjustJobLevel">
+                    <select class="selectpicker" data-width="100%"
+                            ng-model="$parent.isAdjustJobLevel">
+                        <option value="">级别待调</option>
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                    </select>
+                </div>
+                <div class="col-md-4" ng-if="showIsAttendanceTime">
+                    <select class="selectpicker fl" data-width="100%"
+                            ng-model="$parent.isAttendanceTime">
+                        <option value="">是否考勤时间</option>
+                        <option value="0">非考勤时间</option>
+                        <option value="1">是考勤时间</option>
+                    </select>
+                </div>
+                <div class="col-md-6" ng-show="showAttendanceResult">
+                    <select id="attendance-result" class="selectpicker" data-width="100%" multiple
+                            data-none-selected-text="考勤结果"
+                            data-selected-text-format="count"
+                            ng-options="key as value for (key, value) in attendanceResult"
+                            data-actions-box="true" data-width="100%" data-live-search="true"
+                            ng-model="selectedAttendanceResult">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 fr" id="button-group" ng-hide="hideOptBtn" ng-class="{'vk-m-t-38':isFirstRow}">
+            <div class="pull-right vk-nowrap">
+                <div class="pull-right operation-tool-bar">
+                </div>
+                <button type="button" class="btn vk-btn-empty" ng-click="clear()">清除条件</button>
+                <button type="button" ng-click="currentPage=1;search()" class="btn btn-primary">查询</button>
+                <button type="button" ng-click="export()" class="btn vk-btn-default" ng-hide="hideExportBtn">导出
+                </button>
+                <button type="button" ng-click="importTemplate()" class="btn vk-btn-default"
+                        ng-show="showImportTemplateBtn">导入模板
+                </button>
+                <span class="file-input-button" ng-show="showImportBtn">
+                    <span class="btn vk-btn-default">导入
+                    </span>
+                    <input type="file" id="file" name="file"
+                           onchange="return angular.element(this).scope().uploads(this);">
+                </span>
+                <button type="button" id="exportTemplateBtn" ng-click="exportTemplate()"
+                        class="btn vk-btn-default" ng-show="showExportTemplateBtn">导出模板
+                </button>
+                <button type="button" class="btn" ng-show="extendButton" ng-click="extend()"
+                        ng-class="extendButtonClass">{{extendButtonText}}
+                </button>
+                <button type="button" class="btn vk-btn-empty" ng-show="showBackBtn" ng-click="back()">返回列表</button>
+            </div>
+        </div>
+        <form name="downloadFileForm" method="post" id="downloadFileForm">
+            <input type="submit" name="submitBtn" id="submitBtn" style="display:none"/>
+        </form>
+    </div>
+</div>

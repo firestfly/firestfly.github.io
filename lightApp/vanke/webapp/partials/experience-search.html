@@ -1,0 +1,148 @@
+<div class="container-fluid authority-container">
+    <div class="row">
+        <div data-common-search-bar data-show-standard-work-jobs="true" data-show-indicator="true"></div>
+    </div>
+
+    <div class="experience-verify-table">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>职位</th>
+                <th>计算时间</th>
+                <th>指标</th>
+                <th>情况</th>
+                <th>标准</th>
+                <th>数据来源</th>
+                <th>审核人</th>
+                <th>状态</th>
+                <th>资源编号</th>
+                <th>EHR编号</th>
+                <th>公司</th>
+                <th>项目</th>
+                <th>在职状态</th>
+                <th>查看详情</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="experienceSearch in esec.experienceSearchList">
+                <td>{{experienceSearch.employeeName || '-'}}</td>
+                <td>{{experienceSearch.jobName || '-'}}</td>
+                <td>{{experienceSearch.publishTime || '-' }}</td>
+                <td>{{experienceSearch.target || '-'}}</td>
+                <td>{{experienceSearch.situation || '-'}}</td>
+                <td>{{experienceSearch.standard || '-'}}</td>
+                <td>{{esec.originJson[experienceSearch.origin] || '-'}}</td>
+                <td>{{experienceSearch.auditor || '-'}}</td>
+                <td>{{verifyStatusArr[experienceSearch.state].name || '-'}}</td>
+                <td>{{experienceSearch.employeeId}}</td>
+                <td>{{experienceSearch.sapId || '-'}}</td>
+                <td>{{experienceSearch.companyName || '-'}}</td>
+                <td>{{experienceSearch.departmentName || '-'}}</td>
+                <td>{{experienceSearch.jobStatus || '-'}}</td>
+                <td>
+                    <a href="javascript: ;" type="view" class="" ng-click="esec.open(experienceSearch)"
+                       ng-disabled="experienceSearch.origin == 1 && !experienceSearch.taskId">查看
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div common-pagination></div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="experienceDetailModal.html">
+    <div class="modal-body" id="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span
+                aria-hidden="true">&times;</span></button>
+        <div class="experience-row" ng-if="detail.origin != '1'">
+            <div class="experience-label flex-30">
+                <div>审核人：</div>
+                <div>审核时间：</div>
+                <div>审核结果：</div>
+                <div>审核意见：</div>
+            </div>
+            <div class="experience-content flex-70">
+                <div>{{detail.auditor || '-'}}</div>
+                <div>{{detail.verifyTime || '-'}}</div>
+                <div>{{verifyStatusArr[detail.state] || "- "}}</div>
+                <div>{{detail.verifyOpinion || '-'}}</div>
+            </div>
+        </div>
+        <div class="experience-row" ng-if="detail.origin == '1'">
+            <div class="experience-label">
+                <div>任务编号：{{detail.taskId || '-'}}</div>
+                <div><span ng-if="detail.timeType == 0">发起时间：</span><span ng-if="detail.timeType == 1">完成时间：</span><span
+                        ng-if="detail.timeType == 2">评价时间：</span>{{detail.evaluateTime || '-'}}
+                </div>
+                <div ng-if="detail.timeType == 2">评价星级：
+                    <rating ng-model="detail.evaluateStar" max="max" readonly="isReadonly"
+                            on-hover="hoveringOver(value)" on-leave="overStar = null"
+                            class="experience-rating"></rating>
+                </div>
+                <div>
+                    <div class="experience-person-label"><span ng-if="detail.timeType == 0">发起人：</span><span
+                            ng-if="detail.timeType != 0">完成人：</span></div>
+                    <div class="experience-person-content">
+                        <table class="table table-bordered experience-task-table table-condensed">
+                            <thead>
+                            <tr>
+                                <td>姓名</td>
+                                <td>项目名称</td>
+                                <td>标准岗位</td>
+                                <td>岗位</td>
+                                <td ng-if="detail.timeType != 0">分配比例</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="t in detail.taskInfo">
+                                <td>{{t.employeeName}}</td>
+                                <td>{{t.companyName}}</td>
+                                <td>{{t.standardWorkJobName}}</td>
+                                <td>{{t.postName}}</td>
+                                <td ng-if="detail.timeType != 0">{{t.share}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="clear">任务主题：{{detail.taskSubject || '-'}}</div>
+            </div>
+        </div>
+        <hr/>
+        <div class="experience-column experience-accessory">
+            <div class="title">
+                附件列表
+            </div>
+            <div class="experience-row">
+                <div class="flex border-right">
+                    <div class="experience-row m-t-10" ng-repeat="a in detail.files track by $index"
+                         ng-if="($index+1)%2 == 1">
+                        <div class="flex">附件{{$index + 1}}</div>
+                        <div class="flex">
+                            <button class="btn btn-info btn-xs" ng-click="openImg(a)">查看</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="experience-row m-t-10" ng-repeat="a in detail.files track by $index"
+                         ng-if="($index+1)%2 == 0">
+                        <div class="flex">附件{{$index+1}}</div>
+                        <div class="flex">
+                            <button class="btn btn-info btn-xs" ng-click="openImg(a)">查看</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="experienceImgModal.html">
+    <div class="modal-body experience-img">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span
+                aria-hidden="true">&times;</span></button>
+        <img src="{{imgs}}" alt="">
+    </div>
+</script>

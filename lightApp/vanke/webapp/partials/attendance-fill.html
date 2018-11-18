@@ -1,0 +1,79 @@
+<div class="container-fluid vk-employee-container">
+    <div class="row">
+        <div class="col-md-12">
+            <div data-common-search-bar data-hide-export-btn="true" data-hide-opt-btn="true"
+                 data-show-employee-sap="true" data-hide-groups="true" data-hide-date-range="true"
+                 data-hide-search-input="true"></div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">补签信息</div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="attendanceFillForm" novalidate autocomplete="off">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6" name="attendanceFillTime">
+                        <label for="" class="control-label col-xs-3 required">时间</label>
+
+                        <div class="col-xs-4 col-md-3"
+                             ng-class="{ 'has-error': showValidationMessages && attendanceFillForm.attendanceDate.$invalid }">
+                            <div class="date">
+                                <input type="text" id="attendanceDate" class="form-control"
+                                       name="attendanceDate" placeholder="选择签到时间" date-response data-date-end-date="0d"
+                                       ng-model="attendanceDate" required/>
+                            </div>
+                            <p class="text-danger"
+                               ng-show="showValidationMessages && attendanceFillForm.attendanceDate.$invalid && attendanceFillForm.attendanceTime.$invalid">
+                                *必选</p>
+                        </div>
+                        <div class="col-xs-3"
+                             ng-class="{ 'has-error': showValidationMessages && attendanceFillForm.attendanceTime.$invalid }">
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <input id="attendanceTime" type="text" class="form-control input-small"
+                                       name="attendanceTime" ng-model="attendanceTime" required>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <label for="leave-date" class="control-label col-xs-3 required">地点</label>
+
+                        <div class="col-xs-9"
+                             ng-class="{ 'has-error': showValidationMessages && attendanceFillForm.attendanceArea.$invalid }">
+                            <input id="leave-date" type="text" class="form-control" name="attendanceArea"
+                                   placeholder="输入签到地点" ng-model="data.attendanceArea" required/>
+
+                            <p class="text-danger"
+                               ng-show="showValidationMessages && attendanceFillForm.attendanceArea.$invalid">*必选</p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <label for="leave-date" class="control-label col-xs-3 required">说明</label>
+
+                        <div class="col-xs-9"
+                             ng-class="{ 'has-error': showValidationMessages && attendanceFillForm.operationExplain.$invalid }">
+                                    <textarea class="form-control" placeholder="输入补签到说明"
+                                              ng-model="data.operationExplain" name="operationExplain" id="" cols="30"
+                                              rows="4" required></textarea>
+
+                            <p class="text-danger"
+                               ng-show="showValidationMessages && attendanceFillForm.operationExplain.$invalid">
+                                *必选</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3 col-sm-offset-4 col-sm-2">
+            <input class="btn vk-btn-health" type="button" ng-click="saveInfo(attendanceFillForm)"
+                   value="保存">
+        </div>
+        <div class="col-xs-3 col-sm-2">
+            <a class="btn vk-btn-passion" type="button" href="#/{{ newAttendanceFillBack }}attendance">返回</a>
+        </div>
+    </div>
+</div>

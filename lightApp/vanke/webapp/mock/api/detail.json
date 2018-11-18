@@ -1,0 +1,84 @@
+{
+  "applyType": "TEMPORARY_WORK_OVERTIME",
+  "departments": [
+    {
+      "id": "1212112",
+      "name": "田径花园"
+    }
+  ],
+  "monthOvertimes": 12,
+  "lastMonthOvertimes": 122,
+  "overtimeType": "安排出差",
+  "postRequire": "岗位要求",
+  "overtimeReason": "家里有事，需回家处理",
+  "businessAddress": [
+    {
+      "address": "广东深圳"
+    },
+    {
+      "address": "广东广州"
+    }
+  ],
+  "businessReason": "aaaa",
+  "employee": [
+    {
+      "id": 1212122,
+      "name": "陈冠希",
+      "job": "人行出入口/车行出入口",
+      "startTime": "2017-09-02 12:00:00",
+      "endTime": "2017-09-03 12:00:00",
+      "department": "璞悦山",
+      "count": "1212分钟"
+    },
+    {
+      "id": 2122122,
+      "name": "张扬",
+      "job": "车行出入口/人行出入口",
+      "startTime": "2017-11-20 12:00:00",
+      "endTime": "2017-11-21 12:00:00",
+      "department": "璞悦山",
+      "count": "122分钟"
+    }
+  ],
+  "approvalPerson": [
+    {
+      "employeeId": 1232,
+      "name": "张三"
+    }
+  ],
+  "CCMan": [
+    {
+      "employeeId": 1232,
+      "name": "张三"
+    }
+  ],
+  "process": [
+    {
+      "name": "张三",
+      "state": 1,
+      "datetime": "2017-09-09 22:22:00",
+      "remark": "情况属实",
+      "avatar": null,
+      "modifyNotes": "1.删除擦手的的撒"
+    },
+    {
+      "name": "李四",
+      "state": 0,
+      "datetime": null,
+      "remark": null,
+      "avatar": null,
+      "modifyNotes": null
+    }
+  ],
+  "employees": [
+    {
+      "beginDate": "2017-04-08",
+      "beginDateTime": "08:00:00",
+      "endDate": "2017-04-09",
+      "endDateTime": "08:00:00",
+      "department": "璞悦山",
+      "employeeId": 123213,
+      "name": "张三"
+    }
+  ]
+}

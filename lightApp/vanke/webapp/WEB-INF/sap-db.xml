@@ -1,0 +1,41 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:config/${spring.profiles.active}/db.properties"
+                                  ignore-unresolvable="true"/>
+
+    <bean id="sapDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${db.sap.driver}"/>
+        <property name="url" value="${db.sap.url}"/>
+        <property name="username" value="${db.sap.username}"/>
+        <property name="password" value="${db.sap.password}"/>
+    </bean>
+
+    <bean id="sapEntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="sapDataSource"/>
+        <property name="packagesToScan" value="com.vanke.vkrms.sap.model"/>
+        <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml"/>
+        <property name="persistenceUnitName" value="sap"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="databasePlatform" value="org.hibernate.dialect.SQLServer2008Dialect"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="sapTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="sapEntityManagerFactory"/>
+    </bean>
+
+    <jpa:repositories base-package="com.vanke.vkrms.sap.repository" entity-manager-factory-ref="sapEntityManagerFactory"
+                      repository-impl-postfix="Impl"/>
+
+</beans>

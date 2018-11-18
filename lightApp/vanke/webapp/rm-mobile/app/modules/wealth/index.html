@@ -1,0 +1,50 @@
+<div class="scrollable">
+    <div class="scrollable-content margin-top-15">
+        <div class="section-cell">
+            <div class="list-group text-center">
+                <div class="section-cell point-cell">
+                    <a href="#/wealth/details/1" class="cell arrow-right border-b">
+                        <div class="inner-cell flex-box">
+                            <div class="flex-70 ta-l">
+                                <span class="color-gray">当前未兑换财富值</span>
+
+                                <div class="f24" ng-style="mw.wealthValueColor">{{ mw.res.wealthValue}}</div>
+                                <span class="color-gray f12">试点期间，不作为工资发放依据</span>
+                            </div>
+                            <div class="flex-30 f18 ta-r mr15">查看明细</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="section-cell point-cell">
+            <div class="cell">
+                <div class="wealth-infos">
+                    <div class="border-b">
+                        <h3>本月财富值累计进度</h3>
+                    </div>
+                    <div class="wealth-state">
+                        <div class="wealth-state-list  flex-box" ng-repeat="item in mw.res.exchangeRule">
+                            <div class="fl fl-name">{{item.ruleName}}</div>
+                            <div class="flex ">
+                                <div class="line3">
+                                    <span class="fl">{{item.start}}</span>
+                                    <span class="fr">{{item.end}}</span>
+                                </div>
+                                <div class="lineActive" ng-show="item.isActive" ng-class="{'active': item.isActive}"
+                                     ng-style="item.stepWidth">
+                                    <span class="fr" ng-if="item.showWealthValue">{{mw.res.wealthValue}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="tc pt20 f16">
+            <a class="color-gray" href="#/description/1">什么是财富值？</a>
+        </div>
+    </div>
+</div>

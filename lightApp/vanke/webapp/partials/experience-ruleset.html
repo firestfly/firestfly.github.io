@@ -1,0 +1,86 @@
+<div class="container-fluid">
+    <div class="row">
+        <div id="shift-view" class="search-in-right">
+            <div data-common-search-bar data-week-range="true" data-hide-export-btn="true"
+                 data-hide-groups="true" data-hide-date-range="true"
+                 data-hide-search-input="true" data-operation-buttons="operation-buttons"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="x-scroll-table">
+            <table class="table table-bordered table-hover table-condensed">
+                <tr>
+                    <th>岗位名称</th>
+                    <th>班次名称</th>
+                    <th>上班时间</th>
+                    <th>下班时间</th>
+                    <th>经验值要求</th>
+                    <th>操作</th>
+                </tr>
+                <tr ng-repeat="fixedPostsAndShiftRule in er.fixedPostsAndShiftRules">
+                    <td>
+                        <span editable-select="fixedPostsAndShiftRule.fixedPostId" e-form="rowform"
+                              e-required e-name="fixedPostId"
+                              e-ng-options="s.fixedPostId as s.fixedPostName for s in er.fixedPostOptions">
+                            {{(er.fixedPostOptions | filter:{fixedPostId:fixedPostsAndShiftRule.fixedPostId})[0].fixedPostName}}
+                        </span>
+                    </td>
+                    <td>
+                        <span editable-select="fixedPostsAndShiftRule.shiftId" e-form="rowform"
+                              e-ng-change="er.shiftLabelValueChange(this,fixedPostsAndShiftRule)"
+                              e-name="shiftId"
+                              e-ng-options="s.id as s.label for s in er.shiftOptions">
+                            {{(er.shiftOptions | filter:{id:fixedPostsAndShiftRule.shiftId})[0].label}}
+                        </span>
+                    </td>
+                    <td>
+                        {{ fixedPostsAndShiftRule.onDutyTime | dateStringFormatToMMhh}}
+                    </td>
+                    <td>
+                        {{fixedPostsAndShiftRule.offDutyTime | dateStringFormatToMMhh}}
+                    </td>
+                    <td>
+                        <span editable-text="fixedPostsAndShiftRule.experience" e-form="rowform"
+                              e-name="experience"
+                              onbeforesave="er.checkExperience($data)">
+                            {{ fixedPostsAndShiftRule.experience }}
+                        </span>
+                    </td>
+                    <td style="white-space: nowrap">
+                        <!-- form -->
+                        <form editable-form name="rowform"
+                              onbeforesave="er.saveRule(this,fixedPostsAndShiftRule,$data)"
+                              ng-show="rowform.$visible" class="form-buttons form-inline"
+                              shown="er.inserted == fixedPostsAndShiftRule">
+                            <button type="submit" ng-disabled="rowform.$waiting"
+                                    class="btn vk-btn-default">
+                                保存
+                            </button>
+                            <button type="button" ng-disabled="rowform.$waiting"
+                                    ng-click="rowform.$cancel(); er.removeTempRule()"
+                                    class="btn vk-btn-passion">
+                                取消
+                            </button>
+                        </form>
+                        <div class="buttons" ng-show="!rowform.$visible">
+                            <button class="btn vk-btn-health" ng-click="rowform.$show();er.isEditing()"
+                                    ng-disabled="er.inserted || er.isEditingState">修改
+                            </button>
+                            <button class="btn vk-btn-relax"
+                                    ng-click="er.removeRule($index, fixedPostsAndShiftRule)">
+                                删除
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="operation-buttons">
+    <button type="button" class="btn btn-primary" ng-click="er.addRule()"
+            ng-disabled="er.inserted || er.isEditingState">新增要求
+    </button>
+    </div>
+
+</div>

@@ -1,0 +1,20 @@
+<link href="<c:url value="/components/bootstrap/dist/css/bootstrap.min.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/components/angularjs-slider/dist/rzslider.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/components/components-font-awesome/css/font-awesome.min.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/components/metisMenu/dist/metisMenu.min.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/components/bootstrap-select/dist/css/bootstrap-select.min.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/components/angular-xeditable/dist/css/xeditable.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/components/DataTables/media/css/jquery.dataTables.min.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/components/bootstrap-fileinput/css/fileinput.min.css" />" media="all" rel="stylesheet" type="text/css" />
+<link href="<c:url value="/components/baidu-map/sign-in-area-drawing-manager_min.css" />" rel="stylesheet"
+      type="text/css">
+<link href="<c:url value="/components/angular-scrollable-table/scrollable-table.css" />" rel="stylesheet"
+      type="text/css">
+<c:if test="${profiles[0] == 'dev'}">
+<link href="<c:url value="/styles/ui-grid.css" />" rel="stylesheet"
+      type="text/css">
+<link href="<c:url value="/styles/angular.rangeSlider.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/styles/vkrms.css${buildNoReqString}"/>" rel="stylesheet" type="text/css">
+<link href="<c:url value="/styles/index.css${buildNoReqString}"/>" rel="stylesheet" type="text/css">
+</c:if>

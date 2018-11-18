@@ -1,0 +1,54 @@
+
+<div class="ng-hide">
+    <a class="btn btn-default" id="backss" ng-href="#/lieu-quota">返回列表</a>
+</div>
+
+<div class="my-tab">
+    <a class="tab-item" href="#/lieu-line-setting">月休额度设置</a>
+    <span class="active tab-item">其它休假额度设置</span>
+</div>
+
+<div common-search-bar data-hide-department="true" data-show-lieu-line-type="true" data-show-work-jobs="true" data-hide-export-btn="true" data-hide-groups="true"  data-hide-date-range="true" data-hide-search-input="true" data-operation-buttons="operation-buttons"></div>
+
+<div class="table-wrapper" ng-show="llc.lieuLineList">
+    <table class="table table-bordered">
+        <tr>
+            <th width="25%">公司</th>
+            <th width="15%">休假类型</th>
+            <th width="15%">职位</th>
+            <th width="15%">轮休天数</th>
+            <th width="15%">有效期(月)</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="item in llc.lieuLineList">
+            <td>{{item.company}}</td>
+            <td>{{item.type}}</td>
+            <td>{{item.workjob}}</td> 
+            <td>
+                <span editable-text="item.days" e-name="days"
+                        e-form="rowform"
+                        onbeforesave="checkLeaveDuration($data)" e-required
+                        ng-bind="item.days">
+                </span>
+            </td>
+            <td>{{item.validMonths}}</td>
+            <td>
+                <form editable-form name="rowform"
+                        onbeforesave="save(item.id, $data.days)"
+                        ng-show="rowform.$visible" class="form-buttons form-inline">
+                    <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                        保存
+                    </button>
+                    <button type="button" ng-disabled="rowform.$waiting"
+                            ng-click="rowform.$cancel()" class="btn btn-default">
+                        取消
+                    </button>
+                </form>
+                <div class="buttons" ng-show="!rowform.$visible">
+                    <button class="btn vk-btn-health" ng-click="rowform.$show()">修改</button>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div common-pagination></div>

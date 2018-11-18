@@ -1,0 +1,26 @@
+$btn-color: #40B969;
+
+.picker-slot {
+    .picker-item {
+        font-size: 90%;
+    }
+}
+.picker-bar {
+    padding: .5em 1.5em;
+  height: 44px;
+  line-height: 44px;
+  background-color: #f9f9f9;
+  @include ui-border(bottom, #e7e7e7);
+    .button {
+      outline: 0;
+      border: 0;
+      font-family: 'Microsoft Yahei';
+      background: none;
+      border: none;
+      color: $primaryBg;
+      font-size: 100%;
+      border-radius: .3em;
+      padding: .2em 1em .3em;
+      font-size: 16px;
+    }
+}

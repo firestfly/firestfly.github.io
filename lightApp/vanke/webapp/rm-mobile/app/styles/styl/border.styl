@@ -1,0 +1,68 @@
+// 1px hack 边线颜色
+border-t-color($bcolor = border-color)
+  -webkit-gradient(linear, left bottom, left top, color-stop(.5, rgba(0, 0, 0, 0)), color-stop(.5, $bcolor), to($bcolor));
+
+border-b-color($bcolor = border-color)
+  -webkit-gradient(linear, left top, left bottom, color-stop(.5, rgba(0, 0, 0, 0)), color-stop(.5, $bcolor), to($bcolor));
+
+border-l-color($bcolor = border-color)
+  -webkit-gradient(linear, right top, left top, color-stop(.5, rgba(0, 0, 0, 0)), color-stop(.5, $bcolor), to($bcolor));
+
+border-r-color($bcolor = border-color)
+  -webkit-gradient(linear, left top, right top, color-stop(.5, rgba(0, 0, 0, 0)), color-stop(.5, $bcolor), to($bcolor));
+
+// 1px hack 圆角 + 单线
+ui-border-radius(bordeColor = border-color, borderRadius = 0)
+  position: relative;
+  border: 0;
+  &:before
+    content: "";
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid bordeColor;
+    transform: scale(.5);
+    transform-origin: 0 0;
+    padding: 1px;
+    border-radius: borderRadius;
+    pointer-events: none;
+
+ui-border(pos, $color = border-color)
+  if top in pos
+    border-top 0
+    background-repeat: repeat-x
+    -webkit-background-size: 100% 1px
+    background-size: 100% 1px
+    background-position: left top
+    background-image: border-t-color($color)
+  if bottom in pos
+    border-bottom: 0
+    background-repeat: repeat-x
+    -webkit-background-size: 100% 1px
+    background-size: 100% 1px
+    background-position: left bottom
+    background-image: border-b-color($color)
+  if left in pos
+    border-left: 0
+    background-position: left top
+    background-image: border-l-color($color)
+    background-repeat: repeat-y
+    -webkit-background-size: 1px 100%
+    background-size: 1px 100%
+  if right in pos
+    border-right: 0
+    background-position: right top
+    background-image: border-r-color($color)
+    background-repeat: repeat-y
+    -webkit-background-size: 1px 100%
+    background-size: 1px 100%
+  if tb in pos
+    border-top: 0
+    border-bottom: 0
+    background-repeat: repeat-x
+    -webkit-background-size: 100% 1px
+    background-size: 100% 1px
+    background-image: border-t-color($color), border-b-color($color)
+    background-position: top, bottom

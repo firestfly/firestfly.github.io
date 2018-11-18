@@ -1,0 +1,10 @@
+<div class="container-fluid vk-container authority-container">
+    <div auth-common-top-banner personal-info="personalInfo" search="search()" save-function="saveAuthConfig()"
+         top-banner-config="topBannerConfig"></div>
+    <div class="auth-org-list">
+        <div data-auth-common-checkbox-group ng-repeat="roles in roleGroups track by $index"
+             checkbox-group-data="roles.children" checkbox-group-title="roles.name" checkbox-type="checkboxType"
+             checkbox-config="checkboxConfig"></div>
+    </div>
+</div>
+

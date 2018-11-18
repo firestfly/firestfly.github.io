@@ -1,0 +1,184 @@
+<div class="row vk-spaced-row authority-container">
+    <table class="table auto-person-row">
+        <tbody>
+        <tr>
+            <td width="25%">{{company}}</td>
+            <td width="25%">{{department}}</td>
+            <td width="25%">{{postName}}</td>
+            <td>{{postShortName}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container-fluid">
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active">
+            <div class="row vk-row p10">
+                <!--<div class="form-group">-->
+                <!--<label class="col-form-label">上岗职位:</label>-->
+
+                <!--<div class="col-xs-6">-->
+                <!--<select name="" id="selectJob" class="selectpicker" multiple-->
+                <!--ng-options="option.workJobName for option in standardJobs track by option.workJobId"-->
+                <!--ng-model="selectedJob" data-actions-box="true" data-live-search="true"-->
+                <!--data-selected-text-format="count"-->
+                <!--data-none-selected-text="全部职位">-->
+                <!--</select>-->
+                <!--<button type="button" class="btn vk-btn-default" ng-click="saveJobs()">保存</button>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                <!--<div class="col-xs-12 m-t-10">-->
+                <!--<span class="post-standardJobs" ng-repeat="i in selectedJob">{{i.workJobName}}</span>-->
+                <!--</div>-->
+                <!--</div>-->
+                <div style="font-weight: bold;float: left;line-height: 30px;">应上岗职位:</div>
+                <div class="fl postrule-job-select">
+                    <span editable-select="jobIds" e-form="jobform"
+                          onshow="loadGroups()" e-title="请选择应上岗职位"
+                          e-multiple e-ng-options="s.workJobId as s.workJobName for s in standardJobs">
+                        <span class="post-standardJobs" ng-repeat="i in showStandardJobs()">{{i}}</span>
+                    </span>
+                </div>
+                <div class="col-xs-3">
+                    <form editable-form name="jobform" onbeforesave="saveJobs($data, jobs)"
+                          ng-show="jobform.$visible && !checkpage" class="form-buttons form-inline"
+                          shown="false">
+                        <button type="submit" ng-disabled="jobform.$waiting"
+                                class="btn vk-btn-default" ng-if="!checkpage">
+                            保存
+                        </button>
+                        <button type="button" ng-disabled="jobform.$waiting"
+                                ng-click="jobform.$cancel();"
+                                class="btn vk-btn-passion">
+                            取消
+                        </button>
+                    </form>
+                    <div class="buttons" ng-show="!jobform.$visible && !checkpage">
+                        <button class="btn vk-btn-health" ng-click="jobform.$show()">修改</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row vk-row">
+                <div class="clearfix p10">
+                    <div class="col-xs-3" ng-if="!checkpage">
+                        <a class="btn vk-btn-passion" ng-click="addPostRule()">新增上岗时间规则</a>
+                    </div>
+                </div>
+                <div class="clearfix p10" ng-if="!checkpage">
+                    <h4>适用日期</h4>
+                    <div>
+                        <span class="post-standardJobs" ng-repeat="time in dateTimeArr | orderBy: 'startTime'">
+                            {{time.startTime | dateTransform}}-{{time.endTime | dateTransform}}
+                        </span>
+                        <a class="btn btn-default ml5" ng-click="addDateTime()">新增</a>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <tr>
+                                <th width="20%">适用日期</th>
+                                <th width="15%">适用时间</th>
+                                <th width="25%">班次</th>
+                                <th width="12%">本班次在岗人数</th>
+                                <th>说明</th>
+                                <th width="12%" ng-show="!checkpage">操作</th>
+                            </tr>
+                            <tr ng-repeat="postRule in postRules">
+                                <td>
+                                    <span editable-select="postRule.startTime" e-form="rowform" onshow="loadGroups(1)"
+                                          e-ng-options="s.startTime as s.text for s in dateTimeArr" onbeforesave="checkDateTime($data)">
+                                        {{ showSuitDateTime(postRule) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span editable-select="postRule.timeTypes[0]" e-form="rowform"
+                                          onshow="loadGroups(1)"
+                                          e-ng-options="s.id as s.name for s in days"
+                                          onbeforesave="checkDate($data)" e-required>
+                                        {{ showDays(postRule) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span editable-select="postRule.shiftIds[0]" e-form="rowform" onshow="loadGroups(1)"
+                                          e-ng-options="s.id as s.label for s in shifts"
+                                          onbeforesave="checkLabel($data)">
+                                        {{ showLabel(postRule) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span editable-text="postRule.postNumber" e-name="postNumber" e-form="rowform"
+                                           ng-bind="postRule.postNumber" onbeforesave="checkPostNumber($data)"
+                                          e-required>
+                            </span>
+                                </td>
+                                <td>
+                                  <span editable-textarea="postRule.remark" e-name="remark" e-form="rowform"
+                                        ng-bind="postRule.remark" e-required>
+                            </span>
+                                </td>
+
+                                <td style="white-space: nowrap" ng-show="!checkpage">
+                                    <form editable-form name="rowform"
+                                          onbeforesave="savePostRule($data, $index, rowform)"
+                                          ng-show="rowform.$visible" class="form-buttons form-inline"
+                                          shown="shown == postRule">
+                                        <button type="submit" ng-disabled="rowform.$waiting"
+                                                class="btn vk-btn-default">
+                                            保存
+                                        </button>
+                                        <button type="button" ng-disabled="rowform.$waiting"
+                                                ng-click=" removeTempPostRule();rowform.$cancel();"
+                                                class="btn vk-btn-passion">
+                                            取消
+                                        </button>
+                                    </form>
+                                    <div class="buttons" ng-show="!rowform.$visible" ng-if="!checkpage">
+                                        <button class="btn vk-btn-health" ng-click="editeRule(rowform)">修改</button>
+                                        <button class="btn vk-btn-relax"
+                                                ng-click="removePostRule($index, postRule.postTimeRuleId)">
+                                            删除
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-if="noData && !postRules.length">
+                                <td colspan="6">未搜索到数据</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-xs-12 ta-c">
+                            <a href="javascript:history.go(-1)" class="btn vk-btn-passion">返回</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="addSuitDateTime.html">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancle()"><span
+                aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">新增适用日期</h4>
+    </div>
+    <div class="modal-body">
+        <form action="" name="modalform">
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="startTime" placeholder="开始时间" ng-pattern="reg">
+                <div class="input-group-addon">-</div>
+                <input type="text" class="form-control" ng-model="endTime" placeholder="结束时间" ng-pattern="reg">
+            </div>
+            <div class="has-error">
+                <p class=" help-block" ng-show="modalform.$invalid">输入日期格式如：03-01</p>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn vk-btn-default" ng-click="ok()">确定</button>
+        <button type="button" class="btn vk-btn-relax" ng-click="cancle()">取消</button>
+    </div>
+</script>

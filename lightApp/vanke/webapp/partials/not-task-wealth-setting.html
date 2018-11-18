@@ -1,0 +1,97 @@
+<div class="container-fluid authority-container">
+    <div class="row">
+        <div data-common-search-bar data-week-range="true" data-hide-export-btn="true" data-show-task-wealth-type="true"
+             data-operation-buttons="operation-buttons" data-hide-groups="true" data-hide-date-range="true"
+             data-hide-search-input="true" data-is-first-row-opt-btn=true></div>
+    </div>
+    <div class="operation-buttons">
+        <a class="btn vk-btn-passion" ng-click="editeMultiple()">批量修改</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th><input type="checkbox" ng-model="master"
+                           ng-click="all(master,notTaskWealthSetting)"/></th>
+                <th>公司名称</th>
+                <th>项目名称</th>
+                <th>类型</th>
+                <th>标准财富值(单位：/分钟)</th>
+                <th>操作</th>
+            </tr>
+            <tr ng-if="!notTaskWealthSetting">
+                <td colspan="7">暂无数据，请重新选择部门查询</td>
+            </tr>
+            <tr ng-repeat="item in notTaskWealthSetting">
+                <td><input type="checkbox" ng-checked="selected" ng-click="chk($index,$event)"/>
+                </td>
+                <td>{{item.companyName}}</td>
+                <td>{{item.departmentName}}</td>
+                <td>{{notTaskWealthTypeChange[item.notTaskWealthType]}}</td>
+                <td class="input-wealth-value">
+                    <span editable-text="item.standardWealthValue"
+                          e-name="standardWealthValue"
+                          e-form="rowform"
+                          e-required ng-bind="item.standardWealthValue"
+                          onbeforesave="checkName($data, $index)" class="asd">
+                    </span>
+                </td>
+                <td>
+                    <form editable-form name="rowform"
+                          onbeforesave="savePost($data,$index)"
+                          ng-show="rowform.$visible" class="form-buttons form-inline"
+                          shown="shown == item">
+                        <button type="submit" ng-disabled="rowform.$waiting"
+                                class="link">
+                            保存
+                        </button>
+                        <button type="button" ng-disabled="rowform.$waiting"
+                                ng-click="rowform.$cancel(); removeTempPost()"
+                                class="link">
+                            取消
+                        </button>
+                    </form>
+                    <div class="buttons" ng-show="!rowform.$visible">
+                        <button class="link" ng-click="rowform.$show()">设置</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="container-fluid">
+    <div common-pagination></div>
+</div>
+
+<div class="modal fade bs-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="margin-top:200px;width: 320px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong class="modal-title">批量修改</strong>
+
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                        class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid vk-dialog-container" ng-class="{'has-error': !isReg}">
+                    <p>将当前页面选中的标准财富值修改为:</p>
+                    <div class="ta-c ">
+                        <input type="text" name="" class="form-control" ng-change="validateWealth(modeWealthValue)"
+                               style="width: 100px;display: inline-block;" ng-model="modeWealthValue"> (单位:/分钟)
+                    </div>
+                    <div class="ta-c help-block">
+                        取值范围:0~1000，精确到小数点后两位
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn vk-btn-default" type="button" ng-disabled="!isReg" ng-click="action()">
+                    确定
+                </button>
+                <button class="btn vk-btn-passion" type="button" data-dismiss="modal">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,88 @@
+<div class="scrollable wifi-scrollable">
+    <div class="scrollable-content wifi">
+        <div class="employee-intro">
+            <span>{{ ws.employeeInfo.id }}</span>
+            <span>{{ ws.employeeInfo.name }}</span>
+            <span>{{ ws.employeeInfo.jobName }}</span>
+        </div>
+        <div class="wifi-row ">
+            <div class="flex-box inner">
+                <div class="">项目名称</div>
+                <!--<div class="flex ta-r">-->
+                <!--{{ws.department.name}} &lt;!&ndash;<span class="wifi-arrow-right"></span>&ndash;&gt;-->
+                <!--</div>-->
+                <div class="flex ta-r" ng-click="ws.departmentModal = true">
+                    {{ws.department.name}} <span class="wifi-arrow-down" ng-show="ws.departments.length > 0"></span>
+                </div>
+            </div>
+        </div>
+        <div class="wifi-prompt">
+            共{{ws.totalItems || 0}}个Wi-Fi考勤点
+        </div>
+        <div class="wifi-row" ng-repeat="wifiInfo in ws.wifiInfoLists">
+            <div class="inner-small-colomn flex-box border-b">
+                <div class="">
+                    <img src="rm-mobile/app/images/map-pin.png" alt=""/>
+
+                    <div class="vk-hide">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="">
+                    考勤地点 <br/>
+                    <small>
+                        {{wifiInfo.attendancePlace}}
+                    </small>
+                </div>
+                <div class="flex text-primary-color ta-r" ng-click="ws.modifyWifiInfo(wifiInfo)">
+                    修改设置
+                </div>
+            </div>
+            <div class="inner-small-colomn flex-box wifi-info">
+                <div class="">
+                    <img src="rm-mobile/app/images/wifi.png" alt=""/>{{wifiInfo.ssid}}
+                    <small class="wifi-spacing">{{wifiInfo.bssid}}</small>
+                </div>
+                <div class="flex ta-r" ng-click="ws.delete(wifiInfo.id)" ng-if="wifiInfo.fixedPosts.length == 0">
+                    <img src="./rm-mobile/app/images/delete.png" alt="" class="right"/>
+                </div>
+            </div>
+            <div class="inner-small-colomn flex-box wifi-info" ng-repeat="fixedPost in wifiInfo.fixedPosts">
+                <img src="rm-mobile/app/images/fixedPost.png" alt=""/>{{fixedPost.fixedPostName}}
+                <div class="flex ta-r" ng-click="ws.delete(wifiInfo.id)"
+                     ng-if="$index == (wifiInfo.fixedPosts.length-1)">
+                    <img src="./rm-mobile/app/images/delete.png" alt="" class="right"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wifi-tab">
+    <a class="tabs" href="#/wifi/add">设置</a>
+    <a class="tabs active">查看</a>
+</div>
+
+<div class="backdrop wifi" ng-show="ws.departmentModal">
+    <div class="backdrop-mask" ng-click="ws.departmentModal = !ws.departmentModal ">
+
+    </div>
+    <div class="modal">
+        <div class="modal-header flex-box border-b">
+            <div class="flex" ng-click="ws.departmentModal = !ws.departmentModal ">取消</div>
+            <div class="flex ta-r" ng-click="ws.departmentSelected()">确定</div>
+        </div>
+        <div class="modal-content">
+            <div class="post-list" ng-repeat="department in ws.departments" ng-click="ws.sigleSelect(department)">
+                <div class="flex-box">
+                    <div class="">
+                        {{department.name}}
+                    </div>
+                    <div class="flex ta-r" ng-show="department.selected">
+                        <img src="./rm-mobile/app/images/selected.png" alt=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

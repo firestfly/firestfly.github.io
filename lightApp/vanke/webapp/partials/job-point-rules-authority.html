@@ -1,0 +1,24 @@
+<div class="container-fluid vk-container authority-container" organizations-scroll>
+    <div class="row vk-spaced-row">
+        <div class="col-xs-8 col-md-5">
+            <div class="right-inner-addon">
+                <i class="fa fa-search"></i>
+                <input class="auth-search form-control" type="search" placeholder="输入多选框组一级标题进行筛选"
+                       ng-model="keywords" >
+            </div>
+        </div>
+        <div class="col-xs-4 col-md-2">
+            <button class="btn vk-btn-health" ng-click="search()" >筛 选</button>
+        </div>
+        <div class="col-xs-12 col-md-5 text-right">
+            <a class="btn vk-btn-health" ng-click="saveAuthConfig()" >保  存</a>
+            <a class="btn btn-default" href="#/job-incentive-rules" >返回列表</a>
+        </div>
+    </div>
+    <div class="auth-org-list">
+        <div data-common-checkbox-group
+             ng-repeat="company in organizations | limitTo: organizationsLenLimit track by $index"
+             checkbox-group-data="company.departments" checkbox-group-title="company.company_name"
+             checkbox-type="checkboxType" checkbox-config="checkboxConfig"></div>
+    </div>
+</div>

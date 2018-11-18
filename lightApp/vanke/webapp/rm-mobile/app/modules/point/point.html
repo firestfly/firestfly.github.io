@@ -1,0 +1,36 @@
+<div class="scrollable">
+    <div class="scrollable-content">
+        <div class="employee-intro">
+            <span>{{ point.employeeInfo.id }}</span>
+            <span>{{ point.employeeInfo.name }}</span>
+            <span>{{ point.employeeInfo.jobName }}</span>
+        </div>
+        <div class="page-bar">
+            <div class="title-area">
+                <div class="title-head">{{point.headText}}</div>
+                <div class="title-area-radius large">
+                    <div class="title-centent-text">
+                        <div>
+                            <h3>{{ point.number }} <span class="unit" ng-bind="point.unit"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="list-group text-center">
+            <div class="section-cell point-cell border-t">
+                <div class="cell border-b" ng-repeat="pointItem in point.pointList">
+                    <div class="inner-cell flex-box">
+                        <div class="flex-70 ta-l"><h3>{{pointItem.taskName}}</h3><span class="color-gray">{{pointItem.evalDate}}</span>
+                        </div>
+                        <div class="flex-30 ta-r point-number">{{pointItem.totalPoint}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="no-point" ng-show="point.noPoint">
+                <div class="icon-money"></div>
+                <div class="color-grey">本时间段内还没有财富值</div>
+            </div>
+        </div>
+    </div>
+</div>

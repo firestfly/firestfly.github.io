@@ -1,0 +1,293 @@
+<div id="schedule-container" class="vk-schedule-container">
+    <div data-common-search-bar data-week-range="true" data-search-notification="请选择筛选条件后查询"
+         data-show-standard-work-jobs="true" hide-export-btn="false" class="vk-common-search"></div>
+    <section class="vk-schedule-body">
+        <div class="vk-flex-row">
+            <button type="button" class="btn btn-primary" ng-click="nsc.editSchedule()" ng-if="!nsc.editState">排班
+            </button>
+            <button type="button" class="btn btn-primary vk-btn-passion" ng-click="nsc.saveSchedule()"
+                    ng-if="nsc.editState">保存
+            </button>
+            <button type="button" class="btn btn-default" ng-if="nsc.editState" ng-click="nsc.copyPrevWeek()">
+                复制上一周
+            </button>
+            <button type="button" class="btn btn-default" ng-if="nsc.editState" ng-click="nsc.cancelEditSchedule()">
+                放弃编辑
+            </button>
+            <button type="button" class="btn btn-default" ng-click="nsc.search('previous')" ng-if="!nsc.editState">上一周
+            </button>
+            <button type="button" class="btn btn-default" ng-click="nsc.search('next')" ng-if="!nsc.editState">下一周
+            </button>
+        </div>
+        <div id="schedule-table" class="vk-schedule-table">
+            <table class="table">
+                <tr>
+                    <th>
+                        {{nsc.tableTitle.employee.name}}
+                    </th>
+                    <th>
+                        {{nsc.tableTitle.employee.jobName}}
+                    </th>
+                    <th>
+                        {{nsc.tableTitle.employee.workGroup}}
+                    </th>
+                    <th>
+                        {{nsc.tableTitle.employee.experience}}
+                    </th>
+                    <th ng-repeat="weekday in nsc.tableTitle.weekdays">
+                        <img src="images/icon-copy.png" class="schedule-icon-mr"
+                             ng-click="nsc.copyPreviousDay(weekday)"
+                             ng-show="nsc.editState" title="排班复制">{{weekday}}
+                    </th>
+                    <th>
+                        {{nsc.tableTitle.workingHours}}
+                    </th>
+                    <th>
+                        {{nsc.tableTitle.overWorkingHours}}
+                    </th>
+                    <th>
+                        {{nsc.tableTitle.lieuLeaveHours}}
+                    </th>
+                    <th>
+                        {{nsc.tableTitle.employee.employeeId}}
+                    </th>
+                    <th>
+                        {{nsc.tableTitle.employee.sapId}}
+                    </th>
+                </tr>
+                <tr ng-repeat="scheduleRow in nsc.scheduleTable" ng-init="outerIndex = $index">
+                    <td>{{scheduleRow.name}}</td>
+                    <td>{{scheduleRow.jobName}}</td>
+                    <td>{{scheduleRow.workGroup}}</td>
+                    <td>{{scheduleRow.experience}} <span style="display:none"></span></td>
+                    <td ng-repeat="schedule in scheduleRow.scheduleCells" class="vk-schedule-content"
+                        ng-class="{'schedule-list': nsc.editState}"
+                        ng-click="mouseOverThing(scheduleRow,schedule,outerIndex,$index)">
+                        <div class="vk-schedule-cellbox">
+                            <div class="vk-flex-colomn">
+                                {{schedule.beforeShiftOvertimeDuration || ""}}
+                            </div>
+                            <div class="vk-flex-colomn">
+                                {{schedule.label}}
+                            </div>
+                            <div class="vk-flex-colomn">
+                                {{schedule.afterShiftOvertimeDuration || ""}}
+                            </div>
+                        </div>
+                        <div class="vk-schedule-cellbox">
+                            <div class="vk-flex-colomn">
+                                {{schedule.labelFixedPostName}}
+                            </div>
+                        </div>
+                        <div class="vk-schedule-cellbox">
+                            <div class="vk-flex-colomn">
+                                {{schedule.type | typeChange:schedule.fragmentBeginTime }}
+                            </div>
+                            <div class="vk-flex-colomn">
+                                {{schedule.labelAddition}}
+                                <span ng-if="schedule.fragmentEndTime"> {{schedule.fragmentBeginTime | limitTo: 5}}</span>
+                                <span ng-if="schedule.lieuLeaveEndTime">{{schedule.lieuLeaveBeginTime | limitTo: 5}}</span>
+                            </div>
+                            <div class="vk-flex-colomn">
+                                <span ng-if="schedule.fragmentBeginTime">  {{schedule.fragmentEndTime | limitTo: 5}}</span>
+                                <span ng-if="schedule.lieuLeaveBeginTime">{{schedule.lieuLeaveEndTime | limitTo: 5}}</span>
+                            </div>
+                        </div>
+                        <div class="vk-schedule-cellbox">
+                            <div class="vk-flex-colomn">
+                                {{schedule.labelFixedPostAdditionName}}
+                            </div>
+                        </div>
+
+                    </td>
+                    <td>{{scheduleRow.workingDuration || 0}}</td>
+                    <td>{{scheduleRow.overtimeWorkingDuration || 0}}</td>
+                    <td>{{scheduleRow.lieuLeaveDuration || 0}}</td>
+                    <td>{{scheduleRow.employeeId}}</td>
+                    <td>{{scheduleRow.sapId}}</td>
+                </tr>
+            </table>
+            <div class="schedule-model" ng-show="nsc.modelState">
+                <div class="model-close" ng-click="nsc.closeModel()"></div>
+                <div ng-show="nsc.loadingDate">
+                    <div class="schedule-model-bar">
+                        <span class="icon-user"></span><span class="fixed-width-name">{{showTable.name}}</span><span
+                            class="icon-time"></span><span class="fixed-width-info">{{showTable.datetime}}</span>
+                        <span class="icon-member"></span>{{showTable.member}}<span class="icon-ex"></span>{{showTable.experience}}
+                    </div>
+                    <div class="schedule-model-person" style="min-height:44px">
+                    <span ng-if="nsc.currentShift.label">
+                        <span class="show-label-title">常</span>
+                        <div class="schedule-model-show-label">
+                            <span class="schedule-model-show-label-del" ng-click="nsc.delShift('shift')">删除</span>
+                            <span ng-if="nsc.currentShift.beforeShiftOvertimeDuration != 0">{{nsc.currentShift.beforeShiftOvertimeDuration | number: 1}}+</span>
+                            {{nsc.currentShift.label}}
+                            <span ng-if="nsc.currentShift.afterShiftOvertimeDuration != 0">+{{nsc.currentShift.afterShiftOvertimeDuration | number: 1}}</span>
+                        </div>
+                    </span>
+                    <span ng-if="nsc.currentShift.labelAddition"><span class="show-label-title">二</span><div
+                            class="schedule-model-show-label"><span class="schedule-model-show-label-del"
+                                                                    ng-click="nsc.delShift('additionShift')">删除</span>{{nsc.currentShift.labelAddition}}
+                    </div></span>
+                    <span ng-if="nsc.currentShift.fragmentBeginTime"><span class="show-label-title">零</span><div
+                            class="schedule-model-show-label"><span class="schedule-model-show-label-del"
+                                                                    ng-click="nsc.delShift('fragmentShift')">删除</span>
+                        {{nsc.currentShift.fragmentBeginTime | limitTo: 5}}-{{nsc.currentShift.fragmentEndTime |
+                        limitTo: 5}}
+                    </div></span>
+                    <span ng-if="nsc.currentShift.type"><div class="schedule-model-show-label"><span
+                            class="schedule-model-show-label-del" ng-click="nsc.delShift('otherType')">删除</span>{{nsc.currentShift.type
+                        | typeChange}}
+                    </div></span>
+
+                    </div>
+                    <div class="schedule-model-title" ng-init="tab =1">
+                        <ul class="schedule-model-tab clearfix">
+                            <li ng-class="{'active': tab == 1}" ng-click="tab = 1">常规</li>
+                            <li ng-class="{'active': tab == 2}" ng-click="tab = 2">零星</li>
+                            <li ng-class="{'active': tab == 3}" ng-click="tab = 3">二次班</li>
+                            <li ng-class="{'active': tab == 4}" ng-click="nsc.modelTabs(4)">假</li>
+                            <li ng-class="{'active': tab == 5}" ng-click="nsc.modelTabs(5)">外</li>
+                        </ul>
+                    </div>
+                    <div class="schedule-model-content">
+                        <div class="schedule-model-box" ng-show="tab == 1">
+                            <div class="schedule-model-shifts">
+                            <span class="label label-info color-gray"
+                                  ng-class="{'active': '' == nsc.currentShift.label == '' && !nsc.currentShift.type }"
+                                  ng-click="getOptionShiftValue('-')">-</span>
+                            <span class="label label-info" ng-class="{'active': 'HOLIDAY' == nsc.currentShift.type}"
+                                  ng-click="getOptionShiftValue('月休')">月休</span>
+                            <span class="label label-info" ng-class="{'active': item.label == nsc.currentShift.label}"
+                                  ng-click="getOptionShiftValue(item)"
+                                  ng-repeat="item in defaultShifts">{{item.label}}</span>
+                            </div>
+                            <div class="schedule-shifts-extend" ng-init="extendTab = 1">
+                                <div class="extend-name">
+                                    <a ng-class="{'active': extendTab == 1}" ng-mouseover="extendTab = 1">前扩展</a>
+                                    <a ng-class="{'active': extendTab == 2}" ng-mouseover="extendTab = 2">后扩展</a>
+                                </div>
+                                <div class="extend-list">
+                                    <div class="extend-content" ng-show="extendTab==1"><span
+                                            ng-click="nsc.delShift('beforeShift')">0</span><span
+                                            ng-click="nsc.setBeforeShiftOvertime(time)"
+                                            ng-class="{'active': time == nsc.currentShift.beforeShiftOvertimeDuration}"
+                                            ng-repeat="time in extendTime">{{time | number: 1}}</span><span
+                                            ng-click="nsc.delShift('beforeShift')">-</span></div>
+                                    <div class="extend-content" ng-show="extendTab==2"><span
+                                            ng-click="nsc.delShift('afterShift')">0</span><span
+                                            ng-click="nsc.setAfterShiftOvertime(time)"
+                                            ng-class="{'active': time == nsc.currentShift.afterShiftOvertimeDuration}"
+                                            ng-repeat="time in extendTime">{{time | number: 1}}</span><span
+                                            ng-click="nsc.delShift('afterShift')">-</span></div>
+                                </div>
+                            </div>
+                            <div class="schedule-fixedposts" ng-show="isFixedPostId(showTable.jobId)">
+                                <ul class="schedule-fixedposts-list">
+                                    <li ng-class="{'active': fixedPos.fixedPostId == nsc.currentShift.labelFixedPostId}"
+                                        ng-click="nsc.selectPost(fixedPos)" ng-repeat="fixedPos in fixedPosts">
+                                        {{fixedPos.fixedPostName}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="schedule-model-box" ng-show="tab == 2">
+                            <div class="fragmentTime">
+                                <rzslider rz-slider-model="pocketsTime.minValue"
+                                          rz-slider-high="pocketsTime.maxValue"
+                                          rz-slider-options="pocketsTime.options"></rzslider>
+                            </div>
+                        </div>
+                        <div class="schedule-model-box" ng-show="tab == 3">
+                            <div class="schedule-model-shifts">
+                                <span class="label label-info color-gray"
+                                      ng-click="nsc.delShift('additionShift')">-</span>
+                            <span ng-click="nsc.getAdditionOptionShiftValue(item)" class="label label-info"
+                                  ng-class="{'active': item.label == nsc.currentShift.labelAddition}"
+                                  ng-repeat="item in defaultShifts">{{item.label}}</span>
+                            </div>
+                            <div class="schedule-fixedposts" ng-show="isFixedPostId(showTable.jobId)">
+                                <ul class="schedule-fixedposts-list">
+                                    <li ng-class="{'active':fixedPost.fixedPostId == nsc.currentShift.labelFixedPostAdditionId}"
+                                        ng-click="nsc.selectPostAddition(fixedPost)"
+                                        ng-repeat="fixedPost in fixedPosts">
+                                        {{fixedPost.fixedPostName}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="schedule-model-box" ng-if="tab == 4">
+                            <div class="schedule-model-shifts">
+                            <span class="label label-info"
+                                  ng-class="{'active': item.split('|')[1] == nsc.currentShift.type}"
+                                  ng-click="nsc.selectType(item.split('|')[1])" ng-repeat="item in nsc.otherTypesLetter"
+                                  ng-if="$index > 5">{{item.split('|')[0]}}</span>
+                            </div>
+                            <div class="fragmentTime">
+                                <rzslider rz-slider-model="grass.minValue"
+                                          rz-slider-high="grass.maxValue"
+                                          rz-slider-options="grass.options"></rzslider>
+                            </div>
+                        </div>
+                        <div class="schedule-model-box" ng-if="tab == 5">
+                            <div class="schedule-model-shifts">
+                            <span ng-class="{'active': item.split('|')[1] == nsc.currentShift.type}"
+                                  class="label label-info" ng-repeat="item in nsc.otherTypesLetter"
+                                  ng-if="$index < 5 && $index > 2" ng-click="nsc.selectType(item.split('|')[1])">{{item.split('|')[0]}}</span>
+                            </div>
+                            <div class="fragmentTime">
+                                <rzslider rz-slider-model="grass.minValue"
+                                          rz-slider-high="grass.maxValue"
+                                          rz-slider-options="grass.options"></rzslider>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script type="text/ng-template" id="fixedPostRemindDialog.html">
+    <div class="modal-header">
+        <strong class="modal-title">关键岗位排班提醒</strong>
+
+        <div class="modal-close" ng-click="ok()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid vk-dialog-container">
+            <div class="key-post-remind"> {{message}}</div>
+            <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                <tr>
+                    <th ng-if="!!keyPostForShowList[0].date">日期</th>
+                    <th>岗位名称</th>
+                    <th>班次名称</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>经验值要求</th>
+                    <th ng-if="!!keyPostForShowList[0].employeeName">姓名</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="keyPostForShow in keyPostForShowList">
+                    <td ng-if="!!keyPostForShow.date" ng-bind="keyPostForShow.date"></td>
+                    <td ng-bind="keyPostForShow.keyPostName"></td>
+                    <td ng-bind="keyPostForShow.shiftName"></td>
+                    <td ng-bind="keyPostForShow.shiftBeginTime"></td>
+                    <td ng-bind="keyPostForShow.shiftEndTime"></td>
+                    <td ng-bind="keyPostForShow.exp"></td>
+                    <td ng-if="!!keyPostForShow.employeeName" ng-bind="keyPostForShow.employeeName"
+                        ng-class="{'color-crimson': keyPostForShow.notArrange}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn vk-btn-health" type="button" ng-click="ok()">
+            确认
+        </button>
+    </div>
+</script>

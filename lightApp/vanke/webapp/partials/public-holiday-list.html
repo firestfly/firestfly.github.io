@@ -1,0 +1,143 @@
+<div id="public-holiday-container" class="container-fluid">
+    <div class="row vk-spaced-row">
+        <div class="col-md-6">
+            <div dropdown>
+                <button id="single-button" type="button" class="btn vk-btn-default" dropdown-toggle
+                        ng-disabled="disabled">
+                    {{vm.selectedYear}} 年
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+                    <li role="menuitem" ng-repeat="year in vm.years" ng-model="vm.selectedYear">
+                        <a href ng-click="onSelectYear(year)">{{year}}年</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6 text-right">
+            <a href="javascript:;" class="btn btn-primary" ng-click="createHolidayRule()">新增假期</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-condensed">
+                    <tr>
+                        <th width="10%">序号</th>
+                        <th width="20%">假期名</th>
+                        <th>假期日期</th>
+                        <th>是否为地域性节假日</th>
+                        <th width="10%">适用项目</th>
+                        <th width="10%">操作</th>
+                    </tr>
+                    <tr ng-repeat="day in vm.publicHolidays">
+                        <td ng-bind="$index+1">
+                        </td>
+                        <td>
+                            <span ng-bind="day.name"></span>
+                        </td>
+                        <td>
+                            <ul class="holiday-rule">
+                                <li>
+                                    <span class="period">法定节假日</span>
+                                    <span ng-bind="day.startDate | date:'yyyy-MM-dd'"></span>
+                                    <span class="pipeline" ng-hide="day.startDate == day.endDate">至</span>
+                                    <span ng-hide="day.startDate == day.endDate"
+                                          ng-bind="day.endDate | date:'yyyy-MM-dd'"></span>
+                                </li>
+                                <li ng-repeat="period in day.periods">
+                                    <span class="period" ng-bind="periods[period.type].name"></span>
+                                    <span class="start-date" ng-bind="period.startDate | date:'yyyy-MM-dd'"></span>
+                                    <span class="pipeline" ng-hide="period.startDate == period.endDate">至</span>
+                                    <span ng-hide="period.startDate == period.endDate" class="end-date"
+                                          ng-bind="period.endDate | date:'yyyy-MM-dd'"> </span>
+                                </li>
+                            </ul>
+                        </td>
+                        <td ng-bind="day.specialHoliday ? '是' : '否'"></td>
+                        <td>
+                            <span ng-if="!day.specialHoliday">全部</span>
+                            <a ng-if="day.specialHoliday" href="javascript: void(0)" type="view"
+                               ng-click="viewDetail(day)">查看详情</a>
+                        </td>
+                        <td style="white-space: nowrap;">
+                            <a href="javascript: void(0)" ng-click="editHolidayRule(day)" type="edit">修改</a> |
+                            <a href="javascript: void(0)" ng-click="deleteItem($index, day.id)" type="delete">删除</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="public-holiday-dialog.html">
+    <div class="modal-header">
+        <h3 class="modal-title"></h3>
+    </div>
+    <alert type="">
+        <div ng-repeat="message in data.messages">{{message}}</div>
+    </alert>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()" ng-show="!data.noCancelButton">取消</button>
+    </div>
+</script>
+<script type="text/ng-template" id="public-holiday-detail.html">
+    <div class="modal-header">
+        <h3 class="modal-title">节假日详情</h3>
+    </div>
+    <div class="public-holiday-detail">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-condensed">
+                <tr>
+                    <th width="20%">假期名</th>
+                    <th>假期日期</th>
+                    <th>是否为地域性节假日</th>
+                </tr>
+                <tr>
+                    <td ng-bind="day.name"></td>
+                    <td>
+                        <ul>
+                            <li>
+                                <span class="period">法定节假日</span>
+                                <span ng-bind="day.startDate | date:'yyyy-MM-dd'"></span>
+                                <span class="pipeline" ng-hide="day.startDate == day.endDate">至</span>
+                                <span ng-hide="day.startDate == day.endDate"
+                                      ng-bind="day.endDate | date:'yyyy-MM-dd'"></span>
+                            </li>
+                            <li ng-repeat="period in day.periods">
+                                <span class="period" ng-bind="periods[period.type].name"></span>
+                                <span class="start-date" ng-bind="period.startDate | date:'yyyy-MM-dd'"></span>
+                                <span class="pipeline" ng-hide="period.startDate == period.endDate">至</span>
+                                <span ng-hide="period.startDate == period.endDate" class="end-date"
+                                      ng-bind="period.endDate | date:'yyyy-MM-dd'"> </span>
+                            </li>
+                        </ul>
+                    </td>
+                    <td>是</td>
+                </tr>
+            </table>
+        </div>
+        <h3>适用项目</h3>
+        <div class="auth-org-list">
+            <div class="row vk-spaced-row auth-org-group" ng-repeat="company in displayApplyDepartments">
+                <div class="col-md-12 auth-org-group-title">
+                    <div class="checkbox">
+                        <span ng-bind="company.company_name"></span>
+                    </div>
+                </div>
+                <div class="auth-org-group-sub">
+                    <div class="col-xs-6 col-sm-3 ng-scope"
+                         ng-repeat="department in company.departments | orderBy:sortItems ">
+                        <div class="checkbox">
+                            <span ng-bind="department.department_name"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="cancel()" ng-show="!data.noCancelButton">关闭</button>
+    </div>
+</script>

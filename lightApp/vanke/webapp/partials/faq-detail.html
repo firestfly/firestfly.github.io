@@ -1,0 +1,26 @@
+<div class="container-flex" ng-controller="FaqDetailController">
+    <div class="faq">
+        <div class="panel-default">
+            <div class="panel-body">
+                <h3 class="faq-detail-title">{{ faqTitle }}</h3>
+
+                <p>Q：{{ question }}</p>
+                <ul class="faq-images" ng-if="qImages">
+                    <li ng-repeat="image in qImages"><img src="{{image}}" alt=""/></li>
+                </ul>
+                <div class="faq-answer" ng-if="!answerRepeat"><span>A：</span>
+
+                    <p>{{ answer }}</p></div>
+                <div class="faq-answer-list" ng-if="answerRepeat"><span>A：</span>
+
+                    <p ng-repeat="a in answer">{{ a }}</p></div>
+                <ul class="faq-images" ng-if="aImages">
+                    <li ng-repeat="image in aImages"><img src="{{image}}" alt=""/></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="bot-mail">
+        还有疑问？请邮件RM运维团队。邮箱地址：<a href="mailto:rm.feedback@vanke.com">rm.feedback@vanke.com</a>
+    </div>
+</div>

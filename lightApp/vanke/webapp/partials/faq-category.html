@@ -1,0 +1,13 @@
+<div class="faq" ng-controller="FaqCategoryController">
+
+    <div class="panel panel-default">
+            <div class="panel-body">
+                <ul class="faq-lists">
+                    <li class="alert alert-success" ng-repeat="question in questions">
+                        <!--<i class="fa fa-question-circle-o"></i>-->
+                        Q&nbsp;<a href="" ng-href="#/faq/{{ cateId }}/{{ $index + 1 }}">{{ question.q }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+</div>

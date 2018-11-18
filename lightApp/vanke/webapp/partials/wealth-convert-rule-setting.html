@@ -1,0 +1,187 @@
+<div class="container-fluid authority-container">
+    <div class="row">
+        <div data-common-search-bar data-week-range="true"
+             data-show-standard-work-jobs-one="true" hide-export-btn="true" data-hide-date-range="true"
+             data-hide-groups="true"
+             data-hide-search-input="true" data-is-first-row-opt-btn=true></div>
+    </div>
+
+    <button type="button" class="btn btn-primary" ng-click="wcrsc.editRules()" ng-disabled="!wcrsc.editFlg">批量设置
+    </button>
+
+    <div class="table-responsive wcrs-table">
+        <table class="table table-bordered wealth-table">
+            <thead>
+            <tr>
+                <th><input type="checkbox" ng-model="wcrsc.master"/></th>
+                <th>公司/管理中心</th>
+                <th>部门/项目</th>
+                <th>职位</th>
+                <th>基本财富值</th>
+                <th>基本财富值兑换系数</th>
+                <th>一档提成财富值上限</th>
+                <th>一档提成兑换系数</th>
+                <th>二档提成财富值上限</th>
+                <th>二档提成兑换系数</th>
+                <th>三档提成兑换系数</th>
+                <th>整体业绩浮动系数</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="rule in wcrsc.rules">
+                <td><input type="checkbox" ng-model="rule.checked"/></td>
+                <td class="vk-nowrap">{{rule.companyName}}</td>
+                <td class="vk-nowrap">{{rule.departmentName}}</td>
+                <td class="vk-nowrap">{{rule.workJobName}}</td>
+                <td>
+                <span onbeforesave="wcrsc.millionCheckdata($data)" editable-number="rule.baseWealth" e-name="baseWealth"
+                      e-form="rowform" e-min="0" e-max="1000000">
+                        {{rule.baseWealth}}
+                </span>
+                </td>
+                <td>
+                <span onbeforesave="wcrsc.hundredCheckdata($data)" editable-number="rule.wealthConvertCoefficient"
+                      e-min="0" e-max="100"
+                      e-name="wealthConvertCoefficient" e-form="rowform">
+                        {{rule.wealthConvertCoefficient}}
+                </span>
+                </td>
+                <td>
+                <span onbeforesave="wcrsc.millionCheckdata($data)" editable-number="rule.firstUpperLimit" e-min="0"
+                      e-max="1000000"
+                      e-name="firstUpperLimit" e-form="rowform">
+                        {{rule.firstUpperLimit}}
+                </span>
+                </td>
+                <td>
+                <span onbeforesave="wcrsc.hundredCheckdata($data)" editable-number="rule.firstConvertCoefficient"
+                      e-min="0" e-max="100"
+                      e-name="firstConvertCoefficient" e-form="rowform">
+                        {{rule.firstConvertCoefficient}}
+                </span>
+                </td>
+                <td>
+                <span onbeforesave="wcrsc.millionCheckdata($data)" editable-number="rule.secondUpperLimit" e-min="0"
+                      e-max="1000000"
+                      e-name="secondUpperLimit" e-form="rowform">
+                        {{rule.secondUpperLimit}}
+                </span>
+                </td>
+                <td>
+                <span onbeforesave="wcrsc.hundredCheckdata($data)" editable-number="rule.secondConvertCoefficient"
+                      e-min="0" e-max="100"
+                      e-name="secondConvertCoefficient" e-form="rowform">
+                        {{rule.secondConvertCoefficient}}
+                </span>
+                </td>
+                <td>
+                <span onbeforesave="wcrsc.hundredCheckdata($data)" editable-number="rule.thirdConvertCoefficient"
+                      e-min="0" e-max="100"
+                      e-name="thirdConvertCoefficient" e-form="rowform">
+                        {{rule.thirdConvertCoefficient}}
+                </span>
+                </td>
+                <td>
+                <span onbeforesave="wcrsc.hundredCheckdata($data)" editable-number="rule.wholeFloatCoefficient"
+                      e-min="0" e-max="100"
+                      e-name="wholeFloatCoefficient" e-form="rowform">
+                        {{rule.wholeFloatCoefficient}}
+                </span>
+                </td>
+                <td class="vk-nowrap">
+                    <form editable-form name="rowform" onbeforesave="wcrsc.save($data, rule)" ng-show="rowform.$visible"
+                          class="form-buttons form-inline">
+                        <button type="submit" ng-disabled="rowform.$waiting" class="link">
+                            保存
+                        </button>
+                        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"
+                                class="link">
+                            取消
+                        </button>
+                    </form>
+                    <div class="buttons" ng-show="!rowform.$visible">
+                        <button class="link" ng-click="rowform.$show()">设置</button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container-fluid">
+    <div common-pagination></div>
+</div>
+
+<script type="text/ng-template" id="wealthConvertRuleEdit.html">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancle()"><span
+                aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">批量设置</h4>
+    </div>
+    <div class="modal-body">
+        <p class="help-block">修改当前页勾选的所有数据，请确认后提交。</p>
+
+        <form action="" name="wealthConvertFrom">
+            <table class="table table-bordered wealth-convert-table-edit">
+                <thead>
+                <tr>
+                    <th>基本财富值</th>
+                    <th>基本财富值<br>兑换系数</th>
+                    <th>一档提成<br>财富值上限</th>
+                    <th>一档提成<br>兑换系数</th>
+                    <th>二档提成<br>财富值上限</th>
+                    <th>二档提成<br>兑换系数</th>
+                    <th>三档提成<br>兑换系数</th>
+                    <th>整体业绩<br>浮动系数</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td ng-class="{'has-error':wealthConvertFrom.baseWealth.$invalid}">
+                        <input type="number" name="baseWealth" ng-model="baseWealth" class="form-control"
+                               ng-required="true" ng-pattern="reg.millionReg" min="0" max="1000000"
+                                />
+                    </td>
+                    <td ng-class="{'has-error':wealthConvertFrom.wealthConvertCoefficient.$invalid}">
+                        <input type="number" name="wealthConvertCoefficient" ng-model="wealthConvertCoefficient"
+                               class="form-control" ng-required="true" ng-pattern="reg.hundredReg" min="0" max="100"
+                                />
+                    </td>
+                    <td ng-class="{'has-error':wealthConvertFrom.firstUpperLimit.$invalid}">
+                        <input type="number" name="firstUpperLimit" ng-model="firstUpperLimit" class="form-control"
+                               ng-required="true" ng-pattern="reg.millionReg" min="0" max="1000000"
+                                /></td>
+                    <td ng-class="{'has-error':wealthConvertFrom.firstConvertCoefficient.$invalid}">
+                        <input type="number" name="firstConvertCoefficient" ng-model="firstConvertCoefficient"
+                               class="form-control" ng-required="true" ng-pattern="reg.hundredReg" min="0" max="100"
+                                /></td>
+                    <td ng-class="{'has-error':wealthConvertFrom.secondUpperLimit.$invalid}">
+                        <input type="number" name="secondUpperLimit" ng-model="secondUpperLimit" class="form-control"
+                               ng-required="true" ng-pattern="reg.millionReg" min="0" max="1000000"
+                                /></td>
+                    <td ng-class="{'has-error':wealthConvertFrom.secondConvertCoefficient.$invalid}">
+                        <input type="number" name="secondConvertCoefficient" ng-model="secondConvertCoefficient"
+                               class="form-control" ng-required="true" ng-pattern="reg.hundredReg" min="0" max="100"
+                                /></td>
+                    <td ng-class="{'has-error':wealthConvertFrom.thirdConvertCoefficient.$invalid}">
+                        <input type="number" name="thirdConvertCoefficient" ng-model="thirdConvertCoefficient"
+                               class="form-control" ng-required="true" ng-pattern="reg.hundredReg" min="0" max="100"
+                                /></td>
+                    <td ng-class="{'has-error':wealthConvertFrom.wholeFloatCoefficient.$invalid}">
+                        <input type="number" name="wholeFloatCoefficient" ng-model="wholeFloatCoefficient"
+                               class="form-control" ng-required="true" ng-pattern="reg.hundredReg" min="0" max="100"
+                                /></td>
+                </tr>
+                </tbody>
+            </table>
+            <!--<div class="has-error">-->
+            <!--<p class="help-block" ng-show="wealthConvertFrom.$error.required">请填写所有必填项</p>-->
+            <!--</div>-->
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn vk-btn-default" ng-click="ok()">确定</button>
+        <button type="button" class="btn vk-btn-passion" ng-click="cancle()">取消</button>
+    </div>
+</script>

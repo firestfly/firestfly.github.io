@@ -1,0 +1,91 @@
+<div class="employee-transfer container-fluid">
+    <div class="my-tab row">
+        <a class="tab-item" href="#/employee-transfer-info-confirm?isCrossDepartment=1">同项目变动确认</a>
+        <a class="tab-item" href="#/employee-transfer-leave-rule?isCrossDepartment=1">同项目变动结余调休假设置</a>
+        <a class="tab-item" href="#/employee-transfer-info-confirm?isCrossDepartment=2">跨项目变动调出确认</a>
+        <a class="tab-item active" href="#/employee-transfer-cross-leave-rule?isCrossDepartment=2">跨项目变动结余调休假设置</a>
+    </div>
+    <div class="row">
+        <div data-common-search-bar data-hide-export-btn="true"
+             data-hide-groups="true" data-hide-date-range="false" data-hide-department="false"
+             data-hide-company="false" data-show-city-company="false" show-lieu-leave-rule="true"
+             show-employee-transfer-type="true"></div>
+        <div class="x-scroll-table">
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th rowspan="2">资源编号</th>
+                    <th rowspan="2">EHR编号</th>
+                    <th rowspan="2">姓名</th>
+                    <th rowspan="2">变动前<br>公司</th>
+                    <th rowspan="2">变动前部门</th>
+                    <th rowspan="2">变动生效日期</th>
+                    <th rowspan="2">变动后公司</th>
+                    <th rowspan="2">变动后部门</th>
+                    <th rowspan="2">变动后职位</th>
+                    <th rowspan="2">变动后工资类别</th>
+                    <th rowspan="2">变动后工时制</th>
+                    <th colspan="2">结余调休假时长（小时）</th>
+                    <th rowspan="2">变动前结余调休假处理规则</th>
+                    <th rowspan="2">查询详情</th>
+                    <th rowspan="2">操作</th>
+                </tr>
+                <tr>
+                    <th>工作日加班调休</th>
+                    <th>休息日加班调休</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in items">
+                    <td ng-bind="item.employeeId  || '-'"></td>
+                    <td ng-bind="item.sapNo  || '-'"></td>
+                    <td ng-bind="item.employeeName  || '-'"></td>
+                    <td ng-bind="item.preTransferCompany  || '-'"></td>
+                    <td ng-bind="item.preTransferDepartment || '-'"></td>
+                    <td ng-bind="item.transferEnableDate || '-'"></td>
+                    <td ng-bind="item.postTransferCompany || '-'"></td>
+                    <td ng-bind="item.postTransferDepartment || '-'"></td>
+                    <td ng-bind="item.postTransferWorkJob || '-'"></td>
+                    <td ng-bind="item.postTransferWagePattern || '-'"></td>
+                    <td ng-bind="workSchedules[item.postTransferWorkSchedules] || '-'"></td>
+                    <td ng-bind="item.weekDayOvertimeBalance || '-'"></td>
+                    <td ng-bind="item.restDayOvertimeBalance || '-'"></td>
+                    <td>
+                        <span editable-select="item.preTransferHolidayBalanceRule"
+                              e-name="preTransferHolidayBalanceRule"
+                              e-ng-change="changePreTransferHolidayBalanceRule($data, item)" e-form="rowform"
+                              e-ng-options="s.value as s.text for s in preTransferHolidayBalanceRulesStr">
+                          {{ !item.preTransferHolidayBalanceRule ? '-' : preTransferHolidayBalanceRules[item.preTransferHolidayBalanceRule - 1].text}}
+                          <span ng-if="item.preTransferHolidayBalanceRule == '0'"><i
+                                  class="fa modal-icon fa-exclamation-circle fa-x"></i> 请设置规则</span>
+                        </span>
+                    </td>
+                    <td><a ng-href="#/employee-transfer-detail?item={{item}}&transferType=2" type="button"
+                           class="btn btn-primary">查询</a></td>
+                    <td style="white-space: nowrap">
+                        <form editable-form name="rowform" onbeforesave="save($data, item)" ng-show="rowform.$visible"
+                              class="form-buttons form-inline">
+                            <button type="button"
+                                    ng-click="confirmModify(item, rowform)"
+                                    ng-disabled="rowform.$waiting" class="btn btn-primary">
+                                保存
+                            </button>
+                            <button type="button" ng-disabled="rowform.$waiting" ng-click="cancel(rowform)"
+                                    class="btn btn-default">
+                                取消
+                            </button>
+                        </form>
+                        <div class="buttons" ng-show="!rowform.$visible">
+                            <button type="button" class="btn btn-warning" ng-click="editRow(rowform, item.show)"
+                                    ng-disabled="!item.edit">设置
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div common-pagination></div>
+</div>
+

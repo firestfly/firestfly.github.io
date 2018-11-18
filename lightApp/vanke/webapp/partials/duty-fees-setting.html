@@ -1,0 +1,345 @@
+<div id="duty-fees-setting" class="container-fluid">
+    <div class="row">
+        <p class="warning-block">*同一城市的管理中心需采用同一套值班费标准</p>
+        <div id="shift-view" class="search-in-right">
+            <div data-common-search-bar data-week-range="true" data-hide-export-btn="true"
+                 data-hide-groups="true" data-hide-date-range="true" data-hide-department="true"
+                 data-hide-search-input="true" data-hide-company="true" data-show-city-company="true"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="x-scroll-table">
+            <div class="grid citycompany-table" style="min-width: 2000px;">
+                <div class="grid-row fl1 grid-head">
+                    <div class="grid-item fl1" class="duty-fee-department">
+                        <div class="p10">城市公司</div>
+                    </div>
+                    <div class="grid-item fl2">
+                        <div class="p10">管理中心</div>
+                    </div>
+                    <div class="grid-item fl4">
+                        <div class="grid-row fl1">
+                            <div class="grid-item fl1">
+                                <div class="p10">平日值班费标准（元/次）</div>
+                            </div>
+                        </div>
+                        <div class="grid-row fl1">
+                            <div class="grid-item fl1">
+                                <div class="p10">值班经理值班</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">维修普通值班</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">维修夜间值班</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">其它夜值</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-item fl4">
+                        <div class="grid-row fl1">
+                            <div class="grid-item fl1">
+                                <div class="p10">法定节假日值班费计算方式</div>
+                            </div>
+                        </div>
+                        <div class="grid-row fl1">
+                            <div class="grid-item fl1">
+                                <div class="p10">值班经理值班</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">维修普通值班</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">维修夜间值班</div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">其它夜值</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-item fl1" class="duty-fee-department">
+                        <div class="p10">开始生效周期</div>
+                    </div>
+                    <div class="grid-item fl1" ng-if="df.isEdit">
+                        <div class="p10">操作</div>
+                    </div>
+                    <div class="grid-item fl_7" ng-hide="isCheck">
+                        <div class="p10">操作人</div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10">更新时间</div>
+                    </div>
+                    <div class="grid-item fl_7">
+                        <div class="p10">历史记录</div>
+                    </div>
+                </div>
+                <div class="grid-row fl1" ng-repeat="item in df.items">
+                    <div class="grid-item fl1">
+                        <div class="p10">{{item.regionName}}</div>
+                    </div>
+                    <div class="grid-item fl2">
+                        <div class="p10">{{item.companies}}</div>
+                    </div>
+                    <div class="grid-item fl9">
+                        <div class="grid-row fl1" ng-repeat="(k, rule) in item.rules track by k">
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                                    <div class="workdayDutyFee" ng-repeat="shift in rule.workdayRule.manager">
+                                        <span>{{ shift.shiftLabel }}<br>({{ shift.shiftTime }})：</span>
+                                        <span editable-number="shift.amount" e-form="rowform"
+                                              edit-disabled="{{ k == 0 && rule.ruleId != null }}">
+                                            {{ shift.amount || '0' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                                    <div class="workdayDutyFee" ng-repeat="shift in rule.workdayRule.maintainGeneral">
+                                        <span>{{ shift.shiftLabel }}<br>({{ shift.shiftTime }})：</span>
+                                        <span editable-number="shift.amount" e-form="rowform"
+                                              edit-disabled="{{ k == 0 && rule.ruleId != null }}">
+                                            {{ shift.amount || '0' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                                    <div class="workdayDutyFee" ng-repeat="shift in rule.workdayRule.maintainNight">
+                                        <span>{{ shift.shiftLabel }}<br>({{ shift.shiftTime }})：</span>
+                                        <span editable-number="shift.amount" e-form="rowform"
+                                              edit-disabled="{{ k == 0 && rule.ruleId != null }}">
+                                            {{ shift.amount || '0' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                                    <div class="workdayDutyFee" ng-repeat="shift in rule.workdayRule.otherNight">
+                                        <span>{{ shift.shiftLabel }}<br>({{ shift.shiftTime }})：</span>
+                                        <span editable-number="shift.amount" e-form="rowform"
+                                              edit-disabled="{{ k == 0 && rule.ruleId != null }}">
+                                            {{ shift.amount || '0' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                                    <div ng-repeat="shift in rule.holidayRule.manager">
+                                        <span>{{ shift.shiftLabel }}<br>({{ shift.shiftTime }})：</span><br>
+                                        <span editable-select="shift.mode" e-form="rowform"
+                                              e-ng-options="s.code as s.value for s in df.legalHolidayList"
+                                              edit-disabled="{{ k == 0 && rule.ruleId != null }}"
+                                              e-ng-change="df.updateAllowanceType($data,shift)"
+                                              ng-init="shift.allowanceTypeFlag = shift.mode == 'ALLOWANCE_VALUE'">
+                                            {{ df.getLegalHoliday(shift.mode).value || '-' }}
+                                        </span><br>
+                                        <span editable-number="shift.amount" e-min="0" e-form="rowform"
+                                              edit-disabled="{{ k == 0 && rule.ruleId != null }}"
+                                              ng-if="shift.allowanceTypeFlag" onbeforesave="df.checkRequire($data)">
+                                        {{ shift.amount}}
+                                        </span>
+                                        <span class="vk-nowrap" ng-if="shift.allowanceTypeFlag">元/次</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                                    <div ng-repeat="shift in rule.holidayRule.maintainGeneral">
+                                        <span>{{ shift.shiftLabel }}<br>({{ shift.shiftTime }})：</span><br>
+                                        <span editable-select="shift.mode" e-form="rowform"
+                                              e-ng-options="s.code as s.value for s in df.legalHolidayList"
+                                              e-ng-change="df.updateAllowanceType($data,shift)"
+                                              edit-disabled="{{ k == 0 && rule.ruleId != null }}"
+                                              ng-init="shift.allowanceTypeFlag = shift.mode == 'ALLOWANCE_VALUE'">
+                                        {{ df.getLegalHoliday(shift.mode).value || '-' }}
+                                        </span><br>
+                                        <span editable-number="shift.amount" e-min="0" e-form="rowform"
+                                              edit-disabled="{{ k == 0 && rule.ruleId != null }}"
+                                              ng-if="shift.allowanceTypeFlag" onbeforesave="df.checkRequire($data)">
+                                        {{ shift.amount}}
+                                        </span>
+                                        <span class="vk-nowrap" ng-if="shift.allowanceTypeFlag">元/次</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                                    <div ng-repeat="shift in rule.holidayRule.maintainNight">
+                                        <span>{{ shift.shiftLabel }}<br>({{ shift.shiftTime }})：</span><br>
+                                        <span editable-select="shift.mode" e-form="rowform"
+                                              e-ng-options="s.code as s.value for s in df.legalHolidayList"
+                                              edit-disabled="{{ k == 0 && rule.ruleId != null }}"
+                                              e-ng-change="df.updateAllowanceType($data,shift)"
+                                              ng-init="shift.allowanceTypeFlag = shift.mode == 'ALLOWANCE_VALUE'">
+                                            {{ df.getLegalHoliday(shift.mode).value || '-' }}
+                                        </span><br>
+                                        <span editable-number="shift.amount" e-min="0" e-form="rowform"
+                                              edit-disabled="{{ k == 0 && rule.ruleId != null }}"
+                                              ng-if="shift.allowanceTypeFlag" onbeforesave="df.checkRequire($data)">
+                                        {{ shift.amount}}
+                                        </span>
+                                        <span class="vk-nowrap" ng-if="shift.allowanceTypeFlag">元/次</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                                    <div ng-repeat="shift in rule.holidayRule.otherNight">
+                                        <span>{{ shift.shiftLabel }}<br>
+                                            <span class="vk-nowrap">({{ shift.shiftTime }})：</span>
+                                        </span><br>
+                                        <span editable-select="shift.mode" e-form="rowform"
+                                              edit-disabled="{{ k == 0 && rule.ruleId != null }}"
+                                              e-ng-options="s.code as s.value for s in df.legalHolidayList"
+                                              e-ng-change="df.updateAllowanceType($data,shift)"
+                                              ng-init="shift.allowanceTypeFlag = shift.mode == 'ALLOWANCE_VALUE'">
+                                        {{ df.getLegalHoliday(shift.mode).value || '-' }}
+                                        </span><br>
+                                        <span editable-number="shift.amount" e-min="0" e-form="rowform"
+                                              edit-disabled="{{ k == 0 && rule.ruleId != null }}"
+                                              ng-if="shift.allowanceTypeFlag" onbeforesave="df.checkRequire($data)"
+                                              e-ng-keyup="updateDutyFee($data, shift)">
+                                            {{ shift.amount}}
+                                        </span>
+                                        <span class="vk-nowrap" ng-if="shift.allowanceTypeFlag">元/次</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-item fl1">
+                                <div class="p10">
+                                    <span editable-select="rule.takeEffectAttendanceId"
+                                          edit-disabled="{{ k == 0 && rule.ruleId != null }}"
+                                          e-name="takeEffectAttendanceId" e-form="rowform"
+                                          e-ng-options="s.attendance_lock_id as s.name for s in df.effectPeriodList"
+                                          onbeforesave="df.checkEffectAttendance($data)">
+                                        {{ df.getEffectPeriodName(rule.takeEffectAttendanceId).name || rule.takeEffectAttendance }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-item fl1" ng-show="df.isEdit">
+                        <div class="p10">
+                            <form editable-form name="rowform" onbeforesave="df.save($data, item)"
+                                  ng-show="rowform.$visible" class="form-buttons form-inline">
+                                <button type="submit" class="link" ng-disabled="rowform.$waiting" class="link">
+                                    保存
+                                </button>
+                                <a ng-disabled="rowform.$waiting" ng-click="df.editeStatus = false;rowform.$cancel();"
+                                   class="link">
+                                    取消
+                                </a>
+                            </form>
+                            <div ng-show="!rowform.$visible">
+                                <a class="link" ng-click="editeDutyFees(rowform, item.rules)"
+                                   ng-disabled="df.editeStatus">修改</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-item fl_7">
+                        <div class="p10" ng-bind="item.operator"></div>
+                    </div>
+                    <div class="grid-item fl1">
+                        <div class="p10" ng-bind="item.updateTime"></div>
+                    </div>
+                    <div class="grid-item fl_7">
+                        <div class="p10">
+                            <button type="button" class="link" ng-click="df.openDetail(item.regionId)">详情</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid mt30">
+            <div common-pagination></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="dutyFeesHistory.html">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="ok()"><span
+                aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">详情</h4>
+    </div>
+    <div class="modal-body">
+
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>管理中心</th>
+                <th>平日值班费标准（元/次）</th>
+                <th>法定节假日值班费计算方式</th>
+                <th>开始生效周期</th>
+                <th>操作人</th>
+                <th>更新时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in items">
+                <td>
+                    <div ng-repeat="com in item.companies.split(',')">
+                        {{com}}
+                    </div>
+                </td>
+                <td>
+                    <div ng-show="item.workdayRule.manager.length > 0">值班经理值班：</div>
+                    <div ng-repeat="subItem in item.workdayRule.manager">
+                        <div class="vk-nowrap">{{subItem.shiftLabel + '(' + subItem.shiftTime+ '):' + subItem.amount}}
+                        </div>
+                    </div>
+                    <div ng-show="item.workdayRule.maintainGeneral.length > 0">维修普通值班：</div>
+                    <div ng-repeat="subItem in item.workdayRule.maintainGeneral">
+                        <div class="vk-nowrap">{{subItem.shiftLabel + '(' + subItem.shiftTime+ '):' + subItem.amount}}
+                        </div>
+                    </div>
+                    <div ng-show="item.workdayRule.maintainNight.length > 0">维修夜间值班：</div>
+                    <div ng-repeat="subItem in item.workdayRule.maintainNight">
+                        <div class="vk-nowrap">{{subItem.shiftLabel + '(' + subItem.shiftTime+ '):' + subItem.amount}}
+                        </div>
+                    </div>
+                    <div ng-show="item.workdayRule.otherNight.length > 0">其他夜值：</div>
+                    <div ng-repeat="subItem in item.workdayRule.otherNight">
+                        <div class="vk-nowrap">{{subItem.shiftLabel + '(' + subItem.shiftTime+ '):' + subItem.amount}}
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div ng-show="item.holidayRule.manager.length > 0">值班经理值班：</div>
+                    <div ng-repeat="subItem in item.holidayRule.manager">
+                        <div class="vk-nowrap">{{subItem.shiftLabel + '(' + subItem.shiftTime+ '):' + subItem.amount}}
+                        </div>
+                    </div>
+                    <div ng-show="item.holidayRule.maintainGeneral.length > 0">维修普通值班：</div>
+                    <div ng-repeat="subItem in item.holidayRule.maintainGeneral">
+                        <div class="vk-nowrap">{{subItem.shiftLabel + '(' + subItem.shiftTime+ '):' + subItem.amount}}
+                        </div>
+                    </div>
+                    <div ng-show="item.holidayRule.maintainNight.length > 0">维修夜间值班：</div>
+                    <div ng-repeat="subItem in item.holidayRule.maintainNight">
+                        <div class="vk-nowrap">{{subItem.shiftLabel + '(' + subItem.shiftTime+ '):' + subItem.amount}}
+                        </div>
+                    </div>
+                    <div ng-show="item.holidayRule.otherNight.length > 0">其他夜值：</div>
+                    <div ng-repeat="subItem in item.holidayRule.otherNight">
+                        <div class="vk-nowrap">{{subItem.shiftLabel + '(' + subItem.shiftTime+ '):' + subItem.amount}}
+                        </div>
+                    </div>
+                </td>
+                <td ng-bind="item.takeEffectAttendance"></td>
+                <td ng-bind="item.operator"></td>
+                <td ng-bind="item.updateTime"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn vk-btn-default" ng-click="ok()">关闭</button>
+    </div>
+</script>

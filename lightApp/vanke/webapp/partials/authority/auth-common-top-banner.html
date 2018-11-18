@@ -1,0 +1,39 @@
+<div class="row vk-spaced-row">
+    <table class="table auto-person-row">
+        <tbody>
+            <tr>
+                <td ng-repeat="personalInfoItem in personalInfo track by $index">{{personalInfoItem}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="alert alert-danger" role="alert" ng-hide="topBannerConfig.isBindLebangAccount">该人员尚无登录账号，注册账号后才可使用</div>
+</div>
+<div class="row vk-spaced-row">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation">
+            <a href="#/authority/auth-organization-config" role="tab">组织权限</a>
+        </li>
+        <li role="presentation">
+            <a href="#/authority/auth-function-config" role="tab">功能权限</a>
+        </li>
+        <li role="presentation">
+            <a href="#/authority/auth-group-config" role="tab">子组设置</a>
+        </li>
+    </ul>
+</div>
+<div class="row vk-spaced-row">
+    <div class="col-xs-8 col-sm-5">
+        <div class="right-inner-addon">
+            <i class="fa fa-search"></i>
+            <input class="auth-search form-control" type="search" placeholder="输入多选框组一级标题进行筛选"
+                   ng-model="keywords" >
+        </div>
+    </div>
+    <div class="col-xs-4 col-sm-2">
+        <button class="btn vk-btn-health" ng-click="search()" >筛 选</button>
+    </div>
+    <div class="col-xs-12 col-sm-5 text-right">
+        <button class="btn vk-btn-health" ng-click="saveFunction()" ng-disabled="topBannerConfig.isSaveDisabled">保 存</button>
+        <a class="btn btn-default" href="#/authority/auth-global-list">返回列表</a>
+    </div>
+</div>

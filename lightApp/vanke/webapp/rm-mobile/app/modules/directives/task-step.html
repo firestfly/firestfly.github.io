@@ -1,0 +1,36 @@
+<div>
+    <div class="wealth-infos">
+        <div class="border-b">
+            <h3>本月财富值累计进度</h3>
+        </div>
+        <div class="wealth-state">
+            <div class="wealth-state-list  flex-box" ng-repeat="item in wealthStep">
+                <div class="fl fl-name">{{item.ruleName}}</div>
+                <div class="flex ">
+                    <div class="line3">
+                        <span class="fl">{{item.start}}</span>
+                        <span class="fr">{{item.end}}</span>
+                    </div>
+                    <div class="lineActive" ng-show="item.isActive" ng-class="{'active': item.isActive}"
+                         ng-style="item.stepWidth">
+                        <span class="fr" ng-if="item.showWealthValue">{{wealthValue}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="posr" ng-if="horizontalShow">
+        <div class="wealth-state2 flex-box">
+            <div class="wealth-state-list flex" ng-repeat="item in wealthStep">
+                <div class="wealth-step-name">{{item.ruleName}}</div>
+                <div class="ta-r">
+                    <span class="wealth-name-gray">{{item.end}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="wealthActive" ng-style="horizontalStepWidth">
+            <span class="">{{wealthValue}}</span>
+        </div>
+    </div>
+</div>

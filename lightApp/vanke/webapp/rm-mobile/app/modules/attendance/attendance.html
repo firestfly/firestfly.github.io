@@ -1,0 +1,32 @@
+<div class="scrollable" style="overflow: auto;">
+    <div class="employee-intro">
+        <span>{{ attendance.employeeInfo.id }}</span>
+        <span>{{ attendance.employeeInfo.name }}</span>
+        <span>{{ attendance.employeeInfo.jobName }}</span>
+    </div>
+    <div class="scrollable-content">
+        <div class="page-bar">
+            <div class="title-area">
+                <div class="title-area-radius">
+                    <div class="title-centent-text">
+                        <div>
+                            <h3>{{ attendance.month }}</h3>
+
+                            <p>{{ attendance.period }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-cell border-t">
+            <div class="cell arrow-right border-b" ng-repeat="attendanceItem in attendance.attendanceList">
+                <a href="{{attendanceItem.linkage}}">
+                    <div class="table-cell flex-box">
+                        <div class="flex">{{attendanceItem.spec}}</div>
+                        <div class="flex ta-r">{{attendanceItem.times}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

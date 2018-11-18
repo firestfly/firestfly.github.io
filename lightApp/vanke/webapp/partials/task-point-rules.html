@@ -1,0 +1,70 @@
+<div class="container-fluid">
+    <div class="row vk-spaced-row">
+        <div class="col-md-4">
+            <div class="right-inner-addon ">
+                <i class="fa fa-search"></i>
+                <input class="form-control" id="search" type="search" ng-keydown="searchFromEnterKey($event)"
+                       ng-model="searchInputValue" placeholder="输入名称搜索"/>
+            </div>
+        </div>
+        <div class="col-md-offset-3 col-md-5">
+            <div class="pull-right">
+                <a href="javascript:void(0)" class="vk-btn-link" ng-click="clear()">清除查询条件</a>
+                <button type="button" class="btn vk-btn-default" ng-click="search()">查询</button>
+                <button type="button" class="btn vk-btn-passion" ng-click="open()">新增积分规则</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table id="task-rules-table" class="table table-bordered table-hover nowrap">
+                    <thead>
+                    <tr>
+                        <th>规则名称</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="rule in rules track by rule[0]" on-finish-render>
+                        <td ng-bind="rule[1]"></td>
+                        <td><a href="#/task-point-rules-authority?id={{rule[0]}}">设置组织范围</a> |
+                            <a href="#/task-point-rules-config?id={{rule[0]}}">设置积分规则</a> |
+                            <a href="javascript:void(0)" class="text-danger" data="{{rule[0]}}" type="delete">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="newRuleDialog.html">
+    <div class="modal-header">
+        <h5 class="modal-title">新增积分规则</h5>
+    </div>
+    <div class="modal-body"
+         ng-class="{ 'has-error': taskRuleForm.taskRuleName.$invalid && !taskRuleForm.taskRuleName.$pristine }"
+         ng-form="taskRuleForm">
+        <input type="text" name="taskRuleName" class="form-control" placeholder="输入规则名称" ng-model="newRule.taskRuleName"
+               required/>
+    </div>
+    <div class="modal-footer">
+        <button class="btn vk-btn-health" type="button" ng-disabled="taskRuleForm.$invalid" ng-click="ok()">确认</button>
+        <button class="btn vk-btn-passion" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="deleteRuleDialog.html">
+    <div class="modal-header">
+        <h5 class="modal-title">删除规则</h5>
+    </div>
+    <div class="modal-body">
+        <h5 class="text-danger"><b>确认删除积分规则?</b></h5>
+    </div>
+    <div class="modal-footer">
+        <button class="btn vk-btn-health" type="button" ng-click="ok()">确认</button>
+        <button class="btn vk-btn-passion" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>

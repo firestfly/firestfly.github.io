@@ -1,0 +1,76 @@
+@charset "utf-8";
+
+// 文字隐藏
+.text-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* 去除圆角 */
+.no-brs {
+  border-radius: 0 !important;
+}
+
+/* 遮罩 overlay默认显示，um-overlay默认隐藏,加active类显示*/
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  background-color: rgba(0, 0, 0, .4);
+  display: block;
+  z-index: z("base", "overlay");
+}
+
+.text-overflow {
+  @include text-overflow;
+}
+
+// 文本超过3行溢出时显示省略号...
+.text-overflow2,
+.text-overflow3 {
+  display: -webkit-box;
+  display: box;
+  -webkit-line-clamp: 2;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
+
+.text-overflow3 {
+  -webkit-line-clamp: 3;
+}
+
+.vw100 {
+  height: 100vw;
+}
+
+.noborder {
+  border: none !important;
+}
+
+// Rounded corners 圆角设置
+.rounded {
+  border-radius: $border-radius-large;
+}
+
+// Perfect circle
+.circle {
+  border-radius: 50%;
+}
+
+.transition-default {
+  transition-duration: .4s;
+  transition-timing-function: ease;
+}

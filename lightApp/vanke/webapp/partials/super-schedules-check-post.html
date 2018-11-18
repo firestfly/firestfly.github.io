@@ -1,0 +1,52 @@
+<div class="container-fluid">
+    <div class="my-tab">
+        <a class="tab-item" href="#/super-schedules-check">按人查看</a>
+        <span class="active tab-item">按岗查看</span>
+    </div>
+    <div class="vk-schedule-container">
+        <div data-common-search-bar data-search-notification="请选择筛选条件后查询"
+             data-show-standard-work-jobs="false" data-hide-search-input="false" data-show-search-input-row-one="true"
+             data-hide-groups="true" data-hide-export-btn="false" class="vk-common-search"></div>
+    </div>
+    <section class="vk-schedule-body">
+        <div class="vk-flex-row">
+            <div class="schedule-label-group">
+                <span class="schedule-label-unscheduled">红色：上岗规则中未排的班</span>
+                <span class="schedule-label-irregular">蓝色：上岗规则外多排的班</span>
+                <span class="schedule-label-vacation">绿色：休假、外勤或出差</span>
+            </div>
+        </div>
+        <div id="postScheduleTable">
+            <div class="fixed-title">岗位简称</div>
+            <div class="title">
+                <ul>
+                    <li ng-repeat="week in tableTitle.weekdays">({{ week }})</li>
+                </ul>
+            </div>
+            <ul class="column">
+                <li ng-repeat="post in tableData">{{ post.postShortName }}</li>
+            </ul>
+            <div class="main">
+                <ul ng-repeat="schedule in tableData">
+                    <li ng-repeat="day in schedule.postScheduleNewDTO" ng-init="countCell()">
+                        <div ng-repeat="duty in day.postNewDTO" ng-if="!duty.unShow">
+                            <span ng-show="duty.type == null">
+                                <span ng-class="{'sps-blue': duty.beforeOvertime}" ng-show="duty.beforeOvertime">{{duty.beforeOvertime}}+</span>
+                                <span>{{duty.regular}}</span>
+                                <span ng-class="{'sps-blue': duty.afterOvertime}" ng-show="duty.afterOvertime">+{{duty.afterOvertime}}</span>
+                            </span>
+                            <span ng-show="duty.type != null">
+                                <span ng-class="{'sps-red': (duty.type==0),'sps-blue': (duty.type == 1),'sps-green':(duty.type==2)}">{{duty.regular}},</span>
+                            </span>
+                            <span>{{duty.onDutyTime | limitTo:5}}-{{duty.offDutyTime | limitTo:5}}</span>
+                            <span ng-show="duty.employeeName != '' && duty.employeeName != null">, </span><span>{{duty.employeeName}} </span>
+                            <span ng-show="duty.employeeJob != '' && duty.employeeJob != null">, </span><span>{{duty.employeeJob}} </span>
+                            <span ng-show="duty.employeeId != '' && duty.employeeId != null">, </span><span>{{duty.employeeId}}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div common-pagination></div>
+    </section>
+</div>

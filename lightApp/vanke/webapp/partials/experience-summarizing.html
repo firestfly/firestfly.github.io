@@ -1,0 +1,51 @@
+<div class="container-fluid authority-container">
+    <div class="row">
+        <div data-common-search-bar data-show-standard-work-jobs="true"></div>
+    </div>
+
+    <div class="experience-verify-table">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>职位</th>
+                <th ng-click="esuc.sort('currentExperience')">当前经验值
+                    <i class="fa fa-arrows-v fa-fw" ng-class="{'fa-arrows-v':esuc.currentExperienceOrder == null,
+                    'fa-arrow-down':esuc.currentExperienceOrder == true, 'fa-arrow-up':esuc.currentExperienceOrder == false}"></i>
+                </th>
+                <th ng-click="esuc.sort('endPeriodExperience')">期末经验值 <i class="fa fa-arrows-v fa-fw" ng-class="{'fa-arrows-v':esuc.endPeriodExperienceOrder == null,
+                    'fa-arrow-down':esuc.endPeriodExperienceOrder == true, 'fa-arrow-up':esuc.endPeriodExperienceOrder == false}"></i>
+                </th>
+                <th ng-click="esuc.sort('startPeriodExperience')">期初经验值 <i class="fa fa-arrows-v fa-fw" ng-class="{'fa-arrows-v':esuc.startPeriodExperienceOrder == null,
+                    'fa-arrow-down':esuc.startPeriodExperienceOrder == true, 'fa-arrow-up':esuc.startPeriodExperienceOrder == false}"></i>
+                </th>
+                <th ng-click="esuc.sort('experienceChange')">经验值变化 <i class="fa fa-arrows-v fa-fw" ng-class="{'fa-arrows-v':esuc.experienceChangeOrder == null,
+                    'fa-arrow-down':esuc.experienceChangeOrder == true, 'fa-arrow-up':esuc.experienceChangeOrder == false}"></i>
+                </th>
+                <th>资源编号</th>
+                <th>EHR编号</th>
+                <th>公司</th>
+                <th>项目</th>
+                <th>在职状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="experienceSummarizing in esuc.experienceSummarizingList">
+                <td>{{experienceSummarizing.employeeName}}</td>
+                <td>{{experienceSummarizing.jobName}}</td>
+                <td>{{experienceSummarizing.currentExperience}}</td>
+                <td>{{experienceSummarizing.endPeriodExperience}}</td>
+                <td>{{experienceSummarizing.startPeriodExperience}}</td>
+                <td>{{experienceSummarizing.experienceChange}}</td>
+                <td>{{experienceSummarizing.employeeId}}</td>
+                <td>{{experienceSummarizing.sapId}}</td>
+                <td>{{experienceSummarizing.companyName}}</td>
+                <td>{{experienceSummarizing.departmentName}}</td>
+                <td>{{experienceSummarizing.jobStatus}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div common-pagination></div>
+    </div>
+</div>
+

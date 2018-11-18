@@ -1,0 +1,170 @@
+large-font = 16px
+middle-font = 14px;
+little-font = 12px;
+fontColor = #666666
+lightenFontColor = lightness(fontColor, 80%)
+
+.wifi-scrollable
+  height auto
+  margin-bottom px2rem(80)
+
+.wifi
+  font-size large-font
+  img
+    width px2rem(32)
+    margin-right px2rem(20)
+    &.right
+      margin-right px2rem(-6)
+      float right
+
+.wifi-alignment
+  margin-top px2rem(10)
+  margin-left px2rem(32)
+
+.wifi-imgwidth
+  width px2rem(40)
+
+.wifi-middle-font
+  font-size middle-font
+
+.flex9
+  flex 9
+
+.flex-box
+  &.top
+    align-items flex-start
+
+.wifi-row
+  //@extend .section-cell
+  @extend .white-bg
+  @extend .border-b
+
+.wifi-tab
+  background-color #FFF
+  position: fixed
+  bottom: 0
+  right: 0
+  width 100%
+  @extend .flex-box
+  text-align: center
+  .tabs
+    @extend .flex
+    padding px2rem(20)
+    position: relative
+    &.active
+      color themes-color
+    &:last-child:before
+      position: absolute
+      content '|';
+      left: 0
+      color #ddd
+
+.wifi-arrow-right
+  @extend .choose-week-arrow
+  transform rotate(-135deg)
+  transform-origin center center
+  margin-top -8px
+  vertical-align: middle
+
+.wifi-arrow-down
+  @extend .wifi-arrow-right
+  transform rotate(-45deg)
+
+.wifi-input
+  border-color transparent
+  padding-left px2rem(20)
+  font-size large-font
+  width 100%
+  background transparent
+
+input::-webkit-input-placeholder
+  color #cccccc
+
+.wifi-address-default
+  color themes-color
+  justify-content center
+
+.wifi-subtitle
+  color lightenFontColor
+
+.text-primary-color
+  color themes-color
+
+.vk-btn
+  width 100%
+  padding-top px2rem(26)
+  padding-bottom px2rem(26)
+  text-align center
+  justify-content center
+  display flex
+
+.vk-btn-default
+  background-color lightness(default-background-color, 80%)
+  border 1px solid lightness(default-background-color, 70%)
+
+.vk-btn-primary
+  background-color primary-color
+  border 1px solid primary-color
+  color #FFFFFF
+
+.vk-hide
+  visibility hidden
+
+.inner-small-row
+  @extend .inner
+  padding-left px2rem(20)
+  padding-right px2rem(20)
+
+.inner-small-colomn
+  @extend .inner
+  padding-top px2rem(10)
+  padding-bottom px2rem(10)
+
+.backdrop
+  width 100%
+  height 100%
+  background rgba(0, 0, 0, 0.8)
+  position: absolute
+  display flex
+  .backdrop-mask
+    flex 1
+
+.modal
+  width 100%;
+  left: 0
+  bottom 0
+  background-color #ffffff
+  position: absolute
+  @extend .border-b
+  @extend .border-l;
+  @extend .border-r
+
+.modal-header
+  color themes-color
+  .flex
+    padding: px2rem(20)
+
+.modal-content
+  max-height: px2rem(400)
+  overflow auto
+
+.post-list
+  padding px2rem(20)
+  @extend .border-b
+
+.wifi-inner
+  @extend .inner
+  margin 0
+
+.wifi-info
+  color lightness(fontColor, 70%)
+  font-size middle-font
+
+.wifi-prompt
+  padding-top px2rem(30)
+  padding-left px2rem(30);
+  font-size little-font
+  color lightness(fontColor, 70%)
+
+.wifi-spacing
+  margin-left px2rem(10);

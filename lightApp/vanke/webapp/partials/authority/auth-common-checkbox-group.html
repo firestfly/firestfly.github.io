@@ -1,0 +1,18 @@
+<div class="row vk-spaced-row auth-org-group">
+    <div class="col-md-12 auth-org-group-title">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="" ng-model="isAllChecked" ng-checked="checkboxConfig.isSuperUser" ng-change="masterChange()" ng-disabled="checkboxConfig.isSuperUser"><strong>{{ checkboxGroupTitle }}</strong>
+            </label>
+        </div>
+    </div>
+    <div class="auth-org-group-sub">
+        <div class="col-xs-6 col-sm-3" ng-repeat="item in checkboxGroupData | orderBy:sortItems ">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="" ng-checked="item.isSelected || checkboxConfig.isSuperUser" ng-model="item.isSelected" ng-change="itemChange()" ng-disabled="checkboxConfig.isSuperUser">{{ item[displayType] }}
+                </label>
+            </div>
+        </div>
+    </div>
+</div>

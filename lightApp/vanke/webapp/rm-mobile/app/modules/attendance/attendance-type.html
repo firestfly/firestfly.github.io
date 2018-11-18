@@ -1,0 +1,61 @@
+<div class="scrollable">
+    <div class="scrollable-content">
+        <div class="employee-intro">
+            <span>{{ attendanceType.employeeInfo.id }}</span>
+            <span>{{ attendanceType.employeeInfo.name }}</span>
+            <span>{{ attendanceType.employeeInfo.jobName }}</span>
+        </div>
+        <div class="page-bar ta-c">
+            <div class="title-area">
+                <h3 class="title-head"> {{period}} {{attendanceType.detail.name}}</h3>
+
+                <div class="title-area-radius large">
+                    <div class="title-centent-text">
+                        <div>
+                            <h3 class="color-green">
+                                {{ attendanceType.detail.length }}<span class="unit">次</span></h3>
+                            <!--<p>(12.04-12.05)</p>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-repeat="attendance in attendanceType.details">
+            <div class="section-cell-datetime">{{attendance.date}}</div>
+            <div class="section-cell white-bg">
+                <div class="cell-main border-t">
+                    <div class="cell-title flex-box">
+                        <div class="flex">
+                            <span class="label-name">{{attendance.shiftName}}</span>
+                        </div>
+                        <div class="flex ta-r inner-right">{{attendance.onDutyTime | hourOver}}-{{attendance.offDutyTime
+                            |
+                            hourOver}}
+                        </div>
+                    </div>
+                    <div style="height:0.38rem" ng-if="!attendance.labelFixedPostName" class="border-b"></div>
+                    <div class="cell-address inner-right border-b" ng-if="attendance.labelFixedPostName">
+                        <span class="map-pin"></span>{{attendance.labelFixedPostName}}
+                    </div>
+                    <div class="cell-time-list">
+                        <div class="flex-box">
+                            <div class="flex dutytime">休假开始时间</div>
+                            <div class="flex ta-r inner-right">{{attendance.actualOnDutyTime | hourOver}}</div>
+                        </div>
+                        <div class="flex-box  border-t">
+                            <div class="flex dutytime">休假结束时间</div>
+                            <div class="flex ta-r inner-right">{{attendance.actualOffDutyTime | hourOver}}</div>
+                        </div>
+                        <div class="flex-box border-t">
+                            <div class="flex dutytime">休假时长</div>
+                            <div class="flex ta-r inner-right color-green">
+                                {{attendance.duration}}小时
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

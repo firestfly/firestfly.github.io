@@ -1,0 +1,398 @@
+<div class="employee-transfer">
+    <!--<div class="my-tab" ng-init="index = 1">-->
+    <!--<span ng-class="{'active':index === 1}" ng-click="getLeaveBalance();getMonthlyLeaveBalance()">变动人员结余调休假、月休明细</span>-->
+    <!--<span ng-class="{'active':index === 2}" ng-click="getAttendance()">变动人员考勤汇总</span>-->
+    <!--<span ng-class="{'active':index === 3}" ng-click="getOffDay()">变动人员休假明细</span>-->
+    <!--<span class="remain"></span>-->
+    <!--</div>-->
+    <div class="employee-transfer-table">
+
+        <div class="x-scroll">
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th rowspan="2">资源编号</th>
+                    <th rowspan="2">EHR编号</th>
+                    <th rowspan="2">姓名</th>
+                    <th colspan="7">变动前</th>
+                    <th rowspan="2">变动/调薪生效日期</th>
+                    <th colspan="5">变动后</th>
+                    <th rowspan="2">变动状态</th>
+                    <th rowspan="2">是否调薪</th>
+                </tr>
+                <tr>
+                    <th>公司</th>
+                    <th>部门</th>
+                    <th>职位</th>
+                    <th>工资类别</th>
+                    <th>工时制</th>
+                    <th>工作日加班<br>调休余额</th>
+                    <th>休息日加班<br>调休余额</th>
+                    <th>公司</th>
+                    <th>部门</th>
+                    <th>职位</th>
+                    <th>工资类别</th>
+                    <th>工时制</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td ng-bind="personalTransferInfoData.employeeId || '-'"></td>
+                    <td ng-bind="personalTransferInfoData.sapNo || '-'"></td>
+                    <td ng-bind="personalTransferInfoData.employeeName || '-'"></td>
+                    <td ng-bind="personalTransferInfoData.preTransferCompany || '-'"
+                        ng-class="{'fb': personalTransferInfoData.preTransferCompany != personalTransferInfoData.postTransferCompany}"></td>
+                    <td ng-bind="personalTransferInfoData.preTransferDepartment || '-'"
+                        ng-class="{'fb': personalTransferInfoData.preTransferDepartment != personalTransferInfoData.postTransferDepartment}"></td>
+                    <td ng-bind="personalTransferInfoData.preTransferWorkJob || '-'"
+                        ng-class="{'fb': personalTransferInfoData.preTransferWorkJob != personalTransferInfoData.postTransferWorkJob}"></td>
+                    <td ng-bind="personalTransferInfoData.preTransferWagePattern || '-'"
+                        ng-class="{'fb': personalTransferInfoData.preTransferWagePattern != personalTransferInfoData.postTransferWagePattern}"></td>
+                    <td ng-bind="workSchedules[personalTransferInfoData.preTransferWorkSchedules] || '-'"
+                        ng-class="{'fb': personalTransferInfoData.preTransferWorkSchedules != personalTransferInfoData.postTransferWorkSchedules}"></td>
+                    <td ng-bind="fromListPage.weekDayOvertimeBalance || '-'"></td>
+                    <td ng-bind="fromListPage.restDayOvertimeBalance || '-'"></td>
+                    <td ng-bind="personalTransferInfoData.transferEnableDate || '-'"></td>
+                    <td ng-bind="personalTransferInfoData.postTransferCompany || '-'"
+                        ng-class="{'fb': personalTransferInfoData.preTransferCompany != personalTransferInfoData.postTransferCompany}"></td>
+                    <td ng-bind="personalTransferInfoData.postTransferDepartment || '-'"
+                        ng-class="{'fb': personalTransferInfoData.preTransferDepartment != personalTransferInfoData.postTransferDepartment}"></td>
+                    <td ng-bind="personalTransferInfoData.postTransferWorkJob || '-'"
+                        ng-class="{'fb': personalTransferInfoData.preTransferWorkJob != personalTransferInfoData.postTransferWorkJob}"></td>
+                    <td ng-bind="personalTransferInfoData.postTransferWagePattern || '-'"
+                        ng-class="{'fb': personalTransferInfoData.preTransferWagePattern != personalTransferInfoData.postTransferWagePattern}"></td>
+                    <td ng-bind="workSchedules[personalTransferInfoData.postTransferWorkSchedules] || '-'"
+                        ng-class="{'fb': personalTransferInfoData.preTransferWorkSchedules != personalTransferInfoData.postTransferWorkSchedules}"></td>
+                    <td ng-bind="personalTransferInfoData.transferState || '-'"></td>
+                    <td ng-bind="personalTransferInfoData.isChangeWage || '-'"></td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="subtable">
+            <div ng-if="approveFormReturnedList.length !== 0">
+                <p>被系统退回的审批单：</p>
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                    <tr>
+                        <th>审批单类型</th>
+                        <th>单号</th>
+                        <th>日期</th>
+                        <th>退回原因</th>
+                        <th>退回时间</th>
+                    </tr>
+                    <tr ng-repeat="approveFormReturned in approveFormReturnedList">
+                        <td>{{approveFormReturned.type}}</td>
+                        <td>{{approveFormReturned.id}}</td>
+                        <td>{{approveFormReturned.date}}</td>
+                        <td>{{approveFormReturned.reason}}</td>
+                        <td>{{approveFormReturned.timeReturned}}</td>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <p>工作日加班调休余额</p>
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th width="30%">额度产生周期</th>
+                    <th ng-repeat="item in leaveBalanceData.workingDayLeaveBalance" colspan="2">{{item.lockCycleName}}</th>
+                </tr>
+                <tr>
+                    <td width="30%">额度属性</td>
+                    <td ng-repeat="i in workingDayBalanceDetailDouble track by $index">{{$index%2 == 0 ? '整班次' : '非整班次'}}</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td width="30%">时长</td>
+                    <td ng-repeat="item in workingDayDuration">{{item.value}}</td>
+                </tr>
+                <tr>
+                    <td width="30%">失效/结算日期</td>
+                    <td ng-repeat="item in leaveBalanceData.workingDayLeaveBalance" colspan="2">{{item.endDate}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <p>休息日加班调休余额</p>
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th width="30%">额度产生周期</th>
+                    <th ng-repeat="item in leaveBalanceData.offDayLeaveBalance" colspan="2">{{item.lockCycleName}}</th>
+                </tr>
+                <tr>
+                    <td width="30%">额度属性</td>
+                    <td ng-repeat="i in offDayBalanceDetailDouble track by $index">{{$index%2 == 0 ? '整班次' : '非整班次'}}</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td width="30%">时长</td>
+                    <td ng-repeat="item in offDayDuration">{{item.value}}</td>
+                </tr>
+                <tr>
+                    <td width="30%">失效/结算日期</td>
+                    <td ng-repeat="item in leaveBalanceData.offDayLeaveBalance" colspan="2">{{item.endDate}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div ng-hide="(isCrossDepartment == '3' || isCrossDepartment == '4' ) && fromListPage.newEmpId == fromListPage.oldEmpId">
+                <p>月休余额</p>
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>变动前/后部门</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>月休额度</th>
+                        <th>使用额度</th>
+                        <th>剩余额度</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in monthlyLeaveBalanceData">
+                        <td ng-bind="item.department"></td>
+                        <td ng-bind="item.beginDate"></td>
+                        <td ng-bind="item.endDate"></td>
+                        <td ng-bind="item.quota + '天'"></td>
+                        <td ng-bind="item.usedQuota + '天'"></td>
+                        <td ng-bind="item.balanceQuota + '天'"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="subtable">
+            <!--<table class="table table-bordered table-hover table-condensed" ng-if="index === 1">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th>姓名</th>-->
+                    <!--<th>公司</th>-->
+                    <!--<th>部门</th>-->
+                    <!--<th>定案周期</th>-->
+                    <!--<th>考勤周期<br>开始时间</th>-->
+                    <!--<th>考勤周期<br>结束时间</th>-->
+                    <!--<th>调休假类别</th>-->
+                    <!--<th>上周期结余<br>额度（小时）</th>-->
+                    <!--<th>本周期产生<br>额度时长（小时）</th>-->
+                    <!--<th>新产生额度有效期</th>-->
+                    <!--<th>本周期已使用<br>额度（小时）</th>-->
+                    <!--<th>累计结余<br>额度（小时）</th>-->
+                    <!--<th>按原规则本周期<br>到期应结算额度（小时）</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody>-->
+                <!--<tr ng-repeat="item in lieuLeaveSettingData">-->
+                    <!--<td ng-bind="item.employeeName  || '-'"></td>-->
+                    <!--<td ng-bind="item.company || '-'"></td>-->
+                    <!--<td ng-bind="item.department || '-'"></td>-->
+                    <!--<td ng-bind="item.lockCycle || '-'"></td>-->
+                    <!--<td ng-bind="item.attendanceCycleBeginTime || '-'"></td>-->
+                    <!--<td ng-bind="item.attendanceCycleEndTime || '-'"></td>-->
+                    <!--<td ng-bind="item.offDayType | holidayTypeFilter"></td>-->
+                    <!--<td ng-bind="item.lastCycleBalance || '-'"></td>-->
+                    <!--<td ng-bind="item.nativeCycleBalance  || '-'"></td>-->
+                    <!--<td ng-bind="item.nativeEffectivePeriod || '-'"></td>-->
+                    <!--<td ng-bind="item.nativeUsed || '-'"></td>-->
+                    <!--<td ng-bind="item.totalBalance || '-'"></td>-->
+                    <!--<td ng-bind="item.nativePeriodSettlement || '-'"></td>-->
+                <!--</tr>-->
+                <!--<tr ng-if="lieuLeaveSettingData.length === 0">-->
+                    <!--<td colspan="100">没有数据</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+            <p>变动人员考勤汇总</p>
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th rowspan="2">姓名</th>
+                    <th rowspan="2">公司</th>
+                    <th rowspan="2">部门</th>
+                    <th rowspan="2">定案周期</th>
+                    <th rowspan="2">考勤周期<br>开始时间</th>
+                    <th rowspan="2">考勤周期<br>结束时间</th>
+                    <th rowspan="2">实际在岗<br>时长（小时）</th>
+                    <th rowspan="2">实际计薪<br>时长（小时）</th>
+                    <th colspan="3">计薪加班时长（小时）</th>
+                    <th colspan="2">迟到</th>
+                    <th colspan="2">早退</th>
+                    <th colspan="1">已补签</th>
+                    <th colspan="2">半天旷工</th>
+                    <th colspan="2">全天旷工</th>
+                    <th rowspan="2">月休（次数）</th>
+                    <th rowspan="2">做2休1/做1休1（次数）</th>
+                    <th colspan="2">外勤</th>
+                    <th colspan="2">出差</th>
+                    <th colspan="4">值班（次数）</th>
+                </tr>
+                <tr>
+                    <th>工作日</th>
+                    <th>休息日</th>
+                    <th>法定节假日</th>
+                    <th>次数</th>
+                    <th>时长<br>（分钟）</th>
+                    <th>次数</th>
+                    <th>时长<br>（分钟）</th>
+                    <th>次数</th>
+                    <th>次数</th>
+                    <th>时长<br>（分钟）</th>
+                    <th>次数</th>
+                    <th>时长<br>（分钟）</th>
+                    <th>次数</th>
+                    <th>时长<br>（分钟）</th>
+                    <th>次数</th>
+                    <th>时长<br>（分钟）</th>
+                    <th>值班经理值班</th>
+                    <th>维修普通值班</th>
+                    <th>维修夜间值班</th>
+                    <th>其他夜值</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in lieuLeaveData">
+                    <td ng-bind="item.employeeName || '-'"></td>
+                    <td ng-bind="item.company || '-'"></td>
+                    <td ng-bind="item.department || '-'"></td>
+                    <td ng-bind="item.lockCycle || '-'"></td>
+                    <td ng-bind="item.attendanceCycleBeginTime || '-'"></td>
+                    <td ng-bind="item.attendanceCycleEndTime || '-'"></td>
+                    <td ng-bind="item.actualPostLength || '-'"></td>
+                    <td ng-bind="item.actualSalaryScale || '-'"></td>
+                    <td ng-bind="item.weekDaySalaryScale || '-'"></td>
+                    <td ng-bind="item.offDaySalaryScale || '-'"></td>
+                    <td ng-bind="item.holidaySalaryScale || '-'"></td>
+                    <td ng-bind="item.lateTimes || '-'"></td>
+                    <td ng-bind="item.lateLength || '-'"></td>
+                    <td ng-bind="item.leaveEarlyTimes || '-'"></td>
+                    <td ng-bind="item.leaveEarlyLength || '-'"></td>
+                    <td ng-bind="item.haveSignedTimes || '-'"></td>
+                    <td ng-bind="item.halfAbsentTimes || '-'"></td>
+                    <td ng-bind="item.halfAbsentLength || '-'"></td>
+                    <td ng-bind="item.fullAbsentTimes || '-'"></td>
+                    <td ng-bind="item.fullAbsentLength || '-'"></td>
+                    <td ng-bind="item.monthHolidayTimes || '-'"></td>
+                    <td ng-bind="item.oneOffDayTimes || '-'"></td>
+                    <td ng-bind="item.outsideWorkTimes || '-'"></td>
+                    <td ng-bind="item.outsideWorkLength || '-'"></td>
+                    <td ng-bind="item.bussinessWorkTimes || '-'"></td>
+                    <td ng-bind="item.bussinessWorkLength || '-'"></td>
+                    <td ng-bind="item.managerDutyTimes || '-'"></td>
+                    <td ng-bind="item.maintainNormalDutyTimes || '-'"></td>
+                    <td ng-bind="item.maintainNightDutyTimes || '-'"></td>
+                    <td ng-bind="item.otherNightDutyTimes || '-'"></td>
+                </tr>
+                <tr ng-if="lieuLeaveData.length === 0">
+                    <td colspan="100">没有数据</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="subtable m-t-20">
+            <p>变动人员休假明细</p>
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>定案周期</th>
+                    <th>考勤周期<br>开始时间</th>
+                    <th>考勤周期<br>结束时间</th>
+                    <th>部门</th>
+
+                    <th>休假类型</th>
+                    <th>开始日期</th>
+                    <th>结束日期</th>
+                    <th>时长</th>
+                    <th>状态</th>
+                    <th>原因</th>
+                    <th>审批人</th>
+                    <th>审批人所属公司</th>
+                    <th>审批人所属部门</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in offDayData">
+                    <td ng-bind="item.employeeName || '-'"></td>
+                    <td ng-bind="item.lockCycle || '-'"></td>
+                    <td ng-bind="item.attendanceCycleBeginTime || '-'"></td>
+                    <td ng-bind="item.attendanceCycleEndTime || '-'"></td>
+                    <td ng-bind="item.departmentName || '-'"></td>
+                    <td ng-bind="item.offDayType | holidayTypeFilter"></td>
+                    <td ng-bind="item.offDayBeginDate || '-'"></td>
+                    <td ng-bind="item.offDayEndDate || '-'"></td>
+                    <td ng-bind="item.offDayLength || '-'"></td>
+                    <td ng-bind="approvalStatus[item.offDayStatus] || '-'"></td>
+                    <td ng-bind="item.reason || '-'"></td>
+                    <td ng-bind="item.approvePerson || '-'"></td>
+                    <td ng-bind="item.approveCompany || '-'"></td>
+                    <td ng-bind="item.approveDepartment || '-'"></td>
+                </tr>
+                <tr ng-if="offDayData.length === 0">
+                    <td colspan="100">没有数据</td>
+                </tr>
+                </tbody>
+            </table>
+            <!--<p ng-show="fromListPage.isInTreatment==0">员工变动数据进入RM系统时，变动日期所在考勤周期已定案，故于变动日期下个考勤周期起使用新规则计算考勤，请知悉。</p>-->
+        </div>
+        <div ng-if="fromListPage.isInTreatment == '0'">
+            员工变动数据进入RM系统时，变动日期所在考勤周期已定案，故于变动日期下个考勤周期起使用新规则计算考勤，请知悉。
+        </div>
+    </div>
+    <form name="downloadFileForm" method="post" id="downloadFileForm">
+        <input type="submit" name="submitBtn" id="submitBtn" style="display:none"/>
+    </form>
+    <div class="text-center">
+        <button class="btn btn-primary" ng-show="transferType == 1" ng-disabled="fromListPage.state != 0"
+                ng-click="confirmTransfer()">确认变动
+        </button>
+        <button class="btn vk-btn-default" ng-show="fromListPage.isExport == 1" ng-click="exportData()">导出</button>
+        <a type="button" class="btn btn-default" ng-href="{{backUrl}}">返回列表</a>
+    </div>
+</div>
+<script type="text/ng-template" id="scheduleList.html">
+    <div class="modal-header">
+        <strong class="modal-title">人员存在如下异常情况，不可操作变动</strong>
+        <div class="modal-close" ng-click="cancel()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid vk-dialog-container">
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>姓名</th>
+                    <th>SAP编号</th>
+                    <th>资源编号</th>
+                    <th>管理中心</th>
+                    <th>部门</th>
+                </tr>
+                <tr>
+                    <td ng-bind="list[0].employeeName"></td>
+                    <td ng-bind="list[0].sapId"></td>
+                    <td ng-bind="list[0].employeeId"></td>
+                    <td ng-bind="list[0].companyName"></td>
+                    <td ng-bind="list[0].departmentName"></td>
+                </tr>
+            </table>
+            <p></p>
+            <table class="table table-bordered table-hover m-t-10">
+                <tr>
+                    <th>发生日期</th>
+                    <th>异常原因</th>
+                </tr>
+                <tr ng-repeat="item in list">
+                    <td ng-bind="item.date"></td>
+                    <td ng-bind="item.reason"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer" style="text-align: center;">
+        <button class="btn vk-btn-health" type="button" ng-click="cancel()">
+            &nbsp;&nbsp;确定&nbsp;&nbsp;
+        </button>
+    </div>
+</script>
+

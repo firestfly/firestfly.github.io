@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+//-----------------------------------------------------
+// function 函数
+//-----------------------------------------------------
+
+// 1px hack 边线颜色
+@function border-t-color($bcolor: $border-color) {
+  @return -webkit-gradient(linear, left bottom, left top, color-stop(.5, rgba(0, 0, 0, 0)), color-stop(.5, $bcolor), to($bcolor));
+}
+
+@function border-b-color($bcolor: $border-color) {
+  @return -webkit-gradient(linear, left top, left bottom, color-stop(.5, rgba(0, 0, 0, 0)), color-stop(.5, $bcolor), to($bcolor));
+}
+
+@function border-l-color($bcolor: $border-color) {
+  @return -webkit-gradient(linear, right top, left top, color-stop(.5, rgba(0, 0, 0, 0)), color-stop(.5, $bcolor), to($bcolor));
+}
+
+@function border-r-color($bcolor: $border-color) {
+  @return -webkit-gradient(linear, left top, right top, color-stop(.5, rgba(0, 0, 0, 0)), color-stop(.5, $bcolor), to($bcolor));
+}

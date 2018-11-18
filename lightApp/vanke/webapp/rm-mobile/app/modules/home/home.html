@@ -1,0 +1,28 @@
+<div class="scrollable">
+    <div class="scrollable-content margin-top-15">
+        <div class="section-cell border-t home-cell">
+            <div class="cell arrow-right border-b" ng-repeat="item in home.mainItems"
+                 ng-class="{'cell-seprate': item.cellSeprate}">
+                <a href="{{item.linkage}}">
+                    <div class="table-cell flex-box">
+                        <div class="flex">{{item.mainLeft}}</div>
+                        <div class="flex ta-r">{{item.mainRight}}</div>
+                    </div>
+                </a>
+            </div>
+
+            <!--<button ng-click="main.testSSID()">test ssid</button>-->
+        </div>
+        <!--<div class="list-group text-center index-pages">-->
+        <!--<div ng-repeat="item in home.mainItems">-->
+        <!--<table-item main-left="{{item.mainLeft}}" main-right="{{item.mainRight}}"-->
+        <!--linkage="{{item.linkage}}" show-chevron="true" show-info-left="false"-->
+        <!--show-info-right="false" item-style="large"></table-item>-->
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+    <div class="description">
+        <a class="des-btn des-btn-l" href="#/description/1" ng-if="home.showWealthValue">财富值说明</a><a class="des-btn"
+                                                                                                     href="#/description/2">考勤说明</a>
+    </div>
+</div>

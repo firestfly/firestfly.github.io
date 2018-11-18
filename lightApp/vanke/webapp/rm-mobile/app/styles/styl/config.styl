@@ -1,0 +1,33 @@
+@import "normalize"
+
+// support-for-ie ?= false
+themes-color = rgb(35, 161, 88)
+primary-color = rgb(0, 153, 73)
+base-text-color = #333333
+base-title-color = #333333
+shallow-text-color = #999999
+background-color = #f2f2f2
+default-background-color = rgb(227, 230, 228)
+header-bg-color = #000000
+border-color = #dddddd
+arrow-color = rgb(151 151 153)
+color-gray = rgb(151, 151, 153)
+color-red = rgb(229 80 69)
+color-orange = rgb(240 153 65)
+color-black = #333333
+
+default-design-size = 75px
+// 设计稿实际宽度 720px => 72px
+default-text-size = 14px
+// 正文常规字体默认大小
+border-radius = 2px
+// 默认圆角大小
+default-inner = px2rem(30)
+//默认常规边距
+page-title-height = px2rem(95)
+arrow-width = 2px
+base-font-family = Helvetica, STHeiti STXihei, Microsoft JhengHei, Arial;
+
+// px单位转rem
+px2rem(a)
+  unit(unit(a, 'px') /default-design-size, 'rem')

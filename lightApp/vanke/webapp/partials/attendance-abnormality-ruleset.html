@@ -1,0 +1,48 @@
+<div id="attendance-abnormality-ruleset" class="container-fluid">
+    <div class="row vk-top-row">
+        <div class="col-lg-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>异常出勤类型</th>
+                        <th colspan="2">缓冲时长（分钟）</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="attendance-abnormality-ruleset-list">
+                    <tr ng-repeat="rule in rules">
+                        <td ng-bind="rule.attendanceAbnormalityRuleId"></td>
+                        <td ng-bind="rule.typeValue"></td>
+                        <td ng-bind="rule.criteriaValue"></td>
+                        <td class="duration">
+                                    <span editable-text="rule.durationInMinutes" e-name="durationInMinutes"
+                                          e-form="rowform"
+                                          onbeforesave="checkDurationInMinutes($data)" e-required
+                                          ng-bind="rule.durationInMinutes">
+                                    </span>
+                        </td>
+                        <td class="operation">
+                            <form editable-form name="rowform"
+                                  onbeforesave="saveRule($data, rule.attendanceAbnormalityRuleId)"
+                                  ng-show="rowform.$visible" class="form-buttons form-inline">
+                                <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                                    保存
+                                </button>
+                                <button type="button" ng-disabled="rowform.$waiting"
+                                        ng-click="rowform.$cancel()" class="btn btn-default">
+                                    取消
+                                </button>
+                            </form>
+                            <div class="buttons" ng-show="!rowform.$visible">
+                                <a class="" ng-click="rowform.$show()">修改</a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

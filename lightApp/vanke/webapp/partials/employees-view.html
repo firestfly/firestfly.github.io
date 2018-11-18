@@ -1,0 +1,639 @@
+<div class="container-fluid vk-employee-container" id="information-container">
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <a href="#/employee-edit?id={{employee.id}}" class="btn btn-primary" ng-if="!isOnlySeeEmployees">修改</a>
+            <a class="btn btn-default history-back">返回列表</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">职业账号</div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row" ng-hide="true">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4">证件照片</label>
+
+                                <div class="col-xs-8">
+                                    <img class="img-thumbnail"
+                                         style="width: 140px; height: 140px;"
+                                         src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTAxNDgzMGY0YiB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1MDE0ODMwZjRiIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQzLjU0MTY2NjAzMDg4Mzc5IiB5PSI3NC42NSI+MTQweDE0MDwvdGV4dD48L2c+PC9nPjwvc3ZnPg=="
+                                         alt="证件照片"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">姓名</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.name"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">登录账号</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.loginMobile"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">EHR编号</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.originalSapId"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">EHR职位</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.sapWorkJob.workJobName"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">证件类型</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.idType"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">证件号码</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.idNumber"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">状态</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.activeName"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">人员类别</div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">在职状态</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.jobStatus"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">岗位专业分类</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.workGroup.work_group_name"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">入职时间</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.entryDate"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">离职时间</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.leaveDate"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">员工组</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.primaryWorkGroup"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">员工子组</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.contractTypeId"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">职位</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.workJob.workJobName"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">职务</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.jobRank"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">职位经验值</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.jobExperienceValue"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">级别</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.jobLevelName"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <div class="col-xs-4"></div>
+                                <div class="col-xs-8"><a href="javascript:void(0);" ng-click="getExperienceLevelLogs();"
+                                                         ng-if="data.adjustInformations.length>0 || data.showAdjustInformationsTip">点击查看职位经验值
+                                    / 级别调整记录</a></div>
+                            </div>
+                            <div class="col-xs-12 col-md-6"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <div class="col-xs-4"></div>
+                                <div class="col-xs-8" ng-if="data.adjustInformations.length<=0">
+                                    暂时没有职位经验值 / 级别调整记录
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <label class="control-label col-xs-4 col-md-2"></label>
+
+                                <div class="col-xs-8 col-md-10 vk-row" name="adjustInformation">
+                                    <div class="table-responsive">
+                                        <table id="adjust-information-table" ng-if="data.adjustInformations"
+                                               class="table table-bordered table-hover nowrap dataTable">
+                                            <thead>
+                                            <tr role="row">
+                                                <th class="hide">ID</th>
+                                                <th>原经验值</th>
+                                                <th>原级别</th>
+                                                <th>调整后经验值</th>
+                                                <th>调整后级别</th>
+                                                <th>操作说明</th>
+                                                <th>操作人id</th>
+                                                <th>操作人姓名</th>
+                                                <th>操作时间</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="adjustInformation in data.adjustInformations | limitTo:5 | orderBy:'adjustId'"
+                                                on-finish-render>
+                                                <td ng-bind="adjustInformation.adjustId" class="hide"></td>
+                                                <td ng-bind="adjustInformation.originExperienceValue"></td>
+                                                <td ng-bind="adjustInformation.originLevel"></td>
+                                                <td ng-bind="adjustInformation.adjustedExperienceValue"></td>
+                                                <td ng-bind="adjustInformation.adjustedLevel"></td>
+                                                <td ng-bind="adjustInformation.remark" align="left"></td>
+                                                <td ng-bind="adjustInformation.operationId"></td>
+                                                <td ng-bind="adjustInformation.operationName"></td>
+                                                <td ng-bind="adjustInformation.operationTime"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">技能</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.skillNames"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">人事子范围</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.personnelSubarea"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">工资类别</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.salaryType"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">员工变动日期</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.employeeChangeDate"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">工时制</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-if="employee.workingHours == 'STANDARD_WORKING_HOURS'">标准工时制</p>
+                                    <p ng-if="employee.workingHours == 'COMPREHENSIVE_WORKING_HOURS'">综合工时制</p>
+                                    <p ng-if="employee.workingHours == 'UNTIME_WORKING_HOURS'">不定时工时制</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">新工时制生效日期</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.workHoursEffectDate"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="control-label col-xs-4">是否万科编制员工</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-show="employee.isVankeStaff == 0">否</p>
+                                    <p ng-show="employee.isVankeStaff == 1">是</p>
+                                    <p ng-show="employee.isVankeStaff == 2"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6" ng-show="employee.isVankeStaff == 0">
+                                <label class="control-label col-xs-4">是否合作物业公司编制</label>
+                                <div class="col-xs-8">
+                                    <p>{{employee.isCooperationStaff == "0"?"否":"是"}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="employee.isCooperationStaff == 0 && employee.isVankeStaff == 0">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="control-label col-xs-4">合作公司城市</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.cooperationCityName"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="control-label col-xs-4">合作公司</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.cooperationCompanyName"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">组织职位</div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">公司</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.company.company_name"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">部门</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.department.department_name"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">加入组织时间</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.entryOrgDate"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">离开组织时间</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.leaveOrgDate"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">合同开始时间</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.contractStartDate" id="contract-start-date"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">合同结束时间</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.contractEndDate" id="contract-end-date"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">试用期</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.probation" class="fl"></p>&nbsp;个月
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <label class="control-label col-xs-4 col-md-2">工作项目</label>
+
+                                <div class="col-xs-8 col-md-10">
+                                    <table id="workDepartment-table"
+                                           class="table table-bordered table-hover nowrap dataTable">
+                                        <tr ng-repeat="workDepartment in employee.workDepartments | orderBy:'departmentId'">
+                                            <td width="20%">
+                                                <div ng-bind="workDepartment.departmentName"></div>
+                                            </td>
+                                            <td width="80%">
+                                                <div class="row vk-spaced-row" style="margin-top: 0">
+                                                    <table>
+                                                        <td ng-repeat="workJob in workDepartment.workJobs | orderBy:'workJobId'"
+                                                            ng-bind="workJob.workJobName" class="fl"></td>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">网格</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.grid"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">备注</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.remark"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">个人信息</div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row" ng-hide="true">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">上传头像</label>
+
+                                <div class="col-xs-8">
+                                    <img class="img-circle" style="width: 140px; height: 140px;"
+                                         src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTAxNDgzMGY0YiB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1MDE0ODMwZjRiIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQzLjU0MTY2NjAzMDg4Mzc5IiB5PSI3NC42NSI+MTQweDE0MDwvdGV4dD48L2c+PC9nPjwvc3ZnPg=="
+                                         alt="上传头像"/>
+                                    <!--<input type="file" class="button col-xs-4" ng-click="uploadAvatar()"/>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">昵称</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.nickname"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">性别</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.gender"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">电话号码</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.telephoneNumber"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">电子邮箱</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.email"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">邮政编码</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.postcode"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">婚姻状况</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.maritalStatus"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">民族</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.nationality"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">政治面貌</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.politicalIdentity"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">户籍地</label>
+
+                                <div class="col-xs-8">
+                                    <p>
+                                        <span ng-bind="employee.domicile.province"></span> - <span
+                                            ng-bind="employee.domicile.city"></span> - <span
+                                            ng-bind="employee.domicile.county"></span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">联系地址</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.contactAddress"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">户籍类型</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.domicileType"></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <label class="col-xs-4 control-label">EHR户籍</label>
+
+                                <div class="col-xs-8">
+                                    <p ng-bind="employee.sapDomicile"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">家属信息</div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <label class="col-xs-4 col-md-2 control-label">家属信息</label>
+
+                                <div class="col-xs-8 col-md-10">
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th width="1000" height="30">姓名</th>
+                                            <th width="1000">电话</th>
+                                            <th width="1000">与本人关系</th>
+                                            <th width="1000">是否紧急联系人</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="familyInformation in employee.familyInformations | limitTo:5">
+                                            <td ng-bind="employee.familyInformations[$index].familiesName"
+                                                height="30"></td>
+                                            <td ng-bind="employee.familyInformations[$index].familiesMobile"></td>
+                                            <td ng-bind="employee.familyInformations[$index].relationship"></td>
+                                            <td ng-bind="employee.familyInformations[$index].isEmergencyContactName"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">教育信息</div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <label class="col-xs-4 col-md-2 control-label">最高学历</label>
+
+                                <div class="col-xs-8 col-md-10">
+                                    <p ng-bind="employee.highestDegree"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <label class="col-xs-4 col-md-2 control-label">教育经历</label>
+
+                                <div class="col-xs-8 col-md-10">
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th width="1000" height="30">开始时间</th>
+                                            <th width="1000">结束时间</th>
+                                            <th width="1000">学校</th>
+                                            <th width="1000">学历</th>
+                                            <th width="1000">专业</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="educationExperience in employee.educationExperiences | limitTo:5">
+                                            <td ng-bind="employee.educationExperiences[$index].educationStartTime"
+                                                height="30"></td>
+                                            <td ng-bind="employee.educationExperiences[$index].educationEndTime"></td>
+                                            <td ng-bind="employee.educationExperiences[$index].educationSchool"></td>
+                                            <td ng-bind="employee.educationExperiences[$index].educationDegree"></td>
+                                            <td ng-bind="employee.educationExperiences[$index].educationMajor"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

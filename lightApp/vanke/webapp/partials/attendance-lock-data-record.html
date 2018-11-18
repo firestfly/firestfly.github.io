@@ -1,0 +1,137 @@
+<div id="dataRecord">
+    <table class="table table-bordered table-header">
+        <tr>
+            <td ng-bind="dr.objData.attendanceLockName"></td>
+            <td ng-bind="dr.objData.companyName"></td>
+            <td ng-bind="dr.objData.departmentName"></td>
+            <td ng-bind="dr.objData.lockDate"></td>
+            <td ng-bind="dr.objData.beginDate"></td>
+            <td ng-bind="dr.objData.endDate"></td>
+            <td ng-bind="dr.objData.status"></td>
+        </tr>
+    </table>
+    <div class="alert alert-danger" ng-show="dr.list2001.description" ng-bind="dr.list2001.description"></div>
+    <div class="pull-right"><a type="button" class="btn btn-warning" href="#/attendance-lock-sap">返回</a></div>
+    <tabset class="mt15" ng-show="!dr.list2001.description">
+        <tab heading="2001_BDC模板">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th rowspan="2">姓名</th>
+                        <th rowspan="2">EHR编号</th>
+                        <th rowspan="2">开始日期</th>
+                        <th rowspan="2">结束日期</th>
+                        <th colspan="2">上次（第{{dr.list2001.count - 1}}次）定案操作</th>
+                        <th rowspan="2">姓名</th>
+                        <th rowspan="2">EHR编号</th>
+                        <th rowspan="2">开始日期</th>
+                        <th rowspan="2">结束日期</th>
+                        <th colspan="3">本次（第{{dr.list2001.count}}次）定案操作</th>
+                    </tr>
+                    <tr>
+                        <th>子信息类型<br>（代码）</th>
+                        <th>缺勤时数<br>（小时）</th>
+                        <th>子信息类型<br>（代码）</th>
+                        <th>缺勤时数<br>（小时）</th>
+                        <th>类型</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in dr.list2001.items">
+                        <td ng-bind="item.normal.type == '新增'?'' : item.before.name || '-'"></td>
+                        <td ng-bind="item.normal.type == '新增'?'' : item.before.sapNo || '-'"></td>
+                        <td ng-bind="item.normal.type == '新增'?'' : item.before.beginDate || '-'"></td>
+                        <td ng-bind="item.normal.type == '新增'?'' : item.before.endDate || '-'"></td>
+                        <td ng-bind="item.normal.type == '新增'?'' : item.before.code || '-'"></td>
+                        <td ng-bind="item.normal.type == '新增'?'' : item.before.absenceHours || '-'"></td>
+                        <td ng-bind="item.normal.type == '删除'?'' : item.normal.name || '-'"></td>
+                        <td ng-bind="item.normal.type == '删除'?'' : item.normal.sapNo || '-'"></td>
+                        <td ng-bind="item.normal.type == '删除'?'' : item.normal.beginDate || '-'"></td>
+                        <td ng-bind="item.normal.type == '删除'?'' : item.normal.endDate || '-'"></td>
+                        <td ng-bind="item.normal.type == '删除'?'' : item.normal.code || '-'"></td>
+                        <td ng-bind="item.normal.type == '删除'?'' : item.normal.absenceHours || '-'"></td>
+                        <td ng-bind="item.normal.type || '-'"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </tab>
+        <tab heading="2010_BDC模板">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th rowspan="2">姓名</th>
+                    <th rowspan="2">EHR编号</th>
+                    <th rowspan="2">开始日期</th>
+                    <th colspan="2">上次（第{{dr.list2010.count - 1}}次）定案操作</th>
+                    <th rowspan="2">姓名</th>
+                    <th rowspan="2">EHR编号</th>
+                    <th rowspan="2">开始日期</th>
+                    <th colspan="3">本次（第{{dr.list2010.count}}次）定案操作</th>
+                </tr>
+                <tr>
+                    <th>工资项</th>
+                    <th>数量</th>
+                    <th>工资项</th>
+                    <th>数量</th>
+                    <th>类型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in dr.list2010.items">
+                    <td ng-bind="item.normal.type == '新增'?'' : item.before.name || '-'"></td>
+                    <td ng-bind="item.normal.type == '新增'?'' : item.before.sapNo || '-'"></td>
+                    <td ng-bind="item.normal.type == '新增'?'' : item.before.beginDate || '-'"></td>
+                    <td ng-bind="item.normal.type == '新增'?'' : item.before.code || '-'"></td>
+                    <td ng-bind="item.normal.type == '新增'?'' : item.before.number || '-'"></td>
+                    <td ng-bind="item.normal.type == '删除'?'' : item.normal.name || '-'"></td>
+                    <td ng-bind="item.normal.type == '删除'?'' : item.normal.sapNo || '-'"></td>
+                    <td ng-bind="item.normal.type == '删除'?'' : item.normal.beginDate || '-'"></td>
+                    <td ng-bind="item.normal.type == '删除'?'' : item.normal.code || '-'"></td>
+                    <td ng-bind="item.normal.type == '删除'?'' : item.normal.number || '-'"></td>
+                    <td ng-bind="item.normal.type || '-'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </tab>
+        <tab heading="0015_BDC模板">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th rowspan="2">姓名</th>
+                    <th rowspan="2">EHR编号</th>
+                    <th rowspan="2">开始日期</th>
+                    <th colspan="2">上次（第{{dr.list0015.count - 1}}次）定案操作</th>
+                    <th rowspan="2">姓名</th>
+                    <th rowspan="2">EHR编号</th>
+                    <th rowspan="2">开始日期</th>
+                    <th colspan="3">本次（第{{dr.list0015.count}}次）定案操作</th>
+                </tr>
+                <tr>
+                    <th>工资项</th>
+                    <th>金额</th>
+                    <th>工资项</th>
+                    <th>金额</th>
+                    <th>类型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in dr.list0015.items">
+                    <td ng-bind="item.normal.type == '新增'?'' : item.before.name || '-'"></td>
+                    <td ng-bind="item.normal.type == '新增'?'' : item.before.sapNo || '-'"></td>
+                    <td ng-bind="item.normal.type == '新增'?'' : item.before.beginDate || '-'"></td>
+                    <td ng-bind="item.normal.type == '新增'?'' : item.before.code || '-'"></td>
+                    <td ng-bind="item.normal.type == '新增'?'' : item.before.number || '-'"></td>
+                    <td ng-bind="item.normal.type == '删除'?'' : item.normal.name || '-'"></td>
+                    <td ng-bind="item.normal.type == '删除'?'' : item.normal.sapNo || '-'"></td>
+                    <td ng-bind="item.normal.type == '删除'?'' : item.normal.beginDate || '-'"></td>
+                    <td ng-bind="item.normal.type == '删除'?'' : item.normal.code || '-'"></td>
+                    <td ng-bind="item.normal.type == '删除'?'' : item.normal.number || '-'"></td>
+                    <td ng-bind="item.normal.type || '-'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </tab>
+    </tabset>
+
+
+</div>

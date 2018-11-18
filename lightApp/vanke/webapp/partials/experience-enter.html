@@ -1,0 +1,104 @@
+<div class="container-fluid authority-container">
+    <div class="row">
+        <div data-common-search-bar data-show-standard-work-jobs="true" data-show-verify-status="true"
+             data-hide-export-btn="true" data-operation-buttons="operation-buttons"></div>
+    </div>
+
+    <div class="experience-verify-table">
+        <table class="table table-bordered table-hover table-condensed">
+            <tr>
+                <th>姓名</th>
+                <th>职位</th>
+                <th>发起时间</th>
+                <th>指标</th>
+                <th>情况</th>
+                <th>标准</th>
+                <th>审核人</th>
+                <th>状态</th>
+                <th>资源编号</th>
+                <th>EHR编号</th>
+                <th>公司</th>
+                <th>项目</th>
+                <th>在职状态</th>
+                <th>查看详情</th>
+            </tr>
+            <tr ng-repeat="item in exp.experiences">
+                <td ng-bind="item.employeeName"></td>
+                <td ng-bind="item.jobName"></td>
+                <td ng-bind="item.publishTime"></td>
+                <td ng-bind="item.target"></td>
+                <td ng-bind="item.situation"></td>
+                <td ng-bind="item.standard"></td>
+                <td ng-bind="item.auditor || '-'"></td>
+                <td ng-bind="exp.verifyStatus[item.state]"></td>
+                <td ng-bind="item.employeeId"></td>
+                <td ng-bind="item.sapId"></td>
+                <td ng-bind="item.companyName"></td>
+                <td ng-bind="item.departmentName"></td>
+                <td ng-bind="item.jobStatus"></td>
+                <td><a href="javascript: ;" type="view" class="" ng-click="exp.open($event,item)">查看</a></td>
+            </tr>
+            <tr ng-if="exp.experiences.length == 0">
+                <td colspan="14">暂无数据，请重新选择部门查询</td>
+            </tr>
+        </table>
+        <div common-pagination></div>
+        <div class="operation-buttons">
+            <a class="btn btn-primary" href="#experience-input">录入</a>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="expDetailModal.html">
+    <div class="modal-body" id="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span
+                aria-hidden="true">&times;</span></button>
+        <div class="experience-row">
+            <div class="experience-label flex-30">
+                <div>审核人：</div>
+                <div>审核时间：</div>
+                <div>审核结果：</div>
+                <div>审核意见：</div>
+            </div>
+            <div class="experience-content flex-70">
+                <div>{{detail.auditor || "-"}}&nbsp;</div>
+                <div>{{detail.verifyTime || "-"}}&nbsp;</div>
+                <div ng-bind="verifyStatus[detail.verifyResult]"></div>
+                <div>{{detail.verifyOpinion || "-"}}&nbsp;</div>
+            </div>
+        </div>
+        <hr/>
+        <div class="experience-column experience-accessory">
+            <div class="title">
+                附件列表
+            </div>
+            <div class="experience-row">
+                <div class="flex border-right">
+                    <div class="experience-row m-t-10" ng-repeat="a in detail.files track by $index"
+                         ng-if="($index+1)%2 == 1">
+                        <div class="flex">附件{{$index + 1}}</div>
+                        <div class="flex">
+                            <a href="javascript: ;" type="view" class="" ng-click="openImg(a)">查看</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="experience-row m-t-10" ng-repeat="a in detail.files track by $index"
+                         ng-if="($index+1)%2 == 0">
+                        <div class="flex">附件{{$index+1}}</div>
+                        <div class="flex">
+                            <a href="javascript: ;" type="view" class="" ng-click="openImg(a)">查看</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="experienceImgModal.html">
+    <div class="modal-body experience-img">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span
+                aria-hidden="true">&times;</span></button>
+        <img src="{{imgs}}" alt="">
+    </div>
+</script>

@@ -1,0 +1,89 @@
+@charset "utf-8";
+$header-color: #fff;
+.header {
+  position: relative;
+  min-height: 1.26rem;
+  background-color: $themes-color;
+  color: $header-color; // 通过继承，方便修改色值
+  z-index: z("base", "header");
+  font-size: $font-size-large;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.header h3, .header-title {
+  font-size: 1em;
+  color: $header-color;
+  text-align: center;
+  display: block;
+  margin: 0 rem(130px);
+  height: rem(90px);
+  line-height: 1.26rem;
+  @include text-overflow;
+  pointer-events: none;
+}
+
+// 多个按钮在header右边时的容器
+.header-btns {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 10px;
+  @include flex-align(null, center);
+}
+
+// 左侧按钮
+.back,
+.header-left {
+  min-width: 1.26rem;
+}
+
+.back,
+.header-right,
+.header-left {
+  position: absolute;
+  top: 0;
+  left: rem($inner-width);
+  height: 1.26rem;
+  line-height: 1.26rem;
+  font-weight: 500;
+  color: inherit;
+  line-height: 1.26rem;
+  &:hover,
+  &:active {
+    opacity: .8;
+  }
+}
+
+// 返回按钮
+.back i {
+  font-weight: 700;
+  font-size: 18px;
+  margin-left: -.24rem
+}
+.header-right {
+  left: auto;
+  right: rem($inner-width);
+  max-width: 88px;
+  @include text-overflow;
+}
+.header-right.theme-color {
+  color: #fff;
+}
+
+.icon-filter {
+  color: transparent;
+}
+
+.icon-filter:before {
+  position: absolute;
+  content: '';
+  background: url(./assets/images/icon-filter.png);
+  background-size: cover;
+  width: rem(50px);
+  height: rem(50px);
+  top: 23%;
+  left: 5px;
+}

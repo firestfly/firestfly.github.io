@@ -1,0 +1,23 @@
+.container {
+  margin: 0 auto;
+  position: relative;
+  max-width: $max-container-width;
+  min-width: $min-container-width;
+  overflow: hidden;
+  &:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
+
+.inner {
+  padding: 0 rem($inner-width);
+  position: relative;
+}
+
+.inner-panel {
+  padding: rem($inner-width);
+}

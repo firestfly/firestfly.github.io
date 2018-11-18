@@ -1,0 +1,260 @@
+<div class="container-fluid">
+    <div class="row">
+        <div data-common-search-bar data-show-standard-work-jobs="true" data-hide-export-btn="false"
+             data-show-job-status="true" data-show-lock-cycle="true" data-hide-date-range="true"
+             data-show-staff-type="true"></div>
+    </div>
+    <div class="row">
+        <div class="x-scroll-table vk-table-complex">
+            <table id="attendance-abnormality-check-table"
+                   class="table table-bordered display nowrap attendance-check-table-width" cellspacing="0">
+                <thead>
+                <tr>
+                    <th rowspan="2"></th>
+                    <th rowspan="2">姓名</th>
+                    <th rowspan="2">定案周期</th>
+                    <th rowspan="2">开始时间</th>
+                    <th rowspan="2">结束时间</th>
+                    <th rowspan="2">
+                        <div class="tips tips-block" data-toggle="tooltip" data-placement="top"
+                             title="=排班总时长-加班迟到时长-加班早退时长-所有旷工时长">实际在岗时长
+                            <div class="tips"></div>
+                            <br>（小时）
+                        </div>
+                    </th>
+                    <th rowspan="2" class="td-relative">
+                        <div class="tips tips-block" data-toggle="tooltip" data-placement="top"
+                             title="=实际在岗时长-值班时长-法定节假日加班时长-转化为调休假的加班时长">实际计薪时长
+                            <div class="tips"></div>
+                        <br>（小时）
+                        </div>
+                    </th>
+                    <th colspan="3">
+                        <div class="tips tips-block" data-toggle="tooltip" data-placement="top"
+                             title="本考勤周期结束时，将结算为加班费的加班时长。此处数据与预定案数据一致。请注意，计算加班时长时会扣减加班班次迟到早退的时长。">计薪加班时长（小时）
+                            <div class="tips"></div>
+                        </div>
+                    </th>
+                    <th colspan="2">迟到</th>
+                    <th colspan="2">早退</th>
+                    <th>漏签到</th>
+                    <th>已补签</th>
+                    <th colspan="2">半天旷工</th>
+                    <th colspan="2">全天旷工</th>
+                    <!--<th colspan="2">半天旷工</th>-->
+                    <!--<th colspan="2">全天旷工</th>-->
+                    <th>月休</th>
+                    <th>做2休1/<br>做1休1</th>
+                    <!--<th>休假</th>-->
+                    <th colspan="2">休假</th>
+                    <th colspan="2">外勤</th>
+                    <th colspan="2">出差</th>
+                    <th colspan="4">值班（次）</th>
+                    <th rowspan="2">资源编号</th>
+                    <th rowspan="2">EHR编号</th>
+                    <th rowspan="2">公司</th>
+                    <th rowspan="2">项目/部门</th>
+                    <th rowspan="2">岗位专业分类</th>
+                    <th rowspan="2">职位</th>
+                    <th rowspan="2">在职状态</th>
+                    <th rowspan="2">员工子组</th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tips tips-block" data-toggle="tooltip" data-placement="top"
+                             title="<span class='color-ios'>标准工时制</span> =不转化为调休假的工作日加班时长+本周期末将结算的工作日加班调休假时长;<div class='mt10'><span class='color-ios'>综合工时制</span> =实际计薪时长-（自然日天数-月休天数-法定节假日天数）*8+所有休假时长+本周期末结算的调休假时长【* 如两种假期日期重叠，仅计算一类休假时长】</div>">
+                            工作日
+                            <div class="tips"></div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="tips tips-block" data-toggle="tooltip" data-placement="top"
+                             title="=不转化为调休假的休息日加班时长+本周期末结算的休息日加班调休假时长">
+                            休息日
+                            <div class="tips"></div>
+                        </div>
+                    </th>
+                    <th>法定节假日</th>
+                    <th>次数</th>
+                    <th>时长<br/>（分钟）</th>
+                    <th>次数</th>
+                    <th>时长<br/>（分钟）</th>
+                    <!--<th>次数</th>-->
+                    <th>次数</th>
+                    <th>次数</th>
+                    <th>次数</th>
+                    <th>时长<br/>（小时）</th>
+                    <th>次数</th>
+                    <th>时长<br/>（小时）</th>
+                    <th>次数</th>
+                    <th>次数</th>
+                    <th>次数</th>
+                    <th>时长<br/>（小时）</th>
+                    <th>次数</th>
+                    <th>时长<br/>（小时）</th>
+                    <th>次数</th>
+                    <th>时长<br/>（小时）</th>
+                    <th>值班经理值班</th>
+                    <th>维修普通值班</th>
+                    <th>维修夜间值班</th>
+                    <th>其他夜值</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-show="overtimeAttendanceCheckPagingDTO.overtimeAttendanceChecks.length == 0">
+                    <td colspan="42">表内暂无数据</td>
+                </tr>
+                <tr ng-repeat="overtimeAttendanceCheck in overtimeAttendanceCheckPagingDTO.overtimeAttendanceChecks">
+                    <td ng-click="recalculate(overtimeAttendanceCheck.resourceId)"><!--canRecalculate-->
+                        <button class="btn btn-xs btn-danger">重预定案</button>
+                    </td>
+                    <td ng-bind="overtimeAttendanceCheck.employeeName"></td>
+                    <td ng-bind="overtimeAttendanceCheck.lockCycle"></td>
+                    <td ng-bind="overtimeAttendanceCheck.beginDate || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.endDate || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.workingDuration || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.wageDuration || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.workdayOvertimeDuration || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.holidayOvertimeDuration || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.publicHolidayOvertimeDuration || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.lateCount || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.lateDuration || '-'"></td>
+                    <!--<td ng-bind="overtimeAttendanceCheck.lateCount || '-'"></td>-->
+                    <!--<td ng-bind="overtimeAttendanceCheck.lateDuration || '-'"></td>-->
+                    <td ng-bind="overtimeAttendanceCheck.leaveEarlyCount || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.leaveEarlyDuration || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.missAttendance || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.repairAttendance || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.halfAbsentCount || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.halfAbsentDuration || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.absentCount || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.absentDuration || '-'"></td>
+                    <!--<td ng-bind="overtimeAttendanceCheck.halfAbsentCount || '-'"></td>-->
+                    <!--<td ng-bind="overtimeAttendanceCheck.halfAbsentDuration || '-'"></td>-->
+                    <td ng-bind="overtimeAttendanceCheck.holidayCount || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.workTwoOrOneRestOneCount || '-'"></td>
+                    <!--<td ng-bind="overtimeAttendanceCheck.offDayCount || '-'"></td>-->
+                    <td ng-click="openRestDetail(overtimeAttendanceCheck)"
+                        ng-bind="overtimeAttendanceCheck.offDayCount || '-'"
+                        ng-class="{'offDayCountStyle': overtimeAttendanceCheck.offDayCount != 0}"></td>
+                    <td ng-click="openRestDetail(overtimeAttendanceCheck)"
+                        ng-bind="overtimeAttendanceCheck.offDayDuration || '-'"
+                        ng-class="{'offDayCountStyle': overtimeAttendanceCheck.offDayDuration != 0}"></td>
+                    <td ng-bind="overtimeAttendanceCheck.tripCount || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.tripDuration || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.evenctionCount || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.evenctionDuration || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.managerDutyCount || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.repairGeneralCount || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.repairNightCount || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.otherNightCount || '-'"></td>
+                    <td ng-bind="overtimeAttendanceCheck.resourceId"></td>
+                    <td ng-bind="overtimeAttendanceCheck.sapId"></td>
+                    <td ng-bind="overtimeAttendanceCheck.companyName"></td>
+                    <td ng-bind="overtimeAttendanceCheck.departmentName"></td>
+                    <td ng-bind="overtimeAttendanceCheck.workGroupName"></td>
+                    <td ng-bind="overtimeAttendanceCheck.jobName"></td>
+                    <td ng-bind="jobStatusArr[overtimeAttendanceCheck.jobStatus]"></td>
+                    <td ng-bind="staffTypeArr[overtimeAttendanceCheck.staffType]"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <style>
+        .offDayCountStyle {
+            cursor: pointer;
+            color: #23527c;
+        }
+    </style>
+    <div class="row margin-top-21">
+        <div class="col-md-2">
+            每页显示<select
+                ng-model="pageSize"
+                name="pageSize"
+                ng-change="changePageSize()"
+                ng-options="o as o for o in pageSizes">
+        </select>条
+        </div>
+        <div class="col-md-2" ng-show="pageCount()<=1"></div>
+        <div class="col-md-offset-7 col-md-1">
+            第<span ng-bind="currentPage"></span>页/共<span ng-bind="pageCount()"></span>页
+        </div>
+        <div class="col-md-1" ng-hide="pageCount()<=1">
+            跳转第<select
+                ng-model="currentPage"
+                name="currentPage"
+                ng-change="changePage()"
+                ng-options="o as o for o in pages">
+        </select>页
+        </div>
+        <div class="col-md-1" ng-hide="pageCount()<=1">
+            <button ng-click="reload()" ng-disabled="currentPage<=1" class="btn btn-default">
+                上一页
+            </button>
+            <button ng-click="nextPage()" ng-disabled="currentPage==pageCount()" class="btn btn-default">
+                下一页
+            </button>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="restTypeDialog.html">
+    <div class="modal-header">
+        <strong class="modal-title">{{message}}</strong>
+
+        <div class="modal-close" ng-click="ok()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="vk-dialog-container" style="margin-left: -8px;margin-right: -8px;">
+            <!--<div class="key-post-remind"> </div>-->
+            <div class="row vk-spaced-row authority-container">
+                <table class="table auto-person-row">
+                    <tbody>
+                    <tr>
+                        <td>{{modelBar.resourceId}}</td>
+                        <td>{{modelBar.sapId}}</td>
+                        <td>{{modelBar.name}}</td>
+                        <td>{{modelBar.beginDate}}至{{modelBar.endDate}}休假详情</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                <tr>
+                    <th>休假类型</th>
+                    <th>次数</th>
+                    <th>时长</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in restTypeLists">
+                    <td>{{item.typeName}}</td>
+                    <td>{{item.count}}</td>
+                    <td>{{item.duration || '-'}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn vk-btn-health" type="button" ng-click="ok()">
+            关闭
+        </button>
+    </div>
+</script>
+<script type="text/ng-template" id="exportOvertimeAttendance.html">
+    <div class="modal-header">
+        <strong class="modal-title">选择导出类型</strong>
+    </div>
+    <div class="modal-footer">
+
+        <button class="btn btn-default" type="button" ng-click="exportOvertimeAttendanceDetail()">
+            导出考勤汇总表
+        </button>
+        <button class="btn btn-default" type="button" ng-click="exportOvertimeAttendanceSummary()">导出SAP加班汇总表</button>
+        <button class="btn vk-btn-passion" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>

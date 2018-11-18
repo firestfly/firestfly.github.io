@@ -1,0 +1,110 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div data-common-search-bar data-hide-export-btn="true" data-hide-opt-btn="true"
+                 data-show-employee-sap="true" data-hide-groups="true" data-hide-date-range="true"
+                 data-hide-search-input="true" data-show-standard-work-jobs-one="true"
+                 data-operation-div="operation-div">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">录入信息</div>
+        <div class="panel-body ">
+            <div class="row form-group">
+                <div class="col-sm-2 text-right"><span class="vk-color-red">*</span>人员</div>
+                <div class="col-sm-10 add-person-list">
+                            <span class="btn btn-info" ng-click="exi.delPerson()" ng-repeat="a in exi.showNames">
+                                {{a.name}} <sup class="close" ng-click="exi.delPerson($index)">×</sup>
+                            </span>
+
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-sm-2 text-right"><span class="vk-color-red">*</span>指标</div>
+                <div class="col-sm-10">
+                    <div class="pull-left" style="margin-right: 10px">
+                        <select class="selectpicker targetModel" id="targetModelOne" data-width="120px"
+                                ng-options="o.targetName for o in exi.OneLevelTarget track by o.targetNumber"
+                                ng-model="exi.targetOne">
+                            <option value="">--请选择--</option>
+                        </select>
+                    </div>
+                    <div class="pull-left" ng-show="isShowTargetTwo" style="margin-right: 10px">
+                        <select class="selectpicker" id="targetModelTwo" data-width="120px"
+                                ng-options="o.targetName for o in exi.TwoLevelTarget track by o.targetNumber"
+                                ng-model="exi.targetTwo">
+                            <option value="">--请选择--</option>
+                        </select>
+                    </div>
+                    <div class="pull-left" ng-show="isShowTargetThree" style="margin-right: 10px">
+                        <select class="selectpicker" id="targetModelThree" data-width="120px"
+                                ng-options="o.targetName for o in exi.ThreeLevelTarget track by o.targetNumber"
+                                ng-model="exi.targetThree">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group" ng-show="isShowSituation">
+                <div class="col-sm-2 text-right"><span class="vk-color-red">*</span>情况</div>
+                <div class="col-sm-10">
+                    <select id="situationModel" class="selectpicker" data-width="120px"
+                            ng-options="s.situationName for s in situations track by s.situationId"
+                            ng-model="exi.situation">
+
+                    </select>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-sm-2 text-right">经验值</div>
+                <div class="col-sm-10">
+                            <span class="label label-default"
+                                  style="padding: .2em 1.5em .3em">{{exi.expValue || 0 }}</span>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-sm-2 text-right"><span class="vk-color-red">*</span>上传附件</div>
+                <div class="col-sm-10">
+                    <form id="card_form" name="card_form" class="form-horizontal">
+                        <div class="clearfix" ng-repeat="file in exi.initFiles">
+                            <div class="pull-left" style="width: 50px;line-height: 25px;">附件{{$index + 1}}</div>
+                            <div class="pull-left ">
+                                <div class="btn btn-success file-input-button" ng-show="!file.isUpload">
+                                    <i class="glyphicon glyphicon-upload" ng-show="!file.loadingState">添加本地附件</i>
+                                    <i class="glyphicon glyphicon-upload" ng-show="file.loadingState">
+                                        正在上传<span class="uploading"></span>
+                                    </i>
+                                    <input type="file" name="file" id="{{$index}}"
+                                           onchange="angular.element(this).scope().uploads(this)">
+                                </div>
+                                <div ng-show="file.isUpload">
+                                    {{file.name}} <a href="" class="fz-12" ng-click="exi.delFile($index)">清除附件</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div>
+                        <a href="" ng-click="exi.addMoreFiles()">+添加更多附件</a>
+                    </div>
+
+                    <span class="vk-color-red">附件只能上传JPGE，JPG，PNG，GIF格式图片!</span>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" class="btn vk-btn-default" ng-click="exi.save()"
+                    >提交审核
+                    </button>
+                    <a href="#/experience-enter" class="btn vk-btn-passion">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+</div>
+</div>
+<div class="operation-div">
+    <a class="btn btn-primary" ng-click="exi.addPerson()">添加人员</a>
+</div>

@@ -1,0 +1,118 @@
+<div class="container-fluid">
+    <div class="my-tab row">
+        <span class="active tab-item">月休、调休假明细</span>
+        <a class="tab-item" ng-href="#/other-holiday-balance-check">其它休假明细</a>
+    </div>
+    <div class="row">
+        <div common-search-bar data-hide-date-range="true" data-hide-groups="true" data-show-only-lock-cycle="true"
+             data-show-row-two-lieu-quota="true" data-hide-export-btn="true" data-show-one-lock-status=true></div>
+    </div>
+    <div class="row">
+        <div class="x-scroll-table">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>休假类型</th>
+                    <th>周期</th>
+                    <th>期初余额</th>
+                    <th>本周期产生额度</th>
+                    <th>失效/结算日期</th>
+                    <th>本周期已使用额度</th>
+                    <th>{{ quotaLockStatus == '1' ? '当前余额' : '期末余额' }}
+                    </th>
+                    <th>{{ quotaLockStatus == '1' ? '到期应结算额度' : '到期已结算余额' }}
+                    </th>
+                    <th>资源编号</th>
+                    <th>EHR编号</th>
+                    <th>职位</th>
+                    <th>在职状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="lieuQuota in lqc.lieuQuotaList">
+                    <td>{{lieuQuota.employeeName}}</td>
+                    <td>{{lieuQuota.holidayTypeName}}</td>
+                    <td>{{lieuQuota.lockCycleName}}</td>
+                    <td ng-click="lqc.open(lieuQuota,0,lieuQuota, 'prevBalanceSum')" class="td-highlighted"
+                        ng-class="{'color-black': lieuQuota.prevBalanceSum == '-'}">{{lieuQuota.prevBalanceSum}}
+                    </td>
+                    <td ng-click="lqc.open(lieuQuota,0,lieuQuota)" class="td-highlighted">{{ lieuQuota.holidayTypeName
+                        ==
+                        '月休' && lieuQuota.cycleQuotaSum.split('.')[0] > 31 ? '-' : lieuQuota.cycleQuotaSum}}
+                    </td>
+                    <td>{{lieuQuota.endDate}}</td>
+                    <td ng-click="lqc.open(lieuQuota,0,lieuQuota)" class="td-highlighted">
+                        {{lieuQuota.cycleQuotaUsedSum}}
+                    </td>
+                    <td ng-click="lqc.open(lieuQuota,0,lieuQuota)" class="td-highlighted">{{ lieuQuota.holidayTypeName
+                        ==
+                        '月休' && lieuQuota.currentBalance.split('.')[0] > 31 ? '-' : lieuQuota.currentBalance}}
+                    </td>
+                    <td ng-click="lqc.open(lieuQuota,0,lieuQuota, 'expireBalance')" class="td-highlighted"
+                        ng-class="{'color-black': lieuQuota.expireBalance == '-'}">{{lieuQuota.expireBalance || '-'}}
+                    </td>
+                    <td>{{lieuQuota.employeeId}}</td>
+                    <td>{{lieuQuota.sapId}}</td>
+                    <td>{{lieuQuota.postName }}</td>
+                    <td>{{lieuQuota.jobStatus}}</td>
+                    <!--<td>-->
+                    <!--<button type="button" class="btn btn-info" ng-click="lqc.openPreLiquidate(lieuQuota)"-->
+                    <!--ng-show="lieuQuota.isNowLockCycle">提前清算-->
+                    <!--</button>-->
+                    <!--</td>-->
+                    <td><a class="" ng-click="lqc.open(lieuQuota,0,lieuQuota)">查看详情</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div common-pagination></div>
+</div>
+<script type="text/ng-template" id="lieuQuotaPreLiquidateModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">调休额度管理</h3>
+    </div>
+    <div class="modal-body" id="lieuQuotaPreLiquidateModal">
+        <table class="table table-header">
+            <tbody>
+            <tr>
+                <td>{{lieuQuota.employeeId}}</td>
+                <td>{{lieuQuota.sapId}}</td>
+                <td>{{lieuQuota.employeeName}}</td>
+                <td>{{lieuQuota.companyName}}</td>
+                <td>{{lieuQuota.departmentName}}</td>
+                <td>{{lieuQuota.workGroups}}</td>
+                <td>{{lieuQuota.postName}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="content">
+            <div class="pull-right m-b-15">
+                <button class="btn btn-primary" type="button" ng-click="ok()">确定清算</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel()">返回列表</button>
+            </div>
+            <table class="table table-bordered table-body">
+                <tbody>
+                <tr>
+                    <td>周期</td>
+                    <td>开始时间</td>
+                    <td>结束时间</td>
+                    <td>额度（小时）</td>
+                    <td>已使用（小时）</td>
+                    <td>累计结余（小时）</td>
+                </tr>
+                <tr ng-repeat="q in detailList">
+                    <td>{{q.lockCycleName}}</td>
+                    <td>{{q.beginDate}}</td>
+                    <td>{{q.endDate}}</td>
+                    <td>{{q.quota}}</td>
+                    <td>{{q.quotaUsed}}</td>
+                    <td>{{q.quotaBalance}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</script>

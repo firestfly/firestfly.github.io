@@ -1,0 +1,22 @@
+<div>
+    <a class="list-group-item table-item" ng-click="toogle()">
+        <div class="table-item-main">
+            <div class="table-item-main-left">{{ mainLeft }}</div>
+            <i class="fa pull-right" ng-class="{'fa-chevron-up': chevronUp, 'fa-chevron-down': chevronDown}"></i>
+
+            <div class="table-item-main-right">{{ mainRight }}</div>
+        </div>
+    </a>
+
+    <div uib-collapse="isCollapsed" class="color-gray">
+        <div class="collapse-item-left">
+            {{ collapseUpLeft }}
+            <span class="collapse-item-right">{{ collapseUpRight }}</span>
+        </div>
+        <hr>
+        <div class="collapse-item-left">
+            {{ collapseDownLeft }}
+            <span class="collapse-item-right">{{ collapseDownRight }}</span>
+        </div>
+    </div>
+</div>

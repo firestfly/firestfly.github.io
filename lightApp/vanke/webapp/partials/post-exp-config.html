@@ -1,0 +1,106 @@
+<div class="container-fluid">
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="regular">
+            <div class="row caption-row">
+                <div class="col-md-4 post-exp-caption">
+                    级别
+                </div>
+                <div class="col-md-8">
+                    <div class="pull-right">
+                        <button type="button" class="btn vk-btn-passion" ng-click="addLevel()">新增级别</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row vk-row">
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <tr>
+                                <th>级别名称</th>
+                                <th colspan="3">经验值区间</th>
+                                <th>操作</th>
+                            </tr>
+                            <tr ng-repeat="level in levels">
+                                <td>
+                                    <span editable-text="level.levelName" e-name="levelName" e-form="rowform"
+                                          e-required ng-bind="level.levelName" onbeforesave="checkLevelName($data)">
+                                    </span>
+                                </td>
+                                <td class="no-border-left">
+                                    <span editable-number="level.experienceValueBegin" e-name="experienceValueBegin"
+                                          e-form="rowform"
+                                          e-required ng-bind="level.experienceValueBegin"
+                                          onbeforesave="checkExperienceValue($data)">
+                                    </span>
+                                </td>
+                                <td class="no-border-mid">
+                                    ~
+                                </td>
+                                <td class="no-border-right">
+                                    <span editable-number="level.experienceValueEnd" e-name="experienceValueEnd"
+                                          e-form="rowform"
+                                          e-required ng-bind="level.experienceValueEnd"
+                                          onbeforesave="checkExperienceValue($data)">
+                                    </span>
+                                </td>
+                                <td style="white-space: nowrap">
+                                    <!-- form -->
+                                    <form editable-form name="rowform" onbeforesave="saveLevels($index, $data)"
+                                          ng-show="rowform.$visible" class="form-buttons form-inline"
+                                          shown="inserted == level">
+                                        <button type="submit" ng-disabled="rowform.$waiting"
+                                                class="btn vk-btn-default">
+                                            保存
+                                        </button>
+                                        <button type="button" ng-disabled="rowform.$waiting"
+                                                ng-click="rowform.$cancel(); removeTempLevel()"
+                                                class="btn vk-btn-passion">
+                                            取消
+                                        </button>
+                                    </form>
+                                    <div class="buttons" ng-show="!rowform.$visible">
+                                        <button class="btn vk-btn-health"
+                                                ng-click="rowform.$show(); editLevel(rowform)">修改
+                                        </button>
+                                        <button class="btn vk-btn-relax" ng-click="removeLevel($index, level.levelId)">
+                                            删除
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row caption-row">
+                <div class="col-md-4 post-exp-caption">
+                    司龄
+                </div>
+            </div>
+            <div class="row vk-row">
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-condensed ">
+                            <tr>
+                                <td>
+                                    <div class="exp-increasement">
+                                        <b>30天累计值：</b><input type="text" class="form-control input-inline"
+                                                             ng-model="cycleIncreasement">
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row vk-row text-center">
+                <button type="submit" class="btn vk-btn-default" ng-click="submitLevels()">
+                    保存
+                </button>
+                <button type="button" class="btn vk-btn-passion" ng-click="cancel()">
+                    返回
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+export const LOADING = 'LOADING'
+export const AXIOS = 'AXIOS'
+export const NETWORK = 'NETWORK'
+export const USERINFO = 'USERINFO'
+export const HISTORY_KEY = 'HISTORY_KEY'

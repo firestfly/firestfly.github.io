@@ -1,0 +1,39 @@
+{
+  "employee": [
+    {
+      "employeeId": 12322,
+      "name": "张山",
+      "department": "璞悦山",
+      "avatar": null,
+      "workJob": "系统负责人"
+    },
+    {
+      "employeeId": 1232122,
+      "name": "李四",
+      "department": "万科城",
+      "avatar": null,
+      "workJob": "班长系统负责人"
+    },
+    {
+      "employeeId": 1231222,
+      "name": "王五",
+      "department": "四季花城",
+      "avatar": null,
+      "workJob": "车行系统负责人"
+    },
+    {
+      "employeeId": 12312322,
+      "name": "谢六",
+      "department": "璞悦山",
+      "avatar": null,
+      "workJob": "系统负责人"
+    },
+    {
+      "employeeId": 123123,
+      "name": "梁七",
+      "department": "啊啊打算",
+      "avatar": null,
+      "workJob": "系统负责人"
+    }
+  ]
+}

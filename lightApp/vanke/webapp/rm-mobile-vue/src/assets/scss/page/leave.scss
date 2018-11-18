@@ -1,0 +1,261 @@
+@charset "UTF-8";
+.pb0 {
+  padding-bottom: 0;
+}
+.page_hd {
+  background-color: #fff;
+  margin-bottom: 0.41667rem;
+  .page__cell {
+    .flexbox {
+      padding: rem(30px) rem($inner-width) rem(30px) rem($inner-width);
+      font-size: 16px;
+      &:active {
+        background: #f2f2f2;
+      }
+    }
+  }
+}
+.tabbar-radius {
+  margin: .4rem 15px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: flex;
+  background-color: #fff;
+  overflow: hidden;
+  li:first-child {
+    border-left: none
+  }
+  .active {
+    background-color: #2E2E33;
+    border-color: #2E2E33;
+    color: #fff !important;
+  }
+  &.tab-color .active {
+    background-color: $primaryBg;
+  }
+}
+
+.ev-tab {
+  background-color: $primaryBg;
+  color: #ddd;
+  line-height: 40px;
+  height: 40px;
+  .ev-sub {
+    float: left;
+    width: 50%;
+    text-align: center;
+  }
+  .active {
+    color: #fff;
+    position: relative;
+    &:after {
+      position: absolute;
+      content: '';
+      width: 80%;
+      left: 10%;
+      height: 3px;
+      background: rgba(255, 255, 255, .8);
+      bottom: 1px;
+    }
+  }
+}
+
+.textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  height: 50px;
+  appearance: none;
+  border-radius: 0;
+  padding: 4px;
+  font-size: 14px;
+}
+
+.bot-btn {
+  background-color: #fff;
+  line-height: 40px;
+}
+
+.picker-model {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .7);
+  z-index: 1000;
+  .picker {
+    background-color: #fff;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    transition: all .4s linear;
+  }
+}
+
+.fadeUp-enter-active, .fadeUp-leave-active {
+  transition: opacity .2s;
+}
+
+.fadeUp-enter, .fadeUp-leave-active {
+  opacity: 0;
+}
+
+.fadeUp-enter-active .picker, .fadeUp-leave-active .picker {
+  transition: transform .4s;
+}
+
+.fadeUp-enter .picker, .fadeUp-leave-active .picker {
+  transform: translate3d(0, 100%, 0);
+}
+
+.network--error {
+  padding-top: 120px;
+  padding-bottom: 100px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 20px;
+  color: #999;
+}
+
+.icon-warn {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background: url(./assets/images/icon-error.png) no-repeat;
+  background-size: 100% 100%;
+  vertical-align: top;
+  margin-right: 3px;
+}
+
+.page-loading {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.m-loading {
+  width: 28px;
+  height: 28px;
+  display: inline-block;
+  border: 2px solid #8EC1E3;
+  border-radius: 100%;
+  border-color: #777 #777 #777 transparent;
+  animation: oval .75s linear infinite;
+}
+
+@keyframes oval {
+  0% {
+    transform: rotate(0deg)
+  }
+  100% {
+    transform: rotate(359deg)
+  }
+}
+
+// 弹出筛选遮罩
+.model-mask {
+  transition: .2s ease-in-out all;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  bottom: 0;
+  background: rgba(0, 0, 0, .6);
+  overflow: auto;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.model-mask-close {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 18%;
+}
+
+.page-checkbox {
+  transition: .2s ease-in-out all;
+  background-color: #fff;
+  position: absolute;
+  width: 82%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 18%;
+}
+
+.fade-in-enter .page-checkbox, .fade-in-leave-active .page-checkbox {
+  transform: translate(100%, 0);
+}
+
+$page-checkbox--bar-height: 40px;
+.page-checkbox--content {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  bottom: $page-checkbox--bar-height;
+  overflow: auto;
+}
+
+.page-checkbox--bar {
+  position: absolute;
+  bottom: 0;
+  height: $page-checkbox--bar-height;
+  width: 100%;
+  line-height: $page-checkbox--bar-height;
+  background-color: $themes-color;
+  color: #fff;
+  > div:last-child {
+    border-left: 1px solid #fff;
+  }
+}
+
+ul.page-checkbox--state {
+  margin-left: rem(-20px);
+  li {
+    float: left;
+    width: 33.3333%;
+    padding-left: rem(20px);
+    margin-bottom: rem(20px);
+    input {
+      display: none;
+    }
+    label {
+      background-color: #ccc;
+      text-align: center;
+      border-radius: 3px;
+      height: 42px;
+      line-height: 1.2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 3px;
+      border: 1px solid #ccc;
+      position: relative;
+    }
+    [type=checkbox] {
+      position: absolute;
+      clip: rect(0, 0, 0, 0);
+      &:checked + label {
+        border-color: $themes-color;
+      }
+      &:checked + label::after {
+        position: absolute;
+        content: '';
+        right: -1px;
+        bottom: -1px;
+        width: 30px;
+        height: 30px;
+        background: url(./assets/images/icon-selected.png) no-repeat right bottom;
+        background-size: cover;
+      }
+    }
+  }
+}
+
+.fw-normal {
+  font-weight: normal;
+  font-style: normal;
+}

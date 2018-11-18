@@ -1,0 +1,59 @@
+<div class="scrollable">
+    <div class="scrollable-content">
+        <div class="employee-intro">
+            <span>{{ signIn.employeeInfo.id }}</span>
+            <span>{{ signIn.employeeInfo.name }}</span>
+            <span>{{ signIn.employeeInfo.jobName }}</span>
+        </div>
+        <div class="page-bar">
+            <div class="left-area" ng-click="signIn.updateDay('lastDay')"
+                 ng-class="{'color-disabled': lastDayDisabled}"><i class="bar-arrow arrow-left"></i>前一天
+            </div>
+            <div class="right-area" ng-click="signIn.updateDay('nextDay')"
+                 ng-class="{'invisible': signIn.hideNextDay }">后一天<i class="bar-arrow arrow-right"></i></div>
+            <div class="title-area">
+                <div class="title-area-radius">
+                    <div class="title-centent-text">
+                        <div>
+                            <h3>
+                                {{ signIn.dateForShow | date: 'yyyy-MM-dd' }}
+                                <span class="color-gray" ng-bind="signIn.currentWeek"></span>
+                                <i class="choose-week-arrow"></i>
+                            </h3>
+                            <input type="text" ng-model="signIn.date" pickadate readonly="readonly" no-extra-rows
+                                   format="yyyy-MM-dd" min-date="signIn.mindate" max-date="signIn.maxdate"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-cell white-bg">
+            <div class="sign-cell" ng-repeat="signInItem in signIn.signInCollection">
+                <div class="sign-main border-b">
+                    <div class="sign-list">
+                        <span class="sign-lebel">时间:</span>
+                        <span>{{ signInItem.attendanceTime }}</span>
+                    </div>
+                    <div class="sign-list">
+                        <span class="sign-lebel">地点:</span>
+                        <span ng-class="{'font-color-black': signInItem.fontNormal,
+                                                          'font-color-green': signInItem.fontLoading,
+                                                          'font-color-red': signInItem.fontFail}">
+                            {{ signInItem.attendanceSpot }}</span>
+                    </div>
+                    <div class="sign-list">
+                        <span class="sign-lebel">区域:</span>
+                        <span ng-class="{'font-color-black': signInItem.fontNormal,
+                                                          'font-color-green': signInItem.fontLoading,
+                                                          'font-color-red': signInItem.fontFail}">{{
+                            signInItem.attendanceValid }}</span>
+                    </div>
+                    <div class="sign-list">
+                        <span class="sign-lebel">类型:</span>
+                        <span>{{ signInItem.attendanceType }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

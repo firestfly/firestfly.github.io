@@ -1,0 +1,145 @@
+<div class="scrollable wifi-scrollable">
+    <div class="scrollable-content wifi">
+        <div class="employee-intro">
+            <span>{{ wa.employeeInfo.id }}</span>
+            <span>{{ wa.employeeInfo.name }}</span>
+            <span>{{ wa.employeeInfo.jobName }}</span>
+        </div>
+        <form action="" name="myForm">
+            <div class="wifi-row ">
+                <div class="flex-box inner">
+                    <div class="">项目名称</div>
+                    <div class="flex ta-r" ng-click="wa.departmentModal = true">
+                        {{wa.department.name}} <span class="wifi-arrow-down" ng-show="wa.departments.length > 0"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="wifi-row">
+                <div class="inner flex-box">
+                    <div class="flex">
+                        <div class=""><img src="./rm-mobile/app/images/map-pin.png" alt=""/>{{wa.department.name}}</div>
+                        <div class="wifi-alignment">
+                            <!--<input type="text"/>-->
+                            <!--<input type="text" class="wifi-input">-->
+                            <!--<input type="text" class="wifi-input" placeholder="请填写考勤地点（必填）"/>-->
+                            <input type="text" class="wifi-input" placeholder="请填写考勤地点（必填）" name="attendancePlace"
+                                   ng-model="wa.attendancePlace" ng-pattern="wa.numberPattern"/>
+                            <!--<pre>{{myForm.attendancePlace.$valid}}</pre>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="wifi-row" ng-show="!wa.isShowWifiAdding">
+                <div class="flex-box inner">
+                    <div class="">
+                        <div class="">
+                            <img src="./rm-mobile/app/images/wifi.png" alt=""/>
+                        </div>
+                        <div class="vk-hide">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <div class="">
+                            {{wa.SSID.ssid}}
+                        </div>
+                        <div class="wifi-subtitle">
+                            <small>{{wa.SSID.bssid}}</small>
+                        </div>
+                    </div>
+                    <div class="flex wifi-subtitle ta-r" ng-if="wa.SSID.activeWifi">
+                        <small>当前连接Wi-Fi</small>
+                    </div>
+                </div>
+            </div>
+            <div class="wifi-row" ng-show="wa.isShowWifiAdding" ng-click="wa.getSSID()">
+                <div class="inner flex-box wifi-address-default">
+                    获取办公Wi-Fi
+                </div>
+            </div>
+            <div class="wifi-row">
+                <div class="flex-box inner" ng-click="wa.showFixedPostModal()">
+                    <img src="./rm-mobile/app/images/fixedPost.png" alt=""/>添加固定岗位地点
+                    <small class="wifi-subtitle">（可多选）</small>
+                    <div class="flex ta-r" ng-if="wa.fixedPosts.length > 0">
+                        <span class="wifi-arrow-down"></span>
+                    </div>
+                </div>
+                <div class="flex-box inner border-t" ng-repeat="fixedPost in wa.fixedPostSelectedArray">
+                    <div class="">
+                        <div class="vk-hide">
+                            <img src="" alt=""/>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="">
+                            {{fixedPost.fixedPostName}}
+                        </div>
+                    </div>
+                    <div class="flex ta-r" ng-click="wa.fixedPostDeselect(fixedPost)">
+                        <img src="./rm-mobile/app/images/delete.png" alt="" class="right"/>
+                    </div>
+                </div>
+            </div>
+            <div class="inner-small-row">
+                <a href="" class="vk-btn vk-btn-primary" ng-click="wa.save()">保存</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="wifi-tab">
+    <a class="tabs active" href="#/wifi/add">设置</a>
+    <a class="tabs" href="#/wifi/search">查看</a>
+</div>
+
+<div class="backdrop wifi" ng-show="wa.departmentModal && wa.allowDepartmentSelect">
+    <div class="backdrop-mask" ng-click="wa.departmentModal = !wa.departmentModal ">
+
+    </div>
+    <div class="modal">
+        <div class="modal-header flex-box border-b">
+            <div class="flex" ng-click="wa.departmentModal = !wa.departmentModal ">取消</div>
+            <div class="flex ta-r" ng-click="wa.departmentSelected()">确定</div>
+        </div>
+        <div class="modal-content">
+            <div class="post-list" ng-repeat="department in wa.departments" ng-click="wa.sigleSelect(department)">
+                <div class="flex-box">
+                    <div class="flex9">
+                        {{department.name}}
+                    </div>
+                    <div class="flex ta-r" ng-show="department.selected">
+                        <img src="./rm-mobile/app/images/selected.png" alt=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="backdrop wifi" ng-show="wa.fixedPostModal">
+    <div class="backdrop-mask" ng-click="wa.fixedPostModal = !wa.fixedPostModal ">
+
+    </div>
+    <div class="modal">
+        <div class="modal-header flex-box border-b">
+            <div class="flex" ng-click="wa.fixedPostModal = !wa.fixedPostModal ">取消</div>
+            <div class="flex ta-r" ng-click="wa.fixedPostMultiselect()">确定</div>
+        </div>
+        <div class="modal-content">
+            <div class="post-list" ng-repeat="fixedPost in wa.fixedPosts"
+                 ng-click="fixedPost.selected = !fixedPost.selected">
+                <div class="flex-box">
+                    <div class="">
+                        {{fixedPost.fixedPostName}}
+                    </div>
+                    <div class="flex ta-r" ng-show="fixedPost.selected">
+                        <img src="./rm-mobile/app/images/selected.png" alt=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

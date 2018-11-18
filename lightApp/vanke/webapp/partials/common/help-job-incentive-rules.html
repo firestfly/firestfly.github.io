@@ -1,0 +1,83 @@
+<div class="container-fluid vk-employee-container" id="help-container">
+
+    <div class="row welcome-header">
+        <div class="col-md-8">
+            <h4>提成规则参数设定说明</h4>
+        </div>
+        <div class="col-md-4 text-right">
+            <a href="#/job-incentive-rules" class="btn btn-default">返回列表</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-lg-9">
+            <div class="help-img help-img-job-incentive-rules">
+            </div>
+            <ul class="help-content-list">
+                <li>
+                    <div class="with-label">
+                        <label>基础分 ： </label>
+
+                        <p>对应基本工资，员工本月份内应该完成的积分要求。</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="with-label">
+                        <label>总分扣减系数 ： </label>
+
+                        <p>当员工获取的非经营类任务总得分（非经营类任务为未收到钱任务） 小于基础分时，总分将按此系数扣减。</p>
+                    </div>
+                </li>
+                <li>
+                    <p>例如“基础分”设定为120，总分扣减系数是0.8。</p>
+
+                    <p>当员工实际总分为230，非经营类任务总得分为100，经营任务总得分是130，由于100（非经营类任务总得分）<120（基础分），则总分将按照0.8进行扣减，即扣减后总分= 230 * 0.8 =
+                        184，以此总分进行兑换。</p>
+
+                    <p>用户的实际总分将被分为三档进行兑换：</p>
+                    <ul>
+                        <li>“基础分”部分，没有提成</li>
+                        <li>“基本提成分”部分，按照“基本提成分系数”兑换为“基本提成”</li>
+                        <li>剩余部分，按照“超额提成分系数”兑换为“超额提成”</li>
+                    </ul>
+
+                    <p></p>
+
+                    <p>接着上面的例子：我们将“基本提成分”设定为50，对应的“基本提成分系数”为2；“超额提成分系数”设定为3；那么，在184分的总分中：</p>
+                </li>
+                <li>
+                    <div class="with-label">
+                        <label>总提成 ＝ </label>
+
+                        <p>基本提成 + 超额提成</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="with-label">
+                        <label>＝ </label>
+
+                        <p>基本提成分 *基本提成分系数 + （总分 – 基础分 – 基本提成分）* 超额提成分系数</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="with-label">
+                        <label>＝ </label>
+
+                        <p>50 * 2 + （184 - 120 - 50 ）* 3</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="with-label">
+                        <label>＝ </label>
+
+                        <p>142元</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-3">
+        </div>
+    </div>
+
+
+</div>

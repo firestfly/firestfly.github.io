@@ -1,0 +1,84 @@
+<div class="container-fluid">
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="regular">
+            <div class="row vk-spaced-row">
+                <div id="shift-view" class="search-in-right">
+                    <div data-common-search-bar data-week-range="true" data-hide-export-btn="true"
+                         data-hide-groups="true" data-hide-date-range="true"
+                         data-hide-search-input="true"></div>
+                </div>
+            </div>
+            <div class="row vk-row">
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" ng-table="tableParams">
+                            <tr>
+                                <th>班次名称</th>
+                                <th>班次说明</th>
+                                <th>上班时间</th>
+                                <th>下班时间</th>
+                                <th>倒班班次名称</th>
+                            </tr>
+                            <tr ng-if="shiftsSearchResult">
+                                <td colspan="6">暂无数据，请重新选择部门查询</td>
+                            </tr>
+                            <tr ng-if="!shiftsDefaultState">
+                                <td colspan="6">数据加载中...</td>
+                            </tr>
+                            <tr ng-repeat="shift in shifts">
+                                <td>
+                            <span ng-bind="shift.label">
+
+                            </span>
+                                </td>
+                                <td>
+                            <span ng-bind="shift.name">
+
+                            </span>
+                                </td>
+                                <td>
+                            <span ng-bind="(shift.onDutyTime | date:'HH:mm') || 'empty'">
+
+                            </span>
+                                </td>
+                                <td>
+                            <span ng-bind="(shift.offDutyTime | date:'HH:mm') || 'empty'">
+
+                            </span>
+                                </td>
+                                <td width="280">
+
+
+                                    <div class="switch-shift-setting" ng-show="!shift.showSwitchShift">
+                                        <span>{{shift.switchShiftLabel || '-'}}</span>
+
+                                        <div class="pull-right switch-state">
+                                            <a href=""
+                                               ng-click="shift.showSwitchShift = !shift.showSwitchShift">修改</a>
+                                        </div>
+
+                                    </div>
+                                    <div ng-show="shift.showSwitchShift">
+                                        <select name="" class="switchSelect" ng-model="shift.switchShiftId"
+                                                ng-options="item.shiftId as item.label for item in shifts">
+                                            <option value="">-</option>
+                                        </select>
+
+                                        <div class="pull-right switch-state">
+                                            <a class="btn vk-btn-default" href=""
+                                               ng-click="saveSwitchShift(shift,shift.switchShiftId,item)">保存</a>
+                                            <a href="" class="btn vk-btn-passion"
+                                               ng-click="cancelSwitchShift(shift)">取消</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div common-pagination></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
