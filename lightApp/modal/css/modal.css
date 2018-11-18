@@ -1,0 +1,292 @@
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, "Microsoft Yahei", STHeiTi, Tahoma, Arial, "Heiti SC", "Hiragino Sans GB", Simsun, sans-self;
+    font-size: 16px;
+    line-height: 1.43;
+    color: #333333;
+    overflow: hidden;
+    -webkit-transform-style: preserve-3d;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+}
+
+.btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    color: #fff;
+    background-color: #007aff;
+    background-image: none;
+    border: 1px solid #007aff;
+    -webkit-user-select: none;
+    padding: 10px 12px;
+    font-size: 16px;
+    line-height: 1.43;
+}
+
+.btn-group {
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.modal .modal-btns .btn:active {
+    background-color: #d4d4d4;
+}
+
+.btn:visited {
+    color: #fff;
+}
+
+.btn:focus {
+    outline: 0;
+}
+
+.btn:active, .btn.active {
+    outline: 0;
+    opacity: .9;
+}
+
+.modal .modal-btns .btn {
+    border: none;
+    border-radius: 0;
+}
+
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -135px;
+    width: 270px;
+    opacity: 0;
+    overflow: hidden;
+    border-radius: 6px;
+    background-color: #e8e8e8;
+    text-align: center;
+    -webkit-transform: scale3d(1.185, 1.185, 1);
+    transform: scale3d(1.185, 1.185, 1);
+    -webkit-transition-property: transform, opacity;
+    transition-property: transform, opacity;
+}
+
+.modal .modal-content {
+    padding: 15px;
+    border-bottom: 1px solid #c8c8cc;
+}
+
+.modal .modal-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.modal .modal-text {
+    margin: 5px 0;
+}
+
+.modal .modal-btns {
+    display: -webkit-box;
+    display: box;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.modal .modal-btns .btn {
+    background-color: #e8e8e8;
+    border-right: 1px solid #c8c8cc;
+    -webkit-box-flex: 1;
+    box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+
+.modal .modal-btns .btn:visited {
+    color: #007aff;
+}
+
+.modal .modal-btns .btn:first-child {
+    border-bottom-left-radius: 5px;
+}
+
+.modal .modal-btns .btn:last-child {
+    border-right: none;
+    border-bottom-right-radius: 5px;
+}
+
+.modal .form-control {
+    font-size: 13.6px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    height: 30.88px;
+}
+
+.modal.modal-in {
+    opacity: 1;
+    z-index: 9999;
+    -webkit-transition-duration: 300ms;
+    transition-duration: 300ms;
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+}
+
+.modal.modal-out {
+    -webkit-transition-duration: 300ms;
+    transition-duration: 300ms;
+    -webkit-transform: scale3d(0.85, 0.85, 1);
+    transform: scale3d(0.85, 0.85, 1);
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: 38.88px;
+    padding: 10px 12px;
+    font-size: 16px;
+    font-family: "Helvetica Neue", Helvetica, "Microsoft Yahei", STHeiTi, Tahoma, Arial, Roboto, "Droid Sans", "Droid Sans Fallback", "Heiti SC", "Hiragino Sans GB", Simsun, sans-self;
+    line-height: 1.43;
+    color: #555555;
+    background: url("about:blank") #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-control:focus {
+    border-color: #66afe9;
+    outline: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    background: rgba(0, 0, 0, 0.3);
+    display: block;
+    z-index: 99;
+}
+
+.loading {
+    z-index: 9999;
+}
+
+.loading > div {
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    position: absolute;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+}
+
+.loading > div:first-child {
+    background: #66D03A;
+    height: 30px;
+    width: 30px;
+    margin-top: -15px;
+    margin-left: -15px;
+    -webkit-animation: scale 1s 0s cubic-bezier(0.09, 0.57, 0.49, 0.9) infinite;
+    animation: scale 1s 0s cubic-bezier(0.09, 0.57, 0.49, 0.9) infinite;
+}
+
+.loading > div:last-child {
+    position: absolute;
+    border: 10px solid #007aff;
+    width: 60px;
+    height: 60px;
+    margin-top: -30px;
+    margin-left: -30px;
+    background: transparent;
+    border: 10px solid;
+    border-color: #007aff transparent #1CC7EF transparent;
+    -webkit-animation: rotate 1s 0s cubic-bezier(0.09, 0.57, 0.49, 0.9) infinite;
+    animation: rotate 1s 0s cubic-bezier(0.09, 0.57, 0.49, 0.9) infinite;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+}
+
+@-webkit-keyframes rotate {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    50% {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotate {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    50% {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes scale {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+    45% {
+        -webkit-transform: scale(0.1);
+        transform: scale(0.1);
+        opacity: 0.7;
+    }
+    80% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes scale {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+    45% {
+        -webkit-transform: scale(0.1);
+        transform: scale(0.1);
+        opacity: 0.7;
+    }
+    80% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+}

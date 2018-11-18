@@ -1,0 +1,25 @@
+<!doctype html>
+<html ng-app="ngBindHtmlExample">
+<head>
+    <script src="../angular/angular.min.js"></script>
+    <script src="../angular/angular-sanitize.min.js"></script>
+    <script>
+        angular.module('ngBindHtmlExample', ['ngSanitize'])
+            .controller('ngBindHtmlCtrl', ['$scope', function ngBindHtmlCtrl($scope) {
+                $scope.myHTML = 'I am an <code>HTML</code>string with <a href="#">links!</a> and other' +
+                    ' <em>stuff</em>';
+                $scope.myUnsafeHTMLContent = '<p style="color:blue;>an html' +
+                    '<em onmouseover="this.textContent=\'PWN3D!\'">click hreer</em>' +
+                    'snippet</p>';
+                $scope.contents = 'Text with links: http://angularjs.org/ & mailto:us@there.org';
+            }]);
+    </script>
+</head>
+<body>
+<div ng-controller="ngBindHtmlCtrl">
+    <p ng-bind-html="myHTML"></p>
+    <p ng-bind-html-unsafe="myUnsafeHTMLContent"></p>
+    <div ng-bind-html="contents|linky"></div>
+</div>
+</body>
+</html>

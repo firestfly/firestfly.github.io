@@ -1,0 +1,26 @@
+.um-fill {
+    background-color: #fff;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.list {
+    display: none;
+    text-align: center;
+}
+
+.list.active {
+    display: block;
+}
+
+.price {
+    color: red;
+}
+
+.list-wrap p {
+    text-align: center;
+}
+
+.list-wrap > a {
+    min-height: 270px;
+}

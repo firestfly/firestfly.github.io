@@ -1,0 +1,141 @@
+.navbar-custom .ui-btn {
+    padding-top: 40px;
+}
+
+.ui-page-theme-uap .ui-btn:hover {
+    border-color: #00a1ea;
+}
+
+.ui-page-theme-uap .ui-btn:focus {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.navbar-custom .ui-btn:after {
+    width: 30px;
+    height: 30px;
+    margin-left: -15px;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+}
+
+.mybar1:after {
+    background: url(../img/mixedspot.png);
+    -webkit-background-size: 30px;
+    background-size: 30px;
+}
+
+.mybar2:after {
+    background: url(../img/setting_highlight.png);
+    -webkit-background-size: 50px;
+    background-size: 50px;
+}
+
+.mybar3:after {
+    background: url(../img/tab_camera_touch.png);
+    -webkit-background-size: 24px 22px;
+    background-size: 24px 22px;
+}
+
+.mybar4:after {
+    background: url(../img/tab_camera_touch.png);
+    -webkit-background-size: 24px 22px;
+    background-size: 24px 22px;
+}
+
+.mybar5:after {
+    background: url(../img/tab_concact_touch.png);
+    -webkit-background-size: 24px 25px;
+    background-size: 24px 25px;
+}
+
+html body .custom-mini {
+    padding: .4em .7em;
+    font-size: 14px;
+}
+
+.navbar-custom-notext .ui-btn {
+    text-indent: -99999px;
+}
+
+.navbar-custom-notext .ui-btn:after {
+    width: 30px;
+    height: 30px;
+    margin-left: -15px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    top: 50%;
+    margin-top: -15px;
+}
+
+.uap-mybar-notext1:after {
+    background: url(../img/mixedspot.png);
+    -webkit-background-size: 30px;
+    background-size: 30px;
+}
+
+.uap-mybar-notext2:after {
+    background: url(../img/setting_highlight.png);
+    -webkit-background-size: 50px;
+    background-size: 50px;
+}
+
+.uap-mybar-notext3:after {
+    background: url(glyphish-icons/tab_camera_touch.png);
+    -webkit-background-size: 24px 26px;
+    background-size: 24px 26px;
+}
+
+.uap-mybar-notext4:after {
+    background: url(glyphish-icons/tab_camera_touch.png);
+    -webkit-background-size: 24px 22px;
+    background-size: 24px 22px;
+}
+
+.uap-mybar-notext5:after {
+    background: url(glyphish-icons/tab_cancact_touch.png);
+    -webkit-background-size: 24px 16px;
+    background-size: 24px 16px;
+}
+
+.ui-icon-uap-back {
+    background: none !important;
+    border: none !important;
+}
+
+.ui-icon-uap-back:after {
+    background: url(../img/ui-icon-uap-back.png) center center;
+    border-radius: 0 !important;
+}
+
+.ui-icon-uap-home {
+    background: none !important;
+    border: none !important;
+}
+
+.ui-icon-uap-home:after {
+    background: url(../img/ui-icon-uap-home.png) center center;
+    border-radius: 0 !important;
+}
+
+.ui-listview .ui-icon-custom {
+    position: relative;
+}
+
+.ui-listview .ui-icon-custom:after {
+    background-color: transparent;
+    background-image: url(../img/arr.png);
+    -webkit-background-size: 50%;
+    background-size: 50%;
+}
+
+.ui-listview .ui-icon-custom .state {
+    position: absolute;
+    right: 40px;
+    font-weight: normal;
+}
+
+.ui-block-a.default, .ui-block-a.default, .ui-block-b.default, .ui-block-c.default, .ui-block-d.default, .ui-block-e.default {
+    height: 60px;
+}

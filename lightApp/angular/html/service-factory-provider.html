@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>service factory provider的异同</title>
+    <script src="../angular/angular.js"></script>
+    <script>
+        var myApp = angular.module('myApp', []);
+        //service style, probably the simplest one
+        myApp.service('helloWorldFromService', function () {
+            this.sayHello = function () {
+                return "hello World From Service!"
+            };
+        });
+        //factory style, more involved but more sophisticated
+        myApp.factory('helloWorldFromFactory', function () {
+            return {
+                sayHello: function () {
+                    return "hello World From Factory!"
+                }
+            };
+        });
+        //provider style, full blown, configurable version
+        myApp.provider('helloWorldFromProvider', function () {
+            this.name = 'Default';
+            this.$get = function () {
+                var name = this.name;
+                return {
+                    sayHello: function () {
+                        return "Hello, " + name + " From Provider!"
+                    }
+                }
+            };
+            this.setName = function (name) {
+                this.name = name;
+            };
+        });
+        myApp.value("helloWorldFromValue", {
+            sayHello: function () {
+                return "hello World From Value!";
+            }
+        })
+        myApp.constant("helloWorldFromConstant", {
+            sayHello: function () {
+                return "hello World From Constant!";
+            }
+        })
+        //hey, we can configure a provider!
+        myApp.config(function (helloWorldFromProviderProvider) {
+            helloWorldFromProviderProvider.setName('World');
+        });
+
+        function MyCtrl($scope, helloWorldFromProvider, helloWorldFromFactory, helloWorldFromService, helloWorldFromValue, helloWorldFromConstant) {
+            $scope.hellos = [
+                helloWorldFromProvider.sayHello(),
+                helloWorldFromFactory.sayHello(),
+                helloWorldFromService.sayHello(),
+                helloWorldFromValue.sayHello(),
+                helloWorldFromConstant.sayHello()
+            ];
+        }
+    </script>
+</head>
+<body>
+<div ng-controller="MyCtrl">
+    {{hellos}}
+</div>
+</body>
+</html>

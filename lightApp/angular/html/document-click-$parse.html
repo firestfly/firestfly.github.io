@@ -1,0 +1,56 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <meta charset="utf-8"/>
+    <title>Capturing Document-Clicks In AngularJS</title>
+</head>
+<body ng-controller="DemoController" bn-document-click="handleClick( ev )">
+<h1> Capturing Document-Clicks In AngularJS</h1>
+
+<p Click anywhere to trigger an event.</p>
+<p><strong>Click X</strong>: {{ mouseX }}</p>
+
+<p><strong>Click Y</strong>: {{ mouseY }}</p>
+<!--
+    从CDN中载入jQUery和AngularJS。为了能够使用“完整的”jQuery（与之对应的是不完整的jQLite），我们需要首先载入jQuery
+-->
+<script type="text/javascript" src="../js/jquery.js">
+</script>
+<script type="text/javascript" src="../angular/angular.min.js">
+</script>
+<script type="text/javascript">
+    var Demo = angular.module("Demo", []);
+    Demo.directive("bnDocumentClick", function ($document, $parse) {
+            var linkFunction = function ($scope, $element, $attributes) {
+                var scopeExpression = $attributes.bnDocumentClick;
+                //使用$parse来编译表达式
+                var invoker = $parse(scopeExpression);
+
+                $document.on("click", function (event) {
+                        //当点击事件被触发时，我们需要再次调用AngularJS的上下文。再次，我们使用$apply()来确保$digest()方法在幕后被调用
+                        $scope.$apply(function () {
+                                //在scope中调用处理函数，将jQuery时间映射到$event对象上
+                                invoker($scope, {ev: event});
+                            }
+                        );
+                    }
+                );
+                //当父控制器被从渲染文档中移除时监听"$destory"事件
+            };
+            return (linkFunction);
+        }
+    );
+    Demo.controller("DemoController", function ($scope) {
+            //设置初始的X/Y值
+            $scope.mouseX = "N/A";
+            $scope.mouseY = "N/A";
+            //当文档被点击时，它将调用该方法，并为它传递jQuery事件
+            $scope.handleClick = function (event) {
+                $scope.mouseX = event.pageX;
+                $scope.mouseY = event.pageY;
+            };
+        }
+    );
+</script>
+</body>
+</html> 

@@ -1,0 +1,33 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <script src="../angular/angular.js"></script>
+    <style type="text/css">
+        #bottom {
+            display: block;
+            margin-top: 12000px;
+        }
+    </style>
+    <script src="../angular/animate.js"></script>
+    <script type="text/javascript">
+        function ScrollCtrl($scope, $location, $anchorScroll) {
+            $scope.gotoBottom = function () {
+                // set the location.hash to the id of
+                // the element you wish to scroll to.
+                $location.hash('bottom');
+                $anchorScroll();
+            }
+            $scope.gotoTop = function () {
+                $location.hash('top');
+                $anchorScroll();
+            }
+        }
+    </script>
+</head>
+<body>
+<div ng-controller="ScrollCtrl">
+    <a id="top" ng-click="gotoBottom()">Go to bottom</a>
+    <a id="bottom" ng-click="gotoTop()">You're at the bottom,click to the top!</a>
+</div>
+</body>
+</html>

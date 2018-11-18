@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Farmer Business</title>
+    <link rel="stylesheet" href="css/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="css/um.css">
+    <link rel="stylesheet" href="css/orderlist.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/um.js"></script>
+    <script language="JavaScript" src="Frameworks/json.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.MACore.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Container.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Event.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Page.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Mvc.Model.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Mvc.JControl.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.Input.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.Select.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.Checkbox.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.RadioSet.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.List.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.Label.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Mvc.Controller.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Mvc.js"></script>
+    <script language="JavaScript" src="js/orderlists.js"></script>
+</head>
+<body>
+<div class="um-page">
+    <div class="um-header">
+        <h3>我的订单</h3>
+    </div>
+    <div class="um-content">
+        <ul class="um-list-group pl20 pr15" id="farmercustom">
+            <li class="um-list-item">
+                <a href="personal.html" class="btn">
+                    <div class="media-left">
+                        <img class="media-object img-circle" height=40 width=40 src="img/portal.jpg" alt="...">
+                    </div>
+                    <div class="media-body">
+                        <h4 id="nickname" class="media-heading" data-um-bindfield="personInfo.nickname"></h4>
+
+                        <p>
+                            会员ID： <span id="personid" data-um-bindfield="personInfo.id"></span>
+                        </p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <ul class="um-list-group" id="farmerAllList">
+            <li class="um-list-item">
+                <a href="allOrders.html" class="btn pl20">全部订单<span id="allNum" class="badge"
+                                                                    data-um-bindfield="orders.allOrders.num"></span></a>
+            </li>
+        </ul>
+        <ul class="um-list-group" id="farmerlist">
+            <li class="um-list-item">
+                <a href="newOrders.html" class="btn">我的新订单 <span id="newNum" class="badge"
+                                                                 data-um-bindfield="orders.newOrders.num"></span></a>
+            </li>
+            <li class="um-list-item">
+                <a href="deliverOrders.html" class="btn">待发货订单 <span id="deliverNum" class="badge"
+                                                                     data-um-bindfield="orders.deliverOrders.num"></span></a>
+            </li>
+            <li class="um-list-item">
+                <a href="ensureOrder.html" class="btn">待确认订单 <span id="ensureNum" class="badge"
+                                                                   data-um-bindfield="orders.ensureOrders.num"></span></a>
+            </li>
+            <li class="um-list-item">
+                <a href="commentOrder.html" class="btn">待评论订单 <span id="commentNum" class="badge"
+                                                                    data-um-bindfield="orders.commentOrders.num"></span></a>
+            </li>
+        </ul>
+        <ul class="um-list-group" id="farmergift">
+            <li class="um-list-item">
+                <a href="" class="btn um-no-icon">我的积分： <span id="points"
+                                                              data-um-bindfield="benefits.points"></span></a>
+            </li>
+            <li class="um-list-item">
+                <a href="" class="btn">我的兑换</a>
+            </li>
+            <li class="um-list-item">
+                <a href="" class="btn">兑换礼品</a>
+            </li>
+            <li class="um-list-item">
+                <a href="" class="btn">积分水流</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="um-footer um-noborder">
+        <ul class="um-footer-tabbar">
+            <li>
+                <a href="about.html">
+                    <div class="ti-home"></div>
+                    主页</a>
+            </li>
+            <li>
+                <a href="index.html">
+                    <div class="ti-bag"></div>
+                    选购</a>
+            </li>
+            <li>
+                <a href="shopcar.html">
+                    <div class="ti-shopping-cart"></div>
+                    购物车</a>
+            </li>
+            <li class="active">
+                <a href="javascript:;">
+                    <div class="ti-user"></div>
+                    我的订单</a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

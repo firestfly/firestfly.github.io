@@ -1,0 +1,30 @@
+<!doctype html>
+<html ng-app="app">
+<head>
+    <script src="../angular/angular.js"></script>
+    <script>
+        var app = angular.module("app", []);
+        var someFunction = function ($rootScope, $http) {
+            return "called!";
+        };
+
+        app.run(function ($rootScope, $injector) {
+            $rootScope.annotations = $injector.annotate(someFunction);
+            $rootScope.message = $injector.invoke(someFunction);
+        });
+        var injector = angular.injector(["ng"]);
+
+        var someFunction1 = function ($http) {
+            //...
+        };
+
+        injector.invoke(someFunction1);
+        //
+    </script>
+</head>
+<body>
+你可以使用annotate API来发现一个依赖注释作为一个可注入函数（上面的代码会将”$rotScope”和”$http”作为注释）
+你可以使用invike API来执行一个可注入函数并且将这个$injector传递到适当的service中。
+{{ message }}
+</body>
+</html>

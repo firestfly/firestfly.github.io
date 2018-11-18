@@ -1,0 +1,60 @@
+<!doctype html>
+<html ng-app="customControl">
+<head>
+    <script src="../angular/angular.js"></script>
+    <style type="text/css">
+        [contenteditable] {
+            border: 1px solid black;
+            background-color: white;
+            min-height: 20px;
+        }
+
+        .ng-invalid {
+            border: 1px solid red;
+        }
+    </style>
+    <script type="text/javascript">
+        angular.module('customControl', []).directive('contenteditable', function () {
+            return {
+                restrict: 'A', // only activate on element attribute
+                require: '?ngModel', // get a hold of NgModelController
+                link: function (scope, element, attrs, ngModel) {
+                    if (!ngModel) return; // do nothing if no ng-model
+
+                    // Specify how UI should be updated
+                    ngModel.$render = function () {
+                        console.log("render")
+                        element.html(ngModel.$viewValue || 'dd');
+                    };
+
+                    // Listen for change events to enable binding
+                    element.on('blur keyup change', function () {
+                        scope.$apply(read);
+                    });
+                    read(); // initialize
+
+                    // Write data to the model
+                    function read() {
+                        var html = element.html();
+                        // When we clear the content editable the browser leaves a <br> behind
+                        // If strip-br attribute is provided then we strip this out
+                        if (attrs.stripBr && html == '<br>') {
+                            html = '';
+                        }
+                        ngModel.$setViewValue(html);
+                    }
+                }
+            };
+        });
+    </script>
+
+</head>
+<body>
+<form name="myForm">
+    <div contenteditable name="myWidget" ng-model="userContent" strip-br="true" required>Change me!</div>
+    <span ng-show="myForm.myWidget.$error.required">Required!</span>
+    <hr>
+    <textarea ng-model="userContent"></textarea>
+</form>
+</body>
+</html>

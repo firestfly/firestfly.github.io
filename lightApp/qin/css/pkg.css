@@ -1,0 +1,1043 @@
+.mod-q-ui-carousel {
+    min-width: 1200px;
+    min-height: 100px;
+    position: relative;
+    overflow: hidden;
+    -webkit-transition: background-color .3s linear .3s;
+    -moz-transition: background-color .3s linear .3s;
+    -ms-transition: background-color .3s linear .3s;
+    -o-transition: background-color .3s linear .3s;
+    transition: background-color .3s linear .3s
+}
+
+.mod-q-ui-carousel .carousel-wrapper {
+    width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    height: 100%
+}
+
+.mod-q-ui-carousel .carousel-scenes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    z-index: 9;
+    -webkit-transition: opacity .3s linear;
+    -moz-transition: opacity .3s linear;
+    -ms-transition: opacity .3s linear;
+    -o-transition: opacity .3s linear;
+    transition: opacity .3s linear;
+    opacity: 0;
+    filter: alpha(opacity=0)
+}
+
+.mod-q-ui-carousel .fade-in {
+    -webkit-transition-delay: .5s;
+    -moz-transition-delay: .5s;
+    -ms-transition-delay: .5s;
+    -o-transition-delay: .5s;
+    transition-delay: .5s;
+    opacity: 1;
+    filter: alpha(opacity=100);
+    z-index: 10
+}
+
+.mod-q-ui-carousel .has-link {
+    cursor: pointer
+}
+
+.mod-q-ui-carousel .carousel-controls {
+    position: absolute;
+    bottom: -6px;
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    font-size: 0;
+    z-index: 20
+}
+
+.mod-q-ui-carousel .carousel-controls .item-selected {
+    width: 17px;
+    height: 13px;
+    display: inline-block;
+    background: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/normal_bg_4ba03bb2.png) no-repeat
+}
+
+.mod-q-ui-carousel .carousel-controls .item {
+    width: 30px;
+    height: 13px;
+    background: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/normal_bg_4ba03bb2.png) -18px 0 no-repeat;
+    display: inline-block;
+    margin-top: 6px;
+    cursor: pointer
+}
+
+.mod-q-ui-carousel .carousel-controls .current {
+    opacity: 0;
+    filter: alpha(opacity=0)
+}
+
+.mod-q-ui-carousel .carousel-controls .item-selected {
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    background-position: 0 0;
+    -webkit-transition: all .5s ease 0;
+    -moz-transition: all .5s ease 0;
+    -ms-transition: all .5s ease 0;
+    -o-transition: all .5s ease 0;
+    transition: all .5s ease 0
+}
+
+.mod-q-ui-carousel .car-cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-position: top center;
+    background-repeat: no-repeat
+}
+
+.mod-q-ui-carousel .car-item {
+    position: absolute;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    background-repeat: no-repeat
+}
+
+.mod-q-ui-carousel .fade-in .car-item {
+    -webkit-transition: all .5s .5s;
+    -moz-transition: all .5s .5s;
+    -ms-transition: all .5s .5s;
+    -o-transition: all .5s .5s;
+    transition: all .5s .5s;
+    opacity: 1;
+    filter: alpha(opacity=100)
+}
+
+.mod-q-ui-carousel .car-top {
+    width: 100%;
+    top: -100px;
+    background-position: top center;
+    background-repeat: no-repeat
+}
+
+.mod-q-ui-carousel .fade-in .car-top {
+    top: 0
+}
+
+.mod-q-ui-carousel .car-bottom {
+    width: 100%;
+    bottom: -100px;
+    background-position: bottom center
+}
+
+.mod-q-ui-carousel .fade-in .car-bottom {
+    bottom: 0
+}
+
+.mod-q-ui-carousel .car-left {
+    height: 100%;
+    left: -100px;
+    top: 0;
+    background-position: left center
+}
+
+.mod-q-ui-carousel .fade-in .car-left {
+    left: 0
+}
+
+.mod-q-ui-carousel .car-right {
+    height: 100%;
+    right: -100px;
+    background-position: right center
+}
+
+.mod-q-ui-carousel .fade-in .car-right {
+    right: 0;
+    top: 0
+}
+
+.mod-q-ui-carousel .car-bounce {
+    -webkit-transform: scale(0.8);
+    -moz-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    -o-transform: scale(0.8);
+    transform: scale(0.8)
+}
+
+.mod-q-ui-carousel .fade-in .car-bounce {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1)
+}
+
+.control-group {
+    zoom: 1;
+    position: relative;
+    padding-bottom: 20px
+}
+
+.control-group .control-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    line-height: 26px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+    padding-left: 10px
+}
+
+.control-group .control-label .require {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-weight: 400;
+    color: #ae4a4a
+}
+
+.control-group .controls {
+    margin-left: 140px;
+    position: relative;
+    width: 400px
+}
+
+.control-group .auto-width-controls {
+    width: auto
+}
+
+.control-group .formerror {
+    display: inline-block;
+    width: auto
+}
+
+.control-group .controls-inline {
+    display: inline-block
+}
+
+.control-group .controls-inline .btn {
+    margin-top: 10px
+}
+
+.control-group .controls-inline .btn-primary {
+    margin-right: 20px
+}
+
+.control-group .extension {
+    color: #A9A9A9
+}
+
+.control-group .desc {
+    color: #A9A9A9;
+    line-height: 24px
+}
+
+.control-group .desc strong {
+    color: #333;
+    margin: 0 3px;
+    font-weight: 700
+}
+
+.control-group .upload-container {
+    display: inline-block;
+    margin: 10px 20px 0 0;
+    vertical-align: top
+}
+
+.control-group .input {
+    width: 378px
+}
+
+.controls-msg, .controls-tip {
+    position: absolute;
+    top: 0;
+    right: -210px;
+    width: 160px;
+    padding: 5px 10px 5px 28px;
+    color: #666;
+    line-height: 18px;
+    min-height: 18px;
+    display: none;
+    z-index: 1
+}
+
+.controls-msg:after, .controls-msg:before, .controls-tip:after,
+.controls-tip:before {
+    position: absolute;
+    content: "";
+    line-height: 0;
+    font-size: 0;
+    display: block;
+    background: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/user/icon-warning_f893f184.png) no-repeat
+}
+
+.controls-msg:before, .controls-tip:before {
+    top: 10px;
+    left: -5px;
+    width: 5px;
+    height: 7px
+}
+
+.controls-msg:after, .controls-tip:after {
+    top: 8px;
+    left: 10px;
+    width: 12px;
+    height: 12px
+}
+
+.controls-tip {
+    border: 1px solid #aecbfd;
+    background: #eff5ff
+}
+
+.controls-tip:before {
+    background-position: 0 -17px
+}
+
+.controls-tip:after {
+    background-position: -86px 0
+}
+
+.controls-msg {
+    border: 1px solid #dfb7b7;
+    background: #fcf8f8
+}
+
+.controls-msg:before {
+    background-position: -8px -17px
+}
+
+.controls-msg:after {
+    background-position: -114px 0
+}
+
+.check-single {
+    display: inline-block;
+    line-height: 24px
+}
+
+.single-line .check-single {
+    display: block
+}
+
+.channel-fieldset {
+    position: relative
+}
+
+.channel-fieldset .fieldset-title {
+    position: absolute;
+    top: 16px;
+    left: 0;
+    font-family: "寰蒋闆呴粦", HiraginoSansGB-W3, STHeitiSC-Light;
+    font-size: 18px;
+    font-weight: 700
+}
+
+.channel-fieldset .fieldset-content {
+    border-left: 1px solid #ddd;
+    margin-left: 100px;
+    padding: 20px 20px 0
+}
+
+.channel-fieldset .fieldset-content .control-group:last-child {
+    border-bottom: 1px dashed #E3E3E3
+}
+
+.input-text {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    color: #666;
+    border: 1px solid #999;
+    -webkit-box-shadow: 1px 1px 3px #ddd inset;
+    -moz-box-shadow: 1px 1px 3px #ddd inset;
+    box-shadow: 1px 1px 3px #ddd inset
+}
+
+.input-text .input {
+    border: none;
+    background: 0 0;
+    margin: 0;
+    padding: 5px;
+    height: 14px;
+    vertical-align: top;
+    cursor: text
+}
+
+.input-text .textarea {
+    line-height: 18px;
+    height: 100px;
+    overflow: auto
+}
+
+.input-text.disabled, .input-text.readonly {
+    background: #f8f8f8;
+    color: #5f5f5f
+}
+
+.input-text .input-limit {
+    position: absolute;
+    right: 5px;
+    top: 0;
+    height: 100%;
+    line-height: 24px;
+    color: #ccc
+}
+
+.input-text .input-number {
+    color: #ae4a4a
+}
+
+.input-text-focus {
+    border: 1px solid #639cfb;
+    -webkit-box-shadow: 0 0 4px #639cfb;
+    -moz-box-shadow: 0 0 4px #639cfb;
+    box-shadow: 0 0 4px #639cfb
+}
+
+.input-error, .input-success {
+    border: 1px solid #ae4a4a
+}
+
+.input-postfix, .input-prefix {
+    vertical-align: middle;
+    margin-left: 10px;
+    font-size: 12px
+}
+
+.input-prefix {
+    margin-left: 0;
+    margin-right: 10px
+}
+
+.input-checkbox, .input-radio {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/user/input-radio_c7c4391b.png) 0 -15px no-repeat;
+    cursor: pointer;
+    vertical-align: middle
+}
+
+.input-checkbox:hover, .input-radio:hover {
+    background-position: 0 -30px
+}
+
+.input-checkbox.checked, .input-radio.checked {
+    background-position: 0 0
+}
+
+.input-checkbox.checked.disabled, .input-radio.checked.disabled {
+    background-position: 0 -60px
+}
+
+.input-checkbox.disabled, .input-radio.disabled {
+    background-position: 0 -45px
+}
+
+.input-checkbox {
+    background: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/user/input-checkbox_ee06e172.png) 0 -15px no-repeat
+}
+
+.label-text {
+    font-size: 12px;
+    cursor: pointer;
+    vertical-align: middle;
+    margin: 0 17px 0 5px
+}
+
+.label-text.disabled {
+    color: #c6c6c6
+}
+
+select {
+    width: 190px
+}
+
+.ui-beautify-select {
+    display: inline-block;
+    border: 1px solid #999;
+    position: relative;
+    height: 24px;
+    background: #fff;
+    font-size: 12px;
+    color: #666
+}
+
+.ui-beautify-select.disabled {
+    background: #F8F8F8;
+    color: #5F5F5F
+}
+
+.ui-beautify-select:hover {
+    border: 1px solid #639cfb;
+    cursor: pointer
+}
+
+.ui-beautify-select.disabled:hover {
+    border: 1px solid #999;
+    cursor: auto
+}
+
+.ui-beautify-select .select-text {
+    display: block;
+    margin: 0 24px 0 10px;
+    line-height: 24px;
+    white-space: nowrap;
+    overflow: hidden
+}
+
+.ui-beautify-select .select-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 24px;
+    height: 24px
+}
+
+.ui-beautify-select .select-btn .icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/user/bg_sel_btn_f965ffe9.png) 8px 10px no-repeat
+}
+
+.select-list {
+    position: absolute;
+    border: 1px solid #999;
+    background: #fff;
+    z-index: 800;
+    max-height: 200px;
+    overflow-x: hidden;
+    overflow-y: auto
+}
+
+.select-list li {
+    line-height: 24px;
+    padding: 0 10px;
+    cursor: pointer;
+    white-space: nowrap
+}
+
+.select-list li:hover {
+    background: #f2f7fd;
+    color: #06c
+}
+
+.select-list .active {
+    background: #f1f1f1;
+    color: #06c
+}
+
+.select-group {
+    line-height: 0;
+    font-size: 0
+}
+
+.select-group .ui-beautify-select:first-child {
+    margin-right: 10px
+}
+
+.ui-helper-hidden-accessible {
+    position: absolute;
+    z-index: -1;
+    clip: rect(0, 0, 0, 0)
+}
+
+.control-group .form-tip {
+    position: relative;
+    padding: 10px 10px 10px 35px
+}
+
+.control-group .form-tip .form-tip-title {
+    font-size: 14px;
+    font-weight: 700
+}
+
+.control-group .form-tip .form-tip-text {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 30px
+}
+
+.control-group .form-tip .form-tip-icon {
+    display: block;
+    height: 12px;
+    left: 12px;
+    position: absolute;
+    top: 12px;
+    width: 12px;
+    background-image: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/user/icon-warning_f893f184.png)
+}
+
+.control-group .form-tip-warn {
+    background: none;
+    border: 1px solid #F3DDB2;
+    color: #DE981F
+}
+
+.control-group .form-tip-warn .form-tip-icon {
+    background-position: -57px 0
+}
+
+.control-group .form-tip-error {
+    background: none;
+    border: 1px solid #DFB7B7;
+    color: #AE4A4A
+}
+
+.control-group .form-tip-error .form-tip-icon {
+    background-position: -114px 0
+}
+
+.control-group .form-tip-success {
+    background: none;
+    border: 1px solid #C9E2B4;
+    color: #468847
+}
+
+.control-group .form-tip-success .form-tip-icon {
+    background-position: -29px 0
+}
+
+.btn {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0 20px;
+    margin: 0;
+    box-sizing: content-box;
+    color: #333;
+    background: #f5f5f5;
+    border: 1px solid #c6c6c6;
+    vertical-align: middle;
+    cursor: pointer;
+    text-decoration: none;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px
+}
+
+.btn:active {
+    text-decoration: none
+}
+
+.btn:visited {
+    color: #333
+}
+
+button.btn, input.btn {
+    line-height: 100%
+}
+
+.btn-primary {
+    border: 1px solid #2f5bb7;
+    color: #fff;
+    background-color: #3b85ff;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#3b85ff),
+    to(#357ae9));
+    background-image: -webkit-linear-gradient(top, #3b85ff, #357ae9);
+    background-image: -moz-linear-gradient(top, #3b85ff, #357ae9);
+    background-image: -o-linear-gradient(top, #3b85ff, #357ae9);
+    background-image: linear-gradient(to bottom, #3b85ff, #357ae9);
+    background-repeat: repeat-x
+}
+
+body, html {
+    height: 100%
+}
+
+.g-wp {
+    min-height: 100%
+}
+
+.g-hd {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: #fff;
+    height: 45px;
+    display: none
+}
+
+.g-nav {
+    display: none
+}
+
+.g-ma {
+    padding-bottom: 120px
+}
+
+.g-ft {
+    position: relative;
+    margin-top: -120px
+}
+
+.g-with-hd .bd-cloud-content .logo-qing, .g-with-hd .g-hd, .g-with-nav .g-nav,
+.g-with-nav .g-nav .head-hide {
+    display: block
+}
+
+.g-with-nav .bd-cloud-content .logo-qing {
+    display: none
+}
+
+.g-with-hd .g-ma {
+    padding-top: 45px
+}
+
+.g-with-nav .g-ma {
+    padding-top: 0
+}
+
+html {
+    line-height: 1.5;
+    color: #000
+}
+
+body {
+    font: 12px/1.5 arial, sans-serif;
+    font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif, "瀹嬩綋"
+}
+
+blockquote, body, code, dd, div, dl, dt, fieldset, form, h1, h2, h3, h4,
+h5, h6, input, legend, li, ol, p, pre, td, textarea, th, ul {
+    margin: 0;
+    padding: 0
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+fieldset, img {
+    border: 0;
+    border: none
+}
+
+address, caption, cite, code, dfn, th, var {
+    font-style: normal;
+    font-weight: 400
+}
+
+em {
+    font-style: normal
+}
+
+strong {
+    font-weight: 400
+}
+
+ol, ul {
+    list-style: none
+}
+
+caption, th {
+    text-align: left
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: 400
+}
+
+q:after, q:before {
+    content: ''
+}
+
+abbr, acronym {
+    border: 0;
+    font-variant: normal
+}
+
+sup {
+    font-size: 100%;
+    vertical-align: text-top
+}
+
+sub {
+    font-size: 100%;
+    vertical-align: text-bottom
+}
+
+input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit
+}
+
+legend {
+    color: #000
+}
+
+a {
+    text-decoration: none;
+    color: #0078da;
+    -webkit-transition: .3s color, .3s border-color, .3s background-color;
+    -moz-transition: .3s color, .3s border-color, .3s background-color;
+    -ms-transition: .3s color, .3s border-color, .3s background-color;
+    -o-transition: .3s color, .3s border-color, .3s background-color;
+    transition: .3s color, .3s border-color, .3s background-color
+}
+
+a:hover {
+    color: #0166b9
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup,
+menu, nav, section {
+    display: block
+}
+
+audio, canvas, video {
+    display: inline-block
+}
+
+button, input {
+    line-height: normal
+}
+
+button::-moz-focus-inner, input::-moz-focus-inner {
+    padding: 0;
+    border: 0
+}
+
+::-webkit-input-placeholder {
+    color: #ccc
+}
+
+:-moz-placeholder {
+    color: #ccc
+}
+
+::-moz-placeholder {
+    color: #ccc
+}
+
+:-ms-input-placeholder {
+    color: #ccc
+}
+
+:-o-input-placeholder {
+    color: #ccc
+}
+
+::-webkit-scrollbar, ::-webkit-scrollbar-track, ::-webkit-scrollbar-track-piece {
+    width: 6px;
+    border-radius: 3px;
+    background: #f0f0f0
+}
+
+::-webkit-scrollbar-thumb {
+    width: 6px;
+    border-radius: 3px;
+    background: #bbb
+}
+
+#qiao-flash-storage, #qiao-icon-wrap, #qiao-invite-wrap, #qiao-mess-wrap {
+    z-index: 900 !important
+}
+
+#baiduTongji > a {
+    display: none
+}
+
+.clear {
+    clear: both
+}
+
+.clearfix:after {
+    content: '\20';
+    display: block;
+    height: 0;
+    clear: both
+}
+
+.clearfix {
+    zoom: 1
+}
+
+.wordwrap {
+    word-break: break-all;
+    word-wrap: break-word
+}
+
+pre.wordwrap {
+    white-space: pre-wrap
+}
+
+.yh {
+    font-family: "Microsoft Yahei", "寰蒋闆呴粦", Arial, STHeiti, Tahoma,
+    Helvetica
+}
+
+.left {
+    float: left
+}
+
+.right {
+    float: right
+}
+
+.overflow {
+    overflow: hidden
+}
+
+.hide {
+    display: none
+}
+
+.inlineBlock {
+    display: inline-block;
+    zoom: 1
+}
+
+.block {
+    display: block
+}
+
+.inline {
+    display: inline
+}
+
+.scrollbox::-webkit-scrollbar, .scrollbox::-webkit-scrollbar-track,
+.scrollbox::-webkit-scrollbar-track-piece {
+    width: 6px;
+    border-radius: 3px;
+    background: #f0f0f0
+}
+
+.scrollbox::-webkit-scrollbar-thumb {
+    width: 6px;
+    border-radius: 3px;
+    background: #d3d3d3
+}
+
+.dialog-overlay {
+    background-color: #000;
+    height: 100%;
+    left: 0;
+    opacity: .5;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 199
+}
+
+.dialog-wrapper {
+    background-color: #FFF;
+    position: fixed;
+    padding: 15px 25px 40px;
+    width: 400px;
+    overflow: hidden;
+    border: 1px solid #CCC;
+    -webkit-box-shadow: 0 0 2px #CCC;
+    -moz-box-shadow: 0 0 2px #CCC;
+    box-shadow: 0 0 2px #CCC
+}
+
+.dialog-title {
+    color: #333;
+    font-family: '寰蒋闆呴粦', HiraginoSansGB-W3, STHeitiSC-Light;
+    font-size: 24px;
+    line-height: 24px;
+    font-weight: 500;
+    text-align: center;
+    margin: 30px 0
+}
+
+.dialog-content {
+    min-height: 48px;
+    line-height: 24px;
+    padding: 0 0 30px;
+    color: #666;
+    font-size: 14px
+}
+
+.dialog-content em {
+    font-weight: 700
+}
+
+.dialog-content .emp {
+    color: #9d261d;
+    font-weight: 700
+}
+
+.dialog-btns {
+    text-align: center
+}
+
+.dialog-btns .dialog-btn {
+    background-color: #F5F5F5;
+    border: 1px solid #C6C6C6;
+    border-radius: 2px;
+    box-sizing: content-box;
+    color: #333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 25px;
+    text-decoration: none;
+    vertical-align: middle;
+    margin-left: 15px
+}
+
+.dialog-btns .dialog-btn:first-child {
+    margin-left: 0
+}
+
+.dialog-btns .dialog-btn:hover {
+    background-color: #FFF
+}
+
+.dialog-btns .dialog-btn-blue {
+    background-color: #357AE9;
+    color: #FFF
+}
+
+.dialog-btns .dialog-btn-blue:hover {
+    background-color: #609AFA
+}
+
+.dialog-close {
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    position: absolute;
+    vertical-align: middle;
+    width: 12px;
+    height: 12px;
+    top: 10px;
+    right: 10px;
+    background: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/ui/q.ui.dialog/ico_dialog_close_2b31dcac.png) no-repeat
+}
+
+.q-ui-follownav {
+    position: relative
+}
+
+.q-ui-follownav .slider-arrow {
+    position: absolute;
+    display: block;
+    -webkit-transition: .3s left;
+    -moz-transition: .3s left;
+    -ms-transition: .3s left;
+    -o-transition: .3s left;
+    transition: .3s left
+}

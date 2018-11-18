@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>通信开放平台-登录</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="css/iuapmobile.um-2.7.0.css">
+    <script src="js/Frameworks/iuapmobile.frameworks.core-2.7.0.js"></script>
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/Frameworks/iuapmobile.frameworks.ui-2.7.0.js"></script>
+    <link rel="stylesheet" href="css/index.css">
+    <script>
+        $isWeb = true
+    </script>
+    <script>
+        function $pageReady() {
+        }
+
+        $(function () {
+            $("#loginBtn").on("click", function () {
+                var account = $("#user").val();
+                var password = $("#psw").val();
+                if (account == "" || password == "") {
+                    alert("请输入用户名和密码！");
+                    return false;
+                } else {
+                    alert("登录成功");
+                    location.href = "enterpriseAudit.html";
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="um-page">
+    <div class="um-content">
+        <h2 class="appname">通信开放平台</h2>
+        <div class="login um-css3-center">
+            <div class="um-input-group">
+                <span class="user"></span>
+                <input id="user" type="text" value="hgp" class="form-control" placeholder="用户名">
+            </div>
+            <div class="um-input-group mt15">
+                <span class="psw"></span>
+                <input id="psw" type="password" value="123456" class="form-control" placeholder="密码">
+            </div>
+            <div class="um-box-justify f14 mt10">
+                <label>
+                    <input type="checkbox" class="none" name="" id="autoLogin">
+                    <span class="check"></span> 自动登录
+                </label>
+                <a href="#">忘记密码?</a>
+            </div>
+            <button id="loginBtn" class="btn um-btn-success mt10">
+                登录
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

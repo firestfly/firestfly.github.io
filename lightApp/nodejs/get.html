@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<div id="panel" style="visibility:hidden;height:300px;width:300px;background:red;"></div>
+<script>
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://127.0.0.1:8080/', true);
+    request.addEventListener('readystatechange', function (next) {
+        return function () {
+            if (this.readyState === 4 && this.status === 200) {
+                next(this.responseText);
+            }
+        };
+    }(function (str) {
+        document.getElementById('panel').innerHTML = str;
+        document.getElementById('panel').style.visibility = 'visible';
+    }), false);
+    request.send();
+</script>
+</body>
+</html>

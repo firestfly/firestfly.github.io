@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>ms-data</title>
+    <script src="dist/avalon.js"></script>
+    <script>
+        var vm1 = avalon.define({
+            $id: "ancestor",
+            //aaa: 'ancestor value',
+            click: function () {
+                avalon.log("向下广播");
+                vm1.$fire("down!aaa", "capture");
+            }
+        })
+        vm1.$watch("aaa", function (v) {
+            avalon.log(v);
+            avalon.log("ancestor.aaa事件被触发了");
+        })
+        var vm2 = avalon.define({
+            $id: "parent",
+            aaa: 'parent value',
+            click: function () {
+                console.log("全局扩播");
+                vm2.$fire("all!aaa", "broadcast");
+            }
+        })
+        vm2.$watch("aaa", function (v) {
+            avalon.log(v);
+            avalon.log("parent.aaa事件被触发了");
+        })
+        var vm3 = avalon.define({
+            $id: "son",
+            //aaa: "son value",
+            click: function () {
+                console.log("向上冒泡");
+                vm3.$fire("up!aaa", "bubble");
+            }
+        })
+        vm3.$watch("aaa", function (v) {
+            avalon.log(v);
+            avalon.log("son.aaa事件被触发了");
+        })
+    </script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+<div ms-controller="ancestor">
+    <h3>avalon vm.$fire的升级版 </h3>
+    <button type="button" ms-click="click">
+        capture
+    </button>
+    <div ms-controller="parent">
+        <p>{{ aaa }}</p>
+        <button type="button" ms-click="click">broadcast</button>
+        <div ms-controller="son">
+            <p>{{ aaa }}</p>
+            <button type="button" ms-click="click">
+                bubble
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

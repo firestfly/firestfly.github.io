@@ -1,0 +1,13 @@
+applicationid=web1
+push_appid=
+key.alias=
+key.alias.password=
+push_server_mang=http://xiaoxi.yonyou.com:80/manage/proxyservice
+com.amap.api.v2.apikey=
+push_companypwd=
+push_server_msg=http://xiaoxi.yonyou.com:8080/manage/proxyservice
+key.store=
+mapkey=
+mapsdk=gaode
+push_companyid=
+key.store.password=

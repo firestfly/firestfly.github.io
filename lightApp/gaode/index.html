@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/font-icons.css">
+    <link rel="stylesheet" href="css/iuapmobile.um-2.7.0.css">
+    <link rel="stylesheet" href="css/iuapmobile.um.map-2.7.0.css">
+    <style type="text/css">
+        #result1 {
+            position: absolute;
+            background-color: white;
+            max-height: 100%;
+            overflow-y: auto;
+            top: 10px;
+            right: 10px;
+            width: 280px;
+        }
+
+        .blue-color {
+            color: #007aff;
+        }
+
+        .um-tabbar > li.active a {
+            background: transparent;
+            color: #007aff;
+        }
+    </style>
+    <script src="js/Frameworks/iuapmobile.frameworks.core-2.7.0.js"></script>
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/Frameworks/iuapmobile.frameworks.ui-2.7.0.js"></script>
+    <script src="js/knockout-2.2.0.js"></script>
+    <script type="text/javascript"
+            src="http://webapi.amap.com/maps?v=1.3&key=2cb30390679935b13ef2dc704d25346b"></script>
+    <script type="text/javascript" src="js/Frameworks/iuapmobile.frameworks.map-2.7.0.js"></script>
+    <script>
+        function $pageReady() {
+            //alert("webview ready");
+        }
+
+        function getLocationCallBack() {
+            var location = $ctx.getString("location");
+            $alert(location);
+        }
+
+        $(function () {
+            //初始化地图控件
+            var map = UM.map("#container");
+
+            //添加基础地图控件
+            map.addBasicFuncs(["ToolBar", "Scale", "AutoFocus"]);
+
+            //地图监听事件
+            map.onComplete(function () {
+                alert("地图初始化完成！");
+            })
+
+            $("#changeCenter").on("change", function () {
+                var val = $(this).val();
+                var center = [];
+                if (val == "")
+                    return;
+                map.setCity(val);
+            });
+
+            //当前位置定位接口
+            $("#myLocation").click(function () {
+                map.getCurPos();
+            })
+            //添加多个标注
+            $("#marker").click(function () {
+                map.clearAllMarkers();
+                map.createMarkers([{
+                    icon: 'http://www.easyicon.net/api/resizeApi.php?id=1181387&size=24',
+                    position: [116.205467, 39.907761],
+
+                }, {
+                    icon: 'http://www.easyicon.net/api/resizeApi.php?id=1181387&size=24',
+                    position: [116.368904, 39.913423]
+                }, {
+                    icon: 'http://www.easyicon.net/api/resizeApi.php?id=1181387&size=24',
+                    position: [116.305467, 39.807761]
+                }], true);
+            });
+
+            $("#searchService1").on("change", function () {
+                var val = $(this).val();
+                if (val == "")
+                    return;
+                map.getCity(function (result) {
+                    var city = result.city || "北京市";
+                    map.search(val, {
+                        city: city,
+                        pageSize: 10,
+                        pageIndex: 1
+                    }, function () {
+                        UM.page.back();
+                    });
+                })
+            });
+
+            $("#searchService2").delegate("img", "click", function () {
+                var $ele = $(this);
+                var query = $ele.siblings("span").text();
+                map.getCity(function (result) {
+                    var city = result.city || "北京市";
+                    map.search(query, {
+                        city: city,
+                        pageSize: 10,
+                        pageIndex: 1
+                    }, function () {
+                        UM.page.back();
+                    });
+                });
+            })
+        });
+
+    </script>
+</head>
+<body>
+<div class="um-page" id="index">
+    <div class="um-header">
+        <h3>地图简单实例</h3>
+    </div>
+    <div class="pl15 pr15">
+        <div class="um-input-search">
+            <input type="search" id="changeCenter" class="form-control" placeholder="输入地图要定位到的行政区域名称">
+            <span class="um-input-cancle">取消</span>
+        </div>
+    </div>
+    <div class="um-content">
+        <div id="container"></div>
+        <div id="result1"></div>
+    </div>
+    <div class="um-footer">
+        <ul class="um-tabbar">
+            <li>
+                <a href="#" id="myLocation">当前定位</a>
+            </li>
+            <li>
+                <a href="#nearBySearch" id="nearBy">本地服务</a>
+            </li>
+            <li>
+                <a href="#" id="marker">添加标注</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="um-page" id="nearBySearch" style="background:#efeff4">
+    <div class="um-header">
+        <a href="#" class="um-back">返回</a>
+        <h3>本地服务</h3>
+    </div>
+    <div class="um-input-group">
+        <span class="btn ti-search"></span>
+        <input type="search" id="searchService1" class="form-control" placeholder="输入服务名称，比如酒店">
+    </div>
+    <div class="um-content">
+
+        <div class="um-grid">
+            <div class="um-grid-row tc" id="searchService2">
+                <div>
+                    <a href="#"> <img src="img/movie.png" class="w um-img-responsive um-circle"> <span>电影</span> </a>
+                </div>
+                <div>
+                    <a href="#"> <img src="img/hotel.png" class="w um-img-responsive um-circle"> <span>酒店</span> </a>
+                </div>
+                <div>
+                    <a href="#"> <img src="img/restaurant.png" class="w um-img-responsive um-circle"> <span>餐馆</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="#"> <img src="img/takeout.png" class="w um-img-responsive um-circle"> <span>外卖</span> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="um-footer">
+
+    </div>
+</div>
+</body>
+</html>

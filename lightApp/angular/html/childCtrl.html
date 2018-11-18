@@ -1,0 +1,36 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <script src="../angular/angular.js"></script>
+    <script>
+        function MainCtrl($scope) {
+            $scope.timeOfDay = 'morning';
+            $scope.name = 'Nikki';
+            $scope.checkbox = true;
+        }
+
+        function ChildCtrl($scope) {
+            $scope.name = 'Mattie';
+        }
+
+        function BabyCtrl($scope) {
+            $scope.timeOfDay = 'evening';
+            $scope.name = 'Gingerbreak Baby';
+        }
+    </script>
+</head>
+<body ng-controller="MainCtrl">
+<input type="text" ng-model="timeOfDay"/>
+<input type="checkbox" name="" ng-model="checkbox" id=""/>
+
+<p>Good {{timeOfDay}}, {{name}}!</p>
+
+<div ng-controller="ChildCtrl">
+    <p>Good {{timeOfDay}}, {{name}}!</p>
+
+    <p ng-bind="name"></p>
+
+    <p ng-controller="BabyCtrl">Good {{timeOfDay}}, {{name}}!</p>
+
+    <div>
+</body>

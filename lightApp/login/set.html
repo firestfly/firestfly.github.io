@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <script language="JavaScript" src="Frameworks/json.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.MACore.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Container.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.UI.Mvc.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.UI.Mvc.Property.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.UI.Mvc.Entity.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.UI.Mvc.Field.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.UI.Mvc.Context.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.UI.Mvc.Document.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.UI.Mvc.Element.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.UI.Mvc.JControl.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.UI.Mvc.Engine.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.UI.Mvc.Controller.js"></script>
+
+    <link rel="stylesheet" href="css/themes/default/jquery.mobile-1.4.5.css">
+    <link rel="stylesheet" href="css/themes/default/jquery.mobile.theme.uap-1.4.5.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.mobile-1.4.5.js"></script>
+    <link rel="stylesheet" href="external/jquery.mobile.datepicker.css"/>
+    <link rel="stylesheet" href="css/uap-ui-controls.css"/>
+    <style>
+        #switch2 ~ .ui-slider-track.ui-slider.ui-slider-switch {
+            border-radius: 15px;
+            width: 52px;
+        }
+    </style>
+    <script>
+        $isWeb = true;
+    </script>
+    <script>
+        function $pageReady() {
+            $alert("webview ready");
+        }
+
+        $(function () {
+            $("#camera1").on("click", function () {
+                $camera.open({
+                    bindfield: "pic",
+                    callback: function () {
+                        var pic = $ctx.getString("pic");
+                        $("#img1").attr("src", pic);
+                    }
+                })
+            });
+            $("#camera2").on("click", function () {
+                $camera.open({
+                    bindfield: "camera2Pic",
+                    callback: "mycallback2()"
+                });
+            });
+
+            $("#getpic").on("click", function () {
+                mycallback();
+            });
+
+        });
+
+        function mycallback() {
+            var pic = $ctx.getString("pic");
+            alert(pic);
+            $("#img1").attr("src", pic);
+        }
+
+        function mycallback2() {
+            var pic = $ctx.getString("camera2Pic");
+            //alert(pic);
+            $("#img2").attr("src", pic);
+        }
+    </script>
+    <script src="external/jquery-ui/datepicker.js"></script>
+    <script>
+        $(function () {
+            $("input[data-role=date]").datepicker();
+        })
+    </script>
+</head>
+<body>
+<div id="page1" data-theme="uap" data-role="page">
+    <div data-role="header" data-position="fixed">
+        <a data-iconpos="notext" data-rel="back" data-role="button" data-icon="uap-back">back</a>
+        <h1>返回</h1>
+    </div>
+
+    <div data-role="content">
+        <ul data-role="listview" data-inset="true" class="ui-noboxshadow">
+            <li data-icon="custom">
+                <a href="#page2" data-transition="slide"><span>第二页</span><span class="state">设置</span></a>
+            </li>
+            <li data-icon="custom">
+                <a href="#page3" data-transition="slide"><span>第三页</span><span class="state">设置</span></a>
+            </li>
+            <li data-icon="custom">
+                <a href="#"><span>列表三</span><span class="state">设置</span></a>
+            </li>
+        </ul>
+
+    </div>
+    <div data-role="footer" data-position="fixed">
+        <div data-role="navbar" class="navbar-custom">
+            <ul>
+                <li>
+                    <a href="#" data-icon="custom" class="ui-btn-active mybar1">One</a>
+                </li>
+                <li>
+                    <a href="#" data-icon="custom" class="mybar2">Two</a>
+                </li>
+                <li>
+                    <a href="#" data-icon="custom" class="mybar3">Three</a>
+                </li>
+                <li>
+                    <a href="#" data-icon="custom" class="mybar5">Five</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+<div id="page2" data-theme="uap" data-role="page">
+    <div data-role="header" data-position="fixed">
+        <a data-iconpos="notext" data-rel="back" data-transition="slide" data-reverse="true" data-role="button"
+           data-icon="uap-back">Home</a>
+        <h1>导航栏</h1>
+        <a data-iconpos="notext" href="#page1" data-transition="flip" data-role="button" data-icon="uap-home"></a>
+    </div>
+    <div data-role="content">
+        <button data-inline="true" id="camera1">
+            普通文字按钮
+        </button>
+        <button data-inline="true" id="camera2">
+            打开相机
+        </button>
+        <a href="#page3" data-role="button" data-iconpos="right" data-icon="carat-r" data-inline="true">下一页</a>
+
+        <label class="select" for="select">这里的文字可以替换</label>
+        <select name="" id="select" data-native-menu="false">
+            <option value="">第一个选项</option>
+            <option value="">第二个选项</option>
+            <option value="">第三个选项</option>
+            <option value="">第四个选项</option>
+            <option value="">第五个选项</option>
+        </select>
+
+        <input type="text"/>
+        <input type="text" data-role="date"/>
+        <input data-type="search" placeholder="请输入搜索内容"/>
+
+        <input type="number"/>
+    </div>
+
+    <div data-role="footer" data-position="fixed">
+        <div data-role="navbar">
+            <ul>
+                <li>
+                    <a href="#" class="ui-btn-active">分类One</a>
+                </li>
+                <li>
+                    <a href="#">分类Two</a>
+                </li>
+                <li>
+                    <a href="#">分类Three</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<div id="page3" data-theme="uap" data-role="page">
+    <div data-role="header" data-position="fixed">
+        <a data-iconpos="notext" data-rel="back" data-transition="slide" data-reverse="true" data-role="button"
+           data-icon="uap-back">Home</a>
+        <h1>导航栏</h1>
+        <a data-iconpos="notext" href="#page1" data-transition="flip" data-role="button" data-icon="uap-home"></a>
+    </div>
+    <div data-role="content">
+        <label class="select" for="switch">这里的文字可以替换,请注意开关只能设置两个选项</label>
+        <select name="" id="switch" data-role="slider">
+            <option value="">Yes</option>
+            <option value="">No</option>
+        </select>
+        <label class="select" for="switch2">自定义的开关，打开状态</label>
+        <select name="" id="switch2" data-role="slider">
+            <option value=""></option>
+            <option value="" selected=""></option>
+        </select>
+        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+            <legend>
+                单选框:
+            </legend>
+            <input type="radio" name="radio-choice-b" id="radio-choice-c" value="list" checked="checked">
+            <label for="radio-choice-c">List</label>
+            <input type="radio" name="radio-choice-b" id="radio-choice-d" value="grid">
+            <label for="radio-choice-d">Grid</label>
+            <input type="radio" name="radio-choice-b" id="radio-choice-e" value="gallery">
+            <label for="radio-choice-e">Gallery</label>
+        </fieldset>
+
+        <fieldset data-role="controlgroup">
+            <legend>
+                只是复选框说明性文字，你可以在这说明它的用途
+            </legend>
+            <label>
+                <input type="checkbox" name="checkbox" value="" checked/>
+                这是第一个复选框</label>
+            <label>
+                <input type="checkbox" name="checkbox" value=""/>
+                这是第二个复选框</label>
+            <label>
+                <input type="checkbox" name="checkbox" value=""/>
+                这是第三个复选框</label>
+            <label>
+                <input type="checkbox" name="checkbox" value=""/>
+                这是第四个复选框</label>
+            <label>
+                <input type="checkbox" name="checkbox" value=""/>
+                这是第n个复选框</label>
+        </fieldset>
+    </div>
+</div>
+</body>
+</html>

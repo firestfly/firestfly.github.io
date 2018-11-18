@@ -1,0 +1,46 @@
+#farmercustom {
+    border-top: none;
+    border-bottom: none;
+}
+
+#farmergift {
+    border-top: none;
+}
+
+#farmerlist {
+    border-top: none;
+}
+
+#farmerAllList li, #farmerlist li, #farmergift li {
+    padding-left: 20px;
+    padding-right: 15px;
+}
+
+#farmerAllList li .btn, #farmerlist li .btn, #farmergift li .btn {
+    color: green;
+}
+
+#farmerAllList li .badge, #farmerlist li .badge {
+    background: green;
+}
+
+#farmergift li:first-child .btn {
+    color: red;
+}
+
+.um-footer-tabbar li.active a, .um-footer-tabbar li > a:active {
+    color: #037e03;
+}
+
+.um-footer-tabbar {
+    border-top-color: #037e03;
+}
+
+body {
+    font-family: "Heiti SC", "microsoft yahei";
+    font-size: 14px;
+}
+
+.um-header h3 {
+    font-size: 16px;
+}

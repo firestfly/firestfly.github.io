@@ -1,0 +1,88 @@
+<html ng-app="ngView">
+<head>
+    <script src="../angular/angular.js"></script>
+    <script src="../angular/angular-route.min.js"></script>
+    <script src="../js/jquery.js"></script>
+</head>
+<body>
+<a href="#/test"> test</a>
+<a href="#/book/fdsgfdg">随便</a>
+<a href="#/book1?title=asda">asda</a>
+<div ng-view></div>
+
+<script type="text/javascript">
+    var app = angular.module('ngView', ["ngRoute"]);
+    app.factory("serv", function ($http, $q) {
+        return {
+            getReq: function () {
+                var q = $q.defer();
+                $http.get("../js/req.js").then(function (data) {
+                    q.resolve(data);
+                }, function (data) {
+                    q.reject(data);
+                });
+                return q.promise;
+            }
+        }
+
+    });
+    app.config(["$routeProvider", function ($routeProvider, $locationProvider) {
+        $routeProvider.when('/test',
+            {
+                template: 'test'
+            })//  route.html#/test
+            .when('/book/:title',
+                {
+                    template: '{{ title1 }}',
+                    controller: function ($scope, $routeParams, requ) {
+                        requ().then(function (data) {
+                            eval(data.data)
+                        });
+                        //$scope.title1 = "ddsd";
+                    },
+                    resolve: {
+                        "requ": function (serv) {
+                            return serv.getReq;
+                        }
+                    }
+                })//  #/book/sfdsfds
+            .when('/',
+                {
+                    template: 'main'
+                })
+            .when('/book1',
+                {
+                    template: '{{ title }}',
+                    controller: function ($scope, $routeParams) {
+                        $scope.title = $routeParams.title;
+                    }
+                }//#/book1?title=dfjdkfls
+            );
+        //$locationProvider.html5Mode(true);
+    }
+    ]);
+
+
+    /* var app = angular.module('ngView', ['ngRoute', 'ngSanitize']);
+   app.config(["$routeProvider", function($routeProvider){
+               $routeProvider.when('/a',
+                       {
+                           template: '{{ title }}<div>div</div>',
+                           controller: function($scope){
+                               $scope.title = 'a';
+                           }
+                       }
+               );
+               $routeProvider.when('/b',
+                       {
+                           template: '{{ title }}',
+                           controller: function($scope, $route){
+                               console.log($route);
+                               $route.routes['/a'].controller($scope);
+                           }
+                       }
+               );
+           }]);*/
+</script>
+</body>
+</html>

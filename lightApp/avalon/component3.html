@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>ms-data</title>
+    <script src="dist/avalon.js"></script>
+    <script>
+        function heredoc(fn) {
+            return fn.toString()
+                .replace(/^[^\/]+\/\*!?\s?/, '')
+                .replace(/\*\/[^\/]+$/, '')
+        }
+
+        avalon.component("ms:dialog", {
+            header: "headeess",
+            footer: "",
+            content: "",
+            onClick: function () {
+                console.log(this)
+            },
+            $template: heredoc(function (vm) {
+                /*
+                 <div class="dialog">
+                 {{header|html}}
+                 {{content|html}}
+                 {{footer|html}}
+                 </div>
+                 */
+            })
+        })
+        avalon.define({
+            $id: "test",
+            a: "这是内容"
+        })
+
+    </script>
+</head>
+
+<body>
+<div ms-controller="test">
+    <ms:dialog>
+        <div slot="content">
+            {{a}}
+        </div>
+        <div slot="header">弹出层的头部</div>
+        <div slot="footer">弹出层的底部</div>
+    </ms:dialog>
+
+</div>
+</body>
+
+</html>

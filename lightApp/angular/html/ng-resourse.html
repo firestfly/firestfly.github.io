@@ -1,0 +1,40 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <script src="../angular/angular.min.js"></script>
+    <script src="../angular/angular-resource.min.js"></script>
+    <script type="text/javascript">
+        /*var app = angular.module('Demo', ['ngResource'],angular.noop);
+         app.controller('TestCtrl', function($scope, $resource){
+         console.log($resource);
+         });*/
+
+        var app = angular.module('Demo', ['ngResource'], angular.noop);
+        app.controller('TestCtrl', function ($scope, $resource) {
+            var actions = {
+                create: {method: 'POST', params: {_method: 'create'}},
+                read: {method: 'POST', params: {_method: 'read'}},
+                update: {method: 'POST', params: {_method: 'update'}},
+                delete: {method: 'POST', params: {_method: 'delete'}},
+                multi: {method: 'POST', params: {_method: 'multi'}},
+                pos: {method: 'post', params: {_method: 'multi'}}
+            };
+            var Book = $resource('/book', {}, actions);
+            /*var book = Book.pos({id: '123'}, function(response){
+             console.log(response);
+             });*/
+            /*var book = Book.pos({id: '123'},{as:"eeee"}, function(response){
+             console.log(response);
+             },function(error){
+             console.log(error);
+             });*/
+            var book = Book.create({title: '测试标题', author: '测试作者'}, function (response) {
+                console.log(book);
+            });
+        });
+    </script>
+</head>
+<body>
+<p ng-controller="TestCtrl"></p>
+</body>
+</html>

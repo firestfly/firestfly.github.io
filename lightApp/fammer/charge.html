@@ -1,0 +1,145 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Farmer Business</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="css/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="css/um.css">
+    <style>
+        .choice {
+            margin: 20px;
+        }
+
+        .choice input[type="radio"] {
+            display: none;
+        }
+
+        input[type="radio"]:checked + label {
+            background: #5cb85c;
+            border-color: #5cb85c;
+            color: #fff;
+        }
+
+        .um-content {
+            overflow: auto;
+        }
+
+        .right-list-item {
+            display: block;
+        }
+    </style>
+    <script src="js/jquery.min.js"></script>
+    <script language="JavaScript" src="Frameworks/json.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.MACore.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Container.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Event.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Page.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Mvc.Model.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Mvc.JControl.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.Input.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.Select.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.Checkbox.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.RadioSet.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.List.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.Label.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Mvc.Controller.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Mvc.js"></script>
+    <script src="js/charge.js"></script>
+</head>
+<body>
+<div class="um-page">
+    <div class="um-header">
+        <a href="index.html" class="um-back">返回</a>
+        <h3>选择付款方式并提交</h3>
+    </div>
+    <div class="um-content">
+        <form action="">
+
+            <div id="paymethod" class="choice tc" data-um-bindfield="paymethod" data-um-jControl="RadioSet">
+                <input id="choice1" name="um-checkbox-inline" type="radio" value="货到付款">
+                <label for="choice1" class="btn btn-sm btn-inline">货到付款</label>
+
+                <input id="choice2" name="um-checkbox-inline" type="radio" value="刷卡支付">
+                <label for="choice2" class="btn btn-sm btn-inline">刷卡支付</label>
+
+                <input id="choice3" name="um-checkbox-inline" type="radio" value="微支付">
+                <label for="choice3" class="btn btn-sm btn-inline">微支付</label>
+
+            </div>
+
+            <div class="um-list-group um-check-left mt10">
+                <label class="um-list-item um-list-item-static">
+                    <input id="discount" name="um-checkbox" type="checkbox" data-um-bindfield="discount" value="积分抵扣">
+                    用积分抵扣 <span class="um-checkbox um-css3-vc"></span>
+                </label>
+            </div>
+            <div class="um-list-divider mt15">应付价格：<span id="cost" data-um-bindfield="cost"></span></div>
+            <ul class="um-form">
+                <li>
+                    <div class="um-list-item">
+                        <div class="um-list-item-inner">
+                            <div class="um-list-item-body">
+                                联系人
+                            </div>
+                            <div class="um-list-item-right">
+                                <input id="name" type="text" class="form-control" placeholder="请输入姓名" required
+                                       data-um-bindfield="personInfo.name">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="um-list-item">
+                        <div class="um-list-item-inner">
+                            <div class="um-list-item-body">
+                                手机号
+                            </div>
+                            <div class="um-list-item-right">
+                                <input id="tel" type="text" class="form-control" placeholder="请输入手机号" required
+                                       data-um-bindfield="personInfo.tel">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="um-list-item">
+                        <div class="um-list-item-inner">
+                            <div class="um-list-item-body">
+                                地址
+                            </div>
+                            <div class="um-list-item-right">
+                                <input id="address" type="text" class="form-control" placeholder="请输入地址" required
+                                       data-um-bindfield="personInfo.address">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="um-list-item">
+                        <div class="um-list-item-inner">
+                            <div class="um-list-item-body">
+                                备注
+                            </div>
+                            <div class="um-list-item-right">
+                                <input id="remark" type="text" class="form-control" placeholder="备注"
+                                       data-um-bindfield="personInfo.remark">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+            <a id="submit" href="paySuccess.html" class="btn mt20 um-btn-success">提交</a>
+        </form>
+    </div>
+    <script>
+        $(function () {
+            document.body.addEventListener('touchstart', function () {
+                //...空函数即可
+            });
+        })
+    </script>
+</div>
+</body>
+</html>

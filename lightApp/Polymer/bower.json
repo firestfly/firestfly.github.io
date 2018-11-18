@@ -1,0 +1,21 @@
+{
+  "name": "Polymer",
+  "homepage": "https://github.com/fire17643/fire17643.github.io",
+  "authors": [
+    "huangzwa"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0"
+  }
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>ms-data</title>
+    <script src="dist/avalon.js"></script>
+    <script>
+        var vm = avalon.define({
+            $id: "test",
+            array: [1, 2, 3],
+            $skipArray: ["x0", "x1", "x2"],
+            x0: { //x0, x1, x2为ms:button的配置对象
+                a: "aaa",
+                "ms:text": { //这个为ms:button的ms:text的默认配置对象
+                    b: 44
+                }
+            },
+            x1: {
+                a: "222",
+                "ms:text": {
+                    b: 55
+                }
+            },
+            x2: {
+                a: "333",
+                "ms:text": {
+                    b: 66
+                }
+            }
+        })
+        avalon.component('ms:abc', {
+            $template: '<div></div>',
+            onClick: function () {
+            },
+            $ready: function (vm, el) {
+                console.log(vm.$id, el)
+            }
+        });
+
+        avalon.component("ms:button", {
+            a: 1,
+            $replace: 1,
+            $ready: function (vm, elem) {
+                console.log(vm.$id, "BUTTON构建完成", elem)
+            },
+            $template: "<button type='button'><span>|<ms:text></ms:text>|</span>{{a}}<ms:text/></button>"
+        })
+        avalon.component("ms:text", {
+            b: "默认值",
+            $replace: 1,
+            $ready: function () {
+                console.log("TEXT构建完成")
+            },
+            $template: "<strong>{{b}}</strong>"
+        })
+    </script>
+    <style>
+        div {
+            height: 50px;
+            width: 200px;
+            background: green;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+<div ms-controller="test">
+    <header>
+        <ms:abc ms-repeat="array" ms-attr-identifier="abc{{$index}}"></ms:abc>
+    </header>
+    <ms:button ms-repeat="array" ms-attr-config="x{{$index}}"></ms:button>
+</div>
+</body>
+
+</html>

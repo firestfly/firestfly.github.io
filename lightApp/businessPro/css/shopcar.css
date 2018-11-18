@@ -1,0 +1,32 @@
+.media-heading {
+    white-space: normal;
+    font-weight: bold;
+}
+
+.um-list-item-after {
+    margin-right: -10px;
+}
+
+.reduce,
+.add {
+    display: inline-block;
+    font-size: 16px;
+    color: #0091FF;
+    white-space: nowrap;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    border: 1px solid #0091FF;
+    padding: 0;
+    margin: 0 3px;
+    z-index: 10;
+    line-height: 26px;
+}
+
+.reduce:active,
+.add:active {
+    background-color: #0091FF;
+    color: #fff;
+}

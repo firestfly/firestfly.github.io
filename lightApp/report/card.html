@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/common.css">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/avalon/avalon.js"></script>
+    <script src="js/card.js"></script>
+</head>
+<style>
+    .card {
+        width: 450px;
+        height: 250px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        position: relative;
+        font-size: 14px;
+    }
+
+    .img-area {
+        width: 100px;
+        height: 120px;
+        text-align: center;
+        line-height: 120px;
+        display: inline-block;
+        background-color: yellow;
+        position: relative;
+    }
+
+    .img-upload,
+    #preview {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+        z-index: 2;
+    }
+
+    .list-msg {
+        width: 300px;
+        display: inline-block;
+        vertical-align: top;
+        margin-top: 10px;
+    }
+
+    .list-msg .control-label {
+        margin-top: 5px;
+        padding-right: 0;
+        margin-right: -5px;
+    }
+
+    .form-control {
+        border: none;
+        border-bottom: 1px solid #999;
+        border-radius: 0;
+        outline: 0;
+        box-shadow: none;
+        padding-left: 0;
+    }
+
+    .clearfix {
+        overflow: hidden;
+    }
+
+    .form-control:active,
+    .form-control:focus {
+        outline: 0;
+        box-shadow: none;
+    }
+
+    .line {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-top: 1px solid #999;
+    }
+
+    .issue {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        font-size: 10px;
+    }
+
+    .col-sm-7 {
+        display: inline-block;
+    }
+
+    .placehold {
+        visibility: hidden;
+    }
+</style>
+<script>
+    //下面用于图片上传预览功能
+    function setImagePreview(avalue) {
+        var docObj = document.getElementById("doc");
+        var localImagId = document.getElementById("localImag");
+        var imgObjPreview = new Image();
+        if (docObj.files && docObj.files[0]) {
+            //火狐下，直接设img属性
+            imgObjPreview.style.cssText = 'display:block;width:100px;height:120px;position:absolute;left:0;top:0;';
+            //imgObjPreview.src = docObj.files[0].getAsDataURL();
+            localImagId.appendChild(imgObjPreview);
+            //火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式
+            imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+        } else {
+            //IE下，使用滤镜
+            docObj.select();
+            var imgSrc = document.selection.createRange().text;
+
+            //必须设置初始大小
+            localImagId.style.width = "100px";
+            localImagId.style.height = "120px";
+            //图片异常的捕捉，防止用户修改后缀来伪造图片
+            try {
+                localImagId.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+                localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+            } catch (e) {
+                alert("您上传的图片格式不正确，请重新选择!");
+                return false;
+            }
+            imgObjPreview.style.display = 'none';
+            document.selection.empty();
+        }
+        return true;
+    }
+</script>
+
+<body>
+<div class="card" ms-controller="card">
+    <div class="edite  print-hidden">
+        <div class="btn-group w150 mb20">
+            <span class="btn btn-sm btn-success" ms-click="save">保存</span>
+            <span class="btn btn-sm btn-success" ms-click="print">打印</span>
+            <a class="btn btn-sm btn-success" href="4_1.html">返回</a>
+        </div>
+        <!-- <input type="hidden" name="isprint" ms-duplex="data.isprint"> -->
+    </div>
+    <iframe id="upload_frame" hidden="true" name="upload_frame"></iframe>
+    <form id="card_form" name="card_form" class="form-horizontal" enctype="multipart/form-data" method="post" action="/"
+          target="upload_frame">
+        <div class="img-area" id="localImag">
+            照片
+            <input type="file" id="doc" name="portrait" class="img-upload" onchange="setImagePreview();">
+        </div>
+        <div class="list-msg">
+            <div class="clearfix">
+                <label class="control-label col-sm-4" for="name">姓<i class="placehold">占位</i>名：</label>
+                <div class="col-sm-7">
+                    <input type="text" name="fullName" class="input-border-bottom" id="name">
+                </div>
+            </div>
+            <div class="clearfix">
+                <label class="control-label col-sm-4" for="inputGroupSuccess2">业主房号：</label>
+                <div class="col-sm-7">
+                    <input type="text" name="roomNum" class="input-border-bottom" id="inputGroupSuccess2">
+                    <input type="text" name="roomNum" class="input-border-bottom" id="">
+                </div>
+            </div>
+            <div class="clearfix">
+                <label class="control-label col-sm-4" for="a">卡<i class="placehold">占位</i>号：</label>
+                <div class="col-sm-7">
+                    <input type="text" name="cardNum" class="input-border-bottom" id="a">
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="line"></div>
+    <ul class="issue">
+        <li>1、本证是出入本物业服务区域的凭证，请勿转借，若离开本服务区域，请交回此证。</li>
+        <li>2、加盖物业服务中心公章方为有效。</li>
+    </ul>
+</div>
+</body>
+
+</html>

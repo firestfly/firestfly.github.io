@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="js/jquery.min.js?v=1.11.3"></script>
+    <link rel="stylesheet" href="css/base.css">
+    <link href="js/datepicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/common.css">
+    <script src="js/jquery.min.js?v=1.11.3"></script>
+    <script src="js/avalon/dist/avalon.min.js"></script>
+    <script src="js/datepicker/WdatePicker.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/register.js"></script>
+</head>
+<style>
+    .card {
+        width: 900px;
+        margin: 0 auto;
+    }
+
+    .table > tbody > tr > td {
+        padding: 5px;
+    }
+
+    .table-list {
+        text-align: left;
+        float: left;
+        width: 50%;
+        margin-bottom: 0;
+        border-bottom: 3px solid #000;
+        margin-left: -1px;
+    }
+
+    .table-group {
+        margin-top: 5px;
+        padding-left: 2px;
+        overflow: hidden;
+    }
+</style>
+<script>
+
+</script>
+
+<body>
+<form action="" ms-controller="register">
+    <div class="edite  print-hidden">
+        <div class="btn-group w150 mb20">
+            <span class="btn btn-sm btn-success" ms-click="save(0)">保存</span>
+            <span class="btn btn-sm btn-success" ms-click="print">打印</span>
+            <a class="btn btn-sm btn-success" href="4_1.html">返回</a>
+        </div>
+        <input type="hidden" name="isprint" ms-duplex="data.isprint">
+    </div>
+    <div class="card tc">
+        <div class="header">
+            <img src="img/timg.jpg" alt="" height=50>
+        </div>
+        <h2>装修施工人员登记表</h2>
+        <p class="tl">
+            <b>编号：</b>
+            <input type="text" readonly="readonly" name="number" class="input-noborder mr10 w200"
+                   value="VK-WY / TX08-K04-F2">
+            <b>版本：</b>
+            <input type="text" readonly="readonly" name="version" class="mr5 input-noborder w40" value="V1.0">
+            <b>生效日期：</b>
+            <input type="hidden" name="effectDate" ms-attr-value="data.effectDate" class="mr5 input-noborder w120">
+            {{data.effectDate | date("yyyy年M月d日")}}
+            <b class="ml10">序号：</b>
+            <input type="hidden" name="serialNumber" ms-if="data.serialNumber" ms-attr-value="data.serialNumber"
+                   class="mr15 input-noborder w50">{{ data.serialNumber }}
+        </p>
+        <div class="table-group" id="table">
+            <table class="table table-list" width="50%" ms-repeat-row="data.registerTables">
+                <tbody>
+                <tr>
+                    <td>出入证号：
+                        <input type="text" name="entryExitNum" ms-attr-value="row.entryExitNum"
+                               class="input-noborder w100" value="">
+                    </td>
+                    <td>房号：
+                        <input type="text" name="roomNum" ms-attr-value="row.roomNum" class="input-noborder w100">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">施工人员姓名：
+                        <input type="text" name="constructionName" ms-attr-value="row.constructionName"
+                               class="input-noborder w150">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">出入证有效期限：
+                        <input type="text" id="d4311" name="periodStartDate"
+                               onclick="WdatePicker({dateFmt:'yyyy-M-d', onpicked: removeInval,oncleared:addInval,maxDate:'#F{$dp.$D(\'d4312\')}'})"
+                               class="Wdate input-border-bottom w100 print-hidden" ms-attr-value="row.periodStartDate">
+                        <span class="print-show">
+                                    {{ row.periodStartDate | date("yyyy年M月dd日")}}
+                                    </span>至
+                        <input type="text" id="d4312" name="periodEndDate"
+                               onclick="WdatePicker({dateFmt:'yyyy-M-d', onpicked: removeInval,oncleared:addInval,minDate:'#F{$dp.$D(\'d4311\')}'})"
+                               class="Wdate input-border-bottom w100 print-hidden" ms-attr-value="row.periodEndDate">
+                        <span class="print-show">
+                                    {{ row.periodEndDate | date("yyyy年M月dd日") }}
+                                    </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">出入证延期纪录：
+                        <textarea name="delayRecord" ms-attr-value="row.delayRecord" id="" style="width:100%;"
+                                  class="h60 input-noborder"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">出入证回收日期：
+                        <input type="text" name="recoveryDate" ms-attr-value="row.recoveryDate"
+                               class="input-noborder w150">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>（有效证件复印件粘贴在背面）</div>
+    </div>
+</form>
+</body>
+
+</html>

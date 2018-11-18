@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="Demo">
+<head>
+    <script src="../angular/angular.min.js"></script>
+    <script>
+        var app = angular.module('Demo', [], angular.noop);
+        app.directive('a', function () {
+            var func = function (element, attrs, link) {
+                return function (scope) {
+                    scope.a();
+                    scope.b();
+                    console.log(scope.c)
+                    scope.show = function (here) {
+                        console.log('Inner, ' + here);
+                        scope.a({here: 5});
+                    }
+                }
+            }
+            return {
+                compile: func,
+                scope: {
+                    a: '&abc',
+                    b: '&ngClick',
+                    c: '=ngBind'
+                },
+                controller: function ($scope, $element, $attrs, $transclude) {
+                    /*var node = $transclude(function (clone_element, scope) {
+                        console.log(clone_element);
+                        console.log('--');
+                        console.log(scope);
+                    });
+                     console.log(node);*/
+                },
+                restrict: 'A'
+            };
+        });
+        app.controller('TestCtrl', function ($scope) {
+            $scope.here = 123;
+            $scope.show = function (here) {
+                $scope.here++;
+            }
+        });
+    </script>
+    <meta charset="utf-8">
+    <title>JS Bin</title>
+</head>
+<body>
+<div ng-controller="TestCtrl">
+    <div a abc="here = here + 1" ng-click="show(here)" ng-bind="here">这里</div>
+    <div>{{ here }}</div>
+</div>
+</body>
+</html>

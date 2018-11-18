@@ -1,0 +1,21 @@
+body {
+    font-family: 黑体, "microsoft yahei";
+    font-size: 14px;
+}
+
+#farmerAllList li .badge, #farmerlist li .badge {
+    background: #007AFF;
+}
+
+#farmergift li:first-child .btn {
+    color: red;
+}
+
+.um-footer-tabbar {
+    border-top-color: #007AFF;
+}
+
+.um-footer-tabbar li.active a,
+.um-footer-tabbar li > a:active {
+    color: #007AFF;
+}

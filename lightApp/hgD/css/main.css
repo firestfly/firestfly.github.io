@@ -1,0 +1,82 @@
+.header {
+    background-color: #00a1ea;
+    color: #fff;
+}
+
+.avatar {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.poster, .aftercall, .contacts, .massages, .email, .yeji {
+    width: 80px;
+    height: 80px;
+}
+
+.poster {
+    background-color: #3A4091;
+}
+
+.aftercall {
+    background-color: #E85175;
+}
+
+.contacts {
+    background-color: #F7B52C;
+}
+
+.massages {
+    background-color: #00A199;
+}
+
+.email {
+    background-color: #0080c0;
+}
+
+.yeji {
+    background-color: #008000;
+}
+
+.addImg .img {
+    padding-bottom: 100%;
+    background-size: 100%;
+}
+
+.imglist .img {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 100%;
+    background-position: center;
+    background-size: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.img img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+}
+
+.imglist .um-xs-3 {
+    position: relative;
+    padding: 10px;
+}
+
+.removeImg {
+    border: 1px solid #ddd;
+    font-size: 26px;
+    line-height: 30px;
+    width: 30px;
+    color: #ddd;
+}
+
+#detail .submit {
+    color: #fff;
+}
+
+.um-back:before {
+    border-color: #fff;
+}

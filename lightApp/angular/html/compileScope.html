@@ -1,0 +1,67 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <script src="../js/jquery.js"></script>
+    <script src="../angular/angular.js"></script>
+</head>
+<body>
+<div ng-controller="TestCtrl"></div>
+<div id="a">A {{ text }}</div>
+<div id="b">B</div>
+
+<script type="text/javascript">
+    var app = angular.module("Demo", []);
+    /**/
+    app.controller('TestCtrl', function ($scope, $compile) {
+        var link = $compile($('#a'));
+//true 参数表示新建一个完全隔离的scope,而不是继承的child scope
+        var scope = $scope.$new(true);
+        scope.text = '12345';
+        var node = link(scope);
+        $('#b').append(node);
+    });
+    //B
+    //A 12345
+
+
+    /* app.controller('TestCtrl', function($scope, $compile){
+     var link = $compile($('#a'));
+     var scope = $scope.$new(true);
+     //$scope.text = '12345';?无效
+     scope.text = '12345';
+     var node = link(scope, function(clone_element, scope){
+     clone_element.text(clone_element.text() + ' ...'); //无效
+     console.log(clone_element.text());
+     clone_element.text('{{ text2 }}'); //无效
+     console.log(clone_element.text());
+     clone_element.addClass('new_class');
+     });
+     //var node = link(scope, function(){});效果一样
+     console.log(node)
+     $('#b').append(node);
+     });
+
+     A
+     B
+     A 12345
+     */
+</script>
+<div ng-controller="TestCtrl1">{{a}}</div>
+<div id="aa">{{a}}</div>
+<script type="text/javascript">
+    app.controller("TestCtrl1", function ($scope, $element, $compile) {
+        $scope.a = '123';
+        var tpl = $compile('<p>hello {{ a }}</p>');
+        var e = tpl($scope)
+        $element.append(e);
+        $scope.a = "first";
+        var link = $compile($("#aa"));
+        var scope_ = $scope.$new(true);
+        scope_.a = "apend";
+        var node = link(scope_);
+        console.log(node);
+        $("#aa").append(node);
+    })
+</script>
+</body>
+</html>

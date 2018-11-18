@@ -1,0 +1,33 @@
+{
+  "name": "huangzw",
+  "version": "1.0.0",
+  "description": "test webpack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer-loader": "^3.2.0",
+    "avalon": "^0.1.9",
+    "babel-core": "^6.7.6",
+    "babel-loader": "^6.2.4",
+    "bundle-loader": "^0.5.4",
+    "css-loader": "^0.23.1",
+    "exports-loader": "^0.6.3",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
+    "html-webpack-plugin": "^2.16.0",
+    "jquery": "^2.2.3",
+    "less": "^2.6.1",
+    "less-loader": "^2.2.3",
+    "node-sass": "^3.4.2",
+    "resolve-url": "^0.2.1",
+    "sass-loader": "^3.2.0",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.0",
+    "webpack-dev-server": "^1.14.1"
+  }
+}

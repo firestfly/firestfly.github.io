@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>ms-data</title>
+    <script src="dist/avalon.js"></script>
+    <script>
+        avalon.templateCache["aaa"] = '<input ms-duplex="name"/>{{name}}';
+        var model = avalon.define({
+            $id: "test",
+            content: "引入内部模板",
+            name: "司徒正美",
+            eee: "lala",
+            change: function () {
+                model.eee = model.eee === "lala" ? "hehe" : "lala"
+            },
+            url: "Template1",
+            name: "司徒正美",
+            password: '12345678',
+            array: [1, 2, 3, 4, 5, 6, 7],
+            add: function (e) {
+                if (this.value && e.which == 13) { //this为input元素
+                    var a = this.value
+                    model.array.push(a)
+                    this.value = "";
+                }
+            },
+            aaa: "aaa",
+            render: function () {
+                console.log("render")
+            }
+        })
+
+    </script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+<div ms-controller="test">
+    <script type="avalon" id="tpl">
+            here, {{ 3 + 6 * 5 }}
+
+    </script>
+    <script type="avalon" id="lala">
+            <strong>{{name}}</strong>!!!
+
+    </script>
+    <script type="avalon" id="hehe">
+            <em>{{content}}</em>!!!
+
+    </script>
+    <p>{{content}}
+        <button ms-click="change" type="button">切换子模板</button>
+    </p>
+    <div ms-include="'tpl'"></div>
+    <!--注意这里-->
+    <div ms-include="eee"></div>
+    <hr>
+    <select ms-duplex="url">
+        <option>Template1</option>
+        <option>Template2</option>
+        <option>Template3</option>
+    </select>
+    <div ms-include-src="include{{url}}.html" data-include-rendered='render'></div>
+    <div ms-include-src="aaa"></div>
+</div>
+</body>
+
+</html>

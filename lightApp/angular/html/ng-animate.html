@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <script src="../angular/angular.min.js"></script>
+    <script src="../angular/angular-animate.min.js"></script>
+    <meta charset="utf-8">
+    <title>JS Bin</title>
+    <style>
+        .example-animate-container {
+            background: white;
+            border: 1px solid black;
+            list-style: none;
+            margin: 0;
+            padding: 0 10px;
+        }
+
+        .animate-repeat {
+            line-height: 40px;
+            list-style: none;
+            box-sizing: border-box;
+        }
+
+        .animate-repeat.ng-move,
+        .animate-repeat.ng-enter,
+        .animate-repeat.ng-leave {
+            -webkit-transition: all linear 0.5s;
+            transition: all linear 0.5s;
+        }
+
+        .animate-repeat.ng-leave.ng-leave-active,
+        .animate-repeat.ng-move,
+        .animate-repeat.ng-enter {
+            opacity: 0;
+            max-height: 0;
+        }
+
+        .animate-repeat.ng-leave,
+        .animate-repeat.ng-move.ng-move-active,
+        .animate-repeat.ng-enter.ng-enter-active {
+            opacity: 1;
+            max-height: 40px;
+        }
+
+        div {
+            transition: all linear 0.5s;
+            background-color: lightblue;
+            height: 100px;
+            width: 100%;
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+
+        .ng-hide {
+            height: 0;
+            width: 0;
+            background-color: transparent;
+            top: -200px;
+            left: 200px;
+        }
+    </style>
+    <script>
+        angular.module("app", ["ngAnimate"])
+    </script>
+</head>
+<body ng-init="friends = [
+    {name:'John', age:25, gender:'boy'},
+    {name:'Jessie', age:30, gender:'girl'},
+    {name:'Johanna', age:28, gender:'girl'},
+    {name:'Joy', age:15, gender:'girl'},
+    {name:'Mary', age:28, gender:'girl'},
+    {name:'Peter', age:95, gender:'boy'},
+    {name:'Sebastian', age:50, gender:'boy'},
+    {name:'Erika', age:27, gender:'girl'},
+    {name:'Patrick', age:40, gender:'boy'},
+    {name:'Samantha', age:60, gender:'girl'}
+  ]">
+I have {{friends.length}} friends. They are:
+<input type="search" ng-model="q" placeholder="filter friends..."/>
+<ul class="example-animate-container">
+    <li class="animate-repeat" ng-repeat="friend in friends | filter:q">
+        [{{$index + 1}}] {{friend.name}} who is {{friend.age}} years old.
+    </li>
+</ul>
+<h1>Hide the DIV: <input type="checkbox" ng-model="myCheck"></h1>
+
+<div ng-hide="myCheck"></div>
+
+<div class="container">
+    <div class="box rotate"></div>
+</div>
+<style>
+    .box {
+        margin: 50px auto;
+        background: #5FCF80;
+        width: 150px;
+        height: 150px;
+    }
+
+    .box:hover {
+        -webkit-transform: rotate(360deg);
+        background: #9351A6;
+        border-radius: 50%;
+    }
+
+    .rotate {
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+
+    .rotate:hover {
+        -webkit-transition: all 1s ease-in-out;
+        -moz-transition: all 1s ease-in-out;
+        -o-transition: all 1s ease-in-out;
+        transition: all 1s ease-in-out;
+    }
+</style>
+</html>

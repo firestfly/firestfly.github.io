@@ -1,0 +1,37 @@
+<!doctype html>
+<html ng-app="form-example2">
+<head>
+    <script src="../angular/angular.js"></script>
+    <script>
+        angular.module('form-example2', []).directive('contenteditable', function () {
+            return {
+                require: 'ngModel',
+                link: function (scope, elm, attrs, ctrl) {
+                    // view -> model
+                    elm.bind('blur', function () {
+                        scope.$apply(function () {
+                            ctrl.$setViewValue(elm.text());
+                        });
+                    });
+                    // model -> view
+                    ctrl.$render = function (value) {
+                        elm.html(value);
+                    };
+                    // load init value from DOM
+                    ctrl.$setViewValue(elm.html());
+                }
+            };
+        });
+    </script>
+</head>
+<body>
+<div contentEditable="true" ng-model="content" title="Click to edit">Some</div>
+<pre>model = {{content}}</pre>
+<style type="text/css">
+    div[contentEditable] {
+        cursor: pointer;
+        background-color: #D0D0D0;
+    }
+</style>
+</body>
+</html>

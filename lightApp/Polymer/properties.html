@@ -1,0 +1,158 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<script>
+    Polymer({
+
+        is: 'x-custom',
+
+        properties: {
+            user: String,
+            manager: {
+                type: Boolean,
+                notify: true
+            }
+        },
+
+        attached: function () {
+            // render
+            this.innerHTML = 'Hello World, my user is ' + (this.user || 'nobody') + '.\n' +
+                'This user is ' + (this.manager ? '' : 'not') + ' a manager.';
+        }
+
+    });
+</script>
+<script>
+    Polymer({
+
+        is: 'xx-custom',
+
+        properties: {
+            userName: String,
+            mode: {
+                type: String,
+                value: 'auto'
+            },
+
+            data: {
+                type: Object,
+                notify: true,
+                value: function () {
+                    return {};
+                }
+            },
+            disabled: {
+                type: Boolean,
+                observer: 'disabledChanged'
+            },
+            highlight: {
+                observer: 'highlightChanged'
+            }
+        },
+        disabledChanged: function (newValue, oldValue) {
+            this.toggleClass('disabled', newValue);
+            this.highlight = true;
+        },
+
+        highlightChanged: function () {
+            this.classList.add('highlight');
+            setTimeout(function () {
+                this.classList.remove('highlight');
+            }, 300);
+        }
+
+    });
+</script>
+<script>
+    Polymer({
+
+        is: 'observe-multiple-properties',
+
+        properties: {
+            preload: Boolean,
+            src: String,
+            size: String
+        },
+
+        observers: [
+            'updateImage(preload, src, size)'
+        ],
+
+        updateImage: function (preload, src, size) {
+            // ... do work using dependent values
+        }
+
+    });
+</script>
+<script>
+
+    Polymer({
+
+        is: 'observe-path-change',
+
+        properties: {
+            user: Object
+        },
+
+        observers: [
+            'userManagerChanged(user.manager)'
+        ],
+
+        userManagerChanged: function (user) {
+            console.log('new manager name is ' + user.name);
+        }
+
+    });
+</script>
+<script>
+    Polymer({
+
+        is: 'observe-deep-path-change',
+
+        properties: {
+            user: Object
+        },
+
+        observers: [
+            'userManagerChanged(user.manager.*)'
+        ],
+
+        userManagerChanged: function (changeRecord) {
+            if (changeRecord.path == 'user.manager') {
+                // user.manager object itself changed
+                console.log('new manager name is ' + newValue.name);
+            } else {
+                // sub-property of user.manager changed
+                console.log(changeRecord.path + ' changed to ' + changeRecord.value);
+            }
+        }
+
+    });
+</script>
+<script>
+    Polymer({
+
+        is: 'observe-array-path-change',
+
+        properties: {
+            users: {
+                type: Array,
+                value: function () {
+                    return [];
+                }
+            }
+        },
+
+        observers: [
+            'usersChanged(users.*)'
+        ],
+
+        usersChanged: function (changeRecord) {
+            if (changeRecord.path == 'users.splices') {
+                // a user was added or removed
+            } else {
+                // an individual user or its sub-properties changed
+                // check "changeRecord.path" to determine what changed
+            }
+        }
+
+    });
+</script>

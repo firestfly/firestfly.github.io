@@ -1,0 +1,654 @@
+body {
+    font-size: 12px;
+    font: 12px/1.5 '宋体', Arial, sans-serif;
+    overflow-x: hidden
+}
+
+body,
+p,
+dl,
+dt,
+dd,
+blockquote,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+table,
+td,
+th,
+ul,
+ol,
+li,
+hr,
+legend,
+fieldset,
+input,
+textarea,
+img,
+form,
+button {
+    margin: 0;
+    padding: 0
+}
+
+em {
+    font-style: normal
+}
+
+img,
+iframe,
+button {
+    border: 0 none
+}
+
+ul,
+ol,
+li {
+    list-style: none
+}
+
+blockquote,
+q {
+    quotes: none
+}
+
+sup {
+    vertical-align: text-top
+}
+
+sub {
+    vertical-align: text-bottom
+}
+
+a {
+    color: #06c
+}
+
+a,
+a:hover,
+a:visited,
+a:active,
+a:link {
+    text-decoration: none;
+    cursor: pointer
+}
+
+input,
+button,
+input:hover,
+input:active,
+button:focus,
+button:active {
+    outline: 0
+}
+
+input,
+select,
+textarea {
+    font: 14px/100% Arial, Helvetica, sans-serif;
+    vertical-align: middle
+}
+
+.f12px {
+    font-size: 12px
+}
+
+.f14px {
+    font-size: 14px
+}
+
+button {
+    cursor: pointer
+}
+
+.pop_help_layer {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .6);
+    z-index: 99999998;
+    overflow: auto
+}
+
+.main_body {
+    max-width: 1240px;
+    position: relative;
+    min-height: 658px;
+    margin: 0 auto 85px
+}
+
+input[type=text] {
+    width: 214px;
+    height: 26px;
+    border: 1px solid #dfdfdf;
+    border-radius: 2px;
+    padding: 0 3px;
+    font-size: 12px;
+    box-shadow: inset 0 2px 2px rgba(0, 0, 0, .075)
+}
+
+input.focus {
+    border-color: #5d9cec
+}
+
+input.wrong {
+    border-color: #d73329
+}
+
+.footer_panel,
+.header_panel {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    background-color: #fff;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 9999
+}
+
+.btn_panel {
+    width: 640px;
+    overflow: hidden;
+    margin: 0 auto
+}
+
+.btn_panel > a {
+    height: 28px;
+    line-height: 28px;
+    background-color: #fafafa;
+    border-radius: 2px;
+    border: 1px solid #e2e2e2;
+    color: #333;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: '宋体';
+    padding: 0 20px;
+    float: left;
+    margin: 7px 0 0 14px
+}
+
+.btn_panel > a:hover {
+    background-color: #f1f1f1
+}
+
+.btn_panel > a:first-child {
+    margin-left: 210px
+}
+
+.btn_panel > a#drop_out {
+    float: right;
+    margin-left: 0
+}
+
+.btn_panel > a#manage_post {
+    float: right;
+    margin-right: 14px
+}
+
+.btn_panel > a#blue_btn,
+.btn_panel > a#manage_post {
+    background-color: #5d9cec;
+    border: 1px solid #5d9cec;
+    color: #fff
+}
+
+.btn_panel > a#blue_btn:hover,
+.btn_panel > a#manage_post:hover {
+    background-color: #4384d6;
+    border: 1px solid #4384d6
+}
+
+.ui-state-disabled {
+    cursor: default !important
+}
+
+.ui-widget-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%
+}
+
+.ui-slider {
+    position: relative;
+    text-align: left
+}
+
+.ui-slider .ui-slider-handle {
+    position: absolute;
+    z-index: 2;
+    cursor: default;
+    -ms-touch-action: none;
+    touch-action: none
+}
+
+.ui-slider .ui-slider-range {
+    position: absolute;
+    z-index: 1;
+    font-size: .7em;
+    display: block;
+    border: 0
+}
+
+.ui-slider-horizontal {
+    width: 100%;
+    height: 100%
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+    margin-left: -6px
+}
+
+.ui-slider-horizontal .ui-slider-range {
+    top: 0;
+    height: 100%
+}
+
+.ui-slider-horizontal .ui-slider-range-min {
+    left: 0
+}
+
+.ui-slider-horizontal .ui-slider-range-max {
+    right: 0
+}
+
+.ui-slider-vertical {
+    height: 100%
+}
+
+.ui-slider-vertical .ui-slider-handle {
+    margin-bottom: -8px
+}
+
+.ui-slider-vertical .ui-slider-range {
+    left: 0;
+    width: 100%
+}
+
+.ui-slider-vertical .ui-slider-range-min {
+    bottom: 0
+}
+
+.ui-slider-vertical .ui-slider-range-max {
+    top: 0
+}
+
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+    width: 14px;
+    height: 16px;
+    background: url(http://static.qyy.baidu.com/static/legobuilder/builder/images/icon-picker_db883db.png) no-repeat;
+    outline: 0
+}
+
+#sliderVertical .ui-state-default {
+    right: -1px;
+    transform: rotateZ(270deg)
+}
+
+#slideHorizontal .ui-state-default {
+    position: absolute;
+    top: -4px
+}
+
+.vertical-slide {
+    padding: 3px 0;
+    height: 190px
+}
+
+.horizontal-slide {
+    padding: 0 3px;
+    width: 154px;
+    height: 5px;
+    border: #ccc solid 1px;
+    border-radius: 5px;
+    background: linear-gradient(#e4e4e4, #f7f7f7)
+}
+
+.set_style {
+    position: relative
+}
+
+.set_style .color_change {
+    position: absolute;
+    right: 14px;
+    top: 6px;
+    width: 78px;
+    height: 22px;
+    line-height: 22px;
+    background-color: #fcfcfc;
+    border: #d7d7d7 solid 1px;
+    text-indent: 0;
+    text-align: center;
+    color: #71767b;
+    cursor: pointer
+}
+
+.mask-color-picker {
+    position: absolute;
+    top: 36px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .5);
+    color: #71767b;
+    display: none
+}
+
+.color-picker-panel {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -128px;
+    margin-top: -200px;
+    width: 256px;
+    height: 402px;
+    border: #d1d1d1 solid 1px;
+    background-color: #fff
+}
+
+.color-picker-bg {
+    background-image: url(http://static.qyy.baidu.com/static/legobuilder/builder/images/color_facec4a.png);
+    display: none
+}
+
+.color-picker-value {
+    height: 48px;
+    line-height: 48px;
+    background-color: #f8f8f8;
+    border-bottom: #d9d9d9 solid 1px;
+    font-weight: 700;
+    text-align: center
+}
+
+.color-picker-value input {
+    margin-left: 5px;
+    padding: 0 8px;
+    width: 132px;
+    height: 26px
+}
+
+.color-picker-action {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 62px;
+    border-top: #d9d9d9 solid 1px;
+    text-align: center;
+    line-height: 62px
+}
+
+.color-picker-action .btn {
+    display: inline-block;
+    padding: 0 20px;
+    height: 28px;
+    border-radius: 3px;
+    line-height: 28px;
+    color: #fff;
+    cursor: pointer
+}
+
+.color-picker-action .btn:nth-child(n+2) {
+    margin-left: 10px
+}
+
+.color-picker-action .done {
+    background-color: #5d9cec
+}
+
+.color-picker-action .cancle {
+    background-color: #d0d4d9
+}
+
+.color-picker-action .ban {
+    background-color: #babfc6
+}
+
+.sec1 {
+    position: relative;
+    padding-top: 25px;
+    padding-left: 20px
+}
+
+.circle {
+    display: inline-block;
+    cursor: url(http://static.qyy.baidu.com/static/legobuilder/builder/images/cursor-color.ico), crosshair
+}
+
+.vertical-box {
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 1px;
+    width: 10px;
+    height: 196px;
+    border: #aeaeae solid 1px
+}
+
+.vertical-box .color-scale {
+    position: absolute;
+    left: -4px;
+    width: 4px;
+    height: 100%
+}
+
+.vertical-box .scale-top,
+.vertical-box .scale-center,
+.vertical-box .scale-bottom {
+    display: block;
+    position: absolute;
+    width: 4px;
+    height: 1px;
+    background-color: #aeaeae
+}
+
+.vertical-box .scale-top {
+    top: 3px
+}
+
+.vertical-box .scale-center {
+    top: 98px
+}
+
+.vertical-box .scale-bottom {
+    bottom: 3px
+}
+
+.vertical-box .scale-slide {
+    width: 100%;
+    height: 100%
+}
+
+.preview {
+    display: block;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    display: none
+}
+
+.alpha-box {
+    position: relative;
+    padding-left: 12px;
+    margin-top: 36px
+}
+
+.alpha-title {
+    height: 24px;
+    line-height: 24px;
+    font-weight: 700
+}
+
+.horizontal-box {
+    position: relative;
+    width: 162px
+}
+
+.horizontal-box .transparent-scale {
+    position: absolute;
+    top: -5px;
+    width: 100%;
+    height: 100%
+}
+
+.horizontal-box .transparent-top,
+.horizontal-box .transparent-center,
+.horizontal-box .transparent-bottom {
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 4px;
+    background-color: #aeaeae
+}
+
+.horizontal-box .transparent-top {
+    left: 3px
+}
+
+.horizontal-box .transparent-center {
+    left: 80px
+}
+
+.horizontal-box .transparent-bottom {
+    right: 3px
+}
+
+.horizontal-box .transparent-slide {
+    width: 100%;
+    height: 100%
+}
+
+.alpha-val {
+    position: absolute;
+    top: 22px;
+    right: 10px;
+    width: 64px;
+    line-height: 21px
+}
+
+.alpha-val input {
+    display: inline-block;
+    margin-right: 5px;
+    width: 42px;
+    height: 26px;
+    border: #d9d9d9 solid 1px;
+    text-align: center;
+    outline: 0;
+    color: #71767b
+}
+
+.lego-plugins-window-mask {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    top: 0;
+    z-index: 200000
+}
+
+.lego-plugins-window {
+    position: relative;
+    width: 840px;
+    height: 620px;
+    margin: -310px auto;
+    top: 50%;
+    background: #fff;
+    border: 1px solid #ccc
+}
+
+.lego-plugins-window iframe {
+    width: 100%;
+    height: 516px
+}
+
+.lego-plugins-window .lego-plugins-window-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 16px;
+    height: 16px;
+    background: url(http://apps.bdimg.com/static/legoappbuilder/home/images/manage_icon_45b52c0.png) 2px -94px no-repeat;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer
+}
+
+.lego-plugins-window header {
+    background-color: #f6f8fa;
+    color: #71767b;
+    font-weight: 700;
+    height: 36px;
+    line-height: 36px;
+    padding-left: 8px
+}
+
+.lego-plugins-window footer {
+    background-color: #f6f8fa;
+    padding: 16px 0;
+    border-top: 1px solid #e8e7e7
+}
+
+.lego-plugins-window footer .lego-plugins-window-close-btn {
+    width: 70px;
+    margin: 0 auto;
+    background-color: #5d9cec;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 6px;
+    font-size: 14px;
+    cursor: pointer
+}
+
+.cpt_node.cpt_drag .tpp-item-icon,
+.cpt-tpp .cpt_node .tpp-item-icon {
+    width: 30px;
+    height: 30px;
+    background-position: center bottom;
+    background-position-x: center !important
+}
+
+#legoTPPGlobalCSSUpload {
+    padding: 8px
+}
+
+#legoTPPGlobalCSSUpload input[type=submit] {
+    background-color: #4682ea;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 2px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    padding: 0 20px;
+    border: 0;
+    outline: 0;
+    width: 100%;
+    margin-top: 12px
+}
+
+#legoTPPGlobalCSSUpload input[type=text] {
+    width: 264px
+}
+
+#legoTPPGlobalCSSUpload .tpp-css-label {
+    color: #a4a9ae;
+    width: 6em;
+    margin-right: 6px
+}

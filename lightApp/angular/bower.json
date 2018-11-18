@@ -1,0 +1,42 @@
+{
+  "name": "vkrms",
+  "version": "1.0",
+  "homepage": "https://github.com/vankeitservice/vkrms",
+  "authors": [
+    "Gao Rui <gaoruinan@163.com>"
+  ],
+  "license": "Commercial",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "list"
+  ],
+  "private": true,
+  "dependencies": {
+    "angular": "1.2.27",
+    "angular-route": "1.2.27",
+    "angular-animate": "1.2.27",
+    "angular-i18n": "~1.5.0",
+    "angular-xeditable": "0.1.12",
+    "angular-bootstrap": "0.11.0",
+    "angular-mocks": "1.2.27",
+    "bootstrap": "3.3.5",
+    "bootstrap-datepicker": "1.4.0",
+    "bootstrap-select": "1.7.3",
+    "bootstrap-fileinput": "4.2.6",
+    "bootstrap-timepicker": "0.5.1",
+    "components-font-awesome": "4.4",
+    "DataTables": "1.10.9",
+    "jquery": "1.11.3",
+    "metisMenu": "2.2.0",
+    "underscore": "1.8.3"
+  },
+  "resolutions": {
+    "angular": "1.2.27",
+    "bootstrap": "3.3.5",
+    "jquery": "1.11.3"
+  }
+}

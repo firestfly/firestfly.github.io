@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>装修备案表</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link href="js/datepicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/vk.modal.css">
+    <script src="js/jquery.min.js?v=1.11.3"></script>
+    <script src="js/avalon/dist/avalon.min.js"></script>
+    <script src="js/datepicker/WdatePicker.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/record.js"></script>
+</head>
+<style>
+    .card {
+        width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .header img {
+        vertical-align: middle;
+    }
+
+    #popTable1 {
+        position: absolute;
+        width: 400px;
+        z-index: 3;
+        top: 45px;
+        left: 1px;
+        border: 1px solid #ddd;
+    }
+
+    #popTable1 .table {
+        margin-bottom: 0;
+    }
+
+    #popTable1 th,
+    #popTable1 td {
+        border-left: none;
+        border-top: none;
+    }
+
+    .scrollTable {
+        max-height: 300px;
+        min-height: 40px;
+    }
+
+    .scrollTable::-webkit-scrollbar {
+        height: 11px;
+        width: 3px;
+        background-color: #f0f0f0;
+    }
+
+    .scrollTable::-webkit-scrollbar-thumb {
+        padding-top: 100px;
+        -webkit-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1), inset -1px -1px 0 rgba(0, 0, 0, 0.07);
+        background-clip: padding-box;
+        background-color: #dadada;
+        min-height: 28px;
+        border-radius: 1px;
+    }
+
+    .scrollTable::-webkit-scrollbar-button {
+        height: 0;
+        width: 0;
+    }
+
+    .scrollTable::-moz-focus-inner {
+        border: 0
+    }
+
+    .icon-check:before {
+        content: "\f046";
+    }
+</style>
+<body>
+<form method="post" ms-controller="decorationRecord">
+    <div class="edite  print-hidden">
+        <div class="btn-group w150 mb20">
+            <span class="btn btn-sm btn-success" ms-click="save(0)">保存</span>
+            <span class="btn btn-sm btn-success" ms-click="print">打印</span>
+            <a class="btn btn-sm btn-success" href="index.html">返回</a>
+        </div>
+        <a class="btn btn-sm btn-success w150" ms-click="tocri">生成装修施工证</a>
+        <input type="hidden" name="isprint" ms-duplex="data.isprint">
+    </div>
+    <div class="card tc">
+        <div class="header"><img src="img/timg.jpg" alt="" height=50></div>
+        <h3>装修备案表</h3>
+        <p class="tl">
+            <b>编号：</b>
+            <input type="hidden" name="id" value="VK-WY/TX08-K04-F1"> VK-WY/TX08-K04-F1
+            <b class="ml10">版本：</b>
+            <input type="hidden" name="version" value="V1.0"> A/0
+            <b class="ml10">生效日期：</b>
+            <input type="hidden" name="effectDate" ms-attr-value="data.effectDate" class="mr5 input-noborder w120">
+            {{data.effectDate | date("yyyy年M月d日")}}
+            <b class="ml10">序号：</b>
+            <input type="hidden" name="serialNumber" ms-if="data.serialNumber" ms-attr-value="data.serialNumber"
+                   class="mr15 input-noborder w50">{{ data.serialNumber }}
+        </p>
+        <table class="table table-list">
+            <tbody>
+            <tr>
+                <td colspan="2">业主姓名</td>
+                <td colspan="4" ms-class="pr:popShow">
+                    <div class="pa f16 input-invalidate" ms-if="!data.employerName">*</div>
+                    <input type="text" pattern="^(([\u4E00-\u9FA5]{2,7})|([a-zA-Z]\s?)+)$" data-errtips="业主姓名不能有不能有特殊字符，要么全英文，要么全中文
+" ms-blur="validate" name="employerName" ms-duplex="data.employerName" class="input-noborder w" disableautocomplete
+                           autocomplete="off" ms-blur="hideItem('popShow')">
+                    <div id="popTable1" ms-if="popShow">
+                        <table class="table table-bordered table-hover table-list">
+                            <thead>
+                            <tr>
+                                <th class="tc">业主姓名</th>
+                                <th class="tc">房号</th>
+                                <th class="tc">电话</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="oa scrollTable">
+                            <table class="table table-bordered table-hover table-list">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                <tr ms-repeat-row="popTable" ms-click="fillRow(row)">
+                                    <td>{{row.fullName}}</td>
+                                    <td>{{row.contactAddr}}</td>
+                                    <td>{{row.mainMobile}}</td>
+                                </tr>
+                                <tr ms-if="noSearchData">
+                                    <td colspan="3">未搜索到数据</td>
+                                </tr>
+                                <tr ms-if="showSearching">
+                                    <td colspan="3">正在搜索,请稍后...</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2">装修负责人</td>
+                <td colspan="4">
+                    <div class="pa f16 input-invalidate" ms-if="!data.decorationPerson">*</div>
+                    <input type="text" pattern="^(([\u4E00-\u9FA5]{2,7})|([a-zA-Z]\s?)+)$" data-errtips="装修负责人填写有误"
+                           ms-blur="validate" name="decorationPerson" ms-duplex="data.decorationPerson"
+                           class="input-noborder w" disableautocomplete autocomplete="off">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">房号</td>
+                <td colspan="4">
+                    <div class="pa f16 input-invalidate" ms-if="!data.roomNumber">*</div>
+                    <input type="text" ms-blur="validate" name="roomNumber" data-errtips="房号填写有误"
+                           ms-duplex="data.roomNumber" class="input-noborder w print-hidden" disableautocomplete
+                           autocomplete="off">
+                    <div class="print-show">{{ data.roomNumber }}</div>
+                </td>
+                <td colspan="2">装修单位</td>
+                <td colspan="4">
+                    <div class="pa f16 input-invalidate" ms-if="!data.decorationUnit">*</div>
+                    <input type="text" ms-blur="validate" name="decorationUnit" data-errtips="装修单位填写有误"
+                           ms-duplex="data.decorationUnit" class="input-noborder print-hidden w" disableautocomplete
+                           autocomplete="off">
+                    <div class="print-show" style="word-break: break-word;">{{ data.decorationUnit }}</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">业主电话</td>
+                <td colspan="4">
+                    <div class="pa f16 input-invalidate" ms-if="!data.employerPhone">*</div>
+                    <input type="text" ms-blur="validate" data-errtips="业主电话号码格式不对" pattern="(^0\d{9,11}$)|(^1\d{10}$)"
+                           name="employerPhone" ms-duplex="data.employerPhone" class="input-noborder w"
+                           disableautocomplete autocomplete="off">
+                </td>
+                <td colspan="2">装修单位电话</td>
+                <td colspan="4">
+                    <div class="pa f16 input-invalidate" ms-if="!data.decorationPhone">*</div>
+                    <input type="text" ms-blur="validate" name="decorationPhone" ms-duplex="data.decorationPhone"
+                           class="input-noborder w" disableautocomplete autocomplete="off" data-errtips="装修单位电话号码格式不对"
+                           pattern="(^0\d{9,11}$)|(^1\d{10}$)">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">介绍人</td>
+                <td colspan="10">
+                    <div class="pa f16 input-invalidate" ms-if="!data.introducer">*</div>
+                    <input type="text" ms-blur="validate" name="introducer" ms-duplex="data.introducer"
+                           pattern="^(([\u4E00-\u9FA5]{2,7})|([a-zA-Z]\s?)+)$" data-errtips="介绍人填写有误"
+                           class="input-noborder w" disableautocomplete autocomplete="off">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="vertical-align: middle; text-align: center;">装修
+                    <br>施工
+                    <br>项目
+                    <br>内容
+                </td>
+                <td colspan="10" ms-class="pr: donstructionShow" class="tl">
+                    <!-- <div class="pa f16 input-invalidate" ms-if="!data.donstructionContent">*</div>
+                    <textarea name="donstructionContent" ms-duplex="data.donstructionContent" id="" class="input-noborder" style="width: 100%;height: 180px;"></textarea> -->
+                    <div>
+                        <i class="icon-chevron-right mr10"></i>
+                        <b>全屋装修</b>
+                        <label><i class="icon-check-empty"></i> </label>
+                    </div>
+                    <div>
+                        <p>
+                            <i class="icon-chevron-right mr10"></i>
+                            <b>局部装修</b>
+                        </p>
+                        <label>
+                            卧室<i class="icon-check icon-check-empty"></i>
+                        </label>
+                        <label>
+                            客厅 <i class="icon-check-empty"></i>
+                        </label>
+                        <label>
+                            餐厅 <i class="icon-check-empty"></i>
+                        </label>
+                        <label>
+                            厨房 <i class="icon-check-empty"></i>
+                        </label>
+                        <label>
+                            卫生间 <i class="icon-check-empty"></i>
+                        </label>
+                        <label>
+                            书房 <i class="icon-check"></i>
+                        </label>
+                        <label>
+                            阳台 <i class="icon-check-empty"></i>
+                        </label>
+                        <label>
+                            其他功能房间改造<input type="text" class="w100 input-border-bottom">
+                        </label>
+                    </div>
+                    <div>
+                        <p>
+                            <i class="icon-chevron-right mr10"></i>
+                            <b>墙面翻新</b>
+                        </p>
+                        <label>全屋翻新 <i class="icon-check"></i></label>
+                        <label>卧室 <i class="icon-check-empty"></i></label>
+                        <label>客厅 <i class="icon-check-empty"></i></label>
+                        <label>餐厅 <i class="icon-check-empty"></i></label>
+                        <label>厨房 <i class="icon-check-empty"></i></label>
+                        <label>卫生间 <i class="icon-check-empty"></i></label>
+                        <label>书房 <i class="icon-check-empty"></i></label>
+                        <label>阳台 <i class="icon-check-empty"></i></label>
+                        <label>其他区域翻新<i class="icon-check-empty"></i></label>
+                        特殊工艺说明<input type="text" class="w100 input-border-bottom">（如防水处理、隔热处理等）
+                    </div>
+                    <div class="ml40 tl">
+                        <p>装修施工期：
+                            <input type="text" placeholder="请输入日期" pattern="^\S+" ms-input="validate"
+                                   data-errtips="日期不能为空" id="decorationBeginDate" name="decorationBeginDate"
+                                   onclick="WdatePicker({dateFmt:'yyyy-M-d HH:mm', onpicked: removeInval,oncleared:addInval})"
+                                   class="Wdate input-border-bottom w150 print-hidden"
+                                   ms-duplex="data.decorationBeginDate">
+                            <span class="print-show">
+                                    {{ data.decorationBeginDate | date("yyyy年M月dd日")}}
+                                    </span>至
+                            <input type="text" id="decorationEndDate" name="decorationEndDate"
+                                   onclick="WdatePicker({dateFmt:'yyyy-M-d'})"
+                                   class="Wdate input-border-bottom w150 print-hidden"
+                                   ms-duplex="data.decorationEndDate">
+                            <span class="print-show">
+                                    {{ data.decorationEndDate | date("yyyy年M月dd日") }}
+                                    </span>
+                        </p>
+                        <p class="mt10 box">施工延迟记录：
+                            <textarea name="incoherenceOfRecords" ms-duplex="data.incoherenceOfRecords" id=""
+                                      class="h20 bf1 input-noborder"></textarea>
+                        </p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="vertical-align: middle; text-align: center;">业主确认</td>
+                <td colspan="10" class="tl">
+                    <div class="f12 p5">本人自愿提供物业服务中心规定要求提供的相关资料，并对其负责。
+                        <br> 本人已签订
+                        <
+                        <装修管理服务协议>>，且已知晓全部内容及权利与责任，并自愿承诺遵守。
+                            <br> 如因本人装修原因造成房屋本体损害或侵害他人权益的，由本人承担相应责任。
+                    </div>
+                    <div class="clearfix">
+                        <div class="fr">
+                            签署人（业主）：
+                            <!-- <input type="text" name="employerAutograph" ms-duplex="data.employerAutograph" class="input-border-bottom w100"> -->
+                            <div class="h20 ib w100"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix mt10">
+                        <div class="fr">
+                            <input type="text" name="emprAutoDate" onclick="WdatePicker({dateFmt:'yyyy-M-d'})"
+                                   class="Wdate input-border-bottom w150 print-hidden" ms-duplex="data.emprAutoDate">
+                            <span class="print-show">
+                                        {{ data.emprAutoDate | date("yyyy年M月dd日") }}
+                                        </span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <p class="tl">装修施工单位：</p>
+                    <div class="h50"></div>
+                    <div class="clearfix mt10">
+                        <div class="fr">
+                            签字（章）：
+                            <!-- <input type="text" ms-blur="validate" name="decorUnitAuraph" ms-duplex="data.decorUnitAuraph" class="input-noborder w100"> -->
+                            <div class="h30 ib w100"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix mt10">
+                        <div class="fr">
+                            <input type="text" name="deUnAurDate" onclick="WdatePicker({dateFmt:'yyyy-M-d'})"
+                                   class="Wdate input-border-bottom w150 print-hidden" ms-duplex="data.deUnAurDate">
+                            <span class="print-show">
+                                        {{ data.deUnAurDate | date("yyyy年M月dd日") }}
+                                    </span>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="6">
+                    <p class="tl">物业服务中心：</p>
+                    <div class="h50"></div>
+                    <div class="clearfix mt10">
+                        <div class="fr">
+                            经办人：
+                            <!-- <input type="text" name="propertyAuraph" ms-duplex="data.propertyAuraph" class="input-noborder w100"> -->
+                            <div class="h30 ib w100"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix mt10">
+                        <div class="fr">
+                            <input type="text" name="propAuraDate" onclick="WdatePicker({dateFmt:'yyyy-M-d'})"
+                                   class="Wdate input-border-bottom w150 print-hidden" ms-duplex="data.propAuraDate">
+                            <span class="print-show">
+                                        {{ data.propAuraDate | date("yyyy年M月dd日") }}
+                                    </span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="12" class="tl ">备注：
+                    <textarea name="remarks" ms-duplex="data.remarks" id=""
+                              class="input-noborder print-hidden"></textarea>
+                    <span class="print-show p10">
+                                {{ data.remarks }}
+                            </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="tl f12">
+            <p>备案资料</p>
+            <ul>
+                <li>1.业主身份证或委托代理人本人身份证、业主身份证复印件及委托书、装修单位负责人身份证、营业执照、资质证书及装修施工合同复印件、装修施工图纸和施工方案（如更改原有水电线路需提供水电线路图）。</li>
+                <li>2.按体系要求情况需提供的政府部门、业委会相关证明文件。</li>
+            </ul>
+        </div>
+    </div>
+</form>
+</body>
+
+
+</html>

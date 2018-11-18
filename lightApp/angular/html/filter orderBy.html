@@ -1,0 +1,90 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <script src="../angular/angular.js"></script>
+    <style type="text/css">
+
+    </style>
+    <script src="../angular/animate.js"></script>
+    <script type="text/javascript">
+        function Ctrl($scope) {
+            $scope.friends =
+                [{name: 'John', phone: '555-1212', age: 10},
+                    {name: 'Mary', phone: '555-9876', age: 19},
+                    {name: 'Mike', phone: '555-4321', age: 21},
+                    {name: 'Adam', phone: '555-5678', age: 35},
+                    {name: 'Julie', phone: '555-8765', age: 29}]
+            $scope.predicate = '-age';
+        }
+    </script>
+</head>
+<body>
+<div ng-controller="Ctrl">
+    <pre>Sorting predicate = {{predicate}}; reverse = {{reverse}}</pre>
+    <hr/>
+    [ <a href="" ng-click="predicate=''">unsorted</a> ]
+    <table class="friend">
+        <tr>
+            <th><a href="" ng-click="predicate = 'name'; reverse=false">Name</a>
+                (<a href="" ng-click="predicate = '-name'; reverse=false">^</a>)
+            </th>
+            <th><a href="" ng-click="predicate = 'phone'; reverse=!reverse">Phone Number</a></th>
+            <th><a href="" ng-click="predicate = 'age'; reverse=!reverse">Age</a></th>
+        </tr>
+        <tr ng-repeat="friend in friends | orderBy:predicate:reverse">
+            <td>{{friend.name}}</td>
+            <td>{{friend.phone}}</td>
+            <td>{{friend.age}}</td>
+        </tr>
+    </table>
+</div>
+
+<div ng-controller="TestCtrl">
+    {{ data | orderBy: 'age' }} <br/>
+    {{ data | orderBy: '-age' }} <br/>
+    {{ data | orderBy: '-age' | limitTo: 2 }} <br/>
+    {{ data | orderBy: ['-age', 'name'] }} <br/>
+    {{ data | filter: f }} <br/>
+
+    {{ a | date: 'yyyy-MM-dd HH:mm:ss' }}
+</div>
+
+<div ng-controller="TestCtrl">
+    <table>
+        <tr>
+            <th ng-click="f='name'; rev=!rev">名字</th>
+            <th ng-click="f='age'; rev=!rev">年龄</th>
+        </tr>
+
+        <tr ng-repeat="o in data | orderBy: f : rev">
+            <td>{{ o.name }}</td>
+            <td>{{ o.age }}</td>
+        </tr>
+    </table>
+</div>
+
+<div ng-controller="TestCtrl" ng-init="s=data[0].name; q=''">
+    <div>
+        <span>查找：</span> <input type="text" ng-model="q"/>
+    </div>
+    <select ng-multiple="true" ng-model="s"
+            ng-options="o.name as o.name + '(' + o.age + ')' for o in data | filter: {name: q} | orderBy: ['age', 'name'] ">
+    </select>
+</div>
+
+<script type="text/javascript">
+    var TestCtrl = function ($scope) {
+        $scope.data = [
+            {name: 'B', age: 4},
+            {name: 'A', age: 1},
+            {name: 'D', age: 3},
+            {name: 'C', age: 3},
+        ];
+        $scope.f = function (e) {
+            return e.age > 2;
+        }
+        $scope.a = ((new Date().valueOf()));
+    }
+</script>
+</body>
+</html>

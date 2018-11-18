@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery Mobile - Backbone.js and Require.js Apps</title>
+    <link rel="stylesheet" href="css/themes/default/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="css/themes/default/jquery.mobile.theme.uap-1.4.5.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.mobile-1.4.5.min.js"></script>
+
+    <link rel="stylesheet" href="external/jquery.mobile.datepicker.css"/>
+    <script src="external/jquery-ui/datepicker.js"></script>
+    <link rel="stylesheet" href="css/uap-ui-controls.css"/>
+    <script>
+        $(function () {
+            $("input[data-role=date]").datepicker();
+        })
+    </script>
+    <style>
+
+    </style>
+</head>
+<body>
+<div data-role="page" data-theme="uap" data-inset="true">
+    <div data-role="collapsibleset">
+        <div data-role="collapsible">
+            <h4>1、按钮</h4>
+            (1)普通文字按钮 <br>
+            <button data-inline="true">普通文字按钮</button>
+            <br/>
+            &lt;button data-inline="true">普通文字按钮&lt;/button><br/><br/><br/>
+            <button data-inline="true" class="custom-mini">mini按钮</button>
+            <br/>
+            &lt;button data-inline="true" class="custom-mini">普通文字按钮&lt;/button><br/><br/><br/>
+            (2)Icon左+文字右按钮 <br/>
+            <a href="#" data-role="button" data-iconpos="left" data-icon="carat-l" data-inline="true">导航</a>
+            <br/>
+
+            <pre>
+                &lt;a href="#" data-role="button" data-iconpos="left" data-icon="carat-l" data-inline="true">导航&lt;/a>
+            <br/>
+            </pre>
+            (3)Icon右+文字左按钮 <br/>
+            <a href="#" data-role="button" data-iconpos="right" data-icon="carat-r" data-inline="true">导航</a>
+            <br/>
+
+            <pre>
+                &lt;a href="#" data-role="button" data-iconpos="right" data-icon="carat-r" data-inline="true">导航&lt;/a></pre>
+            <br/>
+            (4)Icon上+文字下按钮 <br/>
+            <a href="#" data-role="button" data-iconpos="top" data-icon="home" data-inline="true">Icon上</a>
+            <br/>
+            &lt;a href="#" data-role="button" data-iconpos="top" data-icon="home" data-inline="true">Icon上&lt;/a><br/>
+        </div>
+        <div data-role="collapsible">
+            <h4>2、label</h4>
+            <label for="labelid">label</label>
+            &lt;label for="labelid">label&lt;/label>
+        </div>
+        <div data-role="collapsible">
+            <h4>3、文本输入框 </h4>
+            <h5>普通输入框</h5>
+            <input type="text"/>
+            &lt;input type="text"/>
+            <h5>搜索框</h5>
+            <input data-type="search" placeholder="请输入搜索内容"/>
+            <pre>
+&lt;input data-type="search" placeholder="请输入搜索内容"/>
+</pre>
+        </div>
+        <div data-role="collapsible">
+            <h4>4、数字输入框</h4>
+            <input type="number"/>
+            &lt;input type="number"/>
+        </div>
+        <div data-role="collapsible">
+            <h4>5、日期picker</h4>
+            <input type="text" data-role="date"/>
+            &lt;input type="date" data-role="date"/>
+            <p>头部head中需引入文件如下</p>
+            <pre>
+    &lt;link rel="stylesheet" href="jquery.mobile.datepicker.css" />
+    &lt;script src="external/jquery-ui/datepicker.js">&lt;/script>
+    &lt;script>
+        $(function(){
+            $("input[data-role=date]").datepicker();
+        })
+    &lt;/script>
+    </pre>
+        </div>
+        <div data-role="collapsible">
+            <h4>6.header(导航区)</h4>
+            <a href="#header" data-transition="slide">header(导航区)</a>
+        </div>
+        <div data-role="collapsible">
+            <h4>7.footer工具栏</h4>
+
+            <div data="footer"><h3>footer</h3></div>
+            &lt;div data="footer">&lt;h3>footer&lt;/h3>&lt;/div>
+        </div>
+        <div data-role="collapsible">
+            <h4>8.复选框checkbox</h4>
+
+            <fieldset data-role="controlgroup">
+                <legend>只是复选框说明性文字，你可以在这说明它的用途</legend>
+                <label><input type="checkbox" name="checkbox" value="" checked/>这是第一个复选框</label>
+                <label><input type="checkbox" name="checkbox" value=""/>这是第二个复选框</label>
+                <label><input type="checkbox" name="checkbox" value=""/>这是第三个复选框</label>
+                <label><input type="checkbox" name="checkbox" value=""/>这是第四个复选框</label>
+                <label><input type="checkbox" name="checkbox" value=""/>这是第n个复选框</label>
+            </fieldset>
+
+            <pre>
+            &lt;fieldset data-role="controlgroup">
+                &lt;legend>只是复选框说明性文字，你可以在这说明它的用途</legend>
+                &lt;label>&lt;input type="checkbox" name="checkbox" value="" checked/>这是第一个复选框&lt;/label>
+                &lt;label>&lt;input type="checkbox" name="checkbox" value=""/>这是第二个复选框&lt;/label>
+                &lt;label>&lt;input type="checkbox" name="checkbox" value=""/>这是第三个复选框&lt;/label>
+                &lt;label>&lt;input type="checkbox" name="checkbox" value=""/>这是第四个复选框&lt;/label>
+                &lt;label>&lt;input type="checkbox" name="checkbox" value=""/>这是第n个复选框&lt;/label>
+            &lt;/fieldset>
+            </pre>
+            <br>单选框radio
+            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                <legend>说明文字:</legend>
+                <input type="radio" name="radio-choice-b" id="radio-choice-c" value="list" checked="checked">
+                <label for="radio-choice-c">List</label>
+                <input type="radio" name="radio-choice-b" id="radio-choice-d" value="grid">
+                <label for="radio-choice-d">Grid</label>
+                <input type="radio" name="radio-choice-b" id="radio-choice-e" value="gallery">
+                <label for="radio-choice-e">Gallery</label>
+            </fieldset>
+            <pre>
+&lt;fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+    &lt;legend>说明文字:&lt;/legend>
+        &lt;input type="radio" name="radio-choice-b" id="radio-choice-c" value="list" checked="checked">
+        &lt;label for="radio-choice-c">List&lt;/label>
+        &lt;input type="radio" name="radio-choice-b" id="radio-choice-d" value="grid">
+        &lt;label for="radio-choice-d">Grid&lt;/label>
+        &lt;input type="radio" name="radio-choice-b" id="radio-choice-e" value="gallery">
+        &lt;label for="radio-choice-e">Gallery&lt;/label>
+&lt;/fieldset>
+</pre>
+
+        </div>
+        <div data-role="collapsible">
+            <h4>9.列表listview</h4>
+            <h5>普通列表</h5>
+            <ul data-role="listview" data-inset="true" class="ui-noboxshadow">
+                <li>
+                    <a href="">
+                        <img src="img/setting_highlight.png" alt=""/>
+
+                        <h2>第一列</h2>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="img/setting_highlight.png" alt=""/>
+
+                        <h2>第二列</h2>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="img/setting_highlight.png" alt=""/>
+
+                        <h2>第三列</h2>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="img/setting_highlight.png" alt=""/>
+
+                        <h2>第四列</h2>
+                    </a>
+                </li>
+            </ul>
+            <pre>
+&lt;ul data-role="listview" data-inset="true" class="ui-noboxshadow">
+    &lt;li>
+        &lt;a href="">
+            &lt;img src="img/setting_highlight.png" alt=""/>
+            &lt;h2>第一列&lt;/h2>
+        &lt;/a>
+    &lt;/li>
+    &lt;li>
+        &lt;a href="">
+            &lt;img src="img/setting_highlight.png" alt=""/>
+            &lt;h2>第二列&lt;/h2>
+        &lt;/a>
+    &lt;/li>
+    &lt;li>
+        &lt;a href="">
+            &lt;img src="img/setting_highlight.png" alt=""/>
+            &lt;h2>第三列&lt;/h2>
+        &lt;/a>
+    &lt;/li>
+    &lt;li>
+        &lt;a href="">
+            &lt;img src="img/setting_highlight.png" alt=""/>
+            &lt;h2>第四列&lt;/h2>
+        &lt;/a>
+    &lt;/li>
+&lt;/ul>
+</pre>
+            <h5>列表组</h5>
+            <ul data-role="collapsibleset" data-inset="false" class="ui-noboxshadow">
+                <li data-role="collapsible">
+                    <h2>分组名称一</h2>
+                    <ul data-role="listview">
+                        <li><a href="#">成员名称一</a></li>
+                        <li><a href="#">成员名称二</a></li>
+                        <li><a href="#">成员名称三</a></li>
+                    </ul>
+                </li>
+                <li data-role="collapsible">
+                    <h2>分组名称二</h2>
+                    <ul data-role="listview">
+                        <li><a href="#">成员名称一</a></li>
+                        <li><a href="#">成员名称二</a></li>
+                        <li><a href="#">成员名称三</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <pre>
+&lt;ul data-role="collapsibleset" data-inset="false" class="ui-noboxshadow">
+    &lt;li data-role="collapsible">
+        &lt;h2>分组名称一&lt;/h2>
+        &lt;ul data-role="listview">
+            &lt;li>&lt;a href="#">成员名称一&lt;/a>&lt;/li>
+            &lt;li>&lt;a href="#">成员名称二&lt;/a>&lt;/li>
+            &lt;li>&lt;a href="#">成员名称三&lt;/a>&lt;/li>
+        &lt;/ul>
+    &lt;/li>
+    &lt;li data-role="collapsible">
+        &lt;h2>分组名称二&lt;/h2>
+        &lt;ul data-role="listview">
+            &lt;li>&lt;a href="#">成员名称一&lt;/a>&lt;/li>
+            &lt;li>&lt;a href="#">成员名称二&lt;/a>&lt;/li>
+            &lt;li>&lt;a href="#">成员名称三&lt;/a>&lt;/li>
+        &lt;/ul>
+    &lt;/li>
+&lt;/ul>
+</pre>
+        </div>
+        <div data-role="collapsible">
+            <h4>10.不带图标的列表</h4>
+            <ul data-role="listview" data-inset="true" class="ui-noboxshadow">
+                <li data-icon="custom"><a href="#"><span>列表一</span><span class="state">设置</span></a></li>
+                <li data-icon="custom"><a href="#"><span>列表二</span><span class="state">设置</span></a></li>
+                <li data-icon="custom"><a href="#"><span>列表三</span><span class="state">设置</span></a></li>
+            </ul>
+            <pre>
+&lt;ul data-role="listview" data-inset="true" class="ui-noboxshadow">
+            &lt;li data-icon="custom">&lt;a href="#">&lt;span>列表一&lt;/span>&lt;span class="state">设置&lt;/span>&lt;/a>&lt;/li>
+            &lt;li data-icon="custom">&lt;a href="#">&lt;span>列表二&lt;/span>&lt;span class="state">设置&lt;/span>&lt;/a>&lt;/li>
+            &lt;li data-icon="custom">&lt;a href="#">&lt;span>列表三&lt;/span>&lt;span class="state">设置&lt;/span>&lt;/a>&lt;/li>
+&lt;/ul>
+</pre>
+        </div>
+
+        <div data-role="collapsible">
+            <h4>11.滑动条slider</h4>
+            <label for="slider"></label>
+            <input type="range" name="" id="slider" value="20" min="0" max="100" step="1"/>
+            <pre>
+    &lt;label for="slider">&lt;/label>
+&lt;input type="range" name="" id="slider"  min="0" max="100" step="1"/>
+</pre>
+        </div>
+        <div data-role="collapsible">
+            <h4>12.开关按钮switch</h4>
+            <label class="select" for="switch">这里的文字可以替换,请注意开关只能设置两个选项</label>
+            <select name="" id="switch" data-role="slider">
+                <option value="">Yes</option>
+                <option value="">No</option>
+            </select>
+            <pre>
+&lt;label class="select" for="switch">这里的文字可以替换,请注意开关只能设置两个选项&lt;/label>
+&lt;select name="" id="switch" data-role="slider">
+    &lt;option value="">Yes&lt;/option>
+    &lt;option value="">No&lt;/option>
+&lt;/select>
+</pre>
+        </div>
+        <div data-role="collapsible">
+            <h4>13.tabbar(navbar)</h4>
+
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#" class="ui-btn-active">分类One</a></li>
+                    <li><a href="#">分类Two</a></li>
+                    <li><a href="#">分类Three</a></li>
+                </ul>
+            </div>
+            <pre>
+    &lt;div data-role="navbar">
+                &lt;ul>
+                    &lt;li>&lt;a href="#"  class="ui-btn-active">分类One&lt;/a>&lt;/li>
+                    &lt;li>&lt;a href="#" >分类Two&lt;/a>&lt;/li>
+                    &lt;li>&lt;a href="#" >分类Three&lt;/a>&lt;/li>
+                &lt;/ul>
+            &lt;/div>
+</pre>
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#" data-icon="back" class="ui-btn-active">One</a></li>
+                    <li><a href="#" data-icon="back">Two</a></li>
+                    <li><a href="#" data-icon="back">Three</a></li>
+                    <li><a href="#" data-icon="back">Four</a></li>
+                    <li><a href="#" data-icon="back">Five</a></li>
+                </ul>
+            </div>
+            <pre>
+    &lt;div data-role="navbar">
+        &lt;ul>
+            &lt;li>&lt;a href="#" data-icon="back" class="ui-btn-active">One&lt;/a>&lt;/li>
+            &lt;li>&lt;a href="#" data-icon="back">Two&lt;/a>&lt;/li>
+            &lt;li>&lt;a href="#" data-icon="back">Three&lt;/a>&lt;/li>
+            &lt;li>&lt;a href="#" data-icon="back">Four&lt;/a>&lt;/li>
+            &lt;li>&lt;a href="#" data-icon="back">Five&lt;/a>&lt;/li>
+        &lt;/ul>
+    &lt;/div>
+    </pre>
+
+            <p>自定义icon</p>
+
+            <div data-role="navbar" data-theme="b" class="navbar-custom">
+                <ul>
+                    <li><a href="#" data-icon="custom" class="ui-btn-active mybar1">One</a></li>
+                    <li><a href="#" data-icon="custom" class="mybar2">Two</a></li>
+                    <li><a href="#" data-icon="custom" class="mybar3">Three</a></li>
+                    <li><a href="#" data-icon="custom" class="mybar4">Four</a></li>
+                    <li><a href="#" data-icon="custom" class="mybar5">Five</a></li>
+                </ul>
+            </div>
+            <pre>
+    &lt;div data-role="navbar" class="navbar-custom">
+        &lt;ul>
+            &lt;li>&lt;a href="#" data-icon="custom" class="ui-btn-active mybar1">One&lt;/a>&lt;/li>
+            &lt;li>&lt;a href="#" data-icon="custom" class="mybar2">Two&lt;/a>&lt;/li>
+            &lt;li>&lt;a href="#" data-icon="custom" class="mybar3">Three&lt;/a>&lt;/li>
+            &lt;li>&lt;a href="#" data-icon="custom" class="mybar4">Four&lt;/a>&lt;/li>
+            &lt;li>&lt;a href="#" data-icon="custom" class="mybar5">Five&lt;/a>&lt;/li>
+        &lt;/ul>
+    &lt;/div>
+    </pre>
+            <p>需加入自定义样式如下</p>
+
+            <p>图标选项卡</p>
+
+            <div data-role="navbar" class="navbar-custom-notext">
+                <ul>
+                    <li><a href="#" data-icon="custom" class="ui-btn-active uap-mybar-notext1">One</a></li>
+                    <li><a href="#" data-icon="custom" class="uap-mybar-notext2">Two</a></li>
+                    <li><a href="#" data-icon="custom" class="uap-mybar-notext3">Three</a></li>
+                    <li><a href="#" data-icon="custom" class="uap-mybar-notext4">Four</a></li>
+                    <li><a href="#" data-icon="custom" class="uap-mybar-notext5">Five</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div data-role="collapsible">
+            <h4>14.下拉框select</h4>
+            <label class="select" for="select">这里的文字可以替换</label>
+            <select name="" id="select" data-native-menu="false">
+                <option value="">第一个选项</option>
+                <option value="">第二个选项</option>
+                <option value="">第三个选项</option>
+                <option value="">第四个选项</option>
+                <option value="">第五个选项</option>
+            </select>
+            <pre>
+&lt;label class="select" for="select">这里的文字可以替换&lt;/label>
+&lt;select name="" id="select">
+    &lt;option value="">第一个选项&lt;/option>
+    &lt;option value="">第二个选项&lt;/option>
+    &lt;option value="">第三个选项&lt;/option>
+    &lt;option value="">第四个选项&lt;/option>
+    &lt;option value="">第五个选项&lt;/option>
+&lt;/select>
+</pre>
+        </div>
+        <div data-role="collapsible">
+            <h4>15.grid panel(布局控件)</h4>
+            (1)两行两列
+            <div class="ui-grid-a">
+                <div class="ui-block-a default">A</div>
+                <div class="ui-block-b default">B</div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a default">C</div>
+                <div class="ui-block-b default">D</div>
+            </div>
+            <pre>
+        &lt;div class="ui-grid-a">
+            &lt;div class="ui-block-a default">A&lt;/div>
+            &lt;div class="ui-block-b default">B&lt;/div>
+        &lt;/div>
+        &lt;div class="ui-grid-a">
+            &lt;div class="ui-block-a default">C&lt;/div>
+            &lt;div class="ui-block-b default">D&lt;/div>
+        &lt;/div>
+        </pre>
+            (2)三行三列(注意:此处default类只为让布局更清晰，可去掉)
+            <div class="ui-grid-b">
+                <div class="ui-block-a default">A</div>
+                <div class="ui-block-b default">B</div>
+                <div class="ui-block-c default">C</div>
+            </div>
+            <div class="ui-grid-b">
+                <div class="ui-block-a default">D</div>
+                <div class="ui-block-b default">E</div>
+                <div class="ui-block-c default">F</div>
+            </div>
+            <div class="ui-grid-b">
+                <div class="ui-block-a default">G</div>
+                <div class="ui-block-b default">H</div>
+                <div class="ui-block-c default">I</div>
+            </div>
+            <pre>
+    &lt;div class="ui-grid-b">
+            &lt;div class="ui-block-a default">A&lt;/div>
+            &lt;div class="ui-block-b default">B&lt;/div>
+            &lt;div class="ui-block-c default">C&lt;/div>
+        &lt;/div>
+        &lt;div class="ui-grid-b">
+            &lt;div class="ui-block-a default">D&lt;/div>
+            &lt;div class="ui-block-b default">E&lt;/div>
+            &lt;div class="ui-block-c default">F&lt;/div>
+        &lt;/div>
+        &lt;div class="ui-grid-b">
+            &lt;div class="ui-block-a default">G&lt;/div>
+            &lt;div class="ui-block-b default">H&lt;/div>
+            &lt;div class="ui-block-c default">I&lt;/div>
+    &lt;/div>
+</pre>
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+<div data-role="page" id="header" data-theme="uap">
+    <div data-role="header" data-position="fixed">
+        <a data-iconpos="notext" data-transition="slide" data-reverse="true" data-rel="back" data-role="button"
+           data-icon="uap-back">Home</a>
+
+        <h1>导航栏</h1>
+        <a data-iconpos="notext" href="#" data-role="button" data-icon="uap-home"></a>
+    </div>
+    <pre>
+    &lt;div data-role="header" data-position="fixed">
+        &lt;a data-iconpos="notext" data-rel="back" data-role="button" data-icon="uap-back">Home&lt;/a>
+        &lt;h1>导航栏&lt;/h1>
+        &lt;a data-iconpos="notext" href="#" data-role="button" data-icon="uap-home">&lt;/a>
+    &lt;/div>
+    </pre>
+    <div data-role="header">
+        <a data-iconpos="notext" data-rel="back" data-role="button" data-icon="uap-back">back</a>
+
+        <h1>导航栏</h1>
+    </div>
+    <pre>
+        &lt;a data-iconpos="notext" data-rel="back" data-role="button" data-icon="uap-back">back&lt;/a>
+        &lt;h1>导航栏&lt;/h1>
+    &lt;/div>
+    </pre>
+
+</div>
+</body>
+</html>

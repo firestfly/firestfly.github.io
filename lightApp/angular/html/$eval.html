@@ -1,0 +1,31 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <script src="../angular/angular.js"></script>
+    <script>
+        function Cntl($scope) {
+            $scope.exprs = [];
+            $scope.expr = '3*10|currency';
+            $scope.addExp = function (expr) {
+                $scope.exprs.push(expr);
+            };
+            $scope.removeExp = function (index) {
+                $scope.exprs.splice(index, 1);
+            };
+        }
+
+    </script>
+</head>
+<body>
+<div ng-controller="Cntl">
+    <input type='text' ng-model="expr" size="80"/>
+    <button ng-click="addExp(expr)">+</button>
+    <ul>
+        <li ng-repeat="i in exprs track by $index">
+            [ <a href="" ng-click="removeExp($index)">X</a> ]
+            <i>{{i}}</i> => <span ng-bind="$parent.$eval(i)"></span>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html ng-app="myApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="../angular/angular.min.js"></script>
+    <script src="../angular/angular-resource.min.js"></script>
+    <script>
+        angular.module('myAppp', ['ngResource']).factory('Phone', function ($resource) {
+            return $resource('./phoneId.json', {}, {
+                query: {method: 'GET', params: {Id: 'id'}, isArray: true}
+            });
+        });
+
+        function PhoneListCtrl($scope, Phone) {
+            $scope.phones = Phone.query();
+            $scope.orderProp = 'age';
+        }
+
+        //PhoneListCtrl.$inject = ['$scope', 'Phone'];
+        function PhoneDetailCtrl($scope, $routeParams, Phone) {
+            $scope.phone = Phone.get({phoneId: $routeParams.phoneId}, function (phone) {
+                $scope.mainImageUrl = phone.images[0];
+            });
+            $scope.setImage = function (imageUrl) {
+                $scope.mainImageUrl = imageUrl;
+            }
+        }
+    </script>
+    <title>AngularJS Demo</title>
+</head>
+<body>
+<div ng-controller="PhoneListCtrl">
+
+</div>
+<div ng-controller="PhoneDetailCtrl"></div>
+</body>
+</html>

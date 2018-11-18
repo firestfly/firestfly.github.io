@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html ng-app="testapp">
+<head>
+    <script src="../angular/angular.min.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script>
+        var testapp = angular.module('testapp', []);
+        testapp.controller('parentController', ['$scope', '$window', function ($scope, $window) {
+            $scope.primary1Label = 'Prime1';
+            $scope.onPrimary1Click = function () {
+                $window.alert('Primary 1 clicked');
+            }
+        }]);
+
+        /*testapp.directive('buttonBar', function () {
+         return {
+         restrict: 'EA',
+         template: '<div class="span4 well clearfix"><div class="primary-block pull-right"></div>' +
+         '<div class="secondary-block"></div></div>',
+         replace: true,
+         transclude: true,
+         compile: function (elem, attrs, transcludeFn) {
+         return function (scope, element, attrs) {
+         transcludeFn(scope, function (clone) {
+         var primaryBlock = elem.find('div.primary-block');
+         var secondaryBlock = elem.find('div.secondary-block');
+         var transcludedButtons = $(clone).filter(':button');
+         angular.forEach(transcludedButtons, function (e) {
+         if (angular.element(e).hasClass('primary')) {
+         primaryBlock.append(e);
+         } else if (angular.element(e).hasClass('secondary')) {
+         secondaryBlock.append(e);
+         }
+         });
+         });
+         };
+         } };
+         });*/
+
+        testapp.directive('buttonBar', function () {
+            return {
+                restrict: 'EA',
+                template: '<div class="span4 well clearfix"><div ng-transclude></div><div class="primary-block pull-right">' +
+                    '</div><div class="secondary-block"></div></div>',
+                replace: true,
+                transclude: true,
+                scope: {},
+                controller: ['$scope', '$element', '$transclude', function ($scope, $element, $transclude) {
+                    $transclude(function (clone) {
+                        var primaryBlock = $element.find('div.primary-block');
+                        var secondaryBlock = $element.find('div.secondary-block');
+                        var transcludedButtons = $(clone).filter(':button');
+
+                        angular.forEach(transcludedButtons, function (e) {
+                            if ($(e).hasClass('primary')) {
+                                primaryBlock.append(e);
+
+                            } else if (angular.element(e).hasClass('secondary')) {
+                                secondaryBlock.append(e);
+                            }
+                        });
+                    });
+                }],
+            };
+        });
+    </script>
+    <meta charset=utf-8/>
+    <title>Directive example</title>
+</head>
+<body>
+<div ng-controller="parentController">
+    <button-bar>
+        <button class="primary" ng-click="onPrimary1Click()">onPrimary1Click</button>
+        <button class="primary">Primary2</button>
+        <button class="secondary">Secondary1</button>
+    </button-bar>
+</div>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<script>
+    // register a new element called proto-element
+    var myElement = Polymer({
+        is: "proto-element",
+        // add a callback to the element's prototype
+        ready: function () {
+            this.innerHTML = "I'm a proto-element. Check out my prototype!"
+        },
+
+        created: function () {
+            console.log(this.localName + '#' + this.id + ' was created');
+        },
+
+        attached: function () {
+            console.log(this.localName + '#' + this.id + ' was attached');
+        },
+
+        detached: function () {
+            console.log(this.localName + '#' + this.id + ' was detached');
+        },
+
+        attributeChanged: function (name, type) {
+            console.log(this.localName + '#' + this.id + ' attribute ' + name +
+                ' was changed to ' + this.getAttribute(name));
+        }
+    });
+</script>
+<script>
+    MyElement = Polymer({
+
+        is: 'my-element',
+        ready: function () {
+            console.dir(this)
+            //this.$.header.textContent = 'Hello!';
+        },
+        factoryImpl: function (foo, bar) {
+            this.foo = foo;
+            this.configureWithBar(bar);
+        },
+
+        configureWithBar: function (bar) {
+
+        }
+
+    });
+
+    var el = new MyElement(42, 'octopus');
+</script>
+<script>
+    MyInput = Polymer({
+
+        is: 'my-input',
+
+        extends: 'input',
+
+        created: function () {
+            this.style.border = '1px solid red';
+        }
+
+    });
+
+    var el1 = new MyInput();
+    console.log(el1 instanceof HTMLInputElement); // true
+
+    var el2 = document.createElement('input', 'my-input');
+    console.log(el2 instanceof HTMLInputElement); // true
+</script>
+<script>
+    var x_custom = Polymer({
+
+        is: 'x-custom',
+
+        hostAttributes: {
+            role: 'button',
+            'aria-disabled': true,
+            tabindex: 0
+        }
+
+    });
+    document.body.appendChild(new x_custom())
+</script>
+<script>
+    (function () {
+        var MyElement1 = Polymer.Class({
+
+            is: 'my-element1',
+
+            // See below for lifecycle callbacks
+            created: function () {
+                this.innerHTML = 'My element!';
+            }
+
+        });
+
+        document.registerElement('my-element1', MyElement1);
+
+        // Equivalent:
+        var el1 = new MyElement1();
+        var el2 = document.createElement('my-element1');
+        console.log(el1 == el2)
+    })()
+</script>
+<dom-module id="xx-custom">
+    <template>
+        Hello World from <span id="name"></span>!
+    </template>
+</dom-module>
+<script>
+    Polymer({
+
+        is: 'xx-custom',
+        name: "custom name",
+        ready: function () {
+            console.log(this.$)
+            this.$.name.textContent = this.name;
+        }
+
+    });
+</script>
+<dom-module id="name-tag">
+    <template>
+        <!-- bind to the "owner" property -->
+        This is <b>{{owner}}</b>'s name-tag element.
+    </template>
+</dom-module>
+<script>
+    Polymer({
+        is: "name-tag",
+        ready: function () {
+            // set this element's owner property
+            this.owner = "Daniel";
+        }
+    });
+</script>
+<dom-module id="configurable-name-tag">
+    <template>
+        <!-- bind to the "owner" property -->
+        This is <b>{{owner}}</b>'s configurable-name-tag element.
+    </template>
+</dom-module>
+<script>
+    Polymer({
+        is: "configurable-name-tag",
+        properties: {
+            // declare the owner property
+            owner: {
+                type: String,
+                value: "Daniel"
+            }
+        }
+    });
+</script>
+<script>
+    Polymer({
+
+        is: 'xxx-custom',
+
+        properties: {
+            user: String,
+            manager: {
+                type: Boolean,
+                notify: true
+            }
+        },
+
+        attached: function () {
+            // render
+            this.innerHTML = 'Hello World, my user is ' + (this.user || 'nobody') + '.\n' +
+                'This user is ' + (this.manager ? '' : 'not') + ' a manager.';
+        }
+
+    });
+</script>
+<script>
+
+    Polymer({
+
+        is: 'x-custom',
+
+        properties: {
+            userName: String
+        }
+
+    });
+
+</script>

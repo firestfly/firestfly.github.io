@@ -1,0 +1,47 @@
+<!doctype html>
+<html ng-app="myModule">
+<head>
+    <script src="../angular/angular.js"></script>
+    <script src="../dist/jquery/dist/jquery.min.js"></script>
+    <style type="text/css">
+
+    </style>
+    <script type="text/javascript">
+        angular.module('myModule', []).factory('greeter', function ($window) {
+            return function (text) {
+                $window.alert(text);
+            };
+        })//.$inject = ['$scope', 'greeter'];
+        //var injector = angular.injector('myModule');
+        // Request any dependency from the injector
+        //var greeter = injector.get('greeter');// And this controller definition
+        function MyController($scope, greeter) {
+            $scope.sayHello = function () {
+                greeter('Hello World');
+            };
+        }
+
+        // The 'ng-controller' directive does this behind the scenes
+        //injector.instantiate(MyController);
+        function MyCtrl($scope) {
+            $scope.content = {
+                label: "inject controller"
+            }
+        }
+    </script>
+</head>
+<body>
+<div ng-controller="MyController">
+    <button ng-click="sayHello()">Hello</button>
+</div>
+<script>
+    var $div = $('<div ng-controller="MyCtrl">{{content.label}}</div>');
+    $(document.body).append($div);
+
+    angular.element(document).injector().invoke(function ($compile) {
+        var scope = angular.element($div).scope();
+        $compile($div)(scope);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>ms-repeat</title>
+    <script src="dist/avalon.js" type="text/javascript"></script>
+    <script>
+        var model = avalon.define({
+            $id: "test",
+            w: 500,
+            h: 200,
+            array: avalon.range(0, 14),
+            bottom: true,
+            num: "00",
+            className: "点我",
+            changeClassName: function () {
+                model.num = (100 * Math.random()).toFixed(0);
+                model.className = this.className
+            }
+        })
+    </script>
+    <style>
+        .ms-class div {
+            display: inline-block;
+            width: 200px;
+            height: 100px;
+            border: 1px solid black;
+        }
+
+        .active {
+            background: black;
+            color: white;
+        }
+
+        .bgRed {
+            background: palegoldenrod;
+        }
+
+        .hover {
+            background: red;
+            color: white;
+        }
+
+        .zebra-table {
+            border-collapse: collapse;
+            width: 400px;
+            border: 1px solid black;
+        }
+
+        .zebra-table td {
+            border: 1px solid black;
+            text-indent: 1em;
+        }
+
+        .zebra-table .even td {
+            background: black;
+            color: white;
+        }
+
+        .zebra-table .hover td {
+            color: red;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+
+<body>
+<div ms-controller="test" class="ms-class">
+    <div ms-active="active">测试:active</div>
+    <div ms-hover="hover">测试:hover</div>
+    <div ms-class="bgRed width{{w}} height{{h}}" ms-css-width="h">
+        类名通过插值表达式生成
+        <br/> {{w}} * {{h}}
+        <br/>
+        <input data-duplex-event="change" ms-duplex="h">
+    </div>
+    <button type="button" ms-class="test{{num}}" ms-click="changeClassName">click me</button>
+    {{className}}
+    <table class="zebra-table">
+        <tr ms-repeat="array" ms-hover="hover" ms-class-1="even: $index % 2 == 0" ms-class-2="rr: 1">
+            <td>{{$index}}</td>
+            <td>2015-11-28</td>
+        </tr>
+    </table>
+</div>
+</body>
+
+</html>

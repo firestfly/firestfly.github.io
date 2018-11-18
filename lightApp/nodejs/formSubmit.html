@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Node.js-(Ajax)</h1>
+
+<form id="signup" action="/Signup" method="POST">
+    <label>用户名：</label>
+    <input type="text" id="username" name="username">
+    <label>邮箱：</label>
+    <input type="text" id="email" name="email">
+    <input type="submit" value="提交"/>
+    <br>
+</form>
+<div id="result"></div>
+<script type="text/javascript">
+    $(function () {
+        $('#signup input[type="submit"]').click(function (e) {
+            var user = {};
+            user.username = $("#username").val();
+            user.email = $("#email").val();
+            $.post("/Signup", user, function (data) {
+                greet(data);
+            });
+            e.preventDefault();
+        });
+
+        function greet(msg) {
+            var resultNode = $('#result'),
+                greeting = $('<h2>Hi,' + msg.username + ',id:' + msg.id + '</h2>');
+            $('#signup').hide();
+            resultNode.html("");
+            resultNode.append(greeting);
+        };
+    });
+</script>
+</body>
+</html>

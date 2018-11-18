@@ -1,0 +1,81 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <script src="../angular/angular.js"></script>
+    <script>
+        function EventController($scope) {
+            $scope.count = 0;
+            $scope.$on('MyEvent', function () {
+                $scope.count++;
+            });
+            $scope.fireEvent = function () {
+                $scope.$emit('MyEvent');
+                $scope.$broadcast('MyEvent');
+            };
+        }
+
+        function _EventController($scope) {
+            //$scope.count =0;
+            $scope.fireEvent = function () {
+                $scope.$emit('MyEvent');
+                $scope.$broadcast('MyEvent');
+            };
+        }
+
+        function __EventController($scope) {
+            $scope.$on('MyEvent', function () {
+                $scope.count = $scope.count + 2;
+            });
+        }
+    </script>
+</head>
+<body>
+<div ng-controller="EventController">
+    Root scope <b>MyEvent</b> count: {{count}}
+    <ul>
+        <li ng-repeat="i in [1]" ng-controller="_EventController">
+            <button ng-click="$emit('MyEvent')">$emit('MyEvent')</button>
+            <button ng-click="$broadcast('MyEvent')">$broadcast('MyEvent')</button>
+            <button ng-click="fireEvent('MyEvent')">fireEvent('MyEvent')</button>
+            <br>
+            Middle scope <b>MyEvent</b> count: {{count}}
+            <ul>
+                <li ng-repeat="item in [1]" ng-controller="__EventController">
+                    Leaf scope <b>MyEvent</b> count: {{count}}
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<script>
+    function Sandcrawler($scope) {
+        $scope.$on('requestDroidRecall', function (e, msg) {
+            $scope.$broadcast('executeDroidRecall', msg);
+        });
+    }
+
+    function Droid($scope) {
+        $scope.location = "Owen Farm";
+        $scope.recallAllDroids = function (msg) {
+            $scope.$emit('requestDroidRecall', msg);
+        }
+        $scope.$on('executeDroidRecall', function (e, msg) {
+            $scope.location = msg;
+        });
+    }
+</script>
+<div ng-controller="Sandcrawler">
+    <div ng-controller="Droid">
+        <h2>R2-D2</h2>
+        <p>Droid Location: {{location}}</p>
+        <button ng-click="recallAllDroids('first')">Recall All Droids</button>
+    </div>
+    <div ng-controller="Droid">
+        <h2>C-3PO</h2>
+        <p>Droid Location: {{location}}</p>
+        <button ng-click="recallAllDroids('last')">Recall All Droids</button>
+    </div>
+</div>
+</body>
+</html>

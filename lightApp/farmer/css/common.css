@@ -1,0 +1,12 @@
+body {
+    font-family: "Heiti SC", "microsoft yahei";
+    font-size: 14px;
+}
+
+.um-input-search .form-control {
+    background-image: url(../img/tab_search.png);
+}
+
+img {
+    margin: 0 auto;
+}

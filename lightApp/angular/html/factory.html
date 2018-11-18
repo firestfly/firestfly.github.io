@@ -1,0 +1,44 @@
+<!doctype html>
+<html ng-app="timeExampleModule">
+<head>
+    <script src="../angular/angular.js"></script>
+    <script>
+        angular.module('timeExampleModule', []).// Declare new object call time,
+        // which will be available for injection
+        factory('time', function ($timeout) {
+            var time = {};
+            (function tick() {
+                time.now = new Date().toString();
+                $timeout(tick, 1000);
+            })();
+            return time;
+        })
+            .factory('greeter', function () {
+                //return new Greeter(arguments);
+                var t = this;
+                return function () {
+                    Greeter.apply(this, arguments);
+                    return this;
+                }
+            });
+        // Notice that you can simply ask for time
+        // and it will be provided. No need to look for it.
+        function ClockCtrl($scope, time, greeter) {
+            $scope.time = time;
+            var yy = greeter("yeah,you greeter !");
+            console.log(yy.greet("huang"));
+        }
+
+        function Greeter(salutation) {
+            this.greet = function (name) {
+                return salutation + ' ' + name;
+            }
+        }
+    </script>
+</head>
+<body>
+<div ng-controller="ClockCtrl">
+    Current time is: {{ time.now }}
+</div>
+</body>
+</html>

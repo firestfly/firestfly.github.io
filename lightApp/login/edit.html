@@ -1,0 +1,29 @@
+<div id="page4" data-theme="uap" data-role="page">
+
+
+    <div data-role="header" data-position="fixed">
+        <a data-iconpos="notext" data-rel="back" data-role="button" data-icon="uap-back">back</a>
+        <h1>编辑联系人</h1>
+    </div>
+
+    <div data-role="content">
+        <form id="contactsForm">
+            <label>
+                <span style="font-weight:bold">联系人姓名:</span>
+                <input type="text" name="name" data-clear-btn="true" placeholder="请输入联系人姓名"/>
+            </label>
+            <label>
+                <span style="font-weight:bold">电话号码:</span>
+                <input type="text" name="phone" data-clear-btn="true" placeholder="请输入联系人电话号码"/>
+            </label>
+            <label>
+                <span style="font-weight:bold">出生日期:</span>
+                <input type="date" name="birth"/>
+            </label>
+            <label>
+                <span style="font-weight:bold">工作年限:</span>
+                <input type="range" name="experience" min="0" max="100" step="1"/>
+            </label>
+        </form>
+    </div>
+</div>

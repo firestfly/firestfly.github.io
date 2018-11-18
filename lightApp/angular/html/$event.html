@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html id="ng-app" ng-app="app">
+<head>
+    <script src="../angular/angular.min.js"></script>
+    <script>
+        angular.module("app", []).controller("demo", [function () {
+            var vm = this;
+            vm.click = function (name, $event) {
+                console.log(name + " -----called", $event);
+                if (vm.stopPropagation) {
+                    $event.stopPropagation();
+                }
+            };
+            return vm;
+        }]);
+    </script>
+    <meta charset="utf-8">
+    <title>JS Bin</title>
+</head>
+<body ng-controller="demo as d">
+<div ng-click="d.click('parent',$event)">
+    given some text for click
+    <hr>
+    <input type="checkbox" ng-model="d.stopPropagation"/>Stop Propagation ?
+    <hr>
+    <button type="button" ng-click="d.click('button',$event)">button</button>
+</div>
+</body>
+</html>

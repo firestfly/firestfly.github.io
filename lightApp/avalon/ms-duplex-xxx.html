@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>ms-data</title>
+    <script src="dist/avalon.js"></script>
+    <script>
+        avalon.duplexHooks.phonenumber = {
+            get: function (str, data) {
+                var limit = new RegExp(data.element.getAttribute("pattern"));
+                if (!limit.test(str)) {
+                    alert(data.element.getAttribute("errtips"));
+                    data.element.focus();
+                    return data.element.value = "";
+                }
+                return str
+            }
+        }
+        avalon.filters.phone = function (str) {
+            if (!new RegExp("^[1][358][0-9]{9}$").test(str)) {
+                //alert("filter");
+                return "";
+            } else {
+                return str;
+            }
+        }
+        var model = avalon.define({
+            $id: "test",
+            a: 1,
+            b: true,
+            c: "",
+            d: "",
+            e: 10,
+            f: true,
+            g: ["b", "c"],
+            h: [1, 4],
+            i: [false],
+            j: "2222",
+            k: 2222,
+            l: false,
+            m: ["bbbb", "dddd"],
+            n: [11, 44],
+            p: function () {
+                var limit = new RegExp(this.getAttribute("pattern"));
+                if (!limit.test(this.value)) {
+                    alert(this.getAttribute("errtips"));
+                    this.focus();
+                    return this.value = "";
+                }
+            },
+            phonenumber: "sss"
+        });
+        model.$watch("$all", function (a, b) {
+            if (!/^avalon\-/.test(a)) {
+                console.log([a, b, typeof b].join("   "))
+            }
+        })
+        model.$watch("c", function (v) {
+            console.log(typeof v, typeof model.c);
+        })
+        model.$watch("g.length", function () {
+            console.log(model.g)
+        })
+        model.$watch("h.length", function () {
+            console.log(model.h)
+        })
+        model.$watch("i.length", function () {
+            console.log(model.i)
+        })
+        model.$watch("m.length", function () {
+            console.log(model.m)
+        })
+        model.$watch("n.length", function () {
+            console.log(model.n)
+        })
+    </script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+<div ms-controller="test">
+    <h3 style="text-align: center">ms-duplex</h3>
+    <form action="#">
+        <input type="text" data-duplex-event="change" errtips="输入电话号码啊亲" ms-duplex-phonenumber="phonenumber"
+               pattern="^[1][358][0-9]{9}$"> {{phonenumber | phone}} ms-duplex-phonenumber="phonenumber | phone"
+        <button type="submit">dd</button>
+    </form>
+    <table>
+        <tr>
+            <td>
+                <p>ms-duplex-checked
+                    <input ms-duplex-checked="a" type="radio"/>{{a}}</p>
+                <p>ms-duplex-checked
+                    <input ms-duplex-checked="b" type="checkbox"/>{{b}}</p>
+                <p>ms-duplex-string
+                    <input ms-duplex="c"/>{{c}}</p>
+                <p>ms-duplex-string
+                    <input ms-duplex-string="d"/>{{d}}</p>
+                <p>ms-duplex-number
+                    <input ms-duplex-number="e"/>{{e}}</p>
+                <p>ms-duplex-boolean
+                    <input ms-duplex-boolean="f" data-duplex-event="change"/>{{f}}</p>
+            </td>
+            <td>
+                <p>ms-duplex-string
+                    <input ms-duplex-string="g" type="checkbox" value="a"/>
+                    <input ms-duplex-string="g" type="checkbox" value="b"/>
+                    <input ms-duplex-string="g" type="checkbox" value="c"/>
+                    <input ms-duplex-string="g" type="checkbox" value="d"/> {{g}}
+                </p>
+                <p>ms-duplex-number
+                    <input ms-duplex-number="h" type="checkbox" value="1"/>
+                    <input ms-duplex-number="h" type="checkbox" value="2"/>
+                    <input ms-duplex-number="h" type="checkbox" value="3"/>
+                    <input ms-duplex-number="h" type="checkbox" value="4"/> {{h}}
+                </p>
+                <p>ms-duplex-boolean
+                    <input ms-duplex-boolean="i" type="checkbox" value="false"/>
+                    <input ms-duplex-boolean="i" type="checkbox" value="true"/> {{i}}
+                </p>
+                <p>ms-duplex-string/ms-duplex
+                    <select ms-duplex="j">
+                        <option>1111</option>
+                        <option>2222</option>
+                        <option>3333</option>
+                    </select>
+                </p>
+                <p>ms-duplex-number
+                    <select ms-duplex-number="k">
+                        <option>1111</option>
+                        <option>2222</option>
+                        <option>3333</option>
+                    </select>
+                </p>
+                <p>ms-duplex-boolean
+                    <select ms-duplex-boolean="l">
+                        <option>true</option>
+                        <option>false</option>
+                    </select>
+                </p>
+            </td>
+            <td>
+                <p>ms-duplex-string/ms-duplex
+                    <br/>
+                    <select ms-duplex="m" multiple>
+                        <option>aaaa</option>
+                        <option>bbbb</option>
+                        <option>cccc</option>
+                        <option>dddd</option>
+                    </select>
+                </p>
+                <p>ms-duplex-number
+                    <br/>
+                    <select ms-duplex-number="n" multiple>
+                        <option>11</option>
+                        <option>22</option>
+                        <option>33</option>
+                        <option>44</option>
+                    </select>
+                </p>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+
+</html>

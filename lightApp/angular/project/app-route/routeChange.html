@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html ng-app="plunker">
+<head>
+    <meta charset="utf-8"/>
+    <title>AngularJS Plunker</title>
+    <script>document.write('<base href="' + document.location + '" />');</script>
+    <link rel="stylesheet" href="style.css"/>
+    <script src="../../angular/angular.min.js"></script>
+    <script src="../../angular/angular-route.min.js"></script>
+    <script src="../../angular/angular-animate.js"></script>
+    <script src="app.js"></script>
+</head>
+<body ng-controller="MainCtrl">
+<div class="view-animate-container" ng-class="direction">
+    <div ng-view class="view-animate"></div>
+</div>
+
+<script type="text/ng-template" id="home.html">
+    <h3>Page 1</h3>
+    <a href="#/products">Page 2</a>
+    <a href="#/products/category">Page 3</a>
+</script>
+
+<script type="text/ng-template" id="products.html">
+    <h3>Page 2</h3>
+    <button ng-click="back()">Back</button>
+    <a href="#/products/category">Page 3</a>
+</script>
+
+<script type="text/ng-template" id="category.html">
+    <h3>Page 3/ SubPage</h3>
+    <button ng-click="back()">Back</button>
+    <a href="#/products">Page 2</a>
+</script>
+</body>
+</html>

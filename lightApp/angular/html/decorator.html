@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html ng-app="TestApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../angular/angular.js"></script>
+    <script>
+        var testApp = angular.module('TestApp', []);
+        // 在已有 的service上扩展下（装饰下）方法
+        /*testApp.controller("indexController", function ($scope, $log) {
+            $scope.handleClick = function () {
+                $log.log("Button Clicked");
+            };
+        })
+                .config(function ($provide) {
+                    $provide.decorator("$log", function ($delegate) {
+                        $delegate.originalLog = $delegate.log;
+                        $delegate.log = function (message) {
+                            $delegate.originalLog("通过原始Decoration方法打印: " + message);
+                        }
+                        return $delegate;
+                    });
+                });*/
+        /*testApp.controller("indexController", function ($scope, $log, $injector) {
+            var counter = 0;
+            var logClick = function ($log, $exceptionHandler, message) {
+                if (counter == 0) {
+                    $log.log(message);
+                    counter++;
+                } else {
+                    $exceptionHandler("Already clicked");
+                }
+            }
+            $scope.handleClick = function () {
+                var deps = $injector.annotate(logClick); //通过annotate方法来获取logClick函数其参数
+                for (var i = 0; i < deps.length; i++) {
+                    console.log("Dependency: " + deps[i]);
+                }
+            };
+        })*/
+        testApp.controller("indexController", function ($scope, $log, $rootElement) {
+            var counter = 0;
+            var logClick = function ($log, $exceptionHandler, message) {
+                if (counter == 0) {
+                    $log.log(message);
+                    counter++;
+                } else {
+                    $exceptionHandler("不能再点击啦，点爆啦，哥们！");
+                }
+            }
+            $scope.handleClick = function () {
+                var localVars = {message: "第一次点击"};
+                $rootElement.injector().invoke(logClick, null, localVars);
+            };
+        })
+    </script>
+</head>
+<body ng-controller="indexController">
+<div class="well">
+    <button class="btn btn-primary" ng-click="handleClick()">Click Me!</button>
+</div>
+</body>
+</html>

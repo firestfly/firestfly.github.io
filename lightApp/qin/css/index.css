@@ -1,0 +1,87 @@
+#core_cpt .cpt_item {
+    float: left;
+    width: 25%;
+    height: 74px;
+    margin-top: 14px;
+}
+
+.um-form {
+    margin-right: 0;
+    margin-left: 0;
+    display: none;
+}
+
+.um-form.active,
+.um-content.active {
+    display: block;
+}
+
+.um-header .um-header-right {
+    padding: 0 10px;
+}
+
+.um-form select {
+    width: 40px;
+    float: right;
+}
+
+.um-content {
+    display: none;
+}
+
+.selected[data-bind] {
+    /* outline:red dotted 1px; */
+    background-color: rgb(224, 224, 224);
+    box-shadow: 3px 3px 3px #BABABA inset;
+}
+
+.act {
+    color: #fff !important;
+    background-color: #007aff !important;
+}
+
+#core_cpt .cpt_node em {
+    background: url(http://static.qyy.baidu.com/static/legobuilder/builder/images/cpt_icon_d5a071b.png) no-repeat;
+    width: 28px;
+    height: 31px;
+    display: inline-block;
+    margin-top: 9px
+}
+
+#core_cpt .cpt_node em {
+    background-position-x: 0
+}
+
+#core_cpt .cpt_node em.pic {
+    width: 28px;
+    background-position: 0 -31px
+}
+
+#core_cpt .cpt_node em.slide {
+    width: 34px;
+    background-position: 0 -62px
+}
+
+#core_cpt .cpt_node em.text {
+    width: 32px;
+    background-position: 0 -93px
+}
+
+#core_cpt .cpt_node em.phone {
+    width: 23px;
+    background-position: 0 -124px
+}
+
+#core_cpt .cpt_node em.list {
+    width: 28px;
+    background-position: 0 -156px
+}
+
+#core_cpt .cpt_node em.form {
+    background-position: 0 -187px
+}
+
+#core_cpt .cpt_node em.enjoy {
+    width: 29px;
+    background-position: 0 -218px
+}

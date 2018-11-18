@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>通信开放平台-业绩分析</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="css/iuapmobile.um-2.7.0.css">
+    <link rel="stylesheet" href="css/common.css">
+
+    <script src="js/Frameworks/iuapmobile.frameworks.core-2.7.0.js"></script>
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/Frameworks/iuapmobile.frameworks.ui-2.7.0.js"></script>
+    <script src="js/bind.js"></script>
+    <script src="js/fastclick.js"></script>
+    <script src="js/jsonData.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/performance.js"></script>
+</head>
+<body>
+<div class="um-page" id="main">
+    <div class="um-header">
+        <h3>业绩分析</h3>
+        <a href="#filter" class="um-header-right">筛选</a>
+    </div>
+    <div class="um-content um-content-fill">
+        <ul class="um-tabbar um-tabbar-underline" id="table-nav">
+            <li class="active">
+                <a href="javascript:;">省市</a>
+            </li>
+            <li>
+                <a href="javascript:;">应用名</a>
+            </li>
+            <li>
+                <a href="javascript:;">ISV</a>
+            </li>
+            <li>
+                <a href="#" data-role="button" data-inline="true">导航<i class="fa fa-home"></i></a>
+            </li>
+        </ul>
+        <div class="um-table-container active table-row-scroll">
+            <div class="um-tb-header">
+                <div class="um-tb-header-title">
+                    <table>
+                        <colgroup>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col>
+                            </col>
+                        </colgroup>
+                        <tr>
+                            <td>省市</td>
+                            <td>注册用户</td>
+                            <td>活跃用户</td>
+                            <td>通话时长</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="um-tb-body">
+                <div class="um-tb-data" data-row-width="300">
+                    <table class="um-tb-data-table" id="byProvince">
+                        <colgroup>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col>
+                            </col>
+                        </colgroup>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="um-table-container  table-row-scroll">
+            <div class="um-tb-header">
+                <div class="um-tb-header-title">
+                    <table>
+                        <colgroup>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col>
+                            </col>
+                        </colgroup>
+                        <tr>
+                            <td>应用</td>
+                            <td>企业数</td>
+                            <td>注册用户</td>
+                            <td>活跃用户</td>
+                            <td>通话时长</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="um-tb-body">
+                <div class="um-tb-data" data-row-width="300">
+                    <table class="um-tb-data-table" id="byAppName">
+                        <colgroup>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col>
+                            </col>
+                        </colgroup>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="um-table-container  table-row-scroll">
+            <div class="um-tb-header">
+                <div class="um-tb-header-title">
+                    <table>
+                        <colgroup>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col>
+                            </col>
+                        </colgroup>
+                        <tr>
+                            <td>ISV</td>
+                            <td>企业数</td>
+                            <td>注册用户</td>
+                            <td>活跃用户</td>
+                            <td>通话时长</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="um-tb-body">
+                <div class="um-tb-data" data-row-width="300">
+                    <table class="um-tb-data-table" id="byIsvName">
+                        <colgroup>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col>
+                            </col>
+                        </colgroup>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="um-table-container  table-row-scroll">
+            <div class="um-tb-header">
+                <div class="um-tb-header-title">
+                    <table>
+                        <colgroup>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col>
+                            </col>
+                        </colgroup>
+                        <tr>
+                            <td>企业</td>
+                            <td>注册用户</td>
+                            <td>活跃用户</td>
+                            <td>通话时长</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="um-tb-body">
+                <div class="um-tb-data" data-row-width="300">
+                    <table class="um-tb-data-table" id="byCom">
+                        <colgroup>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col width="20%">
+                            </col>
+                            <col>
+                            </col>
+                        </colgroup>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="um-page" id="filter">
+    <div class="um-header">
+        <a href="#" class="um-back">返回</a>
+        <h3>筛选条件</h3>
+    </div>
+    <div class="um-content">
+        <div class="filter-choices">
+            <div class="um-list">
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            开始时间
+                        </div>
+                        <div class="um-list-item-right">
+                            <input type="datetime-local" value="2015-01-01T12:12:12" class="form-control tr">
+                        </div>
+                    </div>
+                </div>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            结束时间
+                        </div>
+                        <div class="um-list-item-right">
+                            <input type="datetime-local" value="2015-01-01T12:12:12" class="form-control tr">
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="um-list-item">
+                <div class="um-list-item-inner">
+                    <div class="um-list-item-body">
+                        时间
+                        <div class="um-box-justify mt10">
+                            <div class="w150">
+                                <input type="datetime-local" value="2015-01-01T12:12:12" class="form-control">
+                            </div>
+                            <div>
+                                至
+                            </div>
+                            <div class="w150">
+                                <input type="datetime-local" value="2015-01-01T12:12:12" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div> -->
+                <a href="#isvname" class="um-list-item" id="isv">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            ISV
+                        </div>
+                        <div class="um-list-item-right">
+                            <span class="choice mr15">全部</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="#yinyong" class="um-list-item" id="appname">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            应用
+                        </div>
+                        <div class="um-list-item-right">
+                            <span class="choice mr15">全部</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="#qiye" class="um-list-item">
+                    <div id="companys" class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            企业
+                        </div>
+                        <div class="um-list-item-right">
+                            <span class="choice mr15">全部</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a href="#main" class="btn agree-btn" data-reverse="true">确认</a>
+    </div>
+</div>
+<div class="um-page" id="isvname">
+    <div class="um-header">
+        <a href="#filter" class="um-back">返回</a>
+        <h3>应用详情</h3>
+    </div>
+    <div class="um-content">
+        <div class="um-check-group">
+            <label class="um-check-group-item">
+                <input name="um-check1" type="radio" checked>
+                <span></span> <span>全部</span><span class="um-icon-check um-css3-vc"></span> </label>
+            <label class="um-check-group-item" data-um-repeat="isv">
+                <input name="um-check1" type="radio">
+                <span class="none" data-um-bindfield="id"></span> <span data-um-bindfield="text">优普企业空间</span> <span
+                    class="um-icon-check um-css3-vc"></span> </label>
+        </div>
+    </div>
+    <div class="um-footer">
+        <a href="#" class="btn agree-btn" onclick="UM.page.back()">确认</a>
+    </div>
+</div>
+<div class="um-page" id="qiye">
+    <div class="um-header">
+        <a href="#filter" class="um-back">返回</a>
+        <h3>应用详情</h3>
+    </div>
+    <div class="um-content">
+        <div class="um-check-group">
+            <label class="um-check-group-item">
+                <input name="um-check2" type="radio" checked>
+                <span></span> <span>全部</span><span class="um-icon-check um-css3-vc"></span> </label>
+            <label class="um-check-group-item" data-um-repeat="companys">
+                <input name="um-check2" type="radio">
+                <span class="none" data-um-bindfield="id"></span> <span data-um-bindfield="text"></span><span
+                    class="um-icon-check um-css3-vc"></span> </label>
+        </div>
+    </div>
+    <div class="um-footer">
+        <a href="#" class="btn agree-btn" onclick="UM.page.back()">确认</a>
+    </div>
+</div>
+<div class="um-page" id="yinyong">
+    <div class="um-header">
+        <a href="#filter" class="um-back">返回</a>
+        <h3>应用详情</h3>
+    </div>
+    <div class="um-content">
+        <div class="um-check-group">
+            <label class="um-check-group-item">
+                <input name="um-check3" type="radio" checked>
+                <span></span> <span>全部</span><span class="um-icon-check um-css3-vc"></span> </label>
+
+            <label class="um-check-group-item" data-um-repeat="applyName">
+                <input name="um-check3" type="radio">
+                <span class="none" data-um-bindfield="id"></span> <span data-um-bindfield="text">优普app</span> <span
+                    class="um-icon-check um-css3-vc"></span> </label>
+        </div>
+    </div>
+    <div class="um-footer">
+        <a href="#" class="btn agree-btn" onclick="UM.page.back()">确认</a>
+    </div>
+</div>
+<div class="um-footer" style="position: absolute;bottom:0;left:0;width:100%;">
+    <div class="um-footerbar">
+        <a href="enterpriseAudit.html" class="um-footerbar-item">
+            <div class="tab_audit"></div>
+            <span class="f12 lh1">企业审核</span> </a>
+        <a class="um-footerbar-item" href="chart.html">
+            <div class="tab_count"></div>
+            <span class="f12 lh1">新增统计</span> </a>
+        <a class="um-footerbar-item active">
+            <div class="tab_analyse"></div>
+            <span class="f12 lh1">业绩分析</span> </a>
+        <a class="um-footerbar-item" href="user.html">
+            <div class="tab_person"></div>
+            <span class="f12 lh1">个人中心</span> </a>
+    </div>
+</div>
+</body>
+</html>

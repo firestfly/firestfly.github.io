@@ -1,0 +1,629 @@
+.bd-cloud-content {
+    width: 1200px;
+    margin: 0 auto;
+    *zoom: 1;
+    padding: 7px 0;
+    position: relative;
+}
+
+.bd-cloud-blank {
+    height: 45px;
+}
+
+.bd-cloud-content .username {
+    color: #2AA8E2;
+    margin-left: 5px;
+}
+
+.bd-clout-user-nav-item a:hover {
+    color: #2AA8E2;
+}
+
+.bd-cloud-content-inside {
+    width: 1240px !important;
+}
+
+.bd-cloud-content a {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.bd-cloud-content:before, .bd-cloud-content:after {
+    display: table;
+    content: "";
+    line-height: 0;
+}
+
+.bd-cloud-content:after {
+    clear: both;
+}
+
+/*topbar*/
+.bd-cloud-topbar {
+    position: fixed;
+    width: 100%;
+    z-index: 199;
+    margin: 0;
+    padding: 0;
+    min-width: 1200px;
+    background-color: #1E1D27;
+    font-size: 14px !important;
+    font-family: "Microsoft Yahei", "微软雅黑", Arial, STHeiti, Tahoma,
+    Helvetica;
+    line-height: 45px;
+    height: 45px;
+    color: #FFFFFF;
+    right: 0;
+    top: 0;
+}
+
+.bd-cloud-topbar .hide {
+    display: none;
+}
+
+.bd-cloud-topbar .clearfix {
+    zoom: 1;
+}
+
+.bd-cloud-topbar .uname {
+    position: relative;
+    top: -12px;
+    left: 12px;
+}
+
+.bd-cloud-topbar .uname:hover {
+    cursor: pointer;
+}
+
+.bd-cloud-topbar .clearfix .clearfix:after {
+    content: '\20';
+    display: block;
+    height: 0;
+    clear: both;
+}
+
+.bd-cloud-content-inside .bd-cloud-topbar {
+    min-width: 1200px;
+}
+
+.bd-cloud-topbar-logo, .bd-cloud-apps-nav, .bd-cloud-shortcut-nav {
+    float: left;
+}
+
+/*导航右侧*/
+.bd-clout-user-nav {
+    float: right;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.bd-clout-user-nav-item {
+    line-height: 30px;
+    float: left;
+    margin: 0;
+    height: 30px;
+    padding: 0 23px;
+}
+
+.bd-clout-user-nav-item:first-child {
+    padding-left: 0;
+    background: none;
+    border-left: none;
+}
+
+.bd-clout-user-nav-item {
+    border-left: solid 1px #2F2E3D;
+}
+
+.bd-clout-user-nav-link {
+    display: inline-block; /*padding: 0 12px;*/
+    color: #FFFFFF !important;
+}
+
+.bd-clout-user-nav-num {
+    display: inline-block;
+    margin: 0 0 0 8px;
+    padding: 2px 5px;
+    background: #c00;
+    border-radius: 2px;
+    font-style: normal;
+    line-height: 1;
+    color: #fff !important;
+}
+
+/* 1.下拉菜单*/
+.bd-cloud-dropdown {
+    position: relative;
+}
+
+.bd-clout-user-nav-item .userimg {
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+}
+
+.bd-clout-user-nav-item .headimg {
+    border: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    border: rgba(255, 255, 255, .1) solid 1px;
+}
+
+.bd-cloud-dropdown-name {
+    display: inline-block;
+}
+
+.bd-cloud-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 36px;
+    right: 0px;
+    min-width: 100%;
+    background-color: #1E1D27;
+    list-style: none;
+    white-space: nowrap;
+    line-height: 32px;
+    color: #FFFFFF;
+    font-size: 14px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.bd-cloud-dropdown-item {
+    margin: 12px 0;
+    line-height: 34px;
+}
+
+.bd-cloud-dropdown-open .bd-cloud-dropdown-menu {
+    display: block;
+}
+
+.idropdown, .iusercontent, .iuserout {
+    display: inline-block;
+    background: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/user-logo_3cdeefbb.png);
+}
+
+.iusercontent, .iuserout {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    top: 8px;
+    margin-left: 30px;
+    margin-right: 17px;
+}
+
+.iusercontent {
+    background-position: 0 0;
+}
+
+.iuserout {
+    background-position: -25px 0;
+}
+
+.idropdown {
+    width: 8px;
+    height: 8px;
+    background-position: 0 -25px;
+    position: relative;
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+/*主导航*/
+.bd-cloud-navbar {
+    position: relative;
+    z-index: 198;
+    margin: 0;
+    padding: 0;
+    min-width: 990px;
+    background: #f8f8f8;
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+    font-family: '微软雅黑' !important;
+    font-size: 18px !important;
+    color: #333;
+    height: 50px;
+    line-height: 50px;
+}
+
+.bd-cloud-content-inside .bd-cloud-navbar {
+    min-width: 1240px;
+}
+
+.bd-cloud-navbar .bd-cloud-content {
+    background: #f8f8f8;
+}
+
+.bd-cloud-navbar .bd-cloud-logo {
+    margin-top: 7px;
+    margin-left: 12px;
+    background-position: 0 0;
+}
+
+.bd-cloud-sub-title {
+    float: left;
+}
+
+.bd-cloud-sub-title a, .bd-cloud-sub-title a:visited,
+.bd-cloud-sub-title a:hover, .bd-cloud-sub-title a:focus,
+.bd-cloud-sub-title a:active {
+    color: #333 !important;
+    text-decoration: none;
+    outline: none;
+}
+
+.bd-cloud-sub-sep {
+    float: left;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+.bd-cloud-nav {
+    float: right;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.bd-cloud-nav-item {
+    float: left;
+    margin: 0;
+    padding: 0;
+    line-height: 50px;
+}
+
+.bd-cloud-nav-item-split {
+    border-left: 1px solid #ccc;
+}
+
+.bd-cloud-nav-link {
+    margin: 0 20px;
+    color: #333 !important;
+    background: none !important;
+    line-height: 50px;
+}
+
+.bd-cloud-nav-link:visited, .bd-cloud-nav-link:hover, .bd-cloud-nav-link:focus,
+.bd-cloud-nav-link:active {
+    text-decoration: none;
+    outline: none;
+}
+
+.bd-cloud-nav-item-current .bd-cloud-nav-link {
+    color: #06c !important;
+}
+
+.bd-cloud-nav-item:last-child .bd-cloud-nav-link {
+    margin-right: 12px;
+}
+
+.bd-cloud-navbar-small {
+    font-size: 16px !important;
+}
+
+.bd-cloud-navbar-small .bd-cloud-nav-link {
+    margin: 0 15px;
+}
+
+.head {
+    height: 65px;
+    margin-top: 60px;
+}
+
+.head.head-hide {
+    display: none;
+}
+
+.head-info {
+    width: 1200px;
+    height: 80px;
+    margin: 0 auto;
+    padding: 0 0 15px 30px;
+}
+
+.head .qinglogo {
+    float: left;
+    width: 154px;
+    height: 54px;
+    color: #333333;
+    display: inline-block;
+    background: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/index-logo_908b441a.png);
+}
+
+.head .menu-list {
+    float: right;
+    margin-top: 12px;
+}
+
+.menu-list .item, .menu-list .item-zhida {
+    font-size: 18px;
+    display: inline-block;
+    margin-right: 50px;
+    cursor: pointer;
+    color: #535353;
+}
+
+.menu-list a:hover {
+    color: #FF5D43;
+}
+
+.menu-list .current {
+    text-decoration: none;
+    border-bottom: 2px solid #e0523d;
+    padding-bottom: 24px;
+    color: #FF5D43;
+}
+
+.bd-cloud-topbar .logo-direct {
+    background: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/logo_direct_da7d0654.png) no-repeat;
+    display: block;
+    width: 77px;
+    height: 77px;
+    text-indent: -9999em;
+    box-shadow: 0 4px 1px rgba(0, 0, 0, .12);
+    position: absolute;
+    left: 38px;
+    top: 0;
+}
+
+.bd-cloud-topbar .logo-direct.inner {
+    background: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/logo_zhida_inner_44b9c67e.png) no-repeat;
+    width: 113px;
+    height: 45px;
+    box-shadow: none;
+}
+
+.bd-cloud-topbar .logo-service.inner {
+    background: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/logo_zhida_service_fa95d52d.png) no-repeat 0 -61px;
+    width: 185px;
+}
+
+.bd-cloud-topbar .logo-qing {
+    background: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/logo-qing_1be779e9.png) no-repeat;
+    width: 113px;
+    height: 45px;
+    background-position: left center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-indent: -9999em;
+}
+
+.bd-cloud-topbar .msg-ico {
+    background: #c00;
+    border-radius: 3px;
+    padding: 0 6px;
+    line-height: 30px;
+    color: #fff;
+}
+
+.bd-cloud-topbar .msg-ico:hover {
+    color: #fff;
+}
+
+/* 最近应用 */
+.bd-cloud-apps-nav {
+    margin-left: 170px;
+    margin-top: -7px;
+    position: relative;
+    float: left;
+    padding: 0 20px;
+    border-left: 1px solid #444;
+}
+
+.bd-cloud-apps-nav .bd-cloud-dropdown-ico {
+    display: inline-block;
+    width: 8px;
+    height: 6px;
+    overflow: hidden;
+    line-height: 0;
+    font-size: 0;
+    padding-left: 5px;
+}
+
+.bd-cloud-apps-nav .bd-cloud-dropdown-ico .arrow {
+    width: 0;
+    height: 0;
+    border-width: 4px 4px 0 4px;
+    border-color: #fff transparent transparent transparent;
+    border-style: solid dashed dashed dashed;
+    display: block;
+}
+
+.bd-cloud-apps-list {
+    width: 470px;
+    left: -1px;
+    right: auto;
+    position: absolute;
+    background: #fff;
+    display: none;
+    top: 100%;
+    margin: 0;
+    padding: 20px;
+    min-width: 100%;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-top: 0;
+    list-style: none;
+    white-space: nowrap;
+    line-height: 16px;
+    box-shadow: 4px 4px 4px #B2B2B2;
+}
+
+.bd-cloud-apps-list li {
+    float: left;
+    overflow: hidden;
+    padding: 10px;
+    width: 215px;
+}
+
+.bd-cloud-apps-list li:hover {
+    background-color: #f3f9ff;
+}
+
+.bd-cloud-apps-list li figure {
+    float: left;
+    padding: 0;
+    margin: 0;
+    line-height: 16px;
+}
+
+.bd-cloud-apps-list li img {
+    max-height: 40px;
+    max-width: 40px;
+    border: none;
+}
+
+.bd-cloud-apps-list div {
+    font-size: 14px;
+    height: 16px;
+    line-height: 16px;
+    font-weight: bold;
+    margin-left: 60px;
+    display: block;
+    color: #06C;
+}
+
+.bd-cloud-apps-list div b {
+    max-width: 80px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bd-cloud-apps-list div span {
+    color: #AE4A4A;
+    vertical-align: top;
+}
+
+.bd-cloud-apps-list time {
+    color: #999;
+    display: block;
+    margin-left: 60px;
+    margin-top: 10px;
+    font-size: 12px;
+    height: 14px;
+    line-height: 14px;
+}
+
+.bd-cloud-dropdown-open.bd-cloud-apps-nav {
+    background: #fff;
+    color: #333333;
+}
+
+.bd-cloud-dropdown-open .bd-cloud-dropdown-menu, .bd-cloud-dropdown-open .bd-cloud-dropdown-content {
+    display: block;
+}
+
+.bd-cloud-dropdown-open.bd-cloud-apps-nav .bd-cloud-dropdown-ico .arrow {
+    border-color: #333 transparent transparent transparent;
+}
+
+<
+/
+style >
+< style type
+
+=
+"text/css"
+> /*footer*/
+.bd-cloud-footer {
+    color: #8F97A6;
+    width: 100%;
+    height: 100px;
+    padding-top: 20px;
+    font-size: 12px;
+    background-color: #1E1D27;
+    min-width: 1200px;
+}
+
+.bd-cloud-footer .copyright {
+    margin-top: 15px;
+}
+
+.bd-cloud-footer a {
+    color: #8F97A6;
+}
+
+.bd-cloud-footer .bd-cloud-footer-wrapper {
+    width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    top: 20px;
+    text-align: center;
+}
+
+.bd-cloud-footer .f-right {
+    font-family: arial;
+    padding-bottom: 20px;
+    color: #999;
+    float: right;
+}
+
+.bd-cloud-footer .f-right a {
+    display: inline-block;
+    line-height: 15px;
+    margin-left: 20px;
+    padding-left: 22px;
+    background-image: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/footer_4beccf6c.png);
+    background-repeat: no-repeat;
+}
+
+.bd-cloud-footer a.a-dev {
+    background-position: 0 0;
+}
+
+.bd-cloud-footer a.a-mail {
+    background-position: 0 -29px;
+}
+
+.bd-cloud-footer a.a-qa {
+    background-position: 0 -60px;
+}
+
+.bd-cloud-footer-sel {
+    float: right;
+    clear: both;
+    margin-top: -7px;
+    position: relative;
+    margin-right: 75px;
+}
+
+.bd-cloud-footer-sel-btn {
+    color: #666;
+    border: solid 1px #7C8594;
+    padding: 0 0 0 10px;
+    width: 130px;
+    text-align: left;
+    height: 24px;
+    line-height: 24px;
+    cursor: pointer;
+    background-color: #1E1D27;
+}
+
+.ifooter {
+    background: url(http://apps.bdimg.com/developer/static/1/developers/light/static/common/image/footer_4beccf6c.png) no-repeat;
+    background-position: 0 -79px;
+    display: inline-block;
+    width: 13px;
+    height: 15px;
+    position: relative;
+    left: 115px;
+}
+
+.bd-cloud-footer-sel-link {
+    position: absolute;
+    left: 13px;
+    top: 23px;
+    display: block;
+    padding: 0 0 0 10px;
+    width: 118px;
+    border: solid 1px #999;
+    border-top: none;
+    height: 24px;
+    line-height: 24px;
+    display: none;
+}

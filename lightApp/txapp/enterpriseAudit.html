@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>通信开放平台-企业审核</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="css/iuapmobile.um-2.7.0.css">
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        .collect .btn {
+            width: 80px;
+        }
+    </style>
+    <script src="js/Frameworks/iuapmobile.frameworks.core-2.7.0.js"></script>
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/Frameworks/iuapmobile.frameworks.ui-2.7.0.js"></script>
+    <script src="js/fastclick.js"></script>
+    <script src="js/jsonData.js"></script>
+    <script src="js/bind.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/enterprise.js"></script>
+</head>
+<body>
+<div class="um-page" id="enter">
+    <div class="um-header">
+        <h3>企业审核</h3>
+        <span class="filter"></span>
+        <a href="#filter" class="um-header-right">筛选</a>
+    </div>
+    <div class="um-content">
+        <ul class="um-list" id="allCompany">
+            <li data-um-repeat="allCompany">
+                <a href="#isvDetail" class="um-list-item um-list-left-open f14"> <label
+                        class="um-check-inline um-list-item-media um-list-left-icon">
+                    <input type="checkbox" class="none" name="" id="">
+                    <span class="check"></span> <span class="none" data-um-bindfield="id"></span> </label>
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-body">
+                            <h4 class="media-heading"><span data-um-bindfield="applicationname"></span><span
+                                    class="time fr" data-um-bindfield="createtime">2015/02/31</span></h4>
+                            <p>
+                                <span data-um-bindfield="remarks">中软科技</span>
+                                <span class="fr" data-um-bindfield="carriername">51外勤</span>
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="um-footer">
+        <div class="collect um-box-justify">
+            <label>
+                <input type="checkbox" class="none" name="" id="checkAll">
+                <span class="check"></span> 全选 </label>
+            <p>
+                共<span class="um-orange">0</span>条
+            </p>
+            <div class="um-box h">
+                <button class="btn w100 refuse-btn">
+                    拒绝
+                </button>
+                <button class="btn w100 agree-btn">
+                    同意
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="um-page" id="filter">
+    <div class="um-header">
+        <a href="#" class="um-back">返回</a>
+        <h3>筛选条件</h3>
+    </div>
+    <div class="um-content">
+        <div class="filter-choices">
+            <div class="um-list">
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            开始时间
+                        </div>
+                        <div class="um-list-item-right">
+                            <input type="datetime-local" value="2015-01-01T12:12:12" class="form-control tr">
+                        </div>
+                    </div>
+                </div>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            结束时间
+                        </div>
+                        <div class="um-list-item-right">
+                            <input type="datetime-local" value="2015-01-01T12:12:12" class="form-control tr">
+                        </div>
+                    </div>
+                </div>
+                <a href="#status" class="um-list-item" id="astatus">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            审核状态
+                        </div>
+                        <div class="um-list-item-right">
+                            <span class="choice mr15">全部</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="#isvname" class="um-list-item" id="isv">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            ISV
+                        </div>
+                        <div class="um-list-item-right">
+                            <span class="choice mr15">全部</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="#yinyong" class="um-list-item" id="appname">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            应用
+                        </div>
+                        <div class="um-list-item-right">
+                            <span class="choice mr15">全部</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="#qiye" class="um-list-item">
+                    <div id="companys" class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            企业
+                        </div>
+                        <div class="um-list-item-right">
+                            <span class="choice mr15">全部</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a href="#" class="btn agree-btn" onclick="UM.page.back()">确认</a>
+    </div>
+</div>
+<div class="um-page" id="isvname">
+    <div class="um-header">
+        <a href="#filter" class="um-back">返回</a>
+        <h3>应用详情</h3>
+    </div>
+    <div class="um-content">
+        <div class="um-check-group">
+            <label class="um-check-group-item">
+                <input name="um-check1" type="radio" checked>
+                <span></span> <span>全部</span><span class="um-icon-check um-css3-vc"></span> </label>
+            <label class="um-check-group-item" data-um-repeat="isv">
+                <input name="um-check1" type="radio">
+                <span class="none" data-um-bindfield="id"></span> <span data-um-bindfield="text">优普企业空间</span> <span
+                    class="um-icon-check um-css3-vc"></span> </label>
+        </div>
+    </div>
+    <div class="um-footer">
+        <a href="#" class="btn agree-btn" onclick="UM.page.back()">确认</a>
+    </div>
+</div>
+<div class="um-page" id="qiye">
+    <div class="um-header">
+        <a href="#filter" class="um-back">返回</a>
+        <h3>应用详情</h3>
+    </div>
+    <div class="um-content">
+        <div class="um-check-group">
+            <label class="um-check-group-item">
+                <input name="um-check2" type="radio" checked>
+                <span></span> <span>全部</span><span class="um-icon-check um-css3-vc"></span> </label>
+            <label class="um-check-group-item" data-um-repeat="companys">
+                <input name="um-check2" type="radio">
+                <span class="none" data-um-bindfield="id"></span> <span data-um-bindfield="text"></span><span
+                    class="um-icon-check um-css3-vc"></span> </label>
+        </div>
+    </div>
+    <div class="um-footer">
+        <a href="#" class="btn agree-btn" onclick="UM.page.back()">确认</a>
+    </div>
+</div>
+<div class="um-page" id="yinyong">
+    <div class="um-header">
+        <a href="#filter" class="um-back">返回</a>
+        <h3>应用详情</h3>
+    </div>
+    <div class="um-content">
+        <div class="um-check-group">
+            <label class="um-check-group-item">
+                <input name="um-check3" type="radio" checked>
+                <span></span> <span>全部</span><span class="um-icon-check um-css3-vc"></span> </label>
+
+            <label class="um-check-group-item" data-um-repeat="applyName">
+                <input name="um-check3" type="radio">
+                <span class="none" data-um-bindfield="id"></span> <span data-um-bindfield="text">优普app</span> <span
+                    class="um-icon-check um-css3-vc"></span> </label>
+        </div>
+    </div>
+    <div class="um-footer">
+        <a href="#" class="btn agree-btn" onclick="UM.page.back()">确认</a>
+    </div>
+</div>
+<div class="um-page" id="status">
+    <div class="um-header">
+        <a href="#filter" class="um-back">返回</a>
+        <h3>审核状态</h3>
+    </div>
+    <div class="um-content">
+        <div class="um-check-group">
+            <label class="um-check-group-item">
+                <input name="um-check4" type="radio" checked>
+                <span></span> <span>全部</span><span class="um-icon-check um-css3-vc"></span> </label>
+            <label class="um-check-group-item">
+                <input name="um-check4" type="radio">
+                <span class="none">1</span> <span>已认证</span> <span class="um-icon-check um-css3-vc"></span> </label>
+            <label class="um-check-group-item">
+                <input name="um-check4" type="radio">
+                <span class="none">2</span> <span>待审核</span> <span class="um-icon-check um-css3-vc"></span> </label>
+            <label class="um-check-group-item">
+                <input name="um-check4" type="radio">
+                <span class="none">3</span> <span>审核未通过</span> <span class="um-icon-check um-css3-vc"></span> </label>
+        </div>
+    </div>
+    <div class="um-footer">
+        <!-- <button class="btn agree-btn">
+        确认
+        </button> -->
+        <a href="#" class="btn agree-btn" onclick="UM.page.back()">确认</a>
+
+    </div>
+</div>
+<div class="um-page" id="isvDetail">
+    <div class="um-header">
+        <a href="#main" class="um-back">返回</a>
+        <h3>应用详情</h3>
+    </div>
+    <div class="um-content">
+        <ul class="um-list" data-um-scope="isvDetail">
+            <li class="none" data-um-bindfield="id" class="bind_id"></li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            ISV名称
+                        </div>
+                        <div class="um-list-item-right" data-um-bindfield="isvname"></div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            企业名
+                        </div>
+                        <div class="um-list-item-right" data-um-bindfield="applicationname">
+                            中软科技
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            应用名称
+                        </div>
+                        <div class="um-list-item-right" data-um-bindfield="carriername">
+                            51外勤
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            申请时间
+                        </div>
+                        <div class="um-list-item-right" data-um-bindfield="createtime">
+                            2014/05/14
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            组织代码
+                        </div>
+                        <div class="um-list-item-right" data-um-bindfield="organizationcode">
+                            3R234F2RW
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            联系人
+                        </div>
+                        <div class="um-list-item-right" data-um-bindfield="contacts">
+                            梅丽莎
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            公司电话
+                        </div>
+                        <div class="um-list-item-right" data-um-bindfield="companytel">
+                            13055129876
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            邮箱
+                        </div>
+                        <div class="um-list-item-right" data-um-bindfield="email">
+                            timi@yonyou.com
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            审核状态
+                        </div>
+                        <div class="um-list-item-right" data-um-bindfield="remarks">
+                            已审核
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            备注
+                        </div>
+                        <div class="um-list-item-right" data-um-bindfield="gift">
+                            良好
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="um-footer">
+        <div class="collect um-box">
+            <button class="btn refuse-btn um-bf1">
+                拒绝
+            </button>
+            <button class="btn agree-btn um-bf1">
+                同意
+            </button>
+        </div>
+    </div>
+</div>
+<div class="um-footer" style="position: absolute;bottom:0;left:0;width:100%;">
+    <div class="um-footerbar">
+        <a class="um-footerbar-item active">
+            <div class="tab_audit"></div>
+            <span class="f12 lh1">企业审核</span> </a>
+        <a class="um-footerbar-item" href="chart.html">
+            <div class="tab_count"></div>
+            <span class="f12 lh1">新增统计</span> </a>
+        <a class="um-footerbar-item" href="performance.html">
+            <div class="tab_analyse"></div>
+            <span class="f12 lh1">业绩分析</span> </a>
+        <a class="um-footerbar-item" href="user.html">
+            <div class="tab_person"></div>
+            <span class="f12 lh1">个人中心</span> </a>
+    </div>
+</div>
+</body>
+</html>

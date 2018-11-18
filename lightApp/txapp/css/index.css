@@ -1,0 +1,73 @@
+.um-content {
+    background: url("../img/drawable/bg.png") center no-repeat;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+.appname {
+    color: #fff;
+    font-weight: bold;
+    position: fixed;
+    top: 30px;
+    width: 100%;
+    text-align: center;
+}
+
+.user, .psw {
+    padding: 13px 28px;
+    background: url("../img/drawable/user.png") 10px 50% no-repeat #ededed;
+    -webkit-background-size: 20px;
+    background-size: 20px;
+    position: relative;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.psw {
+    background-image: url("../img/drawable/password.png");
+    -webkit-background-size: 20px;
+    background-size: 20px;
+}
+
+.user:before,
+.psw:before {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    content: "";
+    width: 100%;
+    height: 20px;
+    border-right: 1px solid #b2b2b2;
+}
+
+.um-input-group .form-control {
+    height: 40px;
+    border-color: #ededed;
+    background-color: #ededed;
+}
+
+.um-input-group .form-control:focus {
+    border-color: #ededed;
+    box-shadow: none;
+}
+
+.login {
+    position: fixed;
+    padding: 50px 20px;
+    width: 100%;
+    background-color: #fff;
+}
+
+.check {
+    width: 30px;
+    height: 30px;
+    background: url("../img/drawable/check_off.png") center no-repeat;
+    display: inline-block;
+    background-size: 50px;
+    vertical-align: middle;
+}
+
+input[type="checkbox"]:checked + .check {
+    background: url("../img/drawable/check_on.png") center no-repeat;
+    background-size: 50px;
+}

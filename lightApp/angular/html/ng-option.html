@@ -1,0 +1,66 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <script src="../angular/angular.js"></script>
+    <form name="test_form" ng-controller="TestCtrl" ng-init="o=['a',11,22,33]; a=o[1];">
+        <select ng-model="a" ng-options="x for x in o" ng-change="show()">
+            <option value="">可以加这个空值</option>
+        </select>
+    </form>
+
+    <form name="test_form" ng-controller="TestCtrl"
+          ng-init="o=[{name: 'AA'}, {name: 'BB'}]; a=o[1];">
+        <select ng-model="a" ng-options="x.name for x in o" ng-change="show()">
+        </select>
+    </form>
+
+
+    <form name="test_form" ng-controller="TestCtrl"
+          ng-init="o=[{name: 'AA', v: '00'}, {name: 'BB', v:'11'}]; a=o[1].v;">
+        <select ng-model="a" ng-options="x.v as x.name for x in o"
+                ng-change="show()">
+        </select>
+    </form>
+
+
+    <form name="test_form" ng-controller="TestCtrl" ng-init="o=[{name: 'AA', g: '00', v: '='},
+ {name: 'BB', g: '11', v:'+'}, {name: 'CC', g: '00', v: '!'}]; a=o[1].v;">
+        <select ng-model="a" ng-options="x.v as x.name group by x.g for x in o" ng-change="show()">
+        </select>
+    </form>
+
+
+    <form name="test_form" ng-controller="TestCtrl" ng-init="o={'01':'第一项', 02: 'rrr'}; a=o['01'];">
+        <select ng-model="a" ng-options="v for (k, v) in o" ng-change="show()">
+        </select>
+    </form>
+
+    <form name="test_form" ng-controller="TestCtrl" ng-init="o={a: {name: 'AA', v: '00'},
+b: {name: 'BB',v: '11'}}; a=o.a.name;">
+        <select ng-model="a" ng-options="v.name as v.v for (k, v) in o" ng-change="show()"></select>
+    </form>
+
+    <form name="test_form" ng-controller="TestCtrl" ng-init="o={a: {name: 'AA', v: '00', g: '=='},
+    b:{name: 'BB', v: '11', g: '=='}}; a=o.a;">
+        <select ng-model="a" ng-options="v.name group by v.g for (k,v) in o" ng-change="show()">
+        </select>
+    </form>
+
+
+    <form name="test_form" ng-controller="TestCtrl" ng-init="o={a: {name: 'AA', v: '00', g: '=='},
+    b:{name: 'BB', v: '11', g: '=='}}; a=o.a.v;">
+        <select ng-model="a" ng-options="v.v as v.name group by v.g for (k, v) in o" ng-change="show()">
+        </select>
+    </form>
+
+
+    <script type="text/javascript">
+        var TestCtrl = function ($scope) {
+            $scope.show = function () {
+                console.log($scope.a);
+            }
+        }
+
+    </script>
+    </body>
+</html>

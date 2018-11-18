@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Farmer Business</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="css/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="css/um.css">
+    <link rel="stylesheet" href="css/common.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/um.js"></script>
+    <style>
+        .um-list li {
+            white-space: normal;
+        }
+
+        .img-show {
+            margin: 0px auto;
+            position: relative;
+        }
+
+        .price-bar {
+            color: #fb6878;
+            margin: 0 0 8px;
+        }
+
+        .product-tag {
+            background-color: #fb6878;
+            color: #fff;
+        }
+
+        .ui-label {
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .product-intro {
+            padding-right: 10px;
+        }
+
+        .product-collect {
+            padding: 0 10px;
+            border-left: 1px solid #ddd;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .service-score .count,
+        .product-point {
+            color: #fb6878;
+        }
+
+        .service-score div {
+            border-right: 1px solid #ddd;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            text-align: center;
+        }
+
+        .service-score div:last-child {
+            border-right: none;
+        }
+
+        .logistics div {
+            text-align: center;
+            color: #999;
+        }
+
+        .logistics .count {
+            text-align: center;
+            color: #333;
+        }
+
+        .list {
+            display: none;
+        }
+
+        .list.active {
+            display: block;
+        }
+
+        .des li {
+            border: none;
+            margin: 5px 0;
+            color: #999;
+        }
+
+        .um-list .btn {
+            margin: 0;
+        }
+
+        .btn, .info, .pics {
+            margin: 10px 0;
+        }
+
+        .add {
+            background-color: #f0f0f0;
+            padding: 10px;
+            line-height: 2;
+        }
+
+        #scroll_position {
+            position: absolute;
+            bottom: 10px;
+            width: 200px;
+            height: 30px;
+            left: 50%;
+            margin-left: -100px;
+            text-align: center;
+            z-index: 3;
+        }
+
+        #scroll_position li {
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            border-radius: 50%;
+            margin: 0 5px;
+            display: inline-block;
+        }
+
+        #scroll_position li.active {
+            background-color: rgb(219, 204, 55);
+        }
+
+        img {
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<div class="um-page">
+    <div class="um-header">
+        <ul class="um-tabbar um-tabbar-underline" id='product-header'>
+            <li name="1" class="active">
+                <a href="javascript:;">基本信息</a>
+            </li>
+            <li name="2">
+                <a href="javascript:;">商品详情</a>
+            </li>
+            <li name="3">
+                <a href="javascript:;">评价(<span class="review">1609</span>)</a>
+            </li>
+        </ul>
+    </div>
+    <div class="um-content">
+        <div class="list active">
+            <div class="img-show">
+                <ul id='scroll_position' data-action="swipeTab" data-target="slider">
+                    <li name="1" class="active"></li>
+                    <li name="2"></li>
+                    <li name="3"></li>
+                    <li name="4"></li>
+                </ul>
+                <div id='slider' class='swipe'>
+                    <div class='swipe-wrap'>
+                        <div>
+                            <img src="http://placehold.it/360x300/007aff/fff" alt="" class="img-responsive">
+                        </div>
+                        <div>
+                            <img src="http://placehold.it/360x300/f73921/fff" alt="" class="img-responsive">
+                        </div>
+                        <div>
+                            <img src="http://placehold.it/360x300/982/fff" alt="" class="img-responsive">
+                        </div>
+                        <div>
+                            <img src="http://placehold.it/360x300/673/fff" alt="" class="img-responsive">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <h4 class="price-bar">￥35.0</h4>
+            <p class="mb10"><span class="product-tag">剩余1小时</span></p>
+            <p class="ui-label">一口价 ￥120</p>
+            <ul class="um-list um-list-static">
+                <li class="um-box">
+                    <div class="product-intro um-bf1">妙度1990男士短袖T恤男夏季新款韩版修身纯棉t恤男潮圆领打底衫男
+                        <p class="product-point">莱卡纯棉 送运费险 售后无忧 可退可换 天猫正品</p>
+                    </div>
+                    <div class="product-collect um-box-center t-star">收藏</div>
+                </li>
+            </ul>
+            <ul class="um-list um-list-static logistics">
+                <li class="um-box-justify">
+                    <div>
+                        <span class="from">浙江杭州</span>至
+                        <span class="to">北京市</span>
+                        <div class="count">快递0.00</div>
+                    </div>
+                    <div>月销量
+                        <div class="count">9803件</div>
+                    </div>
+                    <div>天猫积分
+                        <div class="count">送15分起</div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="um-list um-list-static">
+                <li>
+                    <span class="um-red">服务:</span>
+                    <span class="ml10">
+								<span>T2极速退款</span>
+								<span>七天退换</span>
+							</span>
+                </li>
+            </ul>
+            <ul class="um-list">
+                <li><a class="btn" href="javascript:;">选择：尺码/颜色</a></li>
+            </ul>
+            <div class="um-box mt30">
+                <button class="um-bf1 btn btn-danger">立即购买</button>
+                <button class="um-bf1 btn um-btn-danger">加入购物车</button>
+            </div>
+            <ul class="um-list um-list-static">
+                <li>
+                    <a href="shop.html" class="btn">用友专卖店</a>
+                </li>
+            </ul>
+            <ul class="um-list um-list-static service-score">
+                <li class="um-box">
+                    <div>描述相符&nbsp;<span class="count">4.9</span></div>
+                    <div>服务态度&nbsp;<span class="count">4.9</span></div>
+                    <div>发货速度&nbsp;<span class="count">4.8</span></div>
+                </li>
+            </ul>
+        </div>
+        <div class="list um-fill">
+            <img src="http://placehold.it/400x300/007aff/fff" alt="" class="mt15 img-responsive">
+            <img src="http://placehold.it/400x300/007aff/fff" alt="" class="mt15 img-responsive">
+            <img src="http://placehold.it/400x300/007aff/fff" alt="" class="mt15 img-responsive">
+            <img src="http://placehold.it/400x300/007aff/fff" alt="" class="mt15 img-responsive">
+            <img src="http://placehold.it/400x300/007aff/fff" alt="" class="mt15 img-responsive">
+        </div>
+        <div class="list">
+
+            <button class="btn btn-sm btn-inline um-btn-default">质量很好</button>
+            <button class="btn btn-sm btn-inline um-btn-primary">实惠</button>
+            <button class="btn btn-sm btn-inline um-btn-success">发货速度快</button>
+            <button class="btn btn-sm btn-inline um-btn-info">颜色不错</button>
+            <button class="btn btn-sm btn-inline um-btn-warning">做工不好</button>
+            <button class="btn btn-sm btn-inline um-btn-danger">有色差</button>
+            <ul class="um-list um-list-static">
+                <li>
+                    <div class="um-box checkchoice">
+                        <label class="um-check-inline">
+                            <input name="um-checkbox-inline" type="checkbox" value="自动登录">
+                            查看追加评论
+                            <span class="um-checkbox um-css3-vc"></span>
+                        </label>
+                        <label class="um-check-inline">
+                            <input name="um-checkbox-inline" type="checkbox" value="自动登录">
+                            图片(<span class="count">306</span>)
+                            <span class="um-checkbox um-css3-vc"></span>
+                        </label>
+                    </div>
+                </li>
+                <li>
+
+                    <p>宝贝收到了 质量很好，和图片描述的一样，很不错的款式 颜色 大小都非常满意</p>
+                    <div class="pics">
+                        <img src="http://placehold.it/50x50/007aff/fff" alt="">
+                        <img src="http://placehold.it/50x50/007aff/fff" alt="">
+                        <img src="http://placehold.it/50x50/007aff/fff" alt="">
+                        <img src="http://placehold.it/50x50/007aff/fff" alt="">
+                        <img src="http://placehold.it/50x50/007aff/fff" alt="">
+                    </div>
+                    </p>
+                    <ul class="des">
+                        <li>适用床尺寸：1.0m（3.3英尺）床</li>
+                        <li>颜色分类：米黄16MM</li>
+                    </ul>
+
+                    <p class="info">
+							<span class="username">
+								fire1290
+								<img src="http://placehold.it/15x15/f00/fff" width=15 alt="">
+								<img src="http://placehold.it/15x15/f00/fff" width=15 alt="">
+								<img src="http://placehold.it/15x30/f00/fff" width=15 alt="">
+							</span>
+                        <span class="fr time">2015-03-15</span>
+                    </p>
+                    <p class="add">2天后追加：质量非常好， 与卖家描述的完全一致，真非常满意卖家的服务态度太棒了，考虑的非常周到，完全超出期望值卖家发货速度快 包装非常仔细
+                        物流公司服务态度很好，运送速度很快</p>
+                </li>
+            </ul>
+
+
+            <ul class="um-list um-list-static">
+
+            </ul>
+        </div>
+        <div class="um-footer um-noborder">
+
+        </div>
+        <script>
+            $("#product-header").find("li").on("click", function () {
+                var index = $(this).index();
+                $(this).addClass("active").siblings().removeClass("active");
+                $(".list").eq(index).addClass("active").siblings(".list").removeClass("active");
+            })
+        </script>
+</body>
+</html>

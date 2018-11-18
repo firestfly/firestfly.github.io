@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <script src="dist/avalon.js"></script>
+    <script>
+        var model = avalon.define({
+            $id: "$watch1",
+            prop: "xxx",
+            array: ["aaa", "bbb", "ccc", "ddd"],
+            data: {
+                aaa: "lll"
+            },
+            propWatch: "",
+            arrayWatch: 4,
+            dataAAAWatch: "",
+            click: function () {
+                model.prop = new Date - 1
+                model.data.aaa = new Date - 2
+                model.array.push(new Date - 3)
+            }
+        })
+        model.$watch("prop", function (a) {
+            model.propWatch = a + " $watch"
+        })
+
+        //在avalon.define外面绑定$watch回调
+        model.$watch("array.length", function (a) {
+            model.arrayWatch = a + " $watch"
+        })
+        model.$watch("data.aaa", function (a) {
+            model.dataAAAWatch = a + " $watch"
+        })
+    </script>
+</head>
+
+<body>
+<div ms-controller="test">
+    <p>{{$aaa}}</p>
+    <p>{{aaa}}</p>
+    <p>{{bbb}}</p>
+    <p>{{ccc}}</p>
+    <p>{{fn()}}</p>
+    <button type="button" ms-click="click">点我</button>
+</div>
+<script>
+    var vm = avalon.define({
+        $id: "test",
+        $aaa: "sss",
+        $skipArray: ["bbb", "ccc"],
+        aaa: 111,
+        bbb: 222,
+        ccc: 333,
+        fn: function () {
+            return "函数"
+        },
+        click: function () {
+            vm.$aaa = vm.aaa = vm.bbb = vm.ccc = "change"
+            vm.fn = function () {
+                return "----------"
+            }
+        }
+    })
+</script>
+</body>
+
+</html>

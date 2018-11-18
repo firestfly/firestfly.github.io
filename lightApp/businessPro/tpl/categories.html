@@ -1,0 +1,277 @@
+<link rel="stylesheet" href="css/categories.css">
+<div class="um-page" id="categories">
+    <div class="um-header">
+        <h3>首页</h3>
+    </div>
+    <div class="um-content clearfix">
+        <div class="um-fill">
+            <div class="left-list um-xs-3">
+                <ul class="um-list">
+                    <li ng-repeat="level1_data in  categoryData" ng-class="{true: 'active'}[curSelectedIndex==$index]"
+                        ng-click="select($index)">
+                        <a href="javascript:;" class="btn um-no-icon" ng-bind="level1_data.category"></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="right-list um-xs-9">
+                <div ng-repeat="level1_data in categoryData" class="right-list-item"
+                     ng-class="{true: 'active'}[curSelectedIndex==$index]">
+                    <div class="items">
+                        <img ng-src="{{level1_data.pic}}" alt="" class="banner img-responsive"
+                             ng-show="level1_data.ad.pic">
+                        <div class="clearfix items-sort" ng-repeat="level2_data in level1_data.children">
+                            <p class="sort-heading fb">{{level2_data.category}}</p>
+                            <a class="item" ng-repeat="level3_data in level2_data.children"
+                               ng-href="#/category/{{level3_data.category_id}}">
+                                <img ng-src="{{level3_data.pic}}" class="img-responsive" alt="">
+                                <p ng-bind="level3_data.category"></p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="right-list-item active">
+                    <div class="items">
+                        <img src="http://placehold.it/270x270/1aa565/fff" alt="" class="banner img-responsive">
+                        <div class="clearfix items-sort">
+                            <p class="sort-heading">鞋子</p>
+                            <a href="#/category/1" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                        </div>
+                        <div class="clearfix items-sort">
+                            <p class="sort-heading">鞋子</p>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                        </div>
+                        <div class="clearfix items-sort">
+                            <p class="sort-heading">鞋子</p>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/1aa565/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-list-item">
+                    <div class="items">
+                        <img src="http://placehold.it/270x270/007aff/fff" alt="" class="banner img-responsive">
+                        <div class="clearfix items-sort">
+                            <p class="sort-heading">鞋子</p>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                        </div>
+                        <div class="clearfix items-sort">
+                            <p class="sort-heading">鞋子</p>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                        </div>
+                        <div class="clearfix items-sort">
+                            <p class="sort-heading">鞋子</p>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/007aff/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-list-item">
+                    <div class="items">
+                        <img src="http://placehold.it/270x270/563fb3/fff" alt="" class="banner img-responsive">
+                        <div class="clearfix items-sort">
+                            <p class="sort-heading">鞋子</p>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                        </div>
+                        <div class="clearfix items-sort">
+
+                            <p class="sort-heading">鞋子</p>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                        </div>
+                        <div class="clearfix items-sort">
+                            <p class="sort-heading">鞋子</p>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                            <a href="category.html" class="item">
+                                <img src="http://placehold.it/70x70/563fb3/fff" class="img-responsive" alt="">
+                                <p>这是描述信息</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <div class="um-footer um-noborder">
+        <ul class="um-footer-tabbar">
+            <li class="active">
+                <a href="index.html">
+                    <div class="ti-home"></div>
+                    主页</a>
+            </li>
+            <li>
+                <a href="shopcar.html">
+                    <div class="ti-shopping-cart"></div>
+                    购物车</a>
+            </li>
+            <li>
+                <a href="orderlists.html">
+                    <div class="ti-user"></div>
+                    个人中心</a>
+            </li>
+        </ul>
+    </div>
+</div>

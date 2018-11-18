@@ -1,0 +1,132 @@
+<!doctype html>
+<html ng-app="myModule">
+<head>
+    <script src="../angular/angular.js"></script>
+    <script type="text/javascript">
+        angular.module("myModule", [])
+            .filter('reverse', function () {
+                var filter = function (input, one) {
+                    if (!input) {
+                        return;
+                    }
+                    var arr = input.split("").reverse().join("").toString();
+                    if (one) {
+                        return arr.toUpperCase();
+                    }
+                    return arr;
+                };
+                return filter;
+            })
+            .filter('titleCase', function () {
+                var titleCaseFilter = function (input) {
+                    var words = input.split(' ');
+                    for (var i = 0; i < words.length; i++) {
+                        words[i] = words[i].charAt(0).toUpperCase() +
+                            words[i].slice(1);
+                    }
+                    return words.join(' ');
+                };
+                return titleCaseFilter;
+            });
+
+        function HomeController($scope) {
+            $scope.pageHeading = 'behold the majesty of you page title';
+        };
+        //angular.bootstrap(document, ['myModule']);
+    </script>
+</head>
+<body>
+<div ng-init="list = ['Chrome', 'Safari', 'Firefox', 'IE'] ">
+    Number formatting: {{ 1234567890 | number }} <br>
+    array filtering <input ng-model="predicate">
+    {{ list | filter:predicate | json }}
+</div>
+<hr/>
+
+
+<div>
+    <h2>创建过滤器</h2>
+    <input ng-model="greeting" type="text"><br>
+    No filter: {{greeting}}<br>
+    Reverse: {{greeting|reverse}}<br>
+    Reverse + uppercase: {{greeting|reverse:true}}<br>
+</div>
+<hr/>
+
+
+<h1 ng-controller="HomeController">{{pageHeading | titleCase}}</h1>
+<hr/>
+
+<div ng-init="friends = [{name:'John', phone:'555-1276'},
+                         {name:'Mary', phone:'800-BIG-MARY'},
+                         {name:'Mike', phone:'555-4321'},
+                         {name:'Adam', phone:'555-5678'},
+                         {name:'Julie', phone:'555-8765'},
+                         {name:'Juliette', phone:'555-5678'}]"></div>
+
+Search: <input ng-model="searchText">
+<table id="searchTextResults">
+    <tr>
+        <th>Name</th>
+        <th>Phone</th>
+    </tr>
+    <tr ng-repeat="friend in friends | filter:searchText">
+        <td>{{friend.name}}</td>
+        <td>{{friend.phone}}</td>
+    </tr>
+</table>
+<hr>
+Any: <input ng-model="search.$" value="1"> <br>?
+Name only <input ng-model="search.name"><br>
+Phone only <input ng-model="search.phone"><br>
+Equality <input type="checkbox" ng-model="strict"><br>
+<table id="searchObjResults">
+    <tr>
+        <th>Name</th>
+        <th>Phone</th>
+    </tr>
+    <tr ng-repeat="friend in friends | filter:search:strict">
+        <td>{{friend.name}}</td>
+        <td>{{friend.phone}}</td>
+    </tr>
+</table>
+<hr/>
+可以使用对象，来指定属性名， $ 表示任意属性：<br/>
+{{ friends | filter: {name: 'ju'} }} <br/>
+{{ friends | filter: {$: '3'} }} <br/>
+{{ friends | filter: {$: '!3'} }} <br/>
+<p>
+<h2>currency货币转换</h2>
+<input type="number" ng-model="amount"> <br>
+default currency symbol ($): {{amount | currency}}<br>
+custom currency identifier (USD$): {{amount | currency:"USD$"}}
+</p>
+<hr/>
+
+
+<p>
+<h2>date</h2>
+<span ng-non-bindable>{{1288323623006 | date:'medium'}}</span>:
+{{1288323623006 | date:'medium'}}<br>
+<span ng-non-bindable>{{1288323623006 | date:'yyyy-MM-dd HH:mm:ss Z'}}</span>:
+{{1288323623006 | date:'yyyy-MM-dd HH:mm:ss Z'}}<br>
+<span ng-non-bindable>{{1288323623006 | date:'MM/dd/yyyy @ h:mma'}}</span>:
+{{'1288323623006' | date:'MM/dd/yyyy @ h:mma'}}<br>
+</p>
+<hr/>
+
+
+<p>
+<h2>limitTo:(number)</h2>
+Limit {{numbers = [1,2,3,4,5,6,7,8,9]}} to: <input type="integer" ng-model="limit">
+<p>Output: {{ numbers | limitTo:limit }}</p>
+</p>
+<hr/>
+
+
+<p>
+<h2>uppercase, lowercase</h2>
+'aBcDeFgH' to uppercase and lowercase: <span>{{'aBcDeFgH' | uppercase }}; {{'aBcDeFgH' | lowercase }}</span>
+</p>
+</body>
+</html>

@@ -1,0 +1,94 @@
+body {
+    font-family: 黑体, "microsoft yahei";
+    font-size: 14px;
+}
+
+.um-content {
+    padding-top: 20px;
+    overflow: hidden;
+}
+
+.um-list-item-after {
+    margin-right: -10px;
+}
+
+.sort-heading {
+    color: #555;
+    padding-left: 10px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.um-list {
+    margin-top: 0;
+}
+
+.left-list,
+.right-list {
+    overflow: auto;
+    padding-bottom: 30px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.left-list li {
+    border: none;
+}
+
+.um-content {
+    padding-top: 48px;
+}
+
+.left-list li .btn,
+.left-list li .btn:focus {
+    background-color: #ececec;
+    text-align: center;
+    font-size: 13px;
+    -webkit-transition: none;
+    transition: none;
+}
+
+.left-list li.active .btn,
+.left-list li .btn:active {
+    color: red;
+    background-color: #fff;
+    border-left: 3px solid;
+}
+
+.right-list {
+    background-color: #fff;
+    overflow: auto;
+}
+
+.um-header .um-input-search {
+    padding: 6px 10px;
+}
+
+.right-list .title {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.right-list-item {
+    display: none;
+    padding-top: 10px;
+}
+
+.right-list-item .item-row {
+    margin: 15px 0;
+}
+
+.items .item {
+    width: 33.25%;
+    text-align: center;
+    display: block;
+    float: left;
+}
+
+.item img {
+    margin: 10px auto;
+}
+
+.right-list-item.active {
+    display: block;
+}
+

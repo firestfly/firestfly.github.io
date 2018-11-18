@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <script src="../angular/angular.js"></script>
+    <title></title>
+    <script type="text/javascript">
+        angular.module("myapp", [])
+            .controller("MyController", function ($scope) {
+                $scope.name = "dreamapple";
+                $scope.age = 20;
+                $scope.changeAge = function () {
+                    $scope.age = 0;
+                }
+            })
+            .directive("myDirective", function () {
+                var obj = {
+                    restrict: "AE",
+                    scope: {
+                        name: '@myName',
+                        age: '=',
+                        changeAge: '&changeMyAge'
+                    },
+                    replace: true,
+                    templateUrl: 'temp.html'
+                }
+                return obj;
+            });
+    </script>
+</head>
+<body>
+<div ng-app="MyApp">
+    <div class="container" ng-controller="MyController">
+        <div>我的名字是：<span ng-bind="name"></span>
+            <br/>我的年龄是：<span ng-bind="age"></span>
+            <br/>
+        </div>
+        <div class="my-directive" my-directive my-name="{{name}}" age="age" change-my-age="changeAge()"></div>
+        映射顺序：先template的name ==> 绑定的属性值 {{ name }} ==> 属性名my-name ==> scope的值 name
+    </div>
+</div>
+<script id="temp.html" type="text/ng-template">
+    <div class='my-directive'>
+        <h3>下面部分是我们创建的指令生成的</h3>
+        我的名字是：<span ng-bind='name'></span><br/>
+        我的年龄是：<span ng-bind='age'></span><br/>
+        在这里修改名字：<input type='text' ng-model='name'><br/>
+        在这里修改年龄：<input type='text' ng-model='age'><br/>
+        <button ng-click='changeAge()'>修改年龄</button>
+    </div>
+</script>
+</body>
+</html>

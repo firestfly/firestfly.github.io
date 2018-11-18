@@ -1,0 +1,121 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <script src="../angular/angular.js"></script>
+    <script type="text/javascript">
+        var app = angular.module('Demo', [], angular.noop);
+
+        app.directive('for', function ($compile) {
+            var compile = function ($element, $attrs, $link) {
+                var match = $element[0].outerHTML.match('<for (.*?)=.*? in=.*? (.*?)=.*?>');
+                if (!match || match.length != 3) {
+                    throw Error('syntax: <for o in obj_list>')
+                }
+                var iter = match[1];
+                var list = match[2];
+                var tpl = $compile($.trim($element.html()));
+                $element.empty();
+
+                var link = function ($scope, $ielement, $iattrs, $controller) {
+
+                    var new_node = [];
+
+                    $scope.$watch(list, function (list) {
+                        angular.forEach(new_node, function (n) {
+                            n.remove()
+                        });
+                        var scp, inode;
+                        for (var i = 0, ii = list.length; i < ii; i++) {
+                            scp = $scope.$new();
+                            scp[iter] = list[i];
+                            inode = tpl(scp, angular.noop);
+                            $ielement.before(inode);
+                            new_node.push(inode);
+                        }
+
+                    });
+                }
+
+                return link;
+            }
+            return {
+                compile: compile,
+                priority: 1000,
+                terminal: true,
+                restrict: 'E'
+            };
+        });
+
+        app.controller('TestCtrl', angular.noop);
+
+
+        /*
+        * var app = angular.module('Demo', [], angular.noop);
+
+         app.directive('if', function($parse, $compile){
+         var compile = function($element, $attrs){
+         var cond = $parse($attrs.true);
+
+         var link = function($scope, $ielement, $iattrs, $controller){
+         $scope.if_node = $compile($.trim($ielement.html()))($scope, angular.noop);
+         $ielement.empty();
+         var mark = $('<!-- IF/ELSE -->');
+         $element.before(mark);
+         $element.remove();
+
+         $scope.$watch(function(scope){
+         if(cond(scope)){
+         mark.after($scope.if_node);
+         $scope.else_node.detach();
+         } else {
+         if($scope.else_node !== undefined){
+         mark.after($scope.else_node);
+         $scope.if_node.detach();
+         }
+         }
+         });
+         }
+         return link;
+         }
+
+         return {compile: compile,
+         scope: true,
+         restrict: 'E'}
+         });
+
+         app.directive('else', function($compile){
+         var compile = function($element, $attrs){
+
+         var link = function($scope, $ielement, $iattrs, $controller){
+         $scope.else_node = $compile($.trim($ielement.html()))($scope, angular.noop);
+         $element.remove();
+         }
+         return link;
+         }
+
+         return {compile: compile,
+         restrict: 'E'}
+         });
+
+         app.controller('TestCtrl', function($scope){
+         $scope.a = 1;
+         });
+         */
+    </script>
+</head>
+<body>
+<div ng-controller="TestCtrl">
+    <if true="a == 1">
+        <p>判断为真, {{ name }}</p>
+        <else>
+            <p>判断为假, {{ name }}</p>
+        </else>
+    </if>
+
+    <div>
+        <p>a: <input ng-model="a"/></p>
+        <p>name: <input ng-model="name"/></p>
+    </div>
+</div>
+</body>
+</html>

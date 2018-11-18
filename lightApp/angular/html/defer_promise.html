@@ -1,0 +1,121 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <script src="../angular/angular.js"></script>
+    <script type="text/javascript">
+
+        /*var TestCtrl = function ($q) {
+         var defer = $q.defer();
+         var promise = defer.promise;
+         promise.then(function (data) {
+         console.log('ok, ' + data)
+         },
+         function (data) {
+         console.log('error, ' + data)
+         });
+         //defer.reject('xx');
+         defer.resolve('xx');
+         }*/
+        /*
+         var TestCtrl = function($q, $http){
+         var p = $http.get('./phone.json', {params: {a: 1}});
+         var p2 = $http.get('./phone.json', {params: {a: 2}});
+         var all = $q.all([p, p2]);
+         p.success(function(res){console.log(res)});
+         all.then(function(res){console.log(res[0])});
+         }*/
+
+        /*
+         var TestCtrl = function ($q) {
+         var defer = $q.defer();
+         var p = defer.promise;
+         p.then(
+         function (data) {
+         return 'xxx'
+         }
+         );
+         p.then(
+         function (data) {
+         console.log(data)
+         }//123
+         );
+         defer.resolve('123');
+         var defer = $q.defer();
+         var p = defer.promise;
+         var p2 = p.then(
+         function (data) {
+         return 'xxx'
+         }
+         );
+         p2.then(
+         function (data) {
+         console.log(data)
+         }//xxx
+         );
+         defer.resolve('123');
+         } */
+
+        /* var TestCtrl = function ($q) {
+         var defer = $q.defer();
+         var p = defer.promise;
+         p.then(
+         function (data) {
+         return "dd"
+         },
+         function (data) {
+         console.log($q.reject(data));
+         return data + "reject";
+         }
+         ).then(
+         function (data) {
+         console.log('ok, ' + data)
+         },
+         function (data) {
+         console.log('error, ' + data)
+         }
+         )
+         //defer.resolve('123');//ok,123
+         defer.reject('123');//error,123
+         }*/
+
+        /* var TestCtrl = function ($q) {
+         var p = $q.when(0, function (data) {
+         return data
+         },
+         function (data) {
+         return data
+         });
+         p.then(
+         function (data) {
+         console.log('ok, ' + data)
+         },
+         function (data) {
+         console.log('error, ' + data)
+         }
+         );
+         }//ok,0 */
+
+
+        //计时器
+        var TestCtrl = function ($timeout) {
+            var p = $timeout(function () {
+                console.log('haha')
+            }, 1000);
+            p.then(function () {
+                console.log('x')
+            }, function () {
+                console.log('cancle')
+            });
+            //$timeout.cancel(p);
+        }
+        /**/
+
+    </script>
+</head>
+<body>
+<form name="test_form" ng-controller="TestCtrl">
+    <input type="text" ng-pattern="/abc/" name="a" required ng-model="a"/>
+    <span ng-click="see()">{{ test_form.$valid }}</span>
+</form>
+</body>
+</html>

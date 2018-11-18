@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>ms-data</title>
+    <script src="dist/avalon.js"></script>
+    <script>
+        var vm = avalon.define({
+            $id: "test",
+            fn: function () {
+                alert(1)
+            }
+        })
+        setTimeout(function () {
+            vm.fn = function () {
+                alert(2)
+            }
+        }, 3000)
+        setTimeout(function () {
+            vm.fn = function () {
+                alert(3)
+            }
+        }, 6000)
+
+    </script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+<div ms-controller="test">
+    <button type="button" ms-click="fn">点击</button>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>装修施工证</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+    <script src="js/jquery.min.js?v=1.11.3"></script>
+    <script src="js/avalon/dist/avalon.min.js"></script>
+    <link rel="stylesheet" href="css/base.css">
+    <link href="js/datepicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/common.css">
+    <script src="js/datepicker/WdatePicker.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/prove.js"></script>
+</head>
+<style>
+    @-moz-document url-prefix() {
+        .text-border-bottom {
+            line-height: 29px;
+        }
+    }
+
+    .card {
+        position: relative;
+        width: 900px;
+        margin: 0 auto;
+        padding: 0 40px 10px 0;
+        line-height: 2.2;
+    }
+
+    p {
+        margin-bottom: 5px;
+    }
+
+    .set {
+        text-indent: 2em;
+        padding: 0 20px;
+        margin-top: 5px;
+    }
+
+    .list-item {
+        margin-left: 50px;
+        margin-top: 5px;
+        padding: 0 20px;
+    }
+
+    .w550 {
+        width: 550px;
+    }
+
+    .lian {
+        position: absolute;
+        width: 40px;
+        right: 20px;
+        top: 180px;
+        line-height: 1.5;
+    }
+
+    .form {
+        padding: 0 10px 0 40px;
+        border-bottom: 2px solid #333;
+    }
+</style>
+
+<body ms-controller="decoration">
+<div class="edite  print-hidden">
+    <span class="btn btn-sm btn-success" ms-click="print">打印</span>
+    <span class="btn btn-sm btn-success" ms-click="back">返回</span>
+</div>
+<div class="card">
+    <header class="header"><img src="img/timg.jpg" alt="" height=50></header>
+    <form action="" class="form">
+        <h3 class="tc">装修施工证</h3>
+        <p class="tl">
+            编号：
+            <input type="hidden" name="number" value="VK-WY/TX08-K04-F1"> VK-WY/TX08-K04-F1 版本：
+            <input type="hidden" name="version" value="V1.0"> A/0 生效日期：
+            <input type="hidden" name="effectDate" ms-attr-value="data.effectDate" class="mr5 input-noborder w120">
+            {{data.effectDate | date("yyyy年MM月dd日")}} 序号：
+            <input type="hidden" name="serialNumber" ms-if="data.serialNumber" ms-attr-value="data.serialNumber"
+                   value=""> {{ data.serialNumber }}
+        </p>
+        <div class="set">
+            经物业服务中心核对，接受
+            <input type="text" class="input-border-bottom w200 print-hidden" ms-duplex="data.decorationUnit"
+                   name="decorationUnit">
+            <span class="print-show">{{ data.decorationUnit }}</span>
+            <span class="text-border-bottom">(装修单位)</span> 对
+            <input type="text" class="input-border-bottom w100 print-hidden" ms-duplex="data.roomNumber"
+                   name="roomNumber">
+            <span class="print-show">{{ data.roomNumber }}</span>
+            <span class="text-border-bottom">(房号)</span>的装修方案并予以登记，装修期限为
+            <input type="text" id="d4311" name="decorationBeginDate"
+                   onclick="WdatePicker({dateFmt:'yyyy-M-d',maxDate:'#F{$dp.$D(\'d4312\')}'})"
+                   class="Wdate input-border-bottom w150 print-hidden" ms-duplex="data.decorationBeginDate">
+            <span class="print-show">{{ data.decorationBeginDate | date("yyyy年MM月dd日")}}</span> 至
+            <input type="text" id="d4312" name="decorationEndDate"
+                   onclick="WdatePicker({dateFmt:'yyyy-M-d',minDate:'#F{$dp.$D(\'d4311\')}'})"
+                   class="Wdate decorationEndDate input-border-bottom w150 print-hidden"
+                   ms-duplex="data.decorationEndDate">
+            <span class="print-show">{{ data.decorationEndDate | date("yyyy年MM月dd日") }}</span>
+        </div>
+        <div class="list-item pr">
+            <p>主要装修项目如下：
+                <textarea name="donstructionContent" ms-duplex="data.donstructionContent"
+                          class="input-noborder bf1 pt5 f12" style="height: 120px;"></textarea>
+            </p>
+            <p class="mt5">延期记录情况：
+                <textarea name="incoherenceOfRecords" ms-duplex="data.incoherenceOfRecords"
+                          class="input-noborder bf1 pt5"></textarea>
+        </div>
+        <div class="clearfix">
+            <div class="fr">
+                <!-- <input type="text" name="propertyService" ms-duplex="data.propertyService" class="input-border-bottom w100 tc print-hidden"> -->
+                <div class="h30 ib"></div>
+                <span class="print-show">{{ data.propertyService }}</span>物业服务中心
+            </div>
+        </div>
+        <div class="clearfix">
+            <div class="fr">
+                <input type="text" name="propAuraDate" onclick="WdatePicker({dateFmt:'yyyy-M-d'})"
+                       class="Wdate propAuraDate input-border-bottom w150 print-hidden" ms-duplex="data.propAuraDate">
+                <span class="print-show">
+                    {{ data.propAuraDate | date("yyyy年M月dd日")}}
+                    </span>
+            </div>
+        </div>
+    </form>
+    <div class="last-msg">
+        说明：一式两联，原件服务中心保存，复印件粘贴装修户门外。
+    </div>
+    <div class="lian">第
+        <br>二
+        <br>联
+        <br>贴
+        <br>装
+        <br>修
+        <br>户
+        <br>门
+        <br>外
+    </div>
+</div>
+</body>
+
+</html>

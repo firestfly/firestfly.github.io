@@ -1,0 +1,27 @@
+body {
+    font-family: 黑体, "microsoft yahei";
+    font-size: 14px;
+}
+
+.um-input-search .form-control {
+    background-image: url(../img/tab_search.png);
+}
+
+.um-box {
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    text-align: center;
+}
+
+img {
+    margin: 0 auto;
+}
+
+.um-footer-tabbar {
+    border-top-color: #007AFF;
+}
+
+.um-footer-tabbar li.active a,
+.um-footer-tabbar li > a:active {
+    color: #007AFF;
+}

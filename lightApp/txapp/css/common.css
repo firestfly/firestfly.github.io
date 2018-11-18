@@ -1,0 +1,113 @@
+/* 重设样式 */
+.um-header {
+    background-color: #218752;
+}
+
+.um-header h3,
+.um-header .um-back,
+.um-header .um-header-right {
+    color: #fff;
+}
+
+.um-header .um-back:before {
+    border-color: #fff;
+}
+
+.agree-btn, .refuse-btn {
+    background-color: #15ad64 !important;
+    color: #fff;
+    border: none;
+    border-radius: 0;
+    height: 100%;
+}
+
+.refuse-btn {
+    background-color: #ff615a !important;
+}
+
+.check {
+    width: 30px;
+    height: 30px;
+    background: url("../img/drawable/check_off.png") center no-repeat;
+    display: inline-block;
+    background-size: 50px;
+    vertical-align: middle;
+}
+
+input[type="checkbox"]:checked + .check {
+    background-image: url("../img/drawable/check_on.png");
+}
+
+.collect {
+    overflow: hidden;
+    color: #fff;
+    background-color: #333;
+}
+
+.tab_audit, .tab_count, .tab_analyse, .tab_person {
+    background: url("../img/drawable/tab_audit.png") center no-repeat;
+    height: 25px;
+    -webkit-background-size: 25px;
+    background-size: 25px;
+}
+
+.um-footerbar-item.active .tab_audit {
+    background-image: url("../img/drawable/tab_audit_touched.png");
+}
+
+.tab_count {
+    background-image: url("../img/drawable/tab_count.png");
+}
+
+.um-footerbar-item.active .tab_count {
+    background-image: url("../img/drawable/tab_count_touch.png");
+}
+
+.tab_analyse {
+    background-image: url("../img/drawable/tab_analyse.png");
+}
+
+.um-footerbar-item.active .tab_analyse {
+    background-image: url("../img/drawable/tab_audit_touched.png");
+}
+
+.tab_person {
+    background-image: url("../img/drawable/tab_person.png");
+}
+
+.um-footerbar-item.active .tab_person {
+    background-image: url("../img/drawable/tab_person_touch.png");
+}
+
+.choice {
+    color: red;
+}
+
+td {
+    font-size: 12px;
+}
+
+/* page filter*/
+.um-page .um-footer {
+    padding-bottom: 56px;
+}
+
+.um-footerbar-item.active {
+    color: green;
+}
+
+.um-tabbar-underline li.active {
+    color: #333;
+    border-bottom: 2px solid #ef4f20;
+}
+
+.um-tabbar-underline li.active a {
+    color: #ef4f20;
+}
+
+#status .um-icon-check,
+#isvname .um-icon-check,
+#qiye .um-icon-check,
+#yinyong .um-icon-check {
+    border-color: #ef4f20;
+}

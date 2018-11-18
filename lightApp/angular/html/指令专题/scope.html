@@ -1,0 +1,65 @@
+<!doctype html>
+<html ng-app="app">
+<head>
+    <script src="../../angular/angular.min.js"></script>
+    <script>
+        angular.module('app', [])
+            .directive('rnStepper', function () {
+                return {
+                    restrict: 'AE',
+                    scope: {},
+                    template: '<button ng-click="decrement()">-</button>' +
+                        '<div>{{ value }}</div>' +
+                        '<button ng-click="increment()">+</button>',
+                    link: function (scope, iElement, iAttrs) {
+                        scope.value = 0;
+                        scope.increment = function () {
+                            scope.value++;
+                        }
+                        scope.decrement = function () {
+                            scope.value--;
+                        }
+                    }
+                };
+            })
+            .directive('rnCounter', function () {
+                return {
+                    scope: {
+                        count: '&rnCounter'
+                    },
+                    link: function (scope, iElement) {
+                        iElement.bind('click', function () {
+                            console.dir(scope.count());
+                        })
+                    }
+                }
+            })
+            .directive('rnZippy', function () {
+                return {
+                    restrict: 'A',
+                    scope: {
+                        status: '=?'
+                    },
+                    link: function (scope, iElement) {
+                        function toggle() {
+                            scope.$apply(function () {
+                                scope.status = !scope.status;
+                                if (scope.status) {
+                                    alert('stop !')
+                                }
+                            });
+                        }
+
+                        iElement.bind('click', toggle);
+                    }
+                }
+            })
+    </script>
+</head>
+<body>
+<div rn-stepper>rn-stepper</div>
+<div rn-counter="'eree'">rn-counter</div>
+<div rn-zippy ng-init="status=true" status="status">rn-zippy</div>
+<!--<div rn-zippy status="true">rn-zippy</div> this doesn't work ?-->
+</body>
+</html>

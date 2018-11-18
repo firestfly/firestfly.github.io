@@ -1,0 +1,45 @@
+<!doctype html>
+<html ng-app="app">
+<head>
+    <script src="../angular/angular.js"></script>
+    <script>
+        angular.module('app', [])
+            .controller('MainCtrl', function ($scope) {
+                $scope.person = {
+                    name: 'John Doe',
+                    profession: 'Fake name'
+                };
+                $scope.header = 'Person';
+            })
+            .directive('person', function () {
+                return {
+                    restrict: 'EA',
+                    scope: {
+                        header: '='
+                    },
+                    transclude: true,
+                    link: function (scope, element, attrs, ctrl, transclude) {
+                        scope.person = {
+                            name: 'Directive Joe',
+                            profession: 'Scope guy'
+                        };
+                        scope.header = 'Directive\'s header';
+                        transclude(scope.$parent, function (clone, scope) {
+                            element.append(clone);
+                            console.log(clone)
+                        });
+                    }
+                };
+            });
+    </script>
+</head>
+<body ng-controller="MainCtrl">
+<person header="header">
+    <h2>{{header}}</h2>
+
+    <p>Hello, I am {{person.name}} and,</p>
+
+    <p>I am a {{person.profession}}</p>
+</person>
+</body>
+</html>

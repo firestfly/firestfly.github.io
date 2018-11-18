@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>ms-data</title>
+    <script src="dist/avalon.js"></script>
+    <script>
+        var index = 0;
+        var vm = avalon.define({
+            $id: "tabs",
+            array: [{
+                text: "111111111111"
+            }, {
+                text: "2222222222"
+            }, {
+                text: "3333333333"
+            }, {
+                text: "44444444444"
+            }],
+            arrs: [[1, 2, 3], [4, 5, 6]],
+            index: 0,
+            outer: [
+                [1, 2, 3, 4],
+                ["a", "b", "c", "d"],
+                [11, 22, 33, 44]
+            ],
+            getIndex: function () {
+                return index++
+            },
+            toggle: function (i) {
+                vm.currentIndex = i
+            },
+            currentIndex: 0
+        })
+    </script>
+    <style>
+        .panel {
+            width: 80%;
+            height: 100px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body ms-controller="tabs">
+<button ms-repeat="array" ms-click="toggle($index)" type="button">{{$index}}.{{getIndex()}}</button>
+<div ms-repeat="array" ms-if-loop="$index === currentIndex" class="panel">
+    {{el.text}}
+</div>
+<table border="1" width="800">
+    <tr ms-repeat="outer">
+        <td ms-repeat-elem="el">{{$outer.$index}}.{{$index}}.{{elem}}</td>
+    </tr>
+</table>
+<ul>
+    <li ms-repeat="arrs">{{$index}}
+        <ul>
+            <li ms-repeat-key="el">{{key}}</li>
+            <li ms-repeat="el">{{el}}</li>
+        </ul>
+    </li>
+</ul>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>AngularJS Plunker</title>
+    <link rel="stylesheet" href="../../dist/bootstrap/css/bootstrap.min.css"/>
+    <script>document.write('<base href="' + document.location + '" />');</script>
+    <script src="../../js/jquery.js"></script>
+    <script src="../../angular/angular.min.js"></script>
+    <script src="../../dist/bootstrap/js/bootstrap.min.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+<div ng-app="angularTypeahead">
+    <div class="container-fluid" ng-controller="TypeaheadCtrl">
+        <h2><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/15309/angular-logo.svg" alt="Angular.js Logo">
+            Angular.js Typeahead</h2>
+        <div class="form-group">
+            <label for="states">Search for US States</label>
+            <input name="states" id="states" type="text" placeholder="enter a state" ng-model="selected"
+                   typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control">
+        </div>
+        <button class="btn btn-success" type="submit">Submit</button>
+    </div>
+</div>
+</body>
+</html>

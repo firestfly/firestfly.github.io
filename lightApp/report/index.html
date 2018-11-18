@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>装修备案表汇总</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- basic styles -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css"/>
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css"/>
+    <![endif]-->
+    <!-- page specific plugin styles -->
+    <!-- ace styles -->
+    <link rel="stylesheet" href="js/jquery-impromptu/jquery-impromptu.css">
+    <link rel="stylesheet" href="assets/css/ace.min.css"/>
+    <link rel="stylesheet" href="css/base.css"/>
+    <link rel="stylesheet" href="css/vk.modal.css">
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="assets/css/ace-ie.min.css"/>
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        .table-head {
+            padding: 20px;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+
+        .table-header {
+            line-height: 60px;
+        }
+
+        .table-header .title {
+            text-align: center;
+            font-size: 30px;
+        }
+
+        body {
+            letter-spacing: 0;
+        }
+
+        #table_filter input {
+            height: 20px;
+        }
+
+        .dataTables_filter {
+            text-align: left;
+        }
+
+    </style>
+    <style media="print">
+        @page {
+            size: A4 landscape;
+        }
+    </style>
+</head>
+
+<body>
+<div class="main-container" id="main-container" ms-controller="dataTable">
+    <div class="main-container-inner">
+        <div class="page-content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <!-- PAGE CONTENT BEGINS -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <!-- <h3 class="header smaller lighter blue">数据表格</h3> -->
+                            <div class="table-header clearfix">
+                                <!-- <div class="col-xs-4">装修备案表汇总</div> -->
+                                <div class="col-xs-4">
+                                    <div class="print-hidden">
+                                        <img src="img/logo.png" alt="">
+                                    </div>
+                                </div>
+                                <h3 class="col-xs-4 tc">装修备案表汇总</h3>
+                                <div class="col-xs-4 text-right print-hidden">
+                                    <span class="icon-user mr5">${loginUser.name}</span>
+                                    <a href="${logoutUrl}" class="white"><i class="icon-signout mr5"></i>退出</a>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <div class="clearfix table-head print-hidden" style="display: block;">
+                                    <div class="col-xs-12">
+                                        <div class="dataTables_filter" id="table_filter">
+                                            <span class="vm ib">业主姓名:</span>
+                                            <input type="text" placeholder="输入搜索内容" ms-duplex="employerName">
+                                            <span class="ib vm">房号:</span>
+                                            <input type="text" placeholder="输入搜索内容" ms-duplex="roomNumber">
+                                            <span class="vm ib">联系电话:</span>
+                                            <input type="text" placeholder="输入搜索内容" ms-duplex="employerPhone">
+                                            <span class="ib vm">序号:</span>
+                                            <input type="text" placeholder="输入搜索内容" ms-duplex="serialNumber">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 tr">
+                                        <div class="btn-group">
+                                            <a href="record.html" class="btn btn-sm btn-success"><i
+                                                    class="icon-plus mr5"></i>新建</a>
+                                            <a href="javascript:;" class="btn btn-sm btn-success" ms-click="print"><i
+                                                    class="icon-print mr5"></i>打印</a>
+                                            <a href="javascript:;" class="btn btn-sm btn-success" ms-click="dels"><i
+                                                    class="icon-trash mr5"></i>批量删除</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table id="table" class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th class="center">
+                                            <label>
+                                                <input type="checkbox" ms-click="checkAll"
+                                                       ms-attr-checked="checkAllbool" class="ace"/>
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </th>
+                                        <th ms-click="sortBy('serialNumber')" width="13%">序号<i
+                                                class="print-hidden icon-caret-down fr cp"></i></th>
+                                        <th ms-click="sortBy('employerName')" width="13%">业主姓名<i
+                                                class="print-hidden icon-caret-down fr cp"></i></th>
+                                        <th ms-click="sortBy('roomNumber')" width="23%">房号<i
+                                                class="print-hidden icon-caret-down fr cp"></i></th>
+                                        <th ms-click="sortBy('employerPhone')" width="15%" class="hidden-480">联系电话<i
+                                                class="print-hidden icon-caret-down fr cp"></i></th>
+                                        <th ms-click="sortBy('decorationPerson')" width="14%"> 装修负责人<i
+                                                class="print-hidden icon-caret-down fr cp"></i></th>
+                                        <th ms-click="sortBy('decorationUnit')">装修单位<i
+                                                class="print-hidden icon-caret-down fr cp"></i></th>
+                                        <th class="print-hidden">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ms-class="cp: row.isprint != 1" ms-repeat-row="dataArray"
+                                        ms-click="check($index, row.isprint)">
+                                        <td class="center">
+                                            <label>
+                                                <input type="checkbox" data-duplex-changed="changeChoice"
+                                                       ms-duplex-string="choices" ms-attr-value="row.serialNumber"
+                                                       class="ace"/>
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </td>
+                                        <td ms-text="::row.serialNumber"></td>
+                                        <td ms-text="::row.employerName"></td>
+                                        <td ms-text="::row.roomNumber"></td>
+                                        <td ms-text="::row.employerPhone" class="hidden-480"></td>
+                                        <td ms-text="::row.decorationPerson"></td>
+                                        <td ms-text="::row.decorationUnit" class="hidden-480"></td>
+                                        <td class="print-hidden">
+                                            <a ms-if="row.isprint == 1" class="green top-tip" ms-data-tips="'已打印装修备案表'">
+                                                <i class="icon-ok-sign bigger-130"></i>
+                                            </a>
+                                            <a ms-if="row.isprint == 2" class="green" title="已打印装修施工证">
+                                                <i class="icon-ok-sign bigger-130"></i>
+                                            </a>
+                                            <div ms-if="row.isprint != 1 && row.isprint != 2" class="action-buttons">
+                                                <a class="green" ms-click="check($index, row.isprint)">
+                                                    <i class="icon-pencil bigger-130"></i>
+                                                </a>
+                                                <a class="red" ms-click="remove($index, $remove, $event)">
+                                                    <i class="icon-trash bigger-130"></i>
+                                                </a>
+                                                <a class="blue" ms-click="produce($index, $event)">
+                                                    <i class="icon-certificate"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row print-hidden">
+                                    <div class="col-sm-6">
+                                        <div id="table_length" class="dataTables_length">
+                                            <label>每页显示
+                                                <select size="1" name="table_length" ms-change="changePageSize"
+                                                        ms-duplex="pagesize">
+                                                    <option value="10" selected="selected">10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="30">30</option>
+                                                </select> 记录<span class="dataTables_info" id="table_info"> /共{{allItems}} 条</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="dataTables_paginate paging_bootstrap">
+                                            <ul class="pagination">
+                                                <li class="prev" ms-click="pageIndex(page - 1)"
+                                                    ms-class="disabled: page == 1">
+                                                    <a>
+                                                        <i class="icon-double-angle-left"></i>
+                                                    </a>
+                                                </li>
+                                                <li ms-class="active: page == ($index + 1)" ms-repeat="pageNumber"
+                                                    ms-click="pageIndex($index + 1)">
+                                                    <a>
+                                                        {{ $index+1 }}
+                                                    </a>
+                                                </li>
+                                                <li class="next" ms-click="pageIndex(page + 1)"
+                                                    ms-class="disabled: page == pageNumber.size()">
+                                                    <a>
+                                                        <i class="icon-double-angle-right"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- PAGE CONTENT ENDS -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.page-content -->
+        <!-- /.main-content -->
+    </div>
+</div>
+<!-- /.main-container -->
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery-impromptu/jquery-impromptu.js"></script>
+<script src="js/avalon/dist/avalon.min.js"></script>
+<script src="js/common.js"></script>
+<!-- <script src="js/index.js"></script> -->
+<script>
+    $(function (argument) {
+        $.get("/onebox/stock/query", {
+            key: "e4805754026b7d218103bd836b1fadb2",
+            stock: "汽车之家"
+        }, function (data) {
+            console.log(data);
+        })
+    })
+</script>
+</body>
+
+</html>

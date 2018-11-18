@@ -1,0 +1,22 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <script src="../angular/angular.js"></script>
+    <script></script>
+</head>
+<body>
+<div>
+    Hello <input ng-model='name' ng-init="name = 2">
+    <hr/>
+    &ltspan ng:bind="name"&gt <span ng:bind="name">hhh</span> <br/>
+    &ltspan ng_bind="name"&gt <span ng_bind="name"></span> <br/>
+    &ltspan ng-bind="name"&gt <span ng-bind="name"></span> <br/>
+    &ltspan data-ng-bind="name"&gt <span data-ng-bind="name"></span> <br/>
+    &ltspan x-ng-bind="name"&gt <span x-ng-bind="name"></span> <br/>
+    &lt;span class="ng-bind: name;">&lt;/span> <span class="ng-bind: name;"></span><br>
+    &ltng-bind>{{name}}&lt/ng-bind>
+    <ng-bind>{{name}}</ng-bind>
+    <!-- directive: ng-bind name -->
+</div>
+</body>
+</html>

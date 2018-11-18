@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>通信开放平台-个人中心</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="css/iuapmobile.um-2.7.0.css">
+    <link rel="stylesheet" href="css/common.css">
+
+    <script src="js/Frameworks/iuapmobile.frameworks.core-2.7.0.js"></script>
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/Frameworks/iuapmobile.frameworks.ui-2.7.0.js"></script>
+
+    <script>
+        $isWeb = true
+    </script>
+    <style>
+        .username {
+            float: right;
+            margin-right: 15px;
+        }
+
+        .badge {
+            background-color: red;
+            top: 2px;
+        }
+    </style>
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+            userInfo = $.parseJSON(localStorage.userInfo);
+            $(".username").text(userInfo.name);
+        });
+    </script>
+</head>
+<body>
+<div class="um-page" id="index">
+    <div class="um-header">
+        <h3>个人中心</h3>
+    </div>
+    <div class="um-content">
+        <ul class="um-list">
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            用户名
+                        </div>
+                        <div class="um-list-item-right">
+                            <input type="text" value="何国平" class="form-control tr">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="#changePsw" class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-body">
+                            更改密码
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <ul class="um-list mt15">
+            <li>
+                <a href="#message" class="um-list-item">
+                    <div class="um-list-item-left">
+                        我的消息
+                    </div>
+                    <div class="um-list-item-right">
+                        <span class="um-badge mr15">6</span>
+                    </div>
+                </a>
+
+            </li>
+        </ul>
+        <button id="logout" class="btn btn-danger mt20">
+            退出登录
+        </button>
+    </div>
+</div>
+<div class="um-page" id="message">
+    <div class="um-header">
+        <a href="###" class="um-back">返回</a>
+        <h3>我的消息</h3>
+    </div>
+    <div class="um-content">
+        <ul class="um-list um-list-static">
+            <li>
+                <span class="time">04月30号14:32:05</span><span class="um-red fr">网络异常</span>
+            </li>
+            <li>
+                <span class="time">04月30号14:32:05</span><span class="um-red fr">网络异常</span>
+            </li>
+            <li>
+                <span class="time">04月30号14:32:05</span><span class="um-red fr">网络异常</span>
+            </li>
+            <li>
+                <span class="time">04月30号14:32:05</span><span class="um-red fr">网络异常</span>
+            </li>
+            <li>
+                <span class="time">04月30号14:32:05</span><span class="um-red fr">网络异常</span>
+            </li>
+            <li>
+                <span class="time">04月30号14:32:05</span><span class="um-red fr">网络异常</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="um-page" id="changePsw">
+    <div class="um-header">
+        <a href="#" class="um-back">返回</a>
+        <h3>更改密码</h3>
+    </div>
+
+    <div class="um-content">
+        <div class="pr mt20 um-row">
+            <input type="text" class="form-control" placeholder="该输入你要设置的密码">
+            <span class="um-input-clear ti-close"></span>
+        </div>
+    </div>
+</div>
+<div class="um-footer" style="position: absolute;bottom:0;left:0;width:100%;">
+    <div class="um-footerbar">
+        <a href="enterpriseAudit.html" class="um-footerbar-item">
+            <div class="tab_audit"></div>
+            <span class="f12 lh1">企业审核</span> </a>
+        <a class="um-footerbar-item" href="chart.html">
+            <div class="tab_count"></div>
+            <span class="f12 lh1">新增统计</span> </a>
+        <a class="um-footerbar-item" href="performance.html">
+            <div class="tab_analyse"></div>
+            <span class="f12 lh1">业绩分析</span> </a>
+        <a class="um-footerbar-item active">
+            <div class="tab_person"></div>
+            <span class="f12 lh1">个人中心</span> </a>
+    </div>
+</div>
+<script>
+    $("#logout").on("click", function () {
+        UM.modal("alert", {
+            title: "友情提示",
+            text: '成功退出，欢迎下次回来',
+            ok: function () {
+                location.href = 'index.html';
+            }
+        });
+    });
+</script>
+</body>
+</html>

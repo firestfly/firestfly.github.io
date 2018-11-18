@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <script src="dist/avalon.js"></script>
+    <script>
+
+    </script>
+</head>
+
+<body>
+<div ms-controller="test">
+    <input ms-duplex="name">
+    <p>Hello,{{name}}!</p>
+</div>
+<div ms-controller="test1">
+    <input ms-duplex="string">{{string}}
+    <input ms-duplex="bool" type="radio">{{bool}}
+    <input ms-duplex="number">{{number}} {{object.aaa}}
+
+    <input ms-attr-value="::firstName"/>
+    <p>{{::firstName}}</p>
+
+    <ul>
+        <li ms-repeat="object">{{$key}} --> {{$val}}</li>
+    </ul>
+    <p>First name:
+        <input ms-duplex="firstName"/>
+    </p>
+    <p>Last name:
+        <input ms-duplex="lastName"/>
+    </p>
+    <p>Hello,
+        <input ms-duplex="fullName">
+    </p>
+    <div>{{firstName +" "+ lastName }}</div>
+    <select ms-duplex="hotel" size="8">
+        <option value="旅店A">旅店A</option>
+        <option value="旅店B">旅店B</option>
+        <option value="旅店C">旅店C</option>
+        <option value="旅店D">旅店D</option>
+        <option value="旅店E">旅店E</option>
+        <option value="旅店F">旅店F</option>
+        <option value="旅店G">旅店G</option>
+    </select>
+    <ul>
+        <li>旅店：{{hotel}}</li>
+    </ul>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<head>
+    <script type="text/javascript">
+        function AddTextToContainer() {
+            var textNode = document.createTextNode("My text");
+            if (textNode.addEventListener) {
+                textNode.addEventListener('DOMNodeInserted', OnNodeInserted, false);
+            }
+
+            var container = document.getElementById("container");
+            container.appendChild(textNode);
+        }
+
+        function OnNodeInserted(event) {
+            var textNode = event.target;
+            alert("The text node '" + textNode.data + "' has been added to an element.");
+        }
+    </script>
+</head>
+<body>
+<div id="container" style="background-color:#e0d0a0; width:300px; height:100px;"></div>
+<br/><br/>
+<button onclick="AddTextToContainer ();">Add a text node to the container!</button>
+</body>
+</html>

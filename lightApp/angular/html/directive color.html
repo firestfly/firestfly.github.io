@@ -1,0 +1,56 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <script src="../js/jquery.js"></script>
+    <script src="../angular/angular.js"></script>
+</head>
+<body>
+<!--<p color="green">有颜色的文本</p>
+<color color="red">有颜色的文本</color>
+<script type="text/javascript">
+    var app = angular.module('Demo', [], angular.noop);
+    app.directive('color', function(){
+        var link = function($scope, $element, $attrs){
+            $element.css('color', $attrs.color);
+        }
+        return {link: link,
+            restrict: 'AE'};
+    });
+    angular.bootstrap(document, ['Demo']);
+</script>-->
+
+<div ng-controller="TestCtrl">
+    <input type="text" ng-model="color">
+    <p color="color">有颜色的文本</p>
+    <p color="'blue'">有颜色的文本</p>
+</div>
+<p color="d">控制器外面的指令</p>
+<script type="text/javascript">
+
+    var app = angular.module('Demo', [], angular.noop);
+
+    app.directive('color', function () {
+        var link = function ($scope, $element, $attrs) {
+            $scope.d = "yellow"
+            $scope.$watch($attrs.color, function (new_v) {
+                //$element.css('color', new_v);
+                console.log(123)
+            });
+        }
+        return link;
+    });
+    app.directive('color', function () {
+        var link = function ($scope, $element, $attrs) {
+            $scope.d = "yellow22"
+            $scope.$watch($attrs.color, function (new_v) {
+                console.log(234)
+            });
+        }
+        return link;
+    });
+    app.controller('TestCtrl', function ($scope) {
+        $scope.color = 'red';
+    });
+</script>
+</body>
+</html>

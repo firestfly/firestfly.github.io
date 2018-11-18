@@ -1,0 +1,32 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <script src="../angular/angular.js"></script>
+    <script type="text/javascript">
+        function Ctrl($scope) {
+            $scope.items = ['settings', 'home', 'other'];
+            $scope.selection = $scope.items[0];
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="set" ng-click="myStyle={color:'red'}">
+<input type="button" value="clear" ng-click="myStyle={}">
+<br/>
+<span ng-style="myStyle">Sample Text</span>
+<pre>myStyle={{myStyle}}</pre>
+
+<div ng-controller="Ctrl">
+    <select ng-model="selection" ng-options="item for item in items">
+    </select>
+    <tt>selection={{selection}}</tt>
+    <hr/>
+    <div class="animate-switch-container"
+         ng-switch on="selection">
+        <div class="animate-switch" ng-switch-when="settings">Settings Div</div>
+        <div class="animate-switch" ng-switch-when="home">Home Span</div>
+        <div class="animate-switch" ng-switch-default>default</div>
+    </div>
+</div>
+</body>
+</html>

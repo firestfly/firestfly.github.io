@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../angular/angular.js"></script>
+    <script>
+
+        angular.module('exampleApp', ['btford.ng-src']).controller('ExampleController', function ($scope, $timeout) {
+            for (var i = 1; i < 5; i++) {
+                schedule(i);
+            }
+
+            function schedule(i) {
+                $timeout(function () {
+                    $scope['thing' + i] = 'x';
+                }, 100 * i);
+            }
+        });
+
+
+        angular.module('btford.ng-src', []).config(function ($provide) {
+
+// given `{{x}} y {{z}}` return `['x', 'z']`
+            function getExpressions(str) {
+                var offset = 0,
+                    parts = [],
+                    left,
+                    right;
+                while ((left = str.indexOf('{{', offset)) > -1 &&
+                (right = str.indexOf('}}', offset)) > -1) {
+                    parts.push(str.substr(left + 2, right - left - 2));
+                    offset = right + 1;
+                }
+
+                return parts;
+            }
+
+            $provide.decorator('ngSrcDirective', function ($delegate, $parse) {
+                delete $delegate[0].link;
+                $delegate[0].compile = function (element, attrs) {
+                    var expressions = getExpressions(attrs.ngSrc);
+                    var getters = expressions.map($parse);
+
+                    return function (scope, element, attr) {
+                        attr.$observe('ngSrc', function (value) {
+                            if (getters.every(function (getter) {
+                                return getter(scope);
+                            })) {
+                                attr.$set('src', value);
+                            }
+                        });
+                    };
+                };
+
+                return $delegate;
+            });
+        });
+    </script>
+</head>
+<body ng-app="exampleApp" ng-controller="ExampleController">
+<p>/{{thing1}}/{{thing2}}/{{thing3}}</p>
+<img ng-src="/{{thing1}}/{{thing2}}/{{thing3}}.png">
+</body>
+</html>

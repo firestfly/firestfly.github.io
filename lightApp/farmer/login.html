@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>通信开放平台-登录</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="css/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="css/um.css">
+    <link rel="stylesheet" href="css/login.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/um.js"></script>
+</head>
+<body>
+<div class="um-page">
+    <div class="um-content">
+        <h2 class="appname">用友电商平台</h2>
+        <div class="login um-css3-center">
+            <div class="input-group">
+                <span class="user"></span>
+                <input id="user" type="text" value="123" class="form-control" placeholder="用户名">
+            </div>
+            <div class="input-group">
+                <span class="psw"></span>
+                <input id="psw" type="password" value="123" class="form-control" placeholder="密码">
+            </div>
+            <div class="clearfix um-block">
+                <label class="um-check-inline">
+                    <input name="um-checkbox-inline" type="checkbox" value="自动登录">
+                    自动登录
+                    <span class="um-checkbox um-css3-vc"></span>
+                </label>
+                <a href="#" class="fr">忘记密码?</a>
+            </div>
+            <button id="loginBtn" class="btn um-btn-success btn-lg um-block">登录</button>
+        </div>
+    </div>
+</div>
+<script>
+    document.body.addEventListener('touchstart', function () {
+    });
+    var USER_MSG = {
+        username: "123",
+        psw: "123"
+    }
+    document.getElementById("loginBtn").addEventListener("touchstart", function () {
+        var username = document.getElementById("user").value,
+            psw = document.getElementById("psw").value;
+        if (username == "" || psw == "") {
+            UModal.alert("请输入用户名和密码！");
+            return false;
+        }
+        if (username != USER_MSG.username || psw != USER_MSG.psw) {
+            UModal.confirm({
+                title: "",
+                text: "用户名或密码错误，请重新输入！",
+                ok: function () {
+                    document.getElementById("user").value = "";
+                    document.getElementById("psw").value = "";
+                }
+            });
+            return false;
+        } else {
+            UModal.alert("恭喜你，登录成功啦！");
+            setTimeout(function () {
+                location.href = "index.html";
+            }, 1400);
+        }
+    })
+</script>
+</body>
+</html>

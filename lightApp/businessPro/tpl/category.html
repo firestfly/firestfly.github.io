@@ -1,0 +1,57 @@
+<link rel="stylesheet" href="css/category.css">
+<div class="um-page" id="category">
+    <div class="um-header">
+        <a href="#/categories" role="back" class="um-back">返回</a>
+        <h3>商品一览</h3>
+        <ul class="um-tabbar">
+            <li ng-repeat="item in orders" ng-class="{true:'active'}[$index == curOrderIndex]"
+                ng-click="changeOrder($index)">
+                <a href="javascript:;"><span ng-bind="item.name"></span><i class="ti-angle-down ml10"></i></a>
+            </li>
+        </ul>
+    </div>
+    <div class="um-content">
+        <ul class="um-list">
+            <li ng-repeat="item in productsData.itemsArray | orderBy:sortField">
+                <a ng-href="#/item/{{item.item_id}}" class="btn">
+                    <div class="media-left">
+                        <img class="media-object img-rounded" ng-src="{{item.pic}}" width=60 alt="...">
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading" ng-bind="item.item_title"></h4>
+
+                        <p>
+                            <span class="newprice">￥<span ng-bind="item.priceEnd"></span></span>&nbsp;<span
+                                class="oldprice">￥<span ng-bind="item.price"></span></span>
+                        </p>
+
+                        <p class="um-align-justify">
+                            <span class="postage">快递费：￥<i ng-bind="item.fastPostFee"></i></span>
+                            <span class=""><span class="paycount" ng-bind="item.total_sold"></span>人付款</span>
+                            <span class="area" ng-bind="item.source_location"></span>
+                        </p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="um-footer um-noborder">
+        <ul class="um-footer-tabbar">
+            <li class="active">
+                <a href="index.html">
+                    <div class="ti-home"></div>
+                    主页</a>
+            </li>
+            <li>
+                <a href="shopcar.html">
+                    <div class="ti-shopping-cart"></div>
+                    购物车</a>
+            </li>
+            <li>
+                <a href="orderlists.html">
+                    <div class="ti-user"></div>
+                    个人中心</a>
+            </li>
+        </ul>
+    </div>
+</div>

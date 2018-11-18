@@ -1,0 +1,67 @@
+﻿.um-page {
+    background-color: #fff;
+    font-family: "微软雅黑", "Heiti SC";
+}
+
+.um-form .um-list-item-body {
+    white-space: normal;
+}
+
+body {
+    font-size: 14px;
+}
+
+.intro {
+    line-height: 30px;
+    font-size: 18px;
+    padding-top: 10px;
+}
+
+.um-list-divider a {
+    color: blue;
+}
+
+.prise {
+    margin-top: 10px;
+}
+
+.star span {
+    display: inline-block;
+    float: right;
+    width: 95px;
+    height: 18px;
+    background: url(../img/seart.png) 0px 0px no-repeat;
+}
+
+.text {
+    margin-top: 15px;
+}
+
+.response {
+    color: red;
+    margin-top: 15px;
+}
+
+.prise a {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 40px;
+    background: url(../img/seart.png) -104px -2px no-repeat;
+}
+
+.prise a:nth-child(2) {
+    background-position: -128px -2px;
+}
+
+.up-count, .down-count {
+    margin-left: 25px;
+}
+
+.um-footer-tabbar {
+    border-top-color: #037e03;
+}
+
+.um-footer-tabbar li.active a, .um-footer-tabbar li > a:active {
+    color: #037e03;
+}

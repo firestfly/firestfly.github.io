@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/iuapmobile.um-2.7.0.css">
+    <link rel="stylesheet" href="css/themify-icons/themify-icons.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/UMP.Web.Mvc.js"></script>
+    <script src="js/Frameworks/iuapmobile.frameworks.ui-2.7.0.js"></script>
+    <style>
+        .checkAll, .del {
+            color: #007aff;
+        }
+
+        .list-item:last-child .um-list-item .um-list-item-inner:after {
+            border-width: 0;
+        }
+    </style>
+    <script>
+        $isWeb = true;
+
+        function $pageReady() {
+            alert("webview ready");
+        }
+
+        $(function () {
+            var shopData = {
+                data: []
+            };
+            var listActiveIndex,
+                isAllcheck = false,
+                isCancle = true;
+            for (var i = 0; i < 5; i++) {
+                var j = {};
+                j.title = "ZJT股份有限公司" + i;
+                j.content = ["生产", "加工", "销售", "包装", "采购"][parseInt(Math.random() * 5)];
+                j.time = "星期" + ["一", "二", "三", "四", "五", "六", "七"][parseInt(Math.random() * 7)];
+                j.status = ["审阅中", "已批准", "未提交"][i % 3];
+                j.imgsrc = "img/s" + (i % 9 + 2) + ".png";
+                shopData.data.push(j);
+            }
+            um.set("shoplist", shopData.data);
+            $("#shopContent").on("click", ".list-item", function () {
+                listActiveIndex = $(this).index();
+                um.set("listrow", shopData.data[listActiveIndex]);
+            }).on("click", ".um-list-left-icon", function (e) {
+                e.stopPropagation();
+            });
+            $("#addlist").on("click", function () {
+                um.set("listrow", {
+                    title: "",
+                    content: ""
+                });
+                listActiveIndex = um.get("shoplist").length;
+            });
+            $("#save").on("click", function () {
+                um.set('shoplist[' + listActiveIndex + ']', um.get('listrow'));
+                UM.page.back();
+            });
+
+            function openCheck() {
+                $("#shopContent").find(".um-list-item").addClass("um-list-left-open");
+                $("#index .um-footer").removeClass("none");
+            }
+
+            function closeCheck() {
+                $("#shopContent").find(".um-list-item").removeClass("um-list-left-open");
+                $("#index .um-footer").addClass("none");
+            }
+
+            $("#edite_list").on("click", function () {
+                if (isCancle) {
+                    openCheck();
+                    $(this).removeClass("ti-pencil-alt").html("取消");
+                } else {
+                    closeCheck();
+                    $(this).html("").addClass("ti-pencil-alt");
+                }
+                isCancle = !isCancle;
+            });
+            $(".checkAll").on("click", function () {
+                isAllcheck = !isAllcheck;
+                $("#shopContent").find("input:checkbox").prop("checked", isAllcheck);
+            });
+            $(".del").on("click", function () {
+                $.each($("#shopContent").find("input:checkbox:checked"), function () {
+                    var checkItem = $(this).closest(".list-item");
+                    checkItem.slideUp(400, function () {
+                        closeCheck();
+                        var index = checkItem.index();
+                        checkItem.remove();
+                        shopData.data.splice(index, 1);
+                    });
+                });
+                $("#edite_list").trigger("click");
+            })
+        });
+    </script>
+</head>
+<body>
+<div class="um-page" id="index">
+    <div class="um-header">
+        <a href="#" class="ti-pencil-alt f18 um-header-left" id="edite_list"></a>
+        <h3>标题</h3>
+        <a class="um-header-right ti-plus" id="addlist" href="#edite" data-transition="pop"></a>
+    </div>
+    <div class="um-content">
+        <div class="um-form" id="shopContent">
+            <div class="list-item" data-um-repeat="shoplist">
+                <a href="#edite" class="um-list-item">
+                    <div class="um-list-item-media">
+                        <label class="um-check-inline um-list-left-icon">
+                            <input name="um-checkbox-inline" type="checkbox">
+                            <span class="um-icon-checkbox um-css3-vc"></span> </label>
+                        <img height=40 width=40 data-um-default="img/portal.jpg" data-um-bindfield="imgsrc" alt="...">
+                    </div>
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-body">
+                            <h4 class="media-heading" data-um-bindfield="title" data-um-default="."></h4>
+                            <p data-um-bindfield="content" data-um-default="."></p>
+                        </div>
+                        <div class="um-list-item-right">
+                            <div class="mr15" data-um-bindfield="status"></div>
+                            <span class="f12 mr15" data-um-bindfield="time" data-um-default="星期一"></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="um-footer none">
+        <div class="um-footer-tabbar um-box-justify p10">
+            <a href="#" class="checkAll">
+                全选
+            </a>
+            <a href="#" class="del">
+                删除
+            </a>
+        </div>
+    </div>
+
+</div>
+<div class="um-page" id="edite">
+    <div class="um-header">
+        <a href="#" class="um-back" id="return">返回</a>
+        <h3>导航栏</h3>
+        <a class="um-header-right" id="save" href="#" data-transition="pop">保存</a>
+    </div>
+    <div class="um-content">
+        <ul class="um-form" data-um-scope="listrow">
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-media">
+                        <img class="media-object um-circle" height=35 width=35 src="img/s8.png" alt="...">
+                    </div>
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            企业:
+                        </div>
+                        <div class="um-list-item-right">
+                            <input type="text" class="form-control" data-um-bindfield="title">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-media">
+                        <img class="media-object um-circle" height=35 width=35 src="img/s2.png" alt="...">
+                    </div>
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            经营范围:
+                        </div>
+                        <div class="um-list-item-right">
+                            <input type="text" class="form-control" data-um-bindfield="content">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-media">
+                        <img class="media-object um-circle" height=35 width=35 src="img/s6.png" alt="...">
+                    </div>
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-left">
+                            状态:
+                        </div>
+                        <div class="um-list-item-right">
+                            <select name="" class="form-control" id="" data-um-bindfield="status">
+                                <option value="审阅中">审阅中</option>
+                                <option value="已批准">已批准</option>
+                                <option value="未提交">未提交</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <div class="um-check-group um-check-group-left">
+            <div class="um-list-divider">是否上报</div>
+            <label class="um-check-group-item">
+                <input name="um-radio" checked type="radio" value="是">
+                是 <span class="um-icon-check um-css3-vc"></span>
+            </label>
+            <label class="um-check-group-item">
+                <input name="um-radio" type="radio" value="否">
+                否 <span class="um-icon-check um-css3-vc"></span>
+            </label>
+        </div>
+    </div>
+</div>
+</body>
+</html>

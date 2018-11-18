@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <script src="dist/avalon.js"></script>
+    <script>
+        avalon.define({
+            $id: "test",
+            username: "司徒正美",
+            callback: function (val) {
+                console.log(val)
+                if (!new RegExp("^[1][358][0-9]{9}$").test(val)) {
+                    console.log(112)
+                }
+                return this.value = val.slice(0, 11) //不能超过10个字符串
+            }
+        });
+    </script>
+</head>
+
+<body>
+<div ms-controller="test">
+    <input ms-duplex="username" data-duplex-changed="callback">
+</div>
+</body>
+
+</html>

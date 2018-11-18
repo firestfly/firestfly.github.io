@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html id="ng-app" ng-app="myApp">
+<head>
+    <script src="../angular/angular.min.js"></script>
+    <script>
+        var myApp = angular.module('myApp', []);
+
+        //myApp.directive('myDirective', function() {});
+        //myApp.factory('myService', function() {});
+
+        function MyCtrl($scope) {
+            $scope.name = 'Superhero';
+        }
+
+        myApp.directive('fileUploader', function () {
+            return {
+                restrict: 'E',
+                transclude: true,
+                template: '<div><input type="file" multiple /><button ng-click="upload()">Upload</button></div>'
+                    + '<ul><li ng-repeat="file in files">{{file.name}} - {{file.type}}</li></ul>',
+                controller: function ($scope, $fileUpload) {
+                    $scope.notReady = true;
+                    $scope.upload = function () {
+                        $fileUpload.upload($scope.files);
+                    };
+                },
+                link: function ($scope, $element) {
+                    var fileInput = $element.find('input[type="file"]');
+                    fileInput.bind('change', function (e) {
+                        $scope.notReady = e.target.files.length == 0;
+                        $scope.files = [];
+                        for (i in e.target.files) {
+                            //Only push if the type is object for some stupid-ass reason browsers like to include functions and other junk
+                            if (typeof e.target.files[i] == 'object') $scope.files.push(e.target.files[i]);
+                        }
+                    });
+                }
+            }
+        });
+
+        myApp.service('$fileUpload', ['$http', function ($http) {
+            this.upload = function (files) {
+                //Not really sure why we have to use FormData().  Oh yeah, browsers suck.
+                var formData = new FormData();
+                for (i in files) {
+                    formData.append('file_' + i, files[i]);
+                }
+                console.log(formData);
+                $http({
+                    method: 'POST',
+                    url: '/api/files',
+                    data: formData,
+                    headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity
+                })
+                    .success(function (data, status, headers, config) {
+
+                    });
+            }
+        }]);
+    </script>
+    <meta charset="utf-8">
+    <title>JS Bin</title>
+</head>
+<body>
+<div ng-controller="MyCtrl">
+    <file-uploader></file-uploader>
+</div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+.um-list li {
+    white-space: normal;
+}
+
+.media-heading {
+    white-space: normal;
+    font-weight: bold;
+}
+
+.ui-label {
+    color: #999;
+    text-decoration: line-through;
+}
+
+.product-intro {
+    padding-right: 10px;
+}
+
+.product-collect {
+    padding: 0 5px;
+    border-left: 1px solid #ddd;
+    height: 50px;
+    line-height: 50px;
+}
+
+.service-score .count,
+.product-point {
+    color: #fb6878;
+}
+
+.service-score div {
+    border-right: 1px solid #ddd;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    text-align: center;
+}
+
+.service-score div:last-child {
+    border-right: none;
+}
+
+.logistics div {
+    text-align: center;
+    color: #999;
+}
+
+.logistics .count {
+    text-align: center;
+    color: #333;
+}
+
+.des li {
+    border: none;
+    margin: 5px 0;
+    color: #999;
+}
+
+.um-list .btn {
+    margin: 0;
+}
+
+.info, .pics {
+    margin: 10px 0;
+}
+
+.add {
+    padding: 10px;
+    line-height: 2;
+}
+
+img {
+    margin: 0 auto;
+}
+
+.um-list-item-after {
+    margin-right: -10px;
+}
+
+.reduce,
+.add {
+    display: inline-block;
+    font-size: 16px;
+    color: #0091FF;
+    white-space: nowrap;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    border: 1px solid #0091FF;
+    padding: 0;
+    margin: 0 3px;
+    z-index: 10;
+    line-height: 26px;
+}
+
+.reduce:active,
+.add:active {
+    background-color: #0091FF;
+    color: #fff;
+}
+
+.buy .btn {
+    margin: 10px 5px;
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../css/font-icons.css">
+    <link rel="stylesheet" href="../css/um.css">
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/um.js"></script>
+    <script>
+        $isWeb = true
+    </script>
+    <script>
+        function $pageReady() {
+
+        }
+
+        $(function () {
+            function getBase64Image(imgsrc, callback) {
+                var img = new Image();
+                img.src = imgsrc;
+                img.onload = function () {
+                    var canvas = document.createElement("canvas");
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, img.width, img.height);
+                    var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
+                    var dataURL = canvas.toDataURL("image/" + ext);
+                    callback(dataURL);
+                }
+            }
+
+            $("#my-header").on("click", function () {
+                getBase64Image($(this).attr("src"), function (base64) {
+                    alert(base64);
+                });
+            });
+        });
+    </script>
+
+</head>
+<body>
+<div class="um-page" id="index">
+    <div class="um-header">
+        <a href="#" class="ti-menu um-header-left"></a>
+        <h3>标题</h3>
+        <a href="#" class="um-header-right">编辑</a>
+    </div>
+
+    <div class="um-content">
+        <img id="my-header" crossOrigin="Anonymous" src="./img/myhead.png">
+    </div>
+
+    <div class="um-footer" style="background-color: #007aff;color:#fff;"></div>
+</div>
+</body>
+</html>

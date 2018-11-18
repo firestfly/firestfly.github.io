@@ -1,0 +1,22 @@
+.ios7-font-style {
+    font-family: 黑体, "microsoft yahei";
+    font-weight: 500;
+}
+
+#avatar img {
+    box-shadow: 1px 1px 1px white, 2px 2px 2px black;
+}
+
+#login h3 {
+    font-size: 17px;
+    color: rgb(68, 68, 68);
+}
+
+#login-form {
+    margin: 15px 0;
+}
+
+#submit {
+    color: rgb(255, 255, 255);
+    background: rgb(12, 98, 237);
+}

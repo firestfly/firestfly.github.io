@@ -1,0 +1,58 @@
+<!doctype html>
+<html ng-app="app">
+<head>
+    <script src="../angular/angular.js"></script>
+    <script>
+        function Ctrl($scope) {
+            $scope.arr = [
+                {name: "hhh1", id: "10001"},
+                {name: "hhh2", id: "10002"},
+                {name: "hhh3", id: "10003"},
+                {name: "hhh4", id: "10004"}
+            ];
+            $scope.check = [];
+            $scope.$watch("checkAll", function (v) {
+                if (v) {
+                    for (var i = 0, len = $scope.arr.length; i < len; i++) {
+                        $scope.check.push($scope.arr[i].id);
+                    }
+                } else {
+                    $scope.check = [];
+                }
+            })
+        }
+
+        angular.module("app", []).directive("checkValue", function ($rootScope) {
+            return function (scope, element, attrs) {
+                element.bind("change", function (event) {
+                    scope.$apply(function () {
+                        if (event.target.nodeName.toLowerCase() == "input") {
+                            var v = event.target.value;
+                            if (event.target.checked) {
+                                scope.check.push(v);
+                                if (scope.check.length === scope.arr.length) {
+                                    scope.checkAll = true;
+                                }
+                            } else {
+                                var index = scope.check.indexOf(v);
+                                index >= 0 && scope.check.splice(index, 1);
+
+                                scope.checkAll = false;
+                            }
+                        }
+                    })
+                })
+            }
+        })
+
+    </script>
+</head>
+<body ng-controller="Ctrl">
+全选: <input type="checkbox" ng-model="checkAll"><br/>
+<div ng-repeat="i in arr" check-value>
+    <input type="checkbox" name="d" ng-checked="checkAll" ng-value="i.id">
+    <span>{{ i.name}}</span>
+</div>
+{{ check }}
+</body>
+</html>

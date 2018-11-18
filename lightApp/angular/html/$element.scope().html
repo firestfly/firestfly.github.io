@@ -1,0 +1,25 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <script src="../angular/angular.min.js"></script>
+
+</head>
+<body>
+<p show>aa{{nn}}</p>
+<script type="text/javascript">
+    var app = angular.module('Demo', [], angular.noop);
+    app.directive('show', function () {
+        var func = function ($scope, $element, $attrs) {
+            $element.scope().nn = "sadfsaf";
+            $element.on("click", function () {
+                alert("OK")
+            })
+        }
+        //return func;
+        return {
+            link: func
+        }
+    });
+</script>
+</body>
+</html>

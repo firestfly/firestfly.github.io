@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>ms-data</title>
+    <script src="dist/avalon.js"></script>
+    <script>
+        var array = [{
+            children: [{
+                children: [{
+                    children: [{
+                        children: [],
+                        author: "第四层a"
+                    }, {
+                        children: [],
+                        author: "第四层b"
+                    }, {
+                        children: [],
+                        author: "第四层c"
+                    }],
+                    author: "第三层a"
+                }, {
+                    children: [],
+                    author: "第三层b"
+                }],
+                author: "第二层a"
+            }, {
+                children: [],
+                author: "第二层b"
+            }],
+            author: "第一层a"
+        }, {
+            children: [],
+            author: "第一层b"
+        }];
+        var vm = avalon.define({
+            $id: "test",
+            aaa: "通过ms-repeat, ms-include实现树",
+            array: array,
+            addClass: function () {
+                var level = 0
+                var parent = this.parentNode
+                do {
+                    if (parent.tagName == "UL") {
+                        level++
+                    }
+                    if (parent.tagName === "BODY") {
+                        break
+                    }
+                } while (parent = parent.parentNode)
+                avalon(this).addClass("level_" + level)
+                avalon(this).addClass(level % 2 === 0 ? "level_even" : "level_odd")
+            }
+        })
+    </script>
+    <style>
+        .level_even {
+            background: #ccc;
+        }
+
+        .level_odd {
+            background: #fff;
+        }
+    </style>
+</head>
+
+<body>
+<div ms-controller="test">
+    <h2>{{aaa}}</h2>
+    <script type="avalon" id="comments">
+            <ul>
+                <li ms-repeat="el.children">
+                    {{el.author}}
+                    <div ms-if="el.children.size()" ms-include="'comments'" data-include-rendered='addClass'> </div>
+                </li>
+            </ul>
+
+    </script>
+    <div class='level_0 level_even'>
+        <ul>
+            <li ms-repeat="array">
+                {{el.author}}
+                <div ms-if="el.children.size()" ms-include="'comments'" data-include-rendered='addClass'></div>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>

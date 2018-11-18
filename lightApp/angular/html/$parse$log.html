@@ -1,0 +1,47 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <script src="../angular/angular.js"></script>
+    <script type="text/javascript">
+        /* var TestCtrl = function($log){
+         $log.error('error');
+         $log.info('info');
+         $log.log('log');
+         $log.warn('warn');
+         }*/
+        var TestCtrl = function ($scope, $parse) {
+            $scope.get_name = $parse('name');
+            $scope.show = function () {
+                console.log($scope.get_name($scope));
+            }
+            $scope.set = function () {
+                $scope.name = '123';
+            }
+            // $parse 返回一个函数，调用这个函数时，可以传两个参数，
+            // 第一个作用域，第二个是变量集，后者常用于覆盖前者的变量
+            var get_name = $parse('name');
+            var r = get_name({name: 'xx'}, {name: 'abc'});
+            console.log(r);//abc
+            //$parse 返回的函数，也提供了相应的 assign 功能，可以为表达式赋值（如果可以的话）
+            var get_name = $parse('name');
+            var set_name = get_name.assign;
+            //$parse 返回的函数，也提供了相应的  assign 功能，可以为表达式赋值（如果可以的话）：
+
+            var r = get_name({name: 'xx'}, {name: 'abc'});
+            console.log(r);//123
+
+
+            var s = {}
+            set_name(s, '123');
+            var r = get_name(s);
+            console.log(r);//123
+        }
+    </script>
+</head>
+<body>
+<form name="test_form" ng-controller="TestCtrl">
+    <input type="text" ng-pattern="/abc/" name="a" required ng-model="a"/>
+    <span ng-click="see()">{{ test_form.$valid }}</span>
+</form>
+</body>
+</html>

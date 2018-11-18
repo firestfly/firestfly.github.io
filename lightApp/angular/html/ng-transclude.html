@@ -1,0 +1,36 @@
+<!doctype html>
+<html ng-app="transclude">
+<head>
+    <script src="../angular/angular.js"></script>
+    <script type="text/javascript">
+        function Ctrl($scope) {
+            $scope.title = 'title === Lorem Ipsum';
+            $scope.text = 'text === Neque porro quisquam est qui dolorem ipsum quia dolor...';
+        }
+
+        angular.module('transclude', [])
+            .directive('pane', function () {
+                return {
+                    restrict: 'EA',
+                    transclude: true,
+                    scope: {
+                        title: '@',
+                        text: "="
+                    },
+                    template: '<div>' +
+                        '<div>{{title}}</div>' +
+                        '<div ng-transclude></div>' +
+                        '</div>',
+                    replace: true
+                };
+            });
+    </script>
+</head>
+<body>
+<div ng-controller="Ctrl">
+    <input ng-model="title"><br>
+    <textarea ng-model="text"></textarea> <br/>
+    <pane title="{{title}}" text="text">{{text}}</pane>
+</div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>ms-data</title>
+    <script src="dist/avalon.js"></script>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="animate.css/animate.css">
+    <script>
+        avalon.effect("xxx", {
+            enterClass: "lightSpeedIn",
+            leaveClass: "lightSpeedOut"
+        })
+        var vm = avalon.define({
+            $id: "test",
+            array: ["a", "b", "c", "d", "d"],
+            add: function () {
+                vm.array.push(55, 66, 33, "3", "o", "p")
+            },
+            getBg: function () {
+
+                return '#' + Math.floor(Math.random() * 16777215).toString(16)
+            },
+            reverse: function () {
+                vm.array.reverse()
+            },
+            pop: function () {
+                vm.array.pop()
+            },
+            remove: function () {
+                vm.array.splice(1, 5)
+            }
+        })
+    </script>
+    <style>
+        ul {
+            width: 400px;
+        }
+
+        li {
+            height: 25px;
+            margin-top: 1px;
+        }
+    </style>
+</head>
+
+<body ms-controller="test">
+<h1>ms-repeat</h1>
+<ul>
+    <li ms-repeat="array" class="animated" data-effect-stagger="40" ms-css-background="getBg()" ms-effect="xxx">
+        {{el}}*{{$index}}
+    </li>
+</ul>
+<div>
+    <button type="button" ms-click="add">add</button>
+</div>
+<div>
+    <button type="button" ms-click="reverse">reverse</button>
+</div>
+<div>
+    <button type="button" ms-click="remove">remove</button>
+</div>
+</body>
+
+</html>

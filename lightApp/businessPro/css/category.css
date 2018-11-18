@@ -1,0 +1,38 @@
+.um-content {
+    top: 100px;
+    padding-top: 0px;
+}
+
+#category .um-tabbar {
+    position: absolute;
+    top: 60px;
+    width: 100%;
+}
+
+.media-body {
+    width: 90%;
+}
+
+.filter-list img.media-object {
+    padding: 6px;
+}
+
+.media-heading {
+    white-space: normal;
+    font-weight: bold;
+}
+
+.newprice {
+    color: red;
+}
+
+.oldprice {
+    color: #999;
+    font-size: 80%;
+    text-decoration: line-through;
+}
+
+.um-box > span {
+    color: #999;
+    font-size: 80%;
+}

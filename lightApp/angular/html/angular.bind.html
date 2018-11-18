@@ -1,0 +1,63 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <script src="../angular/angular.js"></script>
+    <script type="text/javascript">
+        var f = angular.bind({a: 'xx'},//上下文绑定
+            function () {
+                console.log(this.a);
+            }
+        );
+        f();
+        //xx
+
+        /*参数动态绑定：*/
+        var f1 = function (x) {
+            console.log(x, this.a)
+        };
+        angular.bind({a: "数据"}, f, 'x')();
+        //x 数据
+
+
+        var a = {'x': '123'};
+        var b = angular.copy(a);
+        a.x = '456';
+        console.log(b);
+        //{'x': '123'}
+
+        var a1 = {'x': '123'};
+        var b1 = {'xx': '456'};
+        angular.extend(b1, a1);
+        console.log(b1);
+        //{xx: "456", x: "123"}
+
+
+        var o = {a: '1', b: '2'};
+        angular.forEach(o, function (v, k) {
+            console.log(k + ': ' + v)
+        });
+        //a:1  b:2
+
+
+        var l = ['a', 'b', 'c'];
+        angular.forEach(l, function (v, i, o) {
+            console.log(v, i, o)
+        });
+        //a 0 ["a", "b", "c"]
+        //b 1 ["a", "b", "c"]
+        // c 2 ["a", "b", "c"]
+
+        var context = {'t': 'xx'};
+        angular.forEach(l, function (v, i, o) {
+                console.log(this.t)
+            },
+            context);
+        //xx
+        //xx
+        //xx
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <script src="../../angular/angular.js"></script>
+    <script>
+        var Ctrl = function ($scope) {
+            $scope.style = {width: '100px', height: '100px', backgroundColor: 'red'};
+            $scope.mouseover_ = function () {
+                alert("mouse come over!");
+            }
+        }
+    </script>
+</head>
+<body>
+<div ng-controller="Ctrl">
+    <p ng-style="style" style="width:120px;border:2px solid green;" ng-mouseover="mouseover_()">ng-style</p>
+</div>
+
+<div ng-init="a=1">
+    <ul ng-switch on="a">
+        <li ng-switch-when="1">1</li>
+        <li ng-switch-when="2">2</li>
+        <li ng-switch-default>other</li>
+    </ul>
+</div>
+
+<form name="test_form" ng-controller="checkboxCtrl">
+    <input type="checkbox" name="a" ng-model="checkboxValue" ng-true-value="AA" ng-false-value="BB"/>
+    <span>{{ checkboxValue }}</span>
+</form>
+<script>
+    var checkboxCtrl = function ($scope) {
+        $scope.checkboxValue = 'AA';
+    }
+</script>
+
+<form name="radio_form" ng-controller="radioCtrl">
+    <input type="radio" name="a" ng-model="radioValue" value="AA"/>
+    <input type="radio" name="a" ng-model="radioValue" value="BB"/>
+    <span>{{ radioValue }}</span>
+</form>
+<script>
+    var radioCtrl = function ($scope) {
+        $scope.radioValue = "BB"
+    }
+</script>
+
+
+</body>
+</html>

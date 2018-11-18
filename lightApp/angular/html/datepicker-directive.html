@@ -1,0 +1,102 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <link rel="stylesheet" href="../dist/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../dist/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <script src="../dist/jquery/dist/jquery.js"></script>
+    <script src="../angular/angular.js"></script>
+    <script src="../dist/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+    <script src="../dist/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+
+    <script type="text/javascript">
+
+        var app = angular.module('Demo', [], angular.noop);
+
+        app.controller('TestCtrl', function ($scope) {
+            'use strict';
+            $scope.obj = {
+                date2: "2333"
+            }
+            $scope.show = function () {
+                console.log($scope.obj, $("#t2").val());
+            }
+            var config = {
+                language: 'zh-CN',
+                todayHighlight: true,
+                clearBtn: true,
+                autoclose: true,
+                format: "yyyy年mm月dd日"
+            }
+            $(".date_picker").datepicker(config);
+        });
+        app.directive("test", function ($parse) {
+            return function (scope, element, attrs) {
+                console.log(attrs.ngModel, $parse(attrs.ngModel)(scope));
+                attrs.$observe("ngModel", function (value) {
+                    attrs.$set("name", $parse(value)(scope));
+                })
+            }
+        })
+        /*app.directive("datePicker", function($filter, safeApply) {
+            return {
+                restrict: "A",
+                require: "^?ngModel",
+                scope: {
+                    dateConfig: "=datePicker"
+                },
+                link: link
+            };
+            function link(scope, element, attrs, $ngModel) {
+                var defaults = {
+                    language: 'zh-CN',
+                    todayHighlight: true,
+                    clearBtn: true,
+                    autoclose: true,
+                    format: "yyyy年mm月dd日"
+                };
+                var config = scope.dateConfig? angular.extend({}, defaults, scope.dateConfig): defaults;
+                $(element).datepicker(config);
+                // 设置
+                $ngModel.$formatters.push(function(value){
+                    return $filter('date')(new Date(value), "yyyy年MM月dd日");
+                });
+                // 显示
+                $ngModel.$parsers.push(function(value){
+                    return $filter('date')(value, "yyyy/MM/dd");
+                });
+                $(element).on('changeDate', function(e) {
+                    if (e && e.date) {
+                        safeApply(scope, function(){
+                            $ngModel.$setViewValue(e.date);
+                        });
+                    }
+                }).on("clearDate", function(){
+                    safeApply(scope, function(){
+                        $ngModel.$setViewValue("");
+                    });
+                })
+            }
+        }).factory('safeApply', function() {
+            return function(scope, fn) {
+                var phase = scope.$root.$$phase;
+                if (phase == '$apply' || phase == '$digest') {
+                    if (fn && ( typeof (fn) === 'function')) {
+                        fn();
+                    }
+                } else {
+                    scope.$apply(fn);
+                }
+            }
+        })*/
+    </script>
+</head>
+<body>
+<div ng-controller="TestCtrl">
+    <input type="text" date-picker ng-model="obj.date1" id="t1">
+    <input type="text" class="date_picker" ng-model="obj.date2" id="t2" test>
+    <p>{{obj.date1}}</p>
+    <p>{{obj.date2}}</p>
+    <button class="btn" ng-click="show()">打印</button>
+</div>
+</body>
+</html>

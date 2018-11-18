@@ -1,0 +1,175 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Farmer Business</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="css/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="css/um.css">
+    <script src="js/jquery.min.js"></script>
+    <style>
+        .um-form .um-list-item-body {
+            font-weight: bolder;
+        }
+    </style>
+    <script language="JavaScript" src="Frameworks/json.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.MACore.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Container.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Event.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Page.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Mvc.Model.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Mvc.JControl.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.Input.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.Select.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.Checkbox.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.RadioSet.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.List.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.UI.Label.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Mvc.Controller.js"></script>
+    <script language="JavaScript" src="Frameworks/UMP.Web.Mvc.js"></script>
+    <script src="js/orderInfo.js"></script>
+</head>
+<body>
+<div class="um-page">
+    <div class="um-header">
+        <a href="" class="um-back">返回</a>
+        <h3>订单详情</h3>
+    </div>
+    <div class="um-content" id="info">
+        <ul class="um-form">
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-body">
+                            订单号
+                        </div>
+                        <div id="ordernumber" class="um-list-item-right fb um-black" data-um-bindfield="ordernumber">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-body">
+                            总价
+                        </div>
+                        <div id="cost" class="um-list-item-right fb um-red" data-um-bindfield="cost">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-body">
+                            订单状态
+                        </div>
+                        <div id="orderStatus" class="um-list-item-right fb um-green" data-um-bindfield="orderStatus">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-body">
+                            是否抵扣
+                        </div>
+                        <div id="discount" class="um-list-item-right" data-um-bindfield="discount">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-body">
+                            支付方式
+                        </div>
+                        <div id="paymethod" class="um-list-item-right fb um-green" data-um-bindfield="paymethod">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-body">
+                            下单时间
+                        </div>
+                        <div id="ordertime" class="um-list-item-right" data-um-bindfield="ordertime">
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul id="orderlists" class="um-form" data-um-bindfield="orders" data-um-jControl="List">
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-body">
+                            <span data-um-bindfield="name"></span>
+                        </div>
+                        <div class="um-list-item-right">
+                            <span data-um-bindfield="num" class="fb um-black"></span>×<span
+                                data-um-bindfield="price"></span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul class="um-form" data-um-bindfield="orders">
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-body">
+                            联系人
+                        </div>
+                        <div class="um-list-item-right">
+                            <span id="name" class="fb" data-um-bindfield="personInfo.name"></span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-body">
+                            手机号
+                        </div>
+                        <div class="um-list-item-right">
+                            <span id="tel" class="um-red" data-um-bindfield="personInfo.tel"></span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-body">
+                            地址
+                        </div>
+                        <div class="um-list-item-right">
+                            <span id="address" class="fb um-red" data-um-bindfield="personInfo.address"></span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="um-list-item">
+                    <div class="um-list-item-inner">
+                        <div class="um-list-item-body">
+                            备注
+                        </div>
+                        <div class="um-list-item-right">
+                            <span id="remark" data-um-bindfield="personInfo.remark"></span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

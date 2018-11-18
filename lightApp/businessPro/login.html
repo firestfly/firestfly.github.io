@@ -1,0 +1,69 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Business Pro</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="css/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="css/um.css">
+    <link rel="stylesheet" href="css/login.css"/>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/login.js"></script>
+</head>
+<body>
+<div class="um-page" id="login">
+    <div class="um-header">
+        <h3 class="ios7-font-style f16">登录</h3>
+    </div>
+    <div class="um-content">
+        <div class="mt30 mb20 tc" id="avatar">
+            <img src="img/caocao.jpg" alt="..." class="img-circle" width="125" height="125">
+        </div>
+        <form method="post" action="charge.html" id="user-login">
+            <ul class="um-form" id="login-form">
+                <li>
+                    <div class="um-list-item">
+                        <div class="um-list-item-media">
+                            <span class="ti-user"
+                                  style="color: #fff;background-color: #2F9BE8;border-radius: 50%;padding: 5px;"></span>
+                        </div>
+                        <div class="um-list-item-inner ios7-font-style">
+                            <div class="um-list-item-body">
+                                用户名
+                            </div>
+                            <div class="um-list-item-right">
+                                <input name="user" type="text" class="form-control" placeholder="邮箱/手机号/QQ号" required>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="um-list-item">
+                        <div class="um-list-item-media">
+                            <span class="ti-lock"
+                                  style="color: #fff;background-color: #21D831;border-radius: 50%;padding: 5px;"></span>
+                        </div>
+                        <div class="um-list-item-inner ios7-font-style">
+                            <div class="um-list-item-body">
+                                密码
+                            </div>
+                            <div class="um-list-item-right">
+                                <input name="pass" type="password" class="form-control" placeholder="请输入密码***" required>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="tr mt20 fb">
+                <span class="ios7-font-style">自动登录</span>
+                <input type="checkbox" role="switch" id="switch2" class="um-switch1">
+                <label for="switch2"></label>
+            </div>
+            <button class="btn mt30 ios7-font-style" id="submit">登录</button>
+        </form>
+    </div>
+
+
+</div>
+</body>
+</html>

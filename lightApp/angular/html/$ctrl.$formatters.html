@@ -1,0 +1,51 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <script src="../angular/angular.js"></script>
+    <style type="text/css">
+        #bottom {
+            display: block;
+            margin-top: 12000px;
+        }
+    </style>
+    <script type="text/javascript">
+        var app = angular.module('Demo', [], angular.noop);
+
+        app.directive('test', function () {
+            var link = function ($scope, $element, $attrs, $ctrl) {
+
+                $ctrl.$formatters.push(function (value) {
+                    return value.join(',');
+                });
+
+                $ctrl.$parsers.push(function (value) {
+                    return value.split(',');
+                });
+            }
+
+            return {
+                compile: function () {
+                    return link
+                },
+                require: 'ngModel',
+                restrict: 'A'
+            }
+        });
+
+        app.controller('TestCtrl', function ($scope) {
+            $scope.a = [];
+            //$scope.a = [1,2,3];
+            $scope.show = function (v) {
+                console.log(v);
+            }
+        });
+    </script>
+</head>
+<body>
+<div ng-controller="TestCtrl">
+    <input type="text" ng-model="a" test/>
+    <button ng-click="a = [2, 3, 443]">设置</button>
+    <button ng-click="show(a)">查看</button>
+</div>
+</body>
+</html>

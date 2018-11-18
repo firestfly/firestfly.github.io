@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>ms-data</title>
+    <script src="dist/avalon.js"></script>
+    <script>
+        var index = 0
+        var model = avalon.define({
+            $id: "test",
+            data: {
+                aaa: 1111,
+                bbb: 2222,
+                ccc: 3333,
+                ddd: 4444
+            },
+            keys: function (a) {
+                console.log(a)
+                console.log(this)
+                return ["ccc", "ddd", "aaa"]
+            },
+            getIndex: function () {
+                return index++
+            }
+        })
+    </script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+<ul ms-controller="test">
+    <li ms-repeat="data" data-with-sorted="keys">{{getIndex()}}、{{$key}}--{{$val}}</li>
+</ul>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>ms-data</title>
+    <script src="dist/avalon.js"></script>
+    <script>
+        var ret
+        var model = avalon.define({
+            $id: "test",
+            array: [1, 2, 3, 4, 5, 6, 7, 8],
+            stop: function () {
+                ret = false
+            },
+            click: function (a) {
+                var index = Math.floor(Math.random() * 8)
+                model.array.set(index, new Date - 0)
+            }
+        })
+        var old = model.$model.array.concat()
+        avalon.tick(function () {
+            console.log("tick...")
+            var now = model.$model.array.concat()
+            for (var i = 0, n = now.length; i < n; i++) {
+                if (now[i] !== old[i]) {
+                    console.log("第" + i + "个元素发生变化: " + old[i] + " --> " + now[i])
+                }
+            }
+            old = now
+            return ret
+        })
+    </script>
+    <style>
+        .ms-hover div:hover {
+            background: yellowgreen;
+        }
+    </style>
+</head>
+
+<body ms-controller="test" class='ms-hover'>
+<div ms-click="click('array')">
+    <div ms-repeat='array'>{{el}}</div>
+</div>
+<button type='button' ms-click='stop'>移除此监听器</button>
+</body>
+
+</html>

@@ -1,0 +1,203 @@
+.pop_iframe.add_open_shop {
+    width: 477px;
+    height: auto;
+    margin: 90px 0 0 -238px;
+    left: 50%;
+    -webkit-transform-origin: right
+}
+
+.hidden-ele {
+    position: absolute;
+    z-index: -1;
+    clip: rect(0, 0, 0, 0)
+}
+
+.input-radio,
+.input-checkbox {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background: url(http://apps.bdimg.com/developer/static/1412022151/developers/light/base/img/input-radio.png) 0 -15px no-repeat;
+    cursor: pointer;
+    vertical-align: middle
+}
+
+.input-radio:hover,
+.input-checkbox:hover {
+    background-position: 0 -30px
+}
+
+.input-radio.label-checked,
+.input-checkbox.label-checked {
+    background-position: 0 0
+}
+
+.input-radio.label-checked.label-disabled,
+.input-checkbox.label-checked.label-disabled {
+    background-position: 0 -60px;
+    cursor: default
+}
+
+.input-radio.label-disabled,
+.input-checkbox.label-disabled {
+    background-position: 0 -45px;
+    cursor: default
+}
+
+.input-checkbox {
+    background: url(http://apps.bdimg.com/developer/static/1412022151/developers/light/base/img/input-checkbox.png) 0 -15px no-repeat
+}
+
+.add_open_shop .close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 16px;
+    height: 16px;
+    background: url(http://static.qyy.baidu.com/static/legobuilder/builder/images/manage_icon_cdc715a.png) 2px -94px no-repeat;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer
+}
+
+.add_open_shop > h2 {
+    color: #333;
+    font-family: "微软雅黑";
+    font-size: 18px;
+    padding: 33px 0 23px 35px
+}
+
+.add_open_shop > h3 {
+    color: #333;
+    font-size: 14px;
+    padding-left: 35px
+}
+
+.add_open_shop .shop_service {
+    margin-top: 30px
+}
+
+.control-group {
+    *zoom: 1;
+    zoom: 1;
+    position: relative
+}
+
+.control-group:before,
+.control-group:after {
+    display: table;
+    content: "";
+    line-height: 0
+}
+
+.control-group:after {
+    clear: both
+}
+
+.control-group .control-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    line-height: 26px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+    padding-left: 10px
+}
+
+.control-group .control-label .require {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-weight: 400;
+    color: #ae4a4a
+}
+
+.control-group .controls {
+    margin-left: 36px;
+    position: relative;
+    width: 400px
+}
+
+.func-list {
+    width: 361px;
+    border: 1px dashed #ddd;
+    background-color: #f8f8f8;
+    padding: 0 20px;
+    margin-top: 6px
+}
+
+.deal-func .input-error {
+    border: solid 1px #ae4a4a
+}
+
+.open-tips {
+    color: #999;
+    padding: 5px 0
+}
+
+.func-list > li {
+    padding: 15px 0;
+    border-bottom: 1px dashed #dfdfdf
+}
+
+.func-list > li:first-child {
+    padding-top: 9px
+}
+
+.func-list > li:last-child {
+    padding-top: 6px;
+    border-bottom: 0
+}
+
+.func-list > li > label {
+    display: block;
+    position: relative
+}
+
+.func-list > li > label .require {
+    position: absolute;
+    top: 1px;
+    left: -10px;
+    font-weight: 400;
+    color: #ae4a4a
+}
+
+.func-list > li .support-type {
+    padding-top: 9px;
+    margin-left: 7px
+}
+
+.func-list > li .support-type > label:last-child {
+    position: relative;
+    top: 1px
+}
+
+.add_open_shop > button {
+    width: 71px;
+    height: 32px;
+    background-color: #4682ea;
+    border: 0;
+    display: block;
+    margin: 20px auto 24px;
+    color: #fff;
+    border-radius: 2px;
+    font-size: 14px;
+    font-weight: bolder;
+    position: relative
+}
+
+.add_open_shop > button > em {
+    width: 120px;
+    height: 37px;
+    line-height: 34px;
+    padding-left: 5px;
+    background: url(http://static.qyy.baidu.com/static/legobuilder/builder/images/open_shop_icon_2f22b03.png) no-repeat;
+    position: absolute;
+    left: -18px;
+    top: -45px;
+    color: #666;
+    font-weight: 400;
+    font-size: 12px;
+    display: none
+}
